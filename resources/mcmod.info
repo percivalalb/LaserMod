@@ -1,0 +1,18 @@
+[
+{
+  "modid": "",
+  "name": "",
+  "description": "",
+  "version": "",
+  "credits": "",
+  "mcversion": "",
+  "updateUrl": "",
+  "authors": [ "ProPercivalalb", "Frodo207"],
+  "logoFile": "/assets/MOD/textures/logo.png",
+  "parent":"",
+  "screenshots": [],
+  "dependencies": [
+     "mod_MinecraftForge"
+  ]
+}
+]
