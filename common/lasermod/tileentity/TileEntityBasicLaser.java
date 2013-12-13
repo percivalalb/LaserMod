@@ -3,6 +3,7 @@ package lasermod.tileentity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.api.ILaserReciver;
+import lasermod.api.LaserInGame;
 import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
 import net.minecraft.block.Block;
@@ -18,6 +19,7 @@ public class TileEntityBasicLaser extends TileEntity {
 
 	public AxisAlignedBB last = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	public int[] reciverCords = new int[3];
+	public LaserInGame laser = new LaserInGame();
 	
 	@Override
 	public void updateEntity() {
@@ -200,6 +202,10 @@ public class TileEntityBasicLaser extends TileEntity {
         boundingBox.setBounds(boundingBox.minX - extraMinX, boundingBox.minY - extraMinY, boundingBox.minZ - extraMinZ, boundingBox.maxX + extraMaxX, boundingBox.maxY + extraMaxY, boundingBox.maxZ + extraMaxZ);
         
         return boundingBox;
+	}
+	
+	public LaserInGame getCreatedLaser() {
+		return laser;
 	}
 	
 	@Override

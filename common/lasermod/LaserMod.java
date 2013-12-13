@@ -1,5 +1,7 @@
 package lasermod;
 
+import lasermod.api.LaserRegistry;
+import lasermod.block.laser.DefaultLaser;
 import lasermod.core.helper.LogHelper;
 import lasermod.core.proxy.CommonProxy;
 import lasermod.lib.Reference;
@@ -36,6 +38,10 @@ public class LaserMod {
 		ModBlocks.inti();
 		ModItems.inti();
 		ModEntities.inti();
+		
+		//Registers all lasers
+		LaserRegistry.registerLaser("default", new DefaultLaser());
+		
 		proxy.onPreLoad();
 	}
 	
