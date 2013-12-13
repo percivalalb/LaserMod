@@ -205,7 +205,7 @@ public class TileEntityBasicLaser extends TileEntity {
 	}
 	
 	public LaserInGame getCreatedLaser() {
-		return laser;
+		return laser.setSide(Facing.oppositeSide[this.getBlockMetadata()]);
 	}
 	
 	@Override

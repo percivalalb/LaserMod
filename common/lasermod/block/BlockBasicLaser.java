@@ -49,6 +49,16 @@ public class BlockBasicLaser extends BlockContainer {
 	}
 
 	@Override
+	public boolean isOpaqueCube() {
+        return false;
+    }
+
+	@Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+	
+	@Override
 	public void onBlockPlacedBy(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
 		 int rotation = determineOrientation(par1World, x, y, z, par5EntityLiving);
 		 par1World.setBlockMetadataWithNotify(x, y, z, rotation, 2);
