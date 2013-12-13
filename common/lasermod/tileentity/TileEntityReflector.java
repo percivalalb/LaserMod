@@ -14,7 +14,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class TileEntityReflector extends TileEntity {
 
-	public boolean[] openSides = new boolean[6];
+	public boolean[] openSides = new boolean[] {true, true, true, true, true, true};
 	
 	public boolean isSideOpen(ForgeDirection direction) {
 		return this.isSideOpen(direction.ordinal());

@@ -27,8 +27,6 @@ public class ModelReflector extends ModelBase {
     private ModelRenderer bitBR;
     private ModelRenderer bitBF;
     private ModelRenderer bitBL;
-    
-    public ModelRenderer[] blockers = new ModelRenderer[] {bottomBlocker, topBlocker, frontBlocker, backBlocker, leftBlocker, rightBlocker};
   
     public ModelReflector() {
     	textureWidth = 128;
@@ -170,9 +168,10 @@ public class ModelReflector extends ModelBase {
     	columnBL.render(0.0625F);
     	columnFL.render(0.0625F);
     	columnBR.render(0.0625F);
+    	ModelRenderer[] blockers = new ModelRenderer[] {bottomBlocker, topBlocker, backBlocker, frontBlocker, rightBlocker, leftBlocker};
     	for(int i = 0; i < 6; ++i) {
     		if(reflector.openSides[i])
-    			this.blockers[i].render(0.0625F);
+    			blockers[i].render(0.0625F);
     	}
     	bitTB.render(0.0625F);
     	bitTF.render(0.0625F);
