@@ -18,30 +18,28 @@ public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
     public void renderBasicLaser(TileEntityBasicLaser basicLaser, double x, double y, double z, float tick) {
     	GL11.glPushMatrix();
      	GL11.glDisable(GL11.GL_ALPHA_TEST);
-        //GL11.glDisable(GL11.GL_LIGHTING); //Make the line see thought blocks
+        GL11.glDisable(GL11.GL_LIGHTING); //Make the line see thought blocks
         GL11.glDepthMask(false);
         //GL11.glDisable(GL11.GL_DEPTH_TEST); //Make the line see thought blocks
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Tessellator tessellator = Tessellator.instance;
         GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.09F);
       // if(tick % 0.1 == 0.1)
         basicLaser.last = basicLaser.getLaserBox(x, y, z);
         
     	drawBoundingBox(basicLaser.last);
-    	GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.3F);
+    	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.3F);
     	drawBoundingBox(basicLaser.last.contract(0.12D, 0.12D, 0.12D));
          
         //GL11.glEnable(GL11.GL_DEPTH_TEST); //Make the line see thought blocks
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        //GL11.glEnable(GL11.GL_LIGHTING); //Make the line see thought blocks
+        GL11.glEnable(GL11.GL_LIGHTING); //Make the line see thought blocks
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glPopMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     }
     
