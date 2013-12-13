@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL12;
 
 import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityBasicLaser;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -17,9 +18,10 @@ import net.minecraft.util.AxisAlignedBB;
 public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
 
     public void renderBasicLaser(TileEntityBasicLaser basicLaser, double x, double y, double z, float tick) {
+    	if(!basicLaser.worldObj.isBlockIndirectlyGettingPowered(basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord))
+    		return;
     	GL11.glPushMatrix();
     	RenderHelper.disableStandardItemLighting();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
     	GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDepthMask(false);
         //GL11.glDisable(GL11.GL_DEPTH_TEST); //Make the line see thought blocks

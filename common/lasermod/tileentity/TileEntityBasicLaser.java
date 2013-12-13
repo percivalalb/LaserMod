@@ -34,7 +34,10 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			extraMinY++;
         		}
-        		else break;
+        		else {
+        			extraMinY += 1.0D - laserSize;
+        			break;
+        		}
         	}
         }
         else if (meta == ForgeDirection.UP.ordinal()) {
@@ -42,7 +45,10 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			extraMaxY++;
         		}
-        		else break;
+        		else {
+        			extraMaxY += 1.0D - laserSize;
+        			break;
+        		}
         	}
             //return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, (double)xCoord + 1.0D, (double)yCoord + 1.0D + d, (double)zCoord + 1.0D);
         }
@@ -51,7 +57,10 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
         			extraMinZ++;
         		}
-        		else break;
+        		else {
+        			extraMinZ += 1.0D - laserSize;
+        			break;
+        		}
         	}
             //return AxisAlignedBB.getBoundingBox(xCoord, yCoord, (double)zCoord - d, (double)xCoord + 1.0D, (double)yCoord + 1.0D, (double)zCoord + 1.0D);
         }
@@ -60,7 +69,10 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
         			extraMaxZ++;
         		}
-        		else break;
+        		else {
+        			extraMaxZ += 1.0D - laserSize;
+        			break;
+        		}
         	}
         	//return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, (double)xCoord + 1.0D, (double)yCoord + 1.0D, (double)zCoord + 1.0D + d);
         }
@@ -69,7 +81,10 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
         			extraMinX++;
         		}
-        		else break;
+        		else {
+        			extraMinX += 1.0D - laserSize;
+        			break;
+        		}
         	}
             //return AxisAlignedBB.getBoundingBox((double)xCoord - d, yCoord, zCoord, (double)xCoord + 1.0D, (double)yCoord + 1.0D, (double)zCoord + 1.0D);
         }
@@ -78,7 +93,10 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
         			extraMaxX++;
         		}
-        		else break;
+        		else {
+        			extraMaxX += 1.0D - laserSize;
+        			break;
+        		}
         	}
         	//return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, (double)xCoord + 1.0D + d, (double)yCoord + 1.0D, (double)zCoord + 1.0D);
         }
