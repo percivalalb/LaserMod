@@ -42,4 +42,14 @@ public class BlockReflector extends BlockContainer {
 	    	return par1 == Facing.oppositeSide[meta] ? Block.planks.getIcon(2, 2) : Block.planks.getIcon(0, 1);
 	    }
 	}
+	
+	@Override
+	public boolean isOpaqueCube() {
+        return false;
+    }
+
+	@Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
 }
