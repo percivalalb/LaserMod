@@ -79,4 +79,15 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 		}
         return false;
     }
+
+	@Override
+	public boolean canPassOnSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
+		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
+		return reflector.openSides[side];
+	}
+	
+	@Override
+	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ) {
+		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
+	}
 }

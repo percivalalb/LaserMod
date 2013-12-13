@@ -8,6 +8,7 @@ import lasermod.core.helper.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Facing;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
@@ -16,12 +17,15 @@ import net.minecraftforge.common.ForgeDirection;
 public class TileEntityBasicLaser extends TileEntity {
 
 	public AxisAlignedBB last = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
+	public int[] reciverCords = new int[3];
 	
 	@Override
 	public void updateEntity() {
 		ILaserReciver reciver = getFirstReciver();
 		if(reciver != null) {
-			
+			if(reciver.canPassOnSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()])) {
+				LogHelper.logInfo("Pass");
+			}
 		}
 		
 		//LogHelper.logInfo("Reciver: " + (reciver != null));
@@ -31,13 +35,14 @@ public class TileEntityBasicLaser extends TileEntity {
 	   	if(!this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
     		return null;
 		
-		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+		int meta = this.getBlockMetadata();
 
         if (meta == ForgeDirection.DOWN.ordinal()) {
         	for(int i = this.yCoord - 1; i >= 0; --i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, i, this.zCoord};
         				return (ILaserReciver)block;
         			}
         			break;
@@ -49,6 +54,7 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, i, this.zCoord};
         				return (ILaserReciver)block;
         			}
         			break;
@@ -60,6 +66,7 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - i)];
         			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, this.yCoord, this.zCoord - i};
         				return (ILaserReciver)block;
         			}
         			break;
@@ -71,6 +78,7 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + i)];
         			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, this.yCoord, this.zCoord + i};
         				return (ILaserReciver)block;
         			}
         			break;
@@ -82,6 +90,7 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord - i, this.yCoord, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord - i, this.yCoord, this.zCoord};
         				return (ILaserReciver)block;
         			}
         			break;
@@ -93,6 +102,7 @@ public class TileEntityBasicLaser extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord + i, this.yCoord, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord + i, this.yCoord, this.zCoord};
         				return (ILaserReciver)block;
         			}
         			break;
