@@ -1,6 +1,10 @@
 package lasermod.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
@@ -9,6 +13,8 @@ import net.minecraft.util.AxisAlignedBB;
  */
 public class TileEntityBasicLaser extends TileEntity {
 
+	public AxisAlignedBB last = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
+	
 	public AxisAlignedBB getLaserBox(double x, double y, double z) {
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 		double laserSize = 0.4D;
@@ -22,14 +28,21 @@ public class TileEntityBasicLaser extends TileEntity {
 		double extraMaxY = 0.0D;
 		double extraMaxZ = 0.0D;
 		
-        if (meta == 0)
-        {
-        	
+        if (meta == 0) {
+        	for(int i = this.yCoord - 1; i > 0; --i) {
+        		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
+        			extraMinY++;
+        		}
+        	}
         }
 
         if (meta == 1)
         {
-        	
+        	for(int i = this.yCoord + 1; i < 256; ++i) {
+        		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
+        			extraMaxY++;
+        		}
+        	}
             //return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, (double)xCoord + 1.0D, (double)yCoord + 1.0D + d, (double)zCoord + 1.0D);
         }
 
@@ -57,9 +70,14 @@ public class TileEntityBasicLaser extends TileEntity {
         {
             //return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, (double)xCoord + 1.0D, (double)yCoord + 1.0D, (double)zCoord + 1.0D);
         }
-        boundingBox.setBounds(boundingBox.minX + extraMinX, boundingBox.minY + extraMinY, boundingBox.minZ + extraMinZ, boundingBox.maxX + extraMaxX, boundingBox.maxY + extraMaxY, boundingBox.maxZ + extraMaxZ);
+        boundingBox.setBounds(boundingBox.minX - extraMinX, boundingBox.minY - extraMinY, boundingBox.minZ - extraMinZ, boundingBox.maxX + extraMaxX, boundingBox.maxY + extraMaxY, boundingBox.maxZ + extraMaxZ);
         
         return boundingBox;
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return INFINITE_EXTENT_AABB;
+    }
 }

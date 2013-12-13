@@ -45,6 +45,7 @@ public class LaserWhitelist {
 	}
 	
 	static {
+		addToWhiteList(0);
 		addToWhiteList(Block.tallGrass);
 		addToWhiteList(Block.leaves);
 	}
