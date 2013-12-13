@@ -20,10 +20,17 @@ public class TileEntityBasicLaser extends TileEntity {
 	@Override
 	public void updateEntity() {
 		ILaserReciver reciver = getFirstReciver();
-		LogHelper.logInfo("Reciver: " + (reciver != null));
+		if(reciver != null) {
+			
+		}
+		
+		//LogHelper.logInfo("Reciver: " + (reciver != null));
 	}
 	
 	public ILaserReciver getFirstReciver() {
+	   	if(!this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
+    		return null;
+		
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 
         if (meta == ForgeDirection.DOWN.ordinal()) {
@@ -33,6 +40,7 @@ public class TileEntityBasicLaser extends TileEntity {
         			if(block != null && block instanceof ILaserReciver) {
         				return (ILaserReciver)block;
         			}
+        			break;
         		}
         	}
         }
@@ -43,6 +51,7 @@ public class TileEntityBasicLaser extends TileEntity {
         			if(block != null && block instanceof ILaserReciver) {
         				return (ILaserReciver)block;
         			}
+        			break;
         		}
         	}
         }
@@ -53,6 +62,7 @@ public class TileEntityBasicLaser extends TileEntity {
         			if(block != null && block instanceof ILaserReciver) {
         				return (ILaserReciver)block;
         			}
+        			break;
         		}
         	}
         }
@@ -63,6 +73,7 @@ public class TileEntityBasicLaser extends TileEntity {
         			if(block != null && block instanceof ILaserReciver) {
         				return (ILaserReciver)block;
         			}
+        			break;
         		}
         	}
         }
@@ -73,6 +84,7 @@ public class TileEntityBasicLaser extends TileEntity {
         			if(block != null && block instanceof ILaserReciver) {
         				return (ILaserReciver)block;
         			}
+        			break;
         		}
         	}
         }
@@ -83,6 +95,7 @@ public class TileEntityBasicLaser extends TileEntity {
         			if(block != null && block instanceof ILaserReciver) {
         				return (ILaserReciver)block;
         			}
+        			break;
         		}
         	}
         }
