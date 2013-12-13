@@ -48,5 +48,9 @@ public class LaserWhitelist {
 		addToWhiteList(0);
 		addToWhiteList(Block.tallGrass);
 		addToWhiteList(Block.leaves);
+		addToWhiteList(Block.lever);
+		addToWhiteList(Block.torchRedstoneActive);
+		addToWhiteList(Block.torchRedstoneIdle);
+		addToWhiteList(Block.torchWood);
 	}
 }

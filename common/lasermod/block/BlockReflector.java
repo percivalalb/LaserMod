@@ -1,6 +1,7 @@
 package lasermod.block;
 
 import lasermod.ModItems;
+import lasermod.api.ILaserReciver;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -17,7 +18,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class BlockReflector extends BlockContainer {
+public class BlockReflector extends BlockContainer implements ILaserReciver {
 
 	public BlockReflector(int id) {
 		super(id, Material.rock);
