@@ -1,9 +1,12 @@
 package lasermod.block;
 
+import lasermod.ModItems;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
@@ -50,6 +53,17 @@ public class BlockReflector extends BlockContainer {
 
 	@Override
     public boolean renderAsNormalBlock() {
+        return false;
+    }
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+		ItemStack item = player.getCurrentEquippedItem();
+		if(item != null && item.itemID == ModItems.screwdriver.itemID) {
+			TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
+			reflector.openSides[side] = !reflector.openSides[side];
+			return true;
+		}
         return false;
     }
 }

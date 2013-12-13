@@ -1,5 +1,6 @@
 package lasermod.client.model.block;
 
+import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
@@ -8,24 +9,26 @@ import net.minecraft.client.model.ModelRenderer;
  */
 public class ModelReflector extends ModelBase {
 	
-	ModelRenderer columnFR;
-    ModelRenderer columnBL;
-    ModelRenderer columnFL;
-    ModelRenderer columnBR;
-    ModelRenderer topBlocker;
-    ModelRenderer rightBlocker;
-    ModelRenderer frontBlocker;
-    ModelRenderer leftBlocker;
-    ModelRenderer backBlocker;
-    ModelRenderer bottomBlocker;
-    ModelRenderer bitTB;
-    ModelRenderer bitTF;
-    ModelRenderer bitTL;
-    ModelRenderer bitTR;
-    ModelRenderer bitBB;
-    ModelRenderer bitBR;
-    ModelRenderer bitBF;
-    ModelRenderer bitBL;
+	private ModelRenderer columnFR;
+	private ModelRenderer columnBL;
+    private ModelRenderer columnFL;
+    private ModelRenderer columnBR;
+    private ModelRenderer topBlocker;
+    private ModelRenderer rightBlocker;
+    private ModelRenderer frontBlocker;
+    private ModelRenderer leftBlocker;
+    private ModelRenderer backBlocker;
+    private ModelRenderer bottomBlocker;
+    private ModelRenderer bitTB;
+    private ModelRenderer bitTF;
+    private ModelRenderer bitTL;
+    private ModelRenderer bitTR;
+    private ModelRenderer bitBB;
+    private ModelRenderer bitBR;
+    private ModelRenderer bitBF;
+    private ModelRenderer bitBL;
+    
+    public ModelRenderer[] blockers = {bottomBlocker, topBlocker, frontBlocker, backBlocker, leftBlocker, rightBlocker};
   
     public ModelReflector() {
     	textureWidth = 128;
@@ -152,6 +155,25 @@ public class ModelReflector extends ModelBase {
     	leftBlocker.render(0.0625F);
     	backBlocker.render(0.0625F);
     	bottomBlocker.render(0.0625F);
+    	bitTB.render(0.0625F);
+    	bitTF.render(0.0625F);
+    	bitTL.render(0.0625F);
+    	bitTR.render(0.0625F);
+    	bitBB.render(0.0625F);
+    	bitBR.render(0.0625F);
+    	bitBF.render(0.0625F);
+    	bitBL.render(0.0625F);
+    }
+    
+    public void renderModel(TileEntityReflector reflector) {
+    	columnFR.render(0.0625F);
+    	columnBL.render(0.0625F);
+    	columnFL.render(0.0625F);
+    	columnBR.render(0.0625F);
+    	for(int i = 0; i < this.blockers.length; ++i) {
+    		if(reflector.openSides[i])
+    			this.blockers[i].render(0.0625F);
+    	}
     	bitTB.render(0.0625F);
     	bitTF.render(0.0625F);
     	bitTL.render(0.0625F);
