@@ -92,7 +92,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	@Override
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
-		reflector.lasers.add(laserInGame);
+		reflector.addLaser(laserInGame);
 		
 		if(world instanceof WorldServer) {
 			WorldServer worldServer = (WorldServer)world;

@@ -3,6 +3,7 @@ package lasermod.tileentity;
 import java.util.ArrayList;
 
 import lasermod.api.LaserInGame;
+import lasermod.core.helper.LogHelper;
 import lasermod.packet.PacketReflectorUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,21 +29,45 @@ public class TileEntityReflector extends TileEntity {
 		return this.openSides[side];
 	}
 	
+	public boolean addLaser(LaserInGame laserInGame) {
+		if(lasers.size() == 0) {
+			lasers.add(laserInGame);
+			return true;
+		}
+		
+		for(int i = 0; i < lasers.size(); ++i) {
+			LaserInGame old = lasers.get(i);
+			
+			if(old.getLaserType() == laserInGame.getLaserType()) {
+				if(laserInGame.getStrength() > old.getStrength()) {
+					lasers.remove(i);
+					lasers.add(laserInGame);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void updateEntity() {
+		LogHelper.logInfo("" + lasers.size());
+	}
+	
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		for(int i = 0; i < openSides.length; ++i) {
+		for(int i = 0; i < openSides.length; ++i)
 			openSides[i] = tag.getBoolean("openSide" + i);
-		}
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		
-		for(int i = 0; i < openSides.length; ++i) {
+		for(int i = 0; i < openSides.length; ++i)
 			tag.setBoolean("openSide" + i, openSides[i]);
-		}
 	}
 
 	@Override
