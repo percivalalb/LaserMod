@@ -1,4 +1,4 @@
-package trapcraft.common.packet;
+package lasermod.packet;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
