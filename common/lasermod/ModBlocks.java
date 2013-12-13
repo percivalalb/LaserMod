@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import lasermod.block.BlockBasicLaser;
 import lasermod.lib.BlockIds;
+import lasermod.tileentity.TileEntityBasicLaser;
 
 /**
  * @author ProPercivalalb
@@ -18,6 +19,8 @@ public class ModBlocks {
 		basicLaser = new BlockBasicLaser(BlockIds.ID_BASIC_LASER).setHardness(1.0F).setCreativeTab(CreativeTabs.tabBlock);
 		
 		GameRegistry.registerBlock(basicLaser, "lasermod.basicLaser");
+		
+		GameRegistry.registerTileEntity(TileEntityBasicLaser.class, "lasermod.basicLaser");
 		
 		MinecraftForge.setBlockHarvestLevel(basicLaser, "pickaxe", 1);
 	}
