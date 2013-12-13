@@ -24,6 +24,11 @@ public class BlockReflector extends BlockContainer {
 	}
 
 	@Override
+	public int getRenderType() {
+        return -1;
+    }
+	
+	@Override
 	public Icon getIcon(int par1, int par2) {
 	    int meta = 1;
 

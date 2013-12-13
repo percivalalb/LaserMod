@@ -1,5 +1,6 @@
 package lasermod.client.render.item;
 
+import lasermod.client.model.block.ModelReflector;
 import lasermod.lib.ResourceReference;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.item.ItemStack;
@@ -16,10 +17,10 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class ItemReflectorRenderer implements IItemRenderer {
 
-    private ModelChest modelChest;
+    private ModelReflector modelReflector;
 
     public ItemReflectorRenderer() {
-        modelChest = new ModelChest();
+        modelReflector = new ModelReflector();
     }
 
     @Override
@@ -41,15 +42,15 @@ public class ItemReflectorRenderer implements IItemRenderer {
                 break;
             }
             case EQUIPPED: {
-                renderReflector(1.0F, 1.0F, 1.0F);
+                renderReflector(0.5F, 1.5F, 0.5F);
                 break;
             }
             case EQUIPPED_FIRST_PERSON: {
-                renderReflector(1.0F, 1.0F, 1.0F);
+                renderReflector(0.5F, 1.5F, 0.5F);
                 break;
             }
             case INVENTORY: {
-                renderReflector(0.0F, 0.075F, 0.0F);
+                renderReflector(0.0F, 1.0F, 0.0F);
                 break;
             }
             default:
@@ -61,9 +62,9 @@ public class ItemReflectorRenderer implements IItemRenderer {
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(ResourceReference.REFLECTOR_MODEL);
         GL11.glPushMatrix(); //start
         GL11.glTranslatef(x, y, z); //size
-        GL11.glRotatef(180, 1, 0, 0);
-        GL11.glRotatef(-90, 0, 1, 0);
-        modelChest.renderAll();
+        GL11.glRotatef(180F, 1F, 0, 0);
+        GL11.glRotatef(-90F, 0, 1F, 0);
+        modelReflector.renderModel();
         GL11.glPopMatrix(); //end
     }
 }
