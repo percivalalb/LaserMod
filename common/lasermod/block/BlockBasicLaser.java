@@ -11,7 +11,7 @@ import net.minecraft.world.World;
  */
 public class BlockBasicLaser extends BlockContainer {
 
-	protected BlockBasicLaser(int id) {
+	public BlockBasicLaser(int id) {
 		super(id, Material.rock);
 	}
 
