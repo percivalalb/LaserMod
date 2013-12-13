@@ -24,10 +24,10 @@ public class TileEntityBasicLaser extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		ILaserReciver reciver = getFirstReciver();
+		ILaserReciver reciver = getFirstReciver(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 		if(reciver != null) {
 		  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
-			
+			LogHelper.logInfo("dawe");
 		  	if(!hasSignal) {
 		  		reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()]);
 		  	}
@@ -39,9 +39,7 @@ public class TileEntityBasicLaser extends TileEntity {
 		//LogHelper.logInfo("Reciver: " + (reciver != null));
 	}
 	
-	public ILaserReciver getFirstReciver() {
-		
-		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+	public ILaserReciver getFirstReciver(int meta) {
 
         if (meta == ForgeDirection.DOWN.ordinal()) {
         	for(int i = this.yCoord - 1; i >= 0; --i) {

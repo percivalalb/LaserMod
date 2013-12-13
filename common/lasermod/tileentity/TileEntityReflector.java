@@ -158,7 +158,7 @@ public class TileEntityReflector extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		LogHelper.logInfo("" + lasers.size());
+		//LogHelper.logInfo("" + lasers.size());
 	}
 	
 	@Override
