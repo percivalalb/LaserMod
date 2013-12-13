@@ -20,12 +20,18 @@ public class TileEntityBasicLaser extends TileEntity {
 	public AxisAlignedBB last = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	public int[] reciverCords = new int[3];
 	public LaserInGame laser = new LaserInGame();
+	public boolean hadPower = false;
 	
 	@Override
 	public void updateEntity() {
 		ILaserReciver reciver = getFirstReciver();
 		if(reciver != null) {
-			if(reciver.canPassOnSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()])) {
+		  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+			
+		  	if(!hasSignal) {
+		  		reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()]);
+		  	}
+		  	else if(reciver.canPassOnSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()])) {
 				reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.getCreatedLaser());
 			}
 		}
@@ -34,8 +40,6 @@ public class TileEntityBasicLaser extends TileEntity {
 	}
 	
 	public ILaserReciver getFirstReciver() {
-	   	if(!this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
-    		return null;
 		
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 

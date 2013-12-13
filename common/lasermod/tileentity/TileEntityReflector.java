@@ -61,13 +61,16 @@ public class TileEntityReflector extends TileEntity {
 		return false;
 	}
 	
-	public void removeAllLasersFromSide(int side) {
+	public boolean removeAllLasersFromSide(int side) {
+		boolean flag = false;
 		for(int i = 0; i < lasers.size(); ++i) {
 			LaserInGame old = lasers.get(i);
 			if(old.getSide() == side) {
 				lasers.remove(i);
+				flag = true;
 			}
 		}
+		return flag;
 	}
 	
 	public AxisAlignedBB getFromLaserBox(double x, double y, double z, int side) {

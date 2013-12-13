@@ -3,6 +3,7 @@ package lasermod.block;
 import lasermod.ModItems;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
+import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -99,6 +100,20 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 		reflector.addLaser(laserInGame);
 		
 		if(world instanceof WorldServer) {
+			WorldServer worldServer = (WorldServer)world;
+			MinecraftServer server = MinecraftServer.getServer();
+			
+			Packet packet = reflector.getDescriptionPacket();
+
+			server.getConfigurationManager().sendToAllNear(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, packet);
+		}
+	}
+
+	@Override
+	public void removeLasersFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
+		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
+		
+		if(reflector.removeAllLasersFromSide(side) && world instanceof WorldServer) {
 			WorldServer worldServer = (WorldServer)world;
 			MinecraftServer server = MinecraftServer.getServer();
 			
