@@ -26,7 +26,7 @@ public class TileEntityBasicLaser extends TileEntity {
 		ILaserReciver reciver = getFirstReciver();
 		if(reciver != null) {
 			if(reciver.canPassOnSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()])) {
-				LogHelper.logInfo("Pass");
+				reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.getCreatedLaser());
 			}
 		}
 		

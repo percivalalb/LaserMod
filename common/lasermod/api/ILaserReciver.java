@@ -9,5 +9,5 @@ public interface ILaserReciver {
 
 	public boolean canPassOnSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side);
 	
-	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ);
+	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame);
 }

@@ -2,6 +2,7 @@ package lasermod.block;
 
 import lasermod.ModItems;
 import lasermod.api.ILaserReciver;
+import lasermod.api.LaserInGame;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -10,10 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 /**
  * @author ProPercivalalb
@@ -87,7 +90,17 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	}
 	
 	@Override
-	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ) {
+	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
+		reflector.lasers.add(laserInGame);
+		
+		if(world instanceof WorldServer) {
+			WorldServer worldServer = (WorldServer)world;
+			MinecraftServer server = MinecraftServer.getServer();
+			
+			Packet packet = reflector.getDescriptionPacket();
+
+			server.getConfigurationManager().sendToAllNear(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, packet);
+		}
 	}
 }

@@ -1,5 +1,8 @@
 package lasermod.tileentity;
 
+import java.util.ArrayList;
+
+import lasermod.api.LaserInGame;
 import lasermod.packet.PacketReflectorUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,6 +18,7 @@ import net.minecraftforge.common.ForgeDirection;
 public class TileEntityReflector extends TileEntity {
 
 	public boolean[] openSides = new boolean[] {true, true, true, true, true, true};
+	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	
 	public boolean isSideOpen(ForgeDirection direction) {
 		return this.isSideOpen(direction.ordinal());
