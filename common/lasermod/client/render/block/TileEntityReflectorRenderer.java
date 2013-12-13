@@ -26,7 +26,7 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5F, y + 1.5F, z + 0.5F);
         GL11.glScalef(1.0F, -1F, -1F);
-        modelReflector.renderModel();
+        modelReflector.renderModel(reflector);
         GL11.glPopMatrix();
 
     }

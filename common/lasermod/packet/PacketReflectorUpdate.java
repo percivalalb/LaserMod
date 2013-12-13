@@ -10,6 +10,8 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 import cpw.mods.fml.common.network.Player;
@@ -55,6 +57,15 @@ public class PacketReflectorUpdate extends PacketBase {
 
 	@Override
 	public void processPacket() {
+		net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
+		World world = mc.theWorld;
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		
+		if(!(tileEntity instanceof TileEntityReflector)) 
+			return;
+		TileEntityReflector reflector = (TileEntityReflector)tileEntity;
+		reflector.openSides = openSides;
+		
 		
 	}
 

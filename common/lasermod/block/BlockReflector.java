@@ -6,7 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
@@ -62,6 +64,16 @@ public class BlockReflector extends BlockContainer {
 		if(item != null && item.itemID == ModItems.screwdriver.itemID) {
 			TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
 			reflector.openSides[side] = !reflector.openSides[side];
+			if(player instanceof EntityPlayerMP) {
+				EntityPlayerMP playerMP = (EntityPlayerMP)player;
+				
+				Packet packet = reflector.getDescriptionPacket();
+
+	            if (packet != null) {
+	                playerMP.playerNetServerHandler.sendPacketToPlayer(packet);
+	            }
+			}
+			
 			return true;
 		}
         return false;

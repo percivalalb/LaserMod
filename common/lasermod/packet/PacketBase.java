@@ -27,10 +27,15 @@ public abstract class PacketBase {
 	
 	public abstract String getChannel();
 	
-	public final Packet250CustomPayload buildPacket() throws IOException {
+	public final Packet250CustomPayload buildPacket() {
 		 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 	     DataOutputStream data = new DataOutputStream(bytes);
-	     this.writePacketData(data);
+	     try {
+			this.writePacketData(data);
+		 } 
+	     catch (Exception e) {
+			e.printStackTrace();
+		 }
 	     Packet250CustomPayload pack = new Packet250CustomPayload();
 	     pack.channel = this.getChannel();
 	     pack.data = bytes.toByteArray();
