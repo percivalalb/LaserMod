@@ -1,4 +1,4 @@
-package lasermod.client.render.world;
+package lasermod.client.render.block;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
