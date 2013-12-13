@@ -83,7 +83,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	@Override
 	public boolean canPassOnSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
-		return reflector.openSides[side];
+		return !reflector.openSides[side];
 	}
 	
 	@Override
