@@ -11,7 +11,7 @@ public class LaserInGame {
 	public LaserInGame setStrength(double strength) {
 		if(strength < 0.0D)
 			strength = 0.0D;
-		this.strength = strength;
+		this.strength = strength; 
 		return this;
 	}
 	
