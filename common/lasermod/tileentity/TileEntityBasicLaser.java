@@ -37,7 +37,7 @@ public class TileEntityBasicLaser extends TileEntity {
 	   	if(!this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
     		return null;
 		
-		int meta = this.getBlockMetadata();
+		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 
         if (meta == ForgeDirection.DOWN.ordinal()) {
         	for(int i = this.yCoord - 1; i >= 0; --i) {

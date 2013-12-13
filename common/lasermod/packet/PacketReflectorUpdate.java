@@ -51,7 +51,8 @@ public class PacketReflectorUpdate extends PacketBase {
 	    for(int i = 0; i < amount; ++i) {
 	    	double strength = data.readDouble();
 	    	String laserType = data.readUTF();
-	    	lasers.add(new LaserInGame().setStrength(strength).setLaserType(laserType));
+	    	int side = data.readInt();
+	    	lasers.add(new LaserInGame().setStrength(strength).setLaserType(laserType).setSide(side));
 	    }
 	   
 	}
@@ -68,6 +69,7 @@ public class PacketReflectorUpdate extends PacketBase {
 	    for(int i = 0; i < lasers.size(); ++i) {
 	    	data.writeDouble(lasers.get(i).getStrength());
 	    	data.writeUTF(LaserRegistry.getIdFromLaser(lasers.get(i).getLaserType()));
+	    	data.writeInt(lasers.get(i).getSide());
 	    }
 	}
 

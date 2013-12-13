@@ -68,6 +68,10 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 		if(item != null && item.itemID == ModItems.screwdriver.itemID) {
 			TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
 			reflector.openSides[side] = !reflector.openSides[side];
+			
+			if(reflector.openSides[side])
+				reflector.removeAllLasersFromSide(side);
+			
 			if(player instanceof EntityPlayerMP) {
 				EntityPlayerMP playerMP = (EntityPlayerMP)player;
 				

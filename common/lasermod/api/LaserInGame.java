@@ -38,4 +38,7 @@ public class LaserInGame {
 		return this.laserType;
 	}
 	
+	public int getSide() {
+		return this.side;
+	}
 }
