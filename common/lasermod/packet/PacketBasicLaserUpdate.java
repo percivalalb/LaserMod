@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import lasermod.LaserMod;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
+import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityReflector;
 
 import net.minecraft.network.INetworkManager;
@@ -23,20 +24,17 @@ import cpw.mods.fml.common.network.Player;
 /**
  * @author ProPercivalalb
  **/
-public class PacketReflectorUpdate extends PacketBase {
+public class PacketBasicLaserUpdate extends PacketBase {
 
     public int x, y, z;
-    public boolean[] openSides;
-    public ArrayList<LaserInGame> lasers;
+    
 
-    public PacketReflectorUpdate() {}
+    public PacketBasicLaserUpdate() {}
 
-    public PacketReflectorUpdate(int x, int y, int z, TileEntityReflector reflector) {
+    public PacketBasicLaserUpdate(int x, int y, int z, TileEntityBasicLaser reflector) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.openSides = reflector.openSides;
-        this.lasers = reflector.lasers;
     }
 
 	@Override
@@ -44,18 +42,7 @@ public class PacketReflectorUpdate extends PacketBase {
 	    x = data.readInt();
 	    y = data.readInt();
 	    z = data.readInt();
-	    openSides = new boolean[6];
-	    for(int i = 0; i < 6; ++i) {
-	    	openSides[i] = data.readBoolean();
-	    }
-	    int amount = data.readInt();
-	    for(int i = 0; i < amount; ++i) {
-	    	double strength = data.readDouble();
-	    	String laserType = data.readUTF();
-	    	int side = data.readInt();
-	    	lasers.add(new LaserInGame().setStrength(strength).setLaserType(laserType).setSide(side));
-	    }
-	   
+
 	}
 
 	@Override
@@ -63,20 +50,12 @@ public class PacketReflectorUpdate extends PacketBase {
 		data.writeInt(x);
 	    data.writeInt(y);
 	    data.writeInt(z);
-	    for(int i = 0; i < 6; ++i) {
-	    	data.writeBoolean(openSides[i]);
-	    }
-	    data.write(lasers.size());
-	    for(int i = 0; i < lasers.size(); ++i) {
-	    	data.writeDouble(lasers.get(i).getStrength());
-	    	data.writeUTF(LaserRegistry.getIdFromLaser(lasers.get(i).getLaserType()));
-	    	data.writeInt(lasers.get(i).getSide());
-	    }
+	   
 	}
 
 	@Override
 	public void processPacket() {
-		LaserMod.proxy.handleReflectorPacket(this);
+		LaserMod.proxy.handleBasicLaserPacket(this);
 	}
 
 	@Override

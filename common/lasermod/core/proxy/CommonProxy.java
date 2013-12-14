@@ -1,6 +1,10 @@
 package lasermod.core.proxy;
 
+import lasermod.packet.PacketBasicLaserUpdate;
+import lasermod.packet.PacketReflectorUpdate;
+import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -19,7 +23,12 @@ public class CommonProxy implements IGuiHandler {
 		return null;
 	}
 
+	public void handleReflectorPacket(PacketReflectorUpdate packet) {}
+
+	public void handleBasicLaserPacket(PacketBasicLaserUpdate packetBasicLaserUpdate) {}
+	
 	public void registerHandlers() {}
 
 	public void onPreLoad() {}
+
 }

@@ -2,6 +2,7 @@ package lasermod.tileentity;
 
 import java.util.ArrayList;
 
+import lasermod.ModBlocks;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserWhitelist;
@@ -10,7 +11,9 @@ import lasermod.packet.PacketReflectorUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -84,13 +87,13 @@ public class TileEntityReflector extends TileEntity {
 	public void checkAllRecivers() {
 		for(int i = 0; i < this.openSides.length; ++i) {
 			if((!this.openSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i)) {
-				LogHelper.logInfo("Check: Side - " + i);
+				LogHelper.logInfo("Check: Side - " + Facing.oppositeSide[i]);
 				continue;
 			}
 			ILaserReciver reciver = getFirstReciver(i);
 			
 			if(reciver != null) {
-				LogHelper.logInfo("After Break: Side - " + i);
+				LogHelper.logInfo("After Break: Side - " + Facing.oppositeSide[i]);
 			  	reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}
@@ -98,14 +101,14 @@ public class TileEntityReflector extends TileEntity {
 	
 	public void checkAllReciversOnBroken() {
 		for(int i = 0; i < this.openSides.length; ++i) {
-			if(this.openSides[i]) {
-				LogHelper.logInfo("Check: Side - " + i);
+			if(this.openSides[i] || this.containsInputSide(i)) {
+				LogHelper.logInfo("Check: Side - " + Facing.oppositeSide[i]);
 				continue;
 			}
 			ILaserReciver reciver = getFirstReciver(i);
 			
 			if(reciver != null) {
-				LogHelper.logInfo("After Break: Side - " + i);
+				LogHelper.logInfo("After Break: Side - " + Facing.oppositeSide[i]);
 			  	reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}
@@ -135,7 +138,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.UP.ordinal()) {
-        	for(int i = this.yCoord + 1; i < 256; ++i) {
+        	for(int i = this.yCoord + 1; i < 64; ++i) {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			extraMaxY++;
         		}
@@ -146,7 +149,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.NORTH.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
         			extraMinZ++;
         		}
@@ -157,7 +160,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.SOUTH.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
         			extraMaxZ++;
         		}
@@ -168,7 +171,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.WEST.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
         			extraMinX++;
         		}
@@ -179,7 +182,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.EAST.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
         			extraMaxX++;
         		}
@@ -192,6 +195,96 @@ public class TileEntityReflector extends TileEntity {
         boundingBox.setBounds(boundingBox.minX - extraMinX, boundingBox.minY - extraMinY, boundingBox.minZ - extraMinZ, boundingBox.maxX + extraMaxX, boundingBox.maxY + extraMaxY, boundingBox.maxZ + extraMaxZ);
         
         return boundingBox;
+	}
+	
+	public boolean isValidSourceOfPowerOnSide(int side) {
+
+        if (side == ForgeDirection.DOWN.ordinal()) {
+        	for(int i = this.yCoord - 1; i >= 0; --i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
+        			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
+        				return true;
+        			}
+        			else if(block != null && block instanceof ILaserReciver) {
+        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (side == ForgeDirection.UP.ordinal()) {
+        	for(int i = this.yCoord + 1; i < 64; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
+        			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
+        				return true;
+        			}
+        			else if(block != null && block instanceof ILaserReciver) {
+        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (side == ForgeDirection.NORTH.ordinal()) {
+        	for(int i = 1; i < 64; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - i)];
+        			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
+        				return true;
+        			}
+        			else if(block != null && block instanceof ILaserReciver) {
+        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (side == ForgeDirection.SOUTH.ordinal()) {
+        	for(int i = 1; i < 64; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + i)];
+        			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
+        				return true;
+        			}
+        			else if(block != null && block instanceof ILaserReciver) {
+        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (side == ForgeDirection.WEST.ordinal()) {
+        	for(int i = 1; i < 64; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord - i, this.yCoord, this.zCoord)];
+        			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
+        				return true;
+        			}
+        			else if(block != null && block instanceof ILaserReciver) {
+        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (side == ForgeDirection.EAST.ordinal()) {
+        	for(int i = 1; i < 64; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord + i, this.yCoord, this.zCoord)];
+        			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
+        				return true;
+        			}
+        			else if(block != null && block instanceof ILaserReciver) {
+        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        			}
+        			break;
+        		}
+        	}
+        }
+        
+    	return false;
 	}
 	
 	public ILaserReciver getFirstReciver(int meta) {
@@ -209,7 +302,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (meta == ForgeDirection.UP.ordinal()) {
-        	for(int i = this.yCoord + 1; i < 256; ++i) {
+        	for(int i = this.yCoord + 1; i < 64; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
@@ -221,7 +314,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (meta == ForgeDirection.NORTH.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - i)];
         			if(block != null && block instanceof ILaserReciver) {
@@ -233,7 +326,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (meta == ForgeDirection.SOUTH.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + i)];
         			if(block != null && block instanceof ILaserReciver) {
@@ -245,7 +338,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (meta == ForgeDirection.WEST.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord - i, this.yCoord, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
@@ -257,7 +350,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (meta == ForgeDirection.EAST.ordinal()) {
-        	for(int i = 1; i < 256; ++i) {
+        	for(int i = 1; i < 64; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord + i, this.yCoord, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
@@ -284,6 +377,11 @@ public class TileEntityReflector extends TileEntity {
 				}
 			}
 		}
+		for(int i = 0; i < this.openSides.length; ++i) {
+			if(this.openSides[i] || !isValidSourceOfPowerOnSide(i)) {
+				this.removeAllLasersFromSide(i);
+			}
+		}
 	}
 	
 	public LaserInGame getCreatedLaser(int side) {
@@ -303,16 +401,20 @@ public class TileEntityReflector extends TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		for(int i = 0; i < openSides.length; ++i)
-			openSides[i] = tag.getBoolean("openSide" + i);
+		LogHelper.logInfo("readfromnbt");
+		NBTTagList list = tag.getTagList("openSides");
+		for(int i = 0; i < list.tagCount(); ++i)
+			openSides[i] = ((NBTTagByte)list.tagAt(i)).data == 1;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		
+		LogHelper.logInfo("writetonbt");
+		NBTTagList list = new NBTTagList("openSides");
 		for(int i = 0; i < openSides.length; ++i)
-			tag.setBoolean("openSide" + i, openSides[i]);
+			list.appendTag(new NBTTagByte("" + i, (byte)(this.openSides[i] ? 1 : 0)));
+		tag.setTag("openSides", list);
 	}
 
 	@Override

@@ -67,20 +67,12 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
     }
 	
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int oldBlockId, int oldBlockMeta) {
-		LogHelper.logInfo("Possible Break");
-		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
-	  	reflector.checkAllReciversOnBroken();
-	    super.breakBlock(world, x, y, z, oldBlockId, oldBlockMeta);
-	}
-	
-	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
 		ItemStack item = player.getCurrentEquippedItem();
 		if(item != null && item.itemID == ModItems.screwdriver.itemID) {
 			TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
 			reflector.openSides[side] = !reflector.openSides[side];
-			
+			world.getChunkFromBlockCoords(x, z).setChunkModified();
 			if(reflector.openSides[side]) {
 				boolean flag = reflector.removeAllLasersFromSide(side);
 				reflector.checkAllRecivers();
@@ -119,7 +111,6 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
 		reflector.addLaser(laserInGame);
-		
 		if(world instanceof WorldServer) {
 			WorldServer worldServer = (WorldServer)world;
 			MinecraftServer server = MinecraftServer.getServer();
@@ -133,6 +124,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	@Override
 	public void removeLasersFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
+		
 		
 		boolean flag = reflector.removeAllLasersFromSide(side);
 		

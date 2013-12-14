@@ -61,17 +61,6 @@ public class BlockBasicLaser extends BlockContainer {
         return false;
     }
 	
-	
-	@Override
-	public void breakBlock(World world, int x, int y, int z, int oldBlockId, int oldBlockMeta) {
-		TileEntityBasicLaser basicLaser = (TileEntityBasicLaser)world.getBlockTileEntity(x, y, z);
-		ILaserReciver reciver = basicLaser.getFirstReciver(oldBlockMeta);
-		if(reciver != null) {
-		  	reciver.removeLasersFromSide(world, basicLaser.reciverCords[0], basicLaser.reciverCords[1], basicLaser.reciverCords[2], x, y, z, Facing.oppositeSide[oldBlockMeta]);
-		}
-	    super.breakBlock(world, x, y, z, oldBlockId, oldBlockMeta);
-	}
-	
 	@Override
 	public void onBlockPlacedBy(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
 		 int rotation = determineOrientation(par1World, x, y, z, par5EntityLiving);
