@@ -39,7 +39,6 @@ public class TileEntityBasicLaser extends TileEntity {
 	}
 	
 	public ILaserReciver getFirstReciver(int meta) {
-
         if (meta == ForgeDirection.DOWN.ordinal()) {
         	for(int i = this.yCoord - 1; this.yCoord - i >= 0; --i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
