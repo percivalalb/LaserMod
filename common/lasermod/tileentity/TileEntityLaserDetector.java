@@ -34,7 +34,7 @@ public class TileEntityLaserDetector extends TileEntity {
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
             			int meta = this.worldObj.getBlockMetadata(this.xCoord, i, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, i, this.zCoord);
-        				return Facing.oppositeSide[meta] == i && hasPower;
+        				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -50,7 +50,7 @@ public class TileEntityLaserDetector extends TileEntity {
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord, i, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, i, this.zCoord);
-        				return Facing.oppositeSide[meta] == i && hasPower;
+        				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -66,7 +66,7 @@ public class TileEntityLaserDetector extends TileEntity {
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - i);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord - i);
-        				return Facing.oppositeSide[meta] == i && hasPower;
+        				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -82,7 +82,7 @@ public class TileEntityLaserDetector extends TileEntity {
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + i);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord + i);
-        				return Facing.oppositeSide[meta] == i && hasPower;
+        				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -98,7 +98,7 @@ public class TileEntityLaserDetector extends TileEntity {
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord - i, this.yCoord, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord - i, this.yCoord, this.zCoord);
-        				return Facing.oppositeSide[meta] == i && hasPower;
+        				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -114,7 +114,7 @@ public class TileEntityLaserDetector extends TileEntity {
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord + i, this.yCoord, this.zCoord);
-        				return Facing.oppositeSide[meta] == i && hasPower;
+        				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
