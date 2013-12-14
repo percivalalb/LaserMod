@@ -8,6 +8,7 @@ import lasermod.packet.PacketReflectorUpdate;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityReflector;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -42,5 +43,10 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerHandlers() {
 		
+	}
+	
+	@Override
+	public int armorRender(String str) {
+		return RenderingRegistry.addNewArmourRendererPrefix(str);
 	}
 }

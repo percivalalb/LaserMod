@@ -31,4 +31,5 @@ public class CommonProxy implements IGuiHandler {
 
 	public void onPreLoad() {}
 
+	public int armorRender(String str) { return 0; }
 }
