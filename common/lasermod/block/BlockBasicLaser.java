@@ -40,13 +40,10 @@ public class BlockBasicLaser extends BlockContainer {
 
 	    if (meta > 5)
 	        return this.blockIcon;
-
-	    if (par1 == meta)
-	    {
+	    if (par1 == meta) {
 	        return this.blockIcon;
 	    }
-	    else
-	    {
+	    else {
 	    	return par1 == Facing.oppositeSide[meta] ? Block.planks.getIcon(2, 2) : Block.planks.getIcon(0, 1);
 	    }
 	}
@@ -67,14 +64,11 @@ public class BlockBasicLaser extends BlockContainer {
 		 par1World.setBlockMetadataWithNotify(x, y, z, rotation, 2);
 	}
 	
-	public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLivingBase par4EntityLivingBase)
-    {
-        if (MathHelper.abs((float)par4EntityLivingBase.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLivingBase.posZ - (float)par3) < 2.0F)
-        {
+	public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLivingBase par4EntityLivingBase) {
+        if (MathHelper.abs((float)par4EntityLivingBase.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLivingBase.posZ - (float)par3) < 2.0F) {
             double d0 = par4EntityLivingBase.posY + 1.82D - (double)par4EntityLivingBase.yOffset;
 
-            if (d0 - (double)par2 > 2.0D)
-            {
+            if (d0 - (double)par2 > 2.0D) {
                 return 1;
             }
 
