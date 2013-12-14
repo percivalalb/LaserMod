@@ -25,7 +25,6 @@ public class TileEntityReflector extends TileEntity {
 	public boolean[] openSides = new boolean[] {true, true, true, true, true, true};
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	public int[] reciverCords = new int[3];
-	public LaserInGame[] laser = new LaserInGame[6];
 	
 	public boolean isSideOpen(ForgeDirection direction) {
 		return this.isSideOpen(direction.ordinal());
@@ -262,9 +261,6 @@ public class TileEntityReflector extends TileEntity {
 				continue;
 			ILaserReciver reciver = getFirstReciver(i);
 			if(reciver != null) {
-
-			  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
-			  
 			  	if(reciver.canPassOnSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i])) {
 			  		reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.getCreatedLaser(i));
 				}
@@ -273,10 +269,17 @@ public class TileEntityReflector extends TileEntity {
 	}
 	
 	public LaserInGame getCreatedLaser(int side) {
-		if(laser[side] == null)
-			laser[side] = new LaserInGame().setSide(Facing.oppositeSide[side]);
+		int facing = Facing.oppositeSide[side];
+		LaserInGame laserInGame = new LaserInGame();
+		double totalPower = 0.0D;
 		
-		return laser[side];
+		for(LaserInGame laser : lasers)
+			totalPower += laser.getStrength();
+		
+		laserInGame.setSide(facing);
+		laserInGame.setStrength(totalPower);
+		
+		return laserInGame;
 	}
 	
 	@Override
