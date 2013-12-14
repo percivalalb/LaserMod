@@ -22,7 +22,7 @@ public class TileEntityLaserDetector extends TileEntity {
 			}
 		}
 		if(count == 6)
-			this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 2);
+			this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
 	}
 	
 	public boolean isValidSourceOfPowerOnSide(int side) {
