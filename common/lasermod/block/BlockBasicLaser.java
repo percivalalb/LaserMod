@@ -1,5 +1,7 @@
 package lasermod.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.api.ILaserReciver;
 import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityBasicLaser;
@@ -7,6 +9,7 @@ import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +24,10 @@ import net.minecraft.world.World;
  */
 public class BlockBasicLaser extends BlockContainer {
 
+	public Icon frontIcon;
+	public Icon backIcon;
+	public Icon sideIcon;
+	
 	public BlockBasicLaser(int id) {
 		super(id, Material.rock);
 	}
@@ -29,6 +36,15 @@ public class BlockBasicLaser extends BlockContainer {
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityBasicLaser();
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
+	    this.frontIcon = iconRegister.registerIcon("lasermod:basicLaserFront");
+	    this.backIcon = iconRegister.registerIcon("lasermod:basicLaserBack");
+	    this.sideIcon = iconRegister.registerIcon("lasermod:basicLaserSide");
+	}
+
 
 	public static int getOrientation(int par1) {
 		return par1 & 7;
@@ -39,12 +55,12 @@ public class BlockBasicLaser extends BlockContainer {
 	    int meta = getOrientation(par2);
 
 	    if (meta > 5)
-	        return this.blockIcon;
+	        return this.frontIcon;
 	    if (par1 == meta) {
-	        return this.blockIcon;
+	        return this.frontIcon;
 	    }
 	    else {
-	    	return par1 == Facing.oppositeSide[meta] ? Block.planks.getIcon(2, 2) : Block.planks.getIcon(0, 1);
+	    	return par1 == Facing.oppositeSide[meta] ? backIcon : sideIcon;
 	    }
 	}
 

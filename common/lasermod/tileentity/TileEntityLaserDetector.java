@@ -3,6 +3,7 @@ package lasermod.tileentity;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserWhitelist;
+import lasermod.lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
@@ -41,7 +42,7 @@ public class TileEntityLaserDetector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.UP.ordinal()) {
-        	for(int i = this.yCoord + 1; i < this.yCoord + 64; ++i) {
+        	for(int i = this.yCoord + 1; i < this.yCoord + Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
@@ -55,7 +56,7 @@ public class TileEntityLaserDetector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.NORTH.ordinal()) {
-        	for(int i = 1; i < 64; ++i) {
+        	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - i)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
@@ -69,7 +70,7 @@ public class TileEntityLaserDetector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.SOUTH.ordinal()) {
-        	for(int i = 1; i < 64; ++i) {
+        	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + i)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
@@ -83,7 +84,7 @@ public class TileEntityLaserDetector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.WEST.ordinal()) {
-        	for(int i = 1; i < 64; ++i) {
+        	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord - i, this.yCoord, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
@@ -97,7 +98,7 @@ public class TileEntityLaserDetector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.EAST.ordinal()) {
-        	for(int i = 1; i < 64; ++i) {
+        	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord + i, this.yCoord, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
