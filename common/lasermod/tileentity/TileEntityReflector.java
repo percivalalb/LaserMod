@@ -71,6 +71,7 @@ public class TileEntityReflector extends TileEntity {
 			LaserInGame old = lasers.get(i);
 			if(old.getSide() == side) {
 				lasers.remove(i);
+				LogHelper.logInfo("Remove");
 				flag = true;
 			}
 		}
@@ -82,12 +83,29 @@ public class TileEntityReflector extends TileEntity {
 	
 	public void checkAllRecivers() {
 		for(int i = 0; i < this.openSides.length; ++i) {
-			if((!this.openSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
+			if((!this.openSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i)) {
+				LogHelper.logInfo("Check: Side - " + i);
 				continue;
+			}
 			ILaserReciver reciver = getFirstReciver(i);
 			
 			if(reciver != null) {
-				LogHelper.logInfo("After Break");
+				LogHelper.logInfo("After Break: Side - " + i);
+			  	reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
+			}
+		}
+	}
+	
+	public void checkAllReciversOnBroken() {
+		for(int i = 0; i < this.openSides.length; ++i) {
+			if(this.openSides[i]) {
+				LogHelper.logInfo("Check: Side - " + i);
+				continue;
+			}
+			ILaserReciver reciver = getFirstReciver(i);
+			
+			if(reciver != null) {
+				LogHelper.logInfo("After Break: Side - " + i);
 			  	reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}

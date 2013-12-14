@@ -70,8 +70,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	public void breakBlock(World world, int x, int y, int z, int oldBlockId, int oldBlockMeta) {
 		LogHelper.logInfo("Possible Break");
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
-		reflector.lasers.clear();
-	  	reflector.checkAllRecivers();
+	  	reflector.checkAllReciversOnBroken();
 	    super.breakBlock(world, x, y, z, oldBlockId, oldBlockMeta);
 	}
 	
