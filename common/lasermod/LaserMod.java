@@ -1,5 +1,7 @@
 package lasermod;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import lasermod.api.LaserRegistry;
 import lasermod.block.laser.DefaultLaser;
 import lasermod.core.helper.LogHelper;
@@ -28,6 +30,12 @@ public class LaserMod {
 	
 	@SidedProxy(clientSide = Reference.SP_CLIENT, serverSide = Reference.SP_SERVER)
     public static CommonProxy proxy;
+	
+	public static CreativeTabs laserTab = new CreativeTabs("lasermod") {
+		public ItemStack getIconItemStack() {
+			return new ItemStack(ModBlocks.basicLaser);
+		}
+	};
 	
 	public LaserMod() {
    	 	instance = this;

@@ -20,6 +20,7 @@ public class ItemLaserSeekingGoogles extends ItemArmor {
 	
 	public ItemLaserSeekingGoogles(int id, String texture) {
 		super(id, EnumArmorMaterial.CHAIN, LaserMod.proxy.armorRender("laserSeekingGoogles"), 3);
+		this.setCreativeTab(LaserMod.laserTab);
 		this.texture = texture;
 	}
 
