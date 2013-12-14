@@ -1,11 +1,14 @@
 package lasermod.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.tileentity.TileEntityLaserDetector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,10 +24,27 @@ import net.minecraft.world.World;
  */
 public class BlockLaserDetector extends BlockContainer implements ILaserReciver {
 
+	public Icon stateOff;
+	
 	public BlockLaserDetector(int id) {
 		super(id, Material.rock);
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
+	    this.blockIcon = iconRegister.registerIcon("lasermod:detector");
+	    this.stateOff = iconRegister.registerIcon("lasermod:detector_off");
+	}
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int side, int meta) {
+		if(meta == 0) 
+			return this.stateOff;
+        return this.blockIcon;
+    }
+	
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityLaserDetector();
