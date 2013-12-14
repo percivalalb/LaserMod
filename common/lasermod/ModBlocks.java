@@ -27,11 +27,11 @@ public class ModBlocks {
 	public static void inti() {
 		basicLaser = new BlockBasicLaser(BlockIds.ID_BASIC_LASER).setHardness(1.0F).setUnlocalizedName("lasermod.basicLaser").setCreativeTab(LaserMod.laserTab);
 		advancedLaser = new BlockAdvancedLaser(BlockIds.ID_ADVANCED_LASER).setHardness(1.0F).setUnlocalizedName("lasermod.advancedLaser").setCreativeTab(LaserMod.laserTab);
-		
 		reflector = new BlockReflector(BlockIds.ID_REFLECTOR).setUnlocalizedName("lasermod.reflector").setHardness(1.0F).setCreativeTab(LaserMod.laserTab);
 		laserDetector = new BlockLaserDetector(BlockIds.ID_LASER_DETECTOR).setUnlocalizedName("lasermod.detector").setHardness(1.0F).setCreativeTab(LaserMod.laserTab);
 		
 		GameRegistry.registerBlock(basicLaser, "lasermod.basicLaser");
+		GameRegistry.registerBlock(advancedLaser, "lasermod.advancedLaser");
 		GameRegistry.registerBlock(reflector, "lasermod.reflector");
 		GameRegistry.registerBlock(laserDetector, "lasermod.detector");
 		

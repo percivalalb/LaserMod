@@ -33,7 +33,7 @@ public class LaserMod {
 	
 	public static CreativeTabs laserTab = new CreativeTabs("lasermod") {
 		public ItemStack getIconItemStack() {
-			return new ItemStack(ModBlocks.basicLaser);
+			return new ItemStack(ModItems.screwdriver);
 		}
 	};
 	
