@@ -421,7 +421,6 @@ public class TileEntityReflector extends TileEntity {
 	public Packet getDescriptionPacket() {
 	    return new PacketReflectorUpdate(this.xCoord, this.yCoord, this.zCoord, this).buildPacket();
 	}
-
 	
 	@Override
 	@SideOnly(Side.CLIENT)

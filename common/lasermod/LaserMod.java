@@ -5,6 +5,7 @@ import lasermod.block.laser.DefaultLaser;
 import lasermod.core.helper.LogHelper;
 import lasermod.core.proxy.CommonProxy;
 import lasermod.lib.Reference;
+import lasermod.packet.PacketHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -13,6 +14,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * @author ProPercivalalb
@@ -41,6 +43,9 @@ public class LaserMod {
 		
 		//Registers all lasers
 		LaserRegistry.registerLaser("default", new DefaultLaser());
+		PacketHandler packet = new PacketHandler();
+		NetworkRegistry.instance().registerChannel(packet, "lasermod:reflectorUpdate");
+		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		proxy.onPreLoad();
 	}
