@@ -86,14 +86,11 @@ public class TileEntityReflector extends TileEntity {
 	
 	public void checkAllRecivers() {
 		for(int i = 0; i < this.openSides.length; ++i) {
-			if((!this.openSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i)) {
-				LogHelper.logInfo("Check: Side - " + Facing.oppositeSide[i]);
+			if((!this.openSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
 				continue;
-			}
 			ILaserReciver reciver = getFirstReciver(i);
 			
 			if(reciver != null) {
-				LogHelper.logInfo("After Break: Side - " + Facing.oppositeSide[i]);
 			  	reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}
@@ -101,10 +98,8 @@ public class TileEntityReflector extends TileEntity {
 	
 	public void checkAllReciversOnBroken() {
 		for(int i = 0; i < this.openSides.length; ++i) {
-			if(this.openSides[i] || this.containsInputSide(i)) {
-				LogHelper.logInfo("Check: Side - " + Facing.oppositeSide[i]);
+			if(this.openSides[i] || this.containsInputSide(i))
 				continue;
-			}
 			ILaserReciver reciver = getFirstReciver(i);
 			
 			if(reciver != null) {
