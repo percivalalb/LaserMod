@@ -1,6 +1,7 @@
 package lasermod.block;
 
 import lasermod.api.ILaserReciver;
+import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
@@ -65,9 +66,10 @@ public class BlockBasicLaser extends BlockContainer {
 	public void breakBlock(World world, int x, int y, int z, int oldBlockId, int oldBlockMeta) {
 		TileEntityBasicLaser basicLaser = (TileEntityBasicLaser)world.getBlockTileEntity(x, y, z);
 		ILaserReciver reciver = basicLaser.getFirstReciver(oldBlockMeta);
-		if(reciver != null)
+		if(reciver != null) {
+			LogHelper.logInfo("break");
 		  	reciver.removeLasersFromSide(world, basicLaser.reciverCords[0], basicLaser.reciverCords[1], basicLaser.reciverCords[2], x, y, z, Facing.oppositeSide[oldBlockMeta]);
-		
+		}
 	    super.breakBlock(world, x, y, z, oldBlockId, oldBlockMeta);
 	}
 	

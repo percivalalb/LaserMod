@@ -2,16 +2,19 @@ package lasermod.tileentity;
 
 import java.util.ArrayList;
 
+import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
 import lasermod.packet.PacketReflectorUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Facing;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
@@ -21,6 +24,8 @@ public class TileEntityReflector extends TileEntity {
 
 	public boolean[] openSides = new boolean[] {true, true, true, true, true, true};
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
+	public int[] reciverCords = new int[3];
+	public LaserInGame laser = null;
 	
 	public boolean isSideOpen(ForgeDirection direction) {
 		return this.isSideOpen(direction.ordinal());
@@ -70,7 +75,22 @@ public class TileEntityReflector extends TileEntity {
 				flag = true;
 			}
 		}
+		if(flag)
+			this.checkAllRecivers();
+		
 		return flag;
+	}
+	
+	public void checkAllRecivers() {
+		for(int i = 0; i < this.openSides.length; ++i) {
+			if((!this.openSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
+				continue;
+			ILaserReciver reciver = getFirstReciver(i);
+			
+			if(reciver != null) {
+			  	reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
+			}
+		}
 	}
 	
 	public AxisAlignedBB getFromLaserBox(double x, double y, double z, int side) {
@@ -156,9 +176,106 @@ public class TileEntityReflector extends TileEntity {
         return boundingBox;
 	}
 	
+	public ILaserReciver getFirstReciver(int meta) {
+
+        if (meta == ForgeDirection.DOWN.ordinal()) {
+        	for(int i = this.yCoord - 1; i >= 0; --i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
+        			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, i, this.zCoord};
+        				return (ILaserReciver)block;
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (meta == ForgeDirection.UP.ordinal()) {
+        	for(int i = this.yCoord + 1; i < 256; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
+        			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, i, this.zCoord};
+        				return (ILaserReciver)block;
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (meta == ForgeDirection.NORTH.ordinal()) {
+        	for(int i = 1; i < 256; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - i)];
+        			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, this.yCoord, this.zCoord - i};
+        				return (ILaserReciver)block;
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (meta == ForgeDirection.SOUTH.ordinal()) {
+        	for(int i = 1; i < 256; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + i)];
+        			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord, this.yCoord, this.zCoord + i};
+        				return (ILaserReciver)block;
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (meta == ForgeDirection.WEST.ordinal()) {
+        	for(int i = 1; i < 256; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord - i, this.yCoord, this.zCoord)];
+        			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord - i, this.yCoord, this.zCoord};
+        				return (ILaserReciver)block;
+        			}
+        			break;
+        		}
+        	}
+        }
+        else if (meta == ForgeDirection.EAST.ordinal()) {
+        	for(int i = 1; i < 256; ++i) {
+        		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
+        			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord + i, this.yCoord, this.zCoord)];
+        			if(block != null && block instanceof ILaserReciver) {
+        				reciverCords = new int[] {this.xCoord + i, this.yCoord, this.zCoord};
+        				return (ILaserReciver)block;
+        			}
+        			break;
+        		}
+        	}
+        }
+        
+        return null;
+	}
+	
 	@Override
 	public void updateEntity() {
-		//LogHelper.logInfo("" + lasers.size());
+		for(int i = 0; i < this.openSides.length; ++i) {
+			if(this.openSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
+				continue;
+			ILaserReciver reciver = getFirstReciver(i);
+			if(reciver != null) {
+
+			  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+			  
+			  	if(reciver.canPassOnSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i])) {
+			  		reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.getCreatedLaser(i));
+				}
+			}
+		}
+	}
+	
+	public LaserInGame getCreatedLaser(int side) {
+		if(laser == null)
+			laser = new LaserInGame().setSide(Facing.oppositeSide[side]);
+		
+		return laser;
 	}
 	
 	@Override
