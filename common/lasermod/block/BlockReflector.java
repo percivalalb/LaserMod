@@ -76,24 +76,15 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 			if(reflector.openSides[side]) {
 				boolean flag = reflector.removeAllLasersFromSide(side);
 				reflector.checkAllRecivers();
-				if(flag && world instanceof WorldServer) {
-					WorldServer worldServer = (WorldServer)world;
-					MinecraftServer server = MinecraftServer.getServer();
-					
-					Packet packet = reflector.getDescriptionPacket();
-
-					server.getConfigurationManager().sendToAllNear(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, packet);
-				}
 			}
 			
-			if(player instanceof EntityPlayerMP) {
-				EntityPlayerMP playerMP = (EntityPlayerMP)player;
+			if(world instanceof WorldServer) {
+				WorldServer worldServer = (WorldServer)world;
+				MinecraftServer server = MinecraftServer.getServer();
 				
 				Packet packet = reflector.getDescriptionPacket();
 
-	            if (packet != null) {
-	                playerMP.playerNetServerHandler.sendPacketToPlayer(packet);
-	            }
+				server.getConfigurationManager().sendToAllNear(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, packet);
 			}
 			
 			return true;

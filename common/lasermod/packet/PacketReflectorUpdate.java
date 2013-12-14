@@ -48,6 +48,7 @@ public class PacketReflectorUpdate extends PacketBase {
 	    for(int i = 0; i < 6; ++i) {
 	    	openSides[i] = data.readBoolean();
 	    }
+	    lasers = new ArrayList<LaserInGame>();
 	    int amount = data.readInt();
 	    for(int i = 0; i < amount; ++i) {
 	    	double strength = data.readDouble();
@@ -66,7 +67,7 @@ public class PacketReflectorUpdate extends PacketBase {
 	    for(int i = 0; i < 6; ++i) {
 	    	data.writeBoolean(openSides[i]);
 	    }
-	    data.write(lasers.size());
+	    data.writeInt(lasers.size());
 	    for(int i = 0; i < lasers.size(); ++i) {
 	    	data.writeDouble(lasers.get(i).getStrength());
 	    	data.writeUTF(LaserRegistry.getIdFromLaser(lasers.get(i).getLaserType()));
@@ -81,6 +82,6 @@ public class PacketReflectorUpdate extends PacketBase {
 
 	@Override
 	public String getChannel() {
-		return "reflectorUpdate";
+		return "laser:reflector";
 	}
 }

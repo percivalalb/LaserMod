@@ -74,7 +74,6 @@ public class TileEntityReflector extends TileEntity {
 			LaserInGame old = lasers.get(i);
 			if(old.getSide() == side) {
 				lasers.remove(i);
-				LogHelper.logInfo("Remove");
 				flag = true;
 			}
 		}
@@ -127,7 +126,7 @@ public class TileEntityReflector extends TileEntity {
 		double extraMaxZ = 0.0D;
 		
         if (side == ForgeDirection.DOWN.ordinal()) {
-        	for(int i = this.yCoord - 1; i >= 0; --i) {
+        	for(int i = this.yCoord - 1; this.yCoord - i >= 0; --i) {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			extraMinY++;
         		}
@@ -138,7 +137,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.UP.ordinal()) {
-        	for(int i = this.yCoord + 1; i < 64; ++i) {
+        	for(int i = this.yCoord + 1; i < this.yCoord + 64; ++i) {
         		if(LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			extraMaxY++;
         		}
@@ -198,9 +197,8 @@ public class TileEntityReflector extends TileEntity {
 	}
 	
 	public boolean isValidSourceOfPowerOnSide(int side) {
-
-        if (side == ForgeDirection.DOWN.ordinal()) {
-        	for(int i = this.yCoord - 1; i >= 0; --i) {
+		if (side == ForgeDirection.DOWN.ordinal()) {
+        	for(int i = this.yCoord - 1; this.yCoord - i >= 0; --i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
@@ -214,7 +212,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (side == ForgeDirection.UP.ordinal()) {
-        	for(int i = this.yCoord + 1; i < 64; ++i) {
+        	for(int i = this.yCoord + 1; i < this.yCoord + 64; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
@@ -290,7 +288,7 @@ public class TileEntityReflector extends TileEntity {
 	public ILaserReciver getFirstReciver(int meta) {
 
         if (meta == ForgeDirection.DOWN.ordinal()) {
-        	for(int i = this.yCoord - 1; i >= 0; --i) {
+        	for(int i = this.yCoord - 1; this.yCoord - i >= 0; --i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {
@@ -302,7 +300,7 @@ public class TileEntityReflector extends TileEntity {
         	}
         }
         else if (meta == ForgeDirection.UP.ordinal()) {
-        	for(int i = this.yCoord + 1; i < 64; ++i) {
+        	for(int i = this.yCoord + 1; i < this.yCoord + 64; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block instanceof ILaserReciver) {

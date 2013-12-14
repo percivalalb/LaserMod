@@ -60,6 +60,6 @@ public class PacketBasicLaserUpdate extends PacketBase {
 
 	@Override
 	public String getChannel() {
-		return "reflectorUpdate";
+		return "ewa";
 	}
 }

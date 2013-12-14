@@ -16,8 +16,8 @@ public class PacketHandler implements IPacketHandler {
 	private Map<String, Class> customPackages = new Hashtable<String, Class>();
 	
 	public PacketHandler() {
-		customPackages.put("reflectorUpdate", PacketReflectorUpdate.class);
-		customPackages.put("basicLaserUpdate", PacketBasicLaserUpdate.class);
+		customPackages.put("laser:reflector", PacketReflectorUpdate.class);
+		//customPackages.put("basicLaserUpdate", PacketBasicLaserUpdate.class);
 	}
 	
 	@Override

@@ -3,8 +3,11 @@ package lasermod.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import lasermod.core.helper.LogHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 /**
  * @author ProPercivalalb
@@ -32,7 +35,15 @@ public class LaserWhitelist {
 	}
 	
 	//Convenience method
-	public static boolean canLaserPassThrought(World world, int x, int y, int z) { return canLaserPassThrought(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z)); }
+	public static boolean canLaserPassThrought(World world, int x, int y, int z) {
+		Chunk chunk = world.getChunkFromBlockCoords(x, z);
+		if(chunk == null || !chunk.isChunkLoaded) {
+			LogHelper.logInfo("No Chunk");
+			return false;
+		}
+		
+		return canLaserPassThrought(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z)); 
+	}
 	
 	/**
 	 * Checks whether the laser can pass through a block
