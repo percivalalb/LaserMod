@@ -67,7 +67,6 @@ public class BlockBasicLaser extends BlockContainer {
 		TileEntityBasicLaser basicLaser = (TileEntityBasicLaser)world.getBlockTileEntity(x, y, z);
 		ILaserReciver reciver = basicLaser.getFirstReciver(oldBlockMeta);
 		if(reciver != null) {
-			LogHelper.logInfo("break");
 		  	reciver.removeLasersFromSide(world, basicLaser.reciverCords[0], basicLaser.reciverCords[1], basicLaser.reciverCords[2], x, y, z, Facing.oppositeSide[oldBlockMeta]);
 		}
 	    super.breakBlock(world, x, y, z, oldBlockId, oldBlockMeta);

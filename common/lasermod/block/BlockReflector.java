@@ -1,9 +1,12 @@
 package lasermod.block;
 
+import java.util.Arrays;
+
 import lasermod.ModItems;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.core.helper.LogHelper;
+import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -62,6 +65,18 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
     public boolean renderAsNormalBlock() {
         return false;
     }
+	
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int oldBlockId, int oldBlockMeta) {
+		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
+		ILaserReciver reciver = reflector.getFirstReciver(reflector.getBlockMetadata());
+		if(reciver != null) {
+		  	reciver.removeLasersFromSide(world, reflector.reciverCords[0], reflector.reciverCords[1], reflector.reciverCords[2], x, y, z, Facing.oppositeSide[oldBlockMeta]);
+		  	Arrays.fill(reflector.openSides, true);
+		  	reflector.checkAllRecivers();
+		}
+	    super.breakBlock(world, x, y, z, oldBlockId, oldBlockMeta);
+	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
