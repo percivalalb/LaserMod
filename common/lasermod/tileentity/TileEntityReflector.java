@@ -25,7 +25,7 @@ public class TileEntityReflector extends TileEntity {
 	public boolean[] openSides = new boolean[] {true, true, true, true, true, true};
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	public int[] reciverCords = new int[3];
-	public LaserInGame laser = null;
+	public LaserInGame[] laser = new LaserInGame[6];
 	
 	public boolean isSideOpen(ForgeDirection direction) {
 		return this.isSideOpen(direction.ordinal());
@@ -88,6 +88,7 @@ public class TileEntityReflector extends TileEntity {
 			ILaserReciver reciver = getFirstReciver(i);
 			
 			if(reciver != null) {
+				LogHelper.logInfo("After Break");
 			  	reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}
@@ -272,10 +273,10 @@ public class TileEntityReflector extends TileEntity {
 	}
 	
 	public LaserInGame getCreatedLaser(int side) {
-		if(laser == null)
-			laser = new LaserInGame().setSide(Facing.oppositeSide[side]);
+		if(laser[side] == null)
+			laser[side] = new LaserInGame().setSide(Facing.oppositeSide[side]);
 		
-		return laser;
+		return laser[side];
 	}
 	
 	@Override

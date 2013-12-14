@@ -83,6 +83,7 @@ public class PacketReflectorUpdate extends PacketBase {
 			return;
 		TileEntityReflector reflector = (TileEntityReflector)tileEntity;
 		reflector.openSides = openSides;
+		reflector.lasers = lasers;
 		
 		
 	}

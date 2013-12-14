@@ -68,13 +68,10 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int oldBlockId, int oldBlockMeta) {
+		LogHelper.logInfo("Possible Break");
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
-		ILaserReciver reciver = reflector.getFirstReciver(reflector.getBlockMetadata());
-		if(reciver != null) {
-		  	reciver.removeLasersFromSide(world, reflector.reciverCords[0], reflector.reciverCords[1], reflector.reciverCords[2], x, y, z, Facing.oppositeSide[oldBlockMeta]);
-		  	Arrays.fill(reflector.openSides, true);
-		  	reflector.checkAllRecivers();
-		}
+		reflector.lasers.clear();
+	  	reflector.checkAllRecivers();
 	    super.breakBlock(world, x, y, z, oldBlockId, oldBlockMeta);
 	}
 	
@@ -138,7 +135,9 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	public void removeLasersFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
 		
-		if(reflector.removeAllLasersFromSide(side) && world instanceof WorldServer) {
+		boolean flag = reflector.removeAllLasersFromSide(side);
+		
+		if(flag && world instanceof WorldServer) {
 			WorldServer worldServer = (WorldServer)world;
 			MinecraftServer server = MinecraftServer.getServer();
 			
