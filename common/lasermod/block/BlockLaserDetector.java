@@ -13,6 +13,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -39,17 +40,27 @@ public class BlockLaserDetector extends BlockContainer implements ILaserReciver 
     }
 
 	@Override
+	public boolean canProvidePower() {
+		return true;
+	}
+
+	@Override
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+	    return world.getBlockMetadata(x, y, z) != 0 ? 15 : 0;
+	}
+	
+	@Override
 	public boolean canPassOnSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
 		return world.getBlockMetadata(blockX, blockY, blockZ) != 1;
 	}
 
 	@Override
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
-		world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 0, 3);
+		world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 1, 3);
 	}
 
 	@Override
 	public void removeLasersFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
-		world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 1, 3);
+		world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 0, 3);
 	}
 }
