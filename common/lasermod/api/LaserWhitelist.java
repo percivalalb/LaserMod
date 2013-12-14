@@ -37,10 +37,8 @@ public class LaserWhitelist {
 	//Convenience method
 	public static boolean canLaserPassThrought(World world, int x, int y, int z) {
 		Chunk chunk = world.getChunkFromBlockCoords(x, z);
-		if(chunk == null || !chunk.isChunkLoaded) {
-			LogHelper.logInfo("No Chunk");
+		if(chunk == null || !chunk.isChunkLoaded)
 			return false;
-		}
 		
 		return canLaserPassThrought(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z)); 
 	}
