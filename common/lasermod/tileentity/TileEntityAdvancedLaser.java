@@ -16,7 +16,7 @@ import net.minecraftforge.common.ForgeDirection;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityBasicLaser extends TileEntity {
+public class TileEntityAdvancedLaser extends TileEntity {
 
 	public AxisAlignedBB last = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	public int[] reciverCords = new int[3];

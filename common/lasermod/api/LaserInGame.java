@@ -1,5 +1,7 @@
 package lasermod.api;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * @author ProPercivalalb
  */
@@ -36,6 +38,14 @@ public class LaserInGame {
 	
 	public ILaser getLaserType() {
 		return this.laserType;
+	}
+	
+	public void readFromNBT(NBTTagCompound tag) {
+		
+	}
+	
+	public void writeToNBT(NBTTagCompound tag) {
+		
 	}
 	
 	public int getSide() {
