@@ -198,7 +198,9 @@ public class TileEntityReflector extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
-        				return true;
+            			int meta = this.worldObj.getBlockMetadata(this.xCoord, i, this.zCoord);
+            			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, i, this.zCoord);
+        				return Facing.oppositeSide[meta] == i && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -212,7 +214,9 @@ public class TileEntityReflector extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
-        				return true;
+        				int meta = this.worldObj.getBlockMetadata(this.xCoord, i, this.zCoord);
+            			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, i, this.zCoord);
+        				return Facing.oppositeSide[meta] == i && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -226,7 +230,9 @@ public class TileEntityReflector extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - i)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
-        				return true;
+        				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - i);
+            			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord - i);
+        				return Facing.oppositeSide[meta] == i && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -240,7 +246,9 @@ public class TileEntityReflector extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + i)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
-        				return true;
+        				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + i);
+            			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord + i);
+        				return Facing.oppositeSide[meta] == i && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -254,7 +262,9 @@ public class TileEntityReflector extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord - i, this.yCoord, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
-        				return true;
+        				int meta = this.worldObj.getBlockMetadata(this.xCoord - i, this.yCoord, this.zCoord);
+            			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord - i, this.yCoord, this.zCoord);
+        				return Facing.oppositeSide[meta] == i && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -268,7 +278,9 @@ public class TileEntityReflector extends TileEntity {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord + i, this.yCoord, this.zCoord)];
         			if(block != null && block.blockID == ModBlocks.basicLaser.blockID) {
-        				return true;
+        				int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord, this.zCoord);
+            			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord + i, this.yCoord, this.zCoord);
+        				return Facing.oppositeSide[meta] == i && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
         				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
@@ -395,7 +407,7 @@ public class TileEntityReflector extends TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		LogHelper.logInfo("readfromnbt");
+		
 		NBTTagList list = tag.getTagList("openSides");
 		for(int i = 0; i < list.tagCount(); ++i)
 			openSides[i] = ((NBTTagByte)list.tagAt(i)).data == 1;
@@ -404,7 +416,7 @@ public class TileEntityReflector extends TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		LogHelper.logInfo("writetonbt");
+		
 		NBTTagList list = new NBTTagList("openSides");
 		for(int i = 0; i < openSides.length; ++i)
 			list.appendTag(new NBTTagByte("" + i, (byte)(this.openSides[i] ? 1 : 0)));

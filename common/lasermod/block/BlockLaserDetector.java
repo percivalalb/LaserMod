@@ -81,6 +81,6 @@ public class BlockLaserDetector extends BlockContainer implements ILaserReciver 
 
 	@Override
 	public void removeLasersFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
-		world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 0, 3);
+		
 	}
 }
