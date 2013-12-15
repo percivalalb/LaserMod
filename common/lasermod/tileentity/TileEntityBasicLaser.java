@@ -26,9 +26,6 @@ public class TileEntityBasicLaser extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		if(this.worldObj.isRemote)
-			return;
-		
 		ILaserReciver reciver = getFirstReciver(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 		if(reciver != null) {
 		  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);

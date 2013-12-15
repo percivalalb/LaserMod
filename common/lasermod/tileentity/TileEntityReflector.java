@@ -383,9 +383,6 @@ public class TileEntityReflector extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		if(this.worldObj.isRemote)
-			return;
-		
 		for(int i = 0; i < this.openSides.length; ++i) {
 			if(this.openSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
 				continue;
@@ -412,7 +409,7 @@ public class TileEntityReflector extends TileEntity {
 			}
 		}
 		
-		LaserInGame laserInGame = new LaserInGame(LaserRegistry.getLaserFromId("default"));
+		LaserInGame laserInGame = new LaserInGame(laserList);
 		double totalPower = 0.0D;
 		
 		for(LaserInGame laser : lasers)

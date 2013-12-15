@@ -26,9 +26,6 @@ public class TileEntityAdvancedLaser extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
-		if(this.worldObj.isRemote)
-			return;
-		
 		ILaserReciver reciver = getFirstReciver(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 		if(reciver != null) {
 		  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
@@ -206,7 +203,7 @@ public class TileEntityAdvancedLaser extends TileEntity {
 	
 	public LaserInGame getCreatedLaser() {
 		if(laser == null)
-			laser = new LaserInGame(LaserRegistry.getLaserFromId("fire")).setSide(Facing.oppositeSide[this.getBlockMetadata()]);
+			laser = new LaserInGame(LaserRegistry.getLaserFromId("fire")).addLaserType(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[this.getBlockMetadata()]);
 		
 		return laser;
 	}
