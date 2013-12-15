@@ -5,6 +5,7 @@ import lasermod.client.render.block.TileEntityAdvancedLaserRenderer;
 import lasermod.client.render.block.TileEntityBasicLaserRenderer;
 import lasermod.client.render.block.TileEntityReflectorRenderer;
 import lasermod.client.render.item.ItemReflectorRenderer;
+import lasermod.packet.PacketAdvancedLaserUpdate;
 import lasermod.packet.PacketReflectorUpdate;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
@@ -41,6 +42,17 @@ public class ClientProxy extends CommonProxy {
 		TileEntityReflector reflector = (TileEntityReflector)tileEntity;
 		reflector.openSides = packet.openSides;
 		reflector.lasers = packet.lasers;
+	}
+	
+	@Override
+	public void handleAdvancedLaserPacket(PacketAdvancedLaserUpdate packet) {
+		World world = this.mc.theWorld;
+		TileEntity tileEntity = world.getBlockTileEntity(packet.x, packet.y, packet.z);
+		
+		if(!(tileEntity instanceof TileEntityAdvancedLaser)) 
+			return;
+		TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)tileEntity;
+		advancedLaser.upgrades = packet.upgrades;
 	}
 	
 	@Override
