@@ -1,5 +1,7 @@
 package lasermod.api;
 
+import java.util.ArrayList;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -8,8 +10,12 @@ import net.minecraft.nbt.NBTTagCompound;
 public class LaserInGame {
 
 	private double strength = 100D;
-	private ILaser laserType = LaserRegistry.getLaserFromId("default");
+	private ArrayList<ILaser> laserType = new ArrayList<ILaser>();
 	private int side = -1;
+	
+	public LaserInGame() {
+		laserType.add(LaserRegistry.getLaserFromId("default"));
+	}
 	
 	public LaserInGame setStrength(double strength) {
 		if(strength < 0.0D)
@@ -24,7 +30,13 @@ public class LaserInGame {
 	}
 	
 	public LaserInGame setLaserType(ILaser laser) {
-		this.laserType = laser;
+		this.laserType.clear();
+		this.laserType.add(laser);
+		return this;
+	}
+	
+	public LaserInGame addLaserType(ILaser laser) {
+		this.laserType.add(laser);
 		return this;
 	}
 	
@@ -32,11 +44,15 @@ public class LaserInGame {
 		return setLaserType(LaserRegistry.getLaserFromId(laser));
 	}
 	
+	public LaserInGame addLaserType(String laser) {
+		return setLaserType(LaserRegistry.getLaserFromId(laser));
+	}
+	
 	public double getStrength() {
 		return this.strength;
 	}
 	
-	public ILaser getLaserType() {
+	public ArrayList<ILaser> getLaserType() {
 		return this.laserType;
 	}
 	

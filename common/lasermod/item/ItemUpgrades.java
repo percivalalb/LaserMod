@@ -20,7 +20,7 @@ public class ItemUpgrades extends Item {
 	public Icon upgradeWater;
 	public Icon upgradeIce;
 	public Icon upgradeInvisable;
-	public Icon upgradeMiner;
+	public Icon upgradeMine;
 	
 	public ItemUpgrades(int id) {
 		super(id);
@@ -35,7 +35,7 @@ public class ItemUpgrades extends Item {
 	    this.upgradeWater = iconRegister.registerIcon("lasermod:upgradeWater");
 	    this.upgradeIce = iconRegister.registerIcon("lasermod:upgradeIce");
 	    this.upgradeInvisable = iconRegister.registerIcon("lasermod:upgradeInvisable");
-	    this.upgradeMiner = iconRegister.registerIcon("lasermod:upgradeMiner");
+	    this.upgradeMine = iconRegister.registerIcon("lasermod:upgradeMine");
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -44,7 +44,7 @@ public class ItemUpgrades extends Item {
 		if(meta == 1) return this.upgradeWater;
 		if(meta == 2) return this.upgradeIce;
 		if(meta == 3) return this.upgradeInvisable;
-		if(meta == 4) return this.upgradeMiner;
+		if(meta == 4) return this.upgradeMine;
         return this.itemIcon;
     }
 	
