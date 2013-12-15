@@ -20,6 +20,9 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
     public void renderAdvancedLaser(TileEntityAdvancedLaser advancedLaser, double x, double y, double z, float tick) {
     	if(!advancedLaser.worldObj.isBlockIndirectlyGettingPowered(advancedLaser.xCoord, advancedLaser.yCoord, advancedLaser.zCoord))
     		return;
+    	if(!advancedLaser.getCreatedLaser().shouldRenderLaser())
+    		return;
+    	
     	GL11.glPushMatrix();
     	RenderHelper.disableStandardItemLighting();
     	GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -31,7 +34,6 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         Tessellator tessellator = Tessellator.instance;
 		tessellator.setColorRGBA(255, 0, 0, 155);
-      // if(tick % 0.1 == 0.1)
         advancedLaser.last = advancedLaser.getLaserBox(x, y, z);
     	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.4F);
     	drawBoundingBox(advancedLaser.last);
@@ -44,7 +46,6 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         RenderHelper.enableStandardItemLighting();
         GL11.glPopMatrix();
-
     }
     
     public static void drawBoundingBox(AxisAlignedBB boundingBox) {

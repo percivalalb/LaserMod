@@ -11,5 +11,5 @@ public interface ILaser {
 
 	public void performActionOnEntities(List<Entity> entities, int direction);
 	
-	
+	public boolean shouldRenderLaser(int direction);
 }

@@ -2,6 +2,8 @@ package lasermod.block;
 
 import java.util.Arrays;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
+
 import lasermod.ModItems;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
@@ -78,14 +80,9 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 				reflector.checkAllRecivers();
 			}
 			
-			if(world instanceof WorldServer) {
-				WorldServer worldServer = (WorldServer)world;
-				MinecraftServer server = MinecraftServer.getServer();
-				
-				Packet packet = reflector.getDescriptionPacket();
-
-				server.getConfigurationManager().sendToAllNear(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, packet);
-			}
+			if(!world.isRemote)
+				PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, reflector.getDescriptionPacket());
+			
 			
 			return true;
 		}

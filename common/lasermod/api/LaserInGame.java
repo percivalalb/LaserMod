@@ -2,6 +2,9 @@ package lasermod.api;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -62,6 +65,14 @@ public class LaserInGame {
 	
 	public void readFromNBT(NBTTagCompound tag) {
 		
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean shouldRenderLaser() {
+		for(ILaser laser : this.laserType)
+			if(!laser.shouldRenderLaser(this.side))
+				return false;
+		return true;
 	}
 	
 	public void writeToNBT(NBTTagCompound tag) {

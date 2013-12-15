@@ -15,4 +15,9 @@ public class DefaultLaser implements ILaser {
 		
 	}
 
+	@Override
+	public boolean shouldRenderLaser(int direction) {
+		return true;
+	}
+
 }

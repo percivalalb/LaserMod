@@ -16,4 +16,9 @@ public class PullLaser implements ILaser {
 			
 		}
 	}
+	
+	@Override
+	public boolean shouldRenderLaser(int direction) {
+		return true;
+	}
 }

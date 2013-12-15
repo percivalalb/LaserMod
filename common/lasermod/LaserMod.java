@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import lasermod.api.LaserRegistry;
 import lasermod.block.laser.DefaultLaser;
 import lasermod.block.laser.FireLaser;
+import lasermod.block.laser.IceLaser;
+import lasermod.block.laser.InvisibleLaser;
 import lasermod.block.laser.PullLaser;
 import lasermod.block.laser.PushLaser;
 import lasermod.block.laser.WaterLaser;
@@ -57,11 +59,15 @@ public class LaserMod {
 		LaserRegistry.registerLaser("default", new DefaultLaser());
 		LaserRegistry.registerLaser("fire", new FireLaser());
 		LaserRegistry.registerLaser("water", new WaterLaser());
+		LaserRegistry.registerLaser("ice", new IceLaser());
+		LaserRegistry.registerLaser("invisible", new InvisibleLaser());
+		
 		LaserRegistry.registerLaser("push", new PushLaser());
 		LaserRegistry.registerLaser("pull", new PullLaser());
 		
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 0, LaserRegistry.getLaserFromId("fire"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 1, LaserRegistry.getLaserFromId("water"));
+		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 3, LaserRegistry.getLaserFromId("invisible"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 5, LaserRegistry.getLaserFromId("push"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 6, LaserRegistry.getLaserFromId("pull"));
 		

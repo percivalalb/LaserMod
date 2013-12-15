@@ -1,5 +1,6 @@
 package lasermod.block;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.api.ILaser;
@@ -63,17 +64,23 @@ public class BlockAdvancedLaser extends BlockContainer {
 			if(laser != null && !power) {
 				advancedLaser.upgrades.add(item);
 				advancedLaser.laser = null;
+				
 				if(!player.capabilities.isCreativeMode)
 					item.stackSize--;
 				if(item.stackSize <= 0)
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
+				
+				if(!world.isRemote)
+					PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, advancedLaser.getDescriptionPacket());
+				
 				return true;
 			}
 			else if(laser != null && power && !world.isRemote) {
 				player.addChatMessage("Please disable redstone signal to input an upgrade.");
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	    
 	@Override

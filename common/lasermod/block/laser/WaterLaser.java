@@ -18,4 +18,9 @@ public class WaterLaser implements ILaser {
 			
 		}
 	}
+	
+	@Override
+	public boolean shouldRenderLaser(int direction) {
+		return true;
+	}
 }

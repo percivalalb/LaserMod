@@ -16,4 +16,9 @@ public class FireLaser implements ILaser {
 			entity.setFire(4);
 		}
 	}
+	
+	@Override
+	public boolean shouldRenderLaser(int direction) {
+		return true;
+	}
 }
