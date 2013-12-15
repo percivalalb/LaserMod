@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import lasermod.api.LaserRegistry;
 import lasermod.block.laser.DefaultLaser;
 import lasermod.block.laser.FireLaser;
+import lasermod.block.laser.PullLaser;
+import lasermod.block.laser.PushLaser;
 import lasermod.core.helper.LogHelper;
 import lasermod.core.proxy.CommonProxy;
 import lasermod.lib.Reference;
@@ -53,8 +55,12 @@ public class LaserMod {
 		//Registers all lasers
 		LaserRegistry.registerLaser("default", new DefaultLaser());
 		LaserRegistry.registerLaser("fire", new FireLaser());
+		LaserRegistry.registerLaser("push", new PushLaser());
+		LaserRegistry.registerLaser("pull", new PullLaser());
 		
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 0, LaserRegistry.getLaserFromId("fire"));
+		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 5, LaserRegistry.getLaserFromId("push"));
+		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 6, LaserRegistry.getLaserFromId("pull"));
 		
 		PacketHandler packet = new PacketHandler();
 		NetworkRegistry.instance().registerChannel(packet, "laser:reflector");

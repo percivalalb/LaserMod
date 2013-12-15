@@ -11,7 +11,7 @@ import lasermod.api.ILaser;
 public class FireLaser implements ILaser {
 
 	@Override
-	public void performActionOnEntities(List<Entity> entities) {
+	public void performActionOnEntities(List<Entity> entities, int direction) {
 		for(Entity entity : entities) {
 			entity.setFire(4);
 		}

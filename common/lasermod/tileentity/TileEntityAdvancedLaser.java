@@ -37,7 +37,7 @@ public class TileEntityAdvancedLaser extends TileEntity {
 	@Override
 	public void updateEntity() {
 	  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
-		ILaserReciver reciver = getFirstReciver(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+		ILaserReciver reciver = getFirstReciver(this.getBlockMetadata());
 		if(reciver != null) {
 		  	if(!hasSignal) {
 		  		reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()]);
@@ -51,7 +51,7 @@ public class TileEntityAdvancedLaser extends TileEntity {
 			AxisAlignedBB boundingBox = getLaserBox(this.xCoord, this.yCoord, this.zCoord);
 			List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
 			for(ILaser la : getCreatedLaser().getLaserType()) {
-				la.performActionOnEntities(entities);
+				la.performActionOnEntities(entities, this.getBlockMetadata());
 			}
 		}
 	}

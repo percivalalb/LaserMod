@@ -21,6 +21,8 @@ public class ItemUpgrades extends Item {
 	public Icon upgradeIce;
 	public Icon upgradeInvisable;
 	public Icon upgradeMine;
+	public Icon upgradePush;
+	public Icon upgradePull;
 	
 	public ItemUpgrades(int id) {
 		super(id);
@@ -36,6 +38,8 @@ public class ItemUpgrades extends Item {
 	    this.upgradeIce = iconRegister.registerIcon("lasermod:upgradeIce");
 	    this.upgradeInvisable = iconRegister.registerIcon("lasermod:upgradeInvisable");
 	    this.upgradeMine = iconRegister.registerIcon("lasermod:upgradeMine");
+	    this.upgradePush = iconRegister.registerIcon("lasermod:upgradePush");
+	    this.upgradePull = iconRegister.registerIcon("lasermod:upgradePull");
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -45,6 +49,8 @@ public class ItemUpgrades extends Item {
 		if(meta == 2) return this.upgradeIce;
 		if(meta == 3) return this.upgradeInvisable;
 		if(meta == 4) return this.upgradeMine;
+		if(meta == 5) return this.upgradePush;
+		if(meta == 6) return this.upgradePull;
         return this.itemIcon;
     }
 	
@@ -56,5 +62,7 @@ public class ItemUpgrades extends Item {
         tabList.add(new ItemStack(id, 1, 2));
         tabList.add(new ItemStack(id, 1, 3));
         tabList.add(new ItemStack(id, 1, 4));
+        tabList.add(new ItemStack(id, 1, 5));
+        tabList.add(new ItemStack(id, 1, 6));
     }
 }

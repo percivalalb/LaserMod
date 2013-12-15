@@ -8,11 +8,12 @@ import lasermod.api.ILaser;
 /**
  * @author ProPercivalalb
  */
-public class DefaultLaser implements ILaser {
+public class PushLaser implements ILaser {
 
 	@Override
 	public void performActionOnEntities(List<Entity> entities, int direction) {
-		
+		for(Entity entity : entities) {
+			
+		}
 	}
-
 }

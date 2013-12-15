@@ -9,7 +9,7 @@ import net.minecraft.entity.Entity;
  */
 public interface ILaser {
 
-	public void performActionOnEntities(List<Entity> entities);
+	public void performActionOnEntities(List<Entity> entities, int direction);
 	
 	
 }
