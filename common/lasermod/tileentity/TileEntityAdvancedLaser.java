@@ -50,11 +50,15 @@ public class TileEntityAdvancedLaser extends TileEntity {
 			}
 		}
 		
-		if(!this.worldObj.isRemote && hasSignal) {
+		if(hasSignal) {
 			AxisAlignedBB boundingBox = getLaserBox(this.xCoord, this.yCoord, this.zCoord);
 			List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
 			for(ILaser la : getCreatedLaser().getLaserType()) {
-				la.performActionOnEntities(entities, this.getBlockMetadata());
+				la.performActionOnEntitiesBoth(entities, this.getBlockMetadata());
+				if(this.worldObj.isRemote) 
+					la.performActionOnEntitiesClient(entities, this.getBlockMetadata());
+				else
+					la.performActionOnEntitiesServer(entities, this.getBlockMetadata());
 			}
 		}
 	}

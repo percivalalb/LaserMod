@@ -407,7 +407,11 @@ public class TileEntityReflector extends TileEntity {
 					AxisAlignedBB boundingBox = getFromLaserBox(this.xCoord, this.yCoord, this.zCoord, i);
 					List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
 					for(ILaser la : getCreatedLaser(i).getLaserType()) {
-						la.performActionOnEntities(entities, i);
+						la.performActionOnEntitiesBoth(entities, this.getBlockMetadata());
+						if(this.worldObj.isRemote) 
+							la.performActionOnEntitiesClient(entities, this.getBlockMetadata());
+						else
+							la.performActionOnEntitiesServer(entities, this.getBlockMetadata());
 					}
 				}
 			}

@@ -10,7 +10,9 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public interface ILaser {
 
-	public void performActionOnEntities(List<Entity> entities, int direction);
+	public void performActionOnEntitiesBoth(List<Entity> entities, int direction);
+	public void performActionOnEntitiesClient(List<Entity> entities, int direction);
+	public void performActionOnEntitiesServer(List<Entity> entities, int direction);
 	
 	public boolean shouldRenderLaser(EntityPlayer player, int direction);
 }

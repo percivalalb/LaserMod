@@ -61,5 +61,6 @@ public class LaserWhitelist {
 		addToWhiteList(Block.torchRedstoneActive);
 		addToWhiteList(Block.torchRedstoneIdle);
 		addToWhiteList(Block.torchWood);
+		addToWhiteList(Block.redstoneWire);
 	}
 }
