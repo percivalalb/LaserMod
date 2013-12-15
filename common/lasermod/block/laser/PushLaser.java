@@ -33,15 +33,12 @@ public class PushLaser implements ILaser {
 	@Override
 	public void performActionOnEntitiesBoth(List<Entity> entities, int direction) {
 		for(Entity entity : entities) {
-			double verticalSpeed = 0.050000000000000003D;
-            double horizonalSpeed = 0.29999999999999999D;
+			double verticalSpeed = 0.120000000000000003D;
+            double horizonalSpeed = 0.19999999999999999D;
             verticalSpeed *= SPEED_MULTIPLYER;
 
             if(entity instanceof EntityItem)
                 horizonalSpeed *= 2.34D;
-
-            if(!(entity instanceof EntityItem))
-                verticalSpeed = 0.0D;
 
             if (entity instanceof EntityMinecart)
                 verticalSpeed *= 0.5D;
