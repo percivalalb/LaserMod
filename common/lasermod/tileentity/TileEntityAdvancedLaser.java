@@ -1,5 +1,6 @@
 package lasermod.tileentity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -13,6 +14,10 @@ import lasermod.core.helper.LogHelper;
 import lasermod.lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
@@ -26,13 +31,14 @@ public class TileEntityAdvancedLaser extends TileEntity {
 	public AxisAlignedBB last = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	public int[] reciverCords = new int[3];
 	public LaserInGame laser = null;
+	public ArrayList<ItemStack> upgrades = new ArrayList<ItemStack>();
 	public boolean hadPower = false;
 	
 	@Override
 	public void updateEntity() {
+	  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
 		ILaserReciver reciver = getFirstReciver(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 		if(reciver != null) {
-		  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
 		  	if(!hasSignal) {
 		  		reciver.removeLasersFromSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()]);
 		  	}
@@ -41,11 +47,11 @@ public class TileEntityAdvancedLaser extends TileEntity {
 			}
 		}
 		
-		if(!this.worldObj.isRemote) {
+		if(!this.worldObj.isRemote && hasSignal) {
 			AxisAlignedBB boundingBox = getLaserBox(this.xCoord, this.yCoord, this.zCoord);
 			List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
 			for(ILaser la : getCreatedLaser().getLaserType()) {
-				la.performActionOnEntities(this, entities);
+				la.performActionOnEntities(entities);
 			}
 		}
 	}
@@ -211,10 +217,38 @@ public class TileEntityAdvancedLaser extends TileEntity {
         return boundingBox;
 	}
 	
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		
+		NBTTagList itemList = tag.getTagList("upgrades");
+		for(int i = 0; i < itemList.tagCount(); ++i)
+			this.upgrades.add(ItemStack.loadItemStackFromNBT((NBTTagCompound)itemList.tagAt(i)));
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		
+		NBTTagList itemList = tag.getTagList("upgrades");
+		for(int i = 0; i < this.upgrades.size(); ++i) {
+			NBTTagCompound itemTag = new NBTTagCompound();
+			this.upgrades.get(i).writeToNBT(itemTag);
+			itemList.appendTag(itemTag);
+		}
+		tag.setTag("upgrades", itemList);
+	}
+	
 	public LaserInGame getCreatedLaser() {
-		if(laser == null)
+		if(laser == null) {
 			laser = new LaserInGame(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[this.getBlockMetadata()]);
 		
+			for(ItemStack stack : this.upgrades) {
+				ILaser ilaser = LaserRegistry.getLaserFromItem(stack);
+				if(laser != null)
+					laser.addLaserType(ilaser);
+			}
+		}
 		return laser;
 	}
 	

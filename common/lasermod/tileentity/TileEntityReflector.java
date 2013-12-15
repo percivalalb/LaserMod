@@ -1,6 +1,7 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lasermod.ModBlocks;
 import lasermod.api.ILaser;
@@ -14,6 +15,7 @@ import lasermod.packet.PacketReflectorUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -396,6 +398,18 @@ public class TileEntityReflector extends TileEntity {
 		for(int i = 0; i < this.openSides.length; ++i) {
 			if(this.openSides[i] || !isValidSourceOfPowerOnSide(i)) {
 				this.removeAllLasersFromSide(i);
+			}
+		}
+		
+		for(int i = 0; i < this.openSides.length; ++i) {
+			if(!this.openSides[i] && this.lasers.size() > 0) {
+				if(!this.worldObj.isRemote) {
+					AxisAlignedBB boundingBox = getFromLaserBox(this.xCoord, this.yCoord, this.zCoord, i);
+					List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
+					for(ILaser la : getCreatedLaser(i).getLaserType()) {
+						la.performActionOnEntities(entities);
+					}
+				}
 			}
 		}
 	}

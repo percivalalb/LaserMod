@@ -2,8 +2,6 @@ package lasermod.api;
 
 import java.util.List;
 
-import lasermod.tileentity.TileEntityAdvancedLaser;
-
 import net.minecraft.entity.Entity;
 
 /**
@@ -11,7 +9,7 @@ import net.minecraft.entity.Entity;
  */
 public interface ILaser {
 
-	public void performActionOnEntities(TileEntityAdvancedLaser tileEntityAdvancedLaser, List<Entity> entities);
+	public void performActionOnEntities(List<Entity> entities);
 	
 	
 }

@@ -56,15 +56,21 @@ public class BlockAdvancedLaser extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
 		ItemStack item = player.getCurrentEquippedItem();
-		if(item != null && !world.isRemote) {
+		if(item != null) {
 			TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)world.getBlockTileEntity(x, y, z);
 			ILaser laser = LaserRegistry.getLaserFromItem(item);
-			if(laser != null) {
-				item.stackSize--;
-				if(item.stackSize <= 0) {
+			boolean power = world.isBlockIndirectlyGettingPowered(x, y, z);
+			if(laser != null && !power) {
+				advancedLaser.upgrades.add(item);
+				advancedLaser.laser = null;
+				if(!player.capabilities.isCreativeMode)
+					item.stackSize--;
+				if(item.stackSize <= 0)
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
-				}
 				return true;
+			}
+			else if(laser != null && power && !world.isRemote) {
+				player.addChatMessage("Please disable redstone signal to input an upgrade.");
 			}
 		}
 		return true;

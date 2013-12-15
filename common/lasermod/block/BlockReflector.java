@@ -128,4 +128,10 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 			server.getConfigurationManager().sendToAllNear(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, packet);
 		}
 	}
+	
+	@Override
+	public boolean isSendingSignalFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
+		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
+		return !reflector.openSides[side] && reflector.lasers.size() > 0;
+	}
 }

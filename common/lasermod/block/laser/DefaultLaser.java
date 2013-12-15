@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import lasermod.api.ILaser;
-import lasermod.tileentity.TileEntityAdvancedLaser;
 
 /**
  * @author ProPercivalalb
@@ -12,7 +11,7 @@ import lasermod.tileentity.TileEntityAdvancedLaser;
 public class DefaultLaser implements ILaser {
 
 	@Override
-	public void performActionOnEntities(TileEntityAdvancedLaser tileEntityAdvancedLaser, List<Entity> entities) {
+	public void performActionOnEntities(List<Entity> entities) {
 		
 	}
 

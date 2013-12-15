@@ -37,7 +37,7 @@ public class TileEntityLaserDetector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -53,7 +53,7 @@ public class TileEntityLaserDetector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -69,7 +69,7 @@ public class TileEntityLaserDetector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -85,7 +85,7 @@ public class TileEntityLaserDetector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -101,7 +101,7 @@ public class TileEntityLaserDetector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -117,7 +117,7 @@ public class TileEntityLaserDetector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}

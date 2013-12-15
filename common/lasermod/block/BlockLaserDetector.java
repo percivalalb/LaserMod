@@ -92,4 +92,9 @@ public class BlockLaserDetector extends BlockContainer implements ILaserReciver 
 	public void removeLasersFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
 		
 	}
+
+	@Override
+	public boolean isSendingSignalFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
+		return false;
+	}
 }
