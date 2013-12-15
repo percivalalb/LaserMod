@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import lasermod.core.helper.LogHelper;
+import lasermod.core.proxy.ClientProxy;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
@@ -20,7 +21,9 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
     public void renderAdvancedLaser(TileEntityAdvancedLaser advancedLaser, double x, double y, double z, float tick) {
     	if(!advancedLaser.worldObj.isBlockIndirectlyGettingPowered(advancedLaser.xCoord, advancedLaser.yCoord, advancedLaser.zCoord))
     		return;
-    	if(!advancedLaser.getCreatedLaser().shouldRenderLaser())
+    	float alpha = advancedLaser.getCreatedLaser().shouldRenderLaser(ClientProxy.mc.thePlayer);
+
+    	if(alpha == 0.0F)
     		return;
     	
     	GL11.glPushMatrix();
@@ -35,7 +38,7 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
         Tessellator tessellator = Tessellator.instance;
 		tessellator.setColorRGBA(255, 0, 0, 155);
         advancedLaser.last = advancedLaser.getLaserBox(x, y, z);
-    	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.4F);
+    	GL11.glColor4f(1.0F, 0.0F, 0.0F, alpha);
     	drawBoundingBox(advancedLaser.last);
     	drawBoundingBox(advancedLaser.last.contract(0.12D, 0.12D, 0.12D));
          

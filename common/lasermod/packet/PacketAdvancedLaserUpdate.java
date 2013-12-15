@@ -45,6 +45,7 @@ public class PacketAdvancedLaserUpdate extends PacketBase {
 	    x = data.readInt();
 	    y = data.readInt();
 	    z = data.readInt();
+	    upgrades = new ArrayList<ItemStack>();
 	    int upgradeCount = data.readInt();
 	    for(int i = 0; i < upgradeCount; ++i)
 	    	upgrades.add(Packet.readItemStack(data));

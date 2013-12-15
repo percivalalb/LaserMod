@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityFallingSand;
+import net.minecraft.entity.player.EntityPlayer;
 import lasermod.api.ILaser;
 
 /**
@@ -23,7 +24,7 @@ public class PushLaser implements ILaser {
 	}
 	
 	@Override
-	public boolean shouldRenderLaser(int direction) {
+	public boolean shouldRenderLaser(EntityPlayer player, int direction) {
 		return true;
 	}
 }

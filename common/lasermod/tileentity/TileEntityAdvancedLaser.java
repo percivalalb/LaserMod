@@ -225,6 +225,8 @@ public class TileEntityAdvancedLaser extends TileEntity {
 		super.readFromNBT(tag);
 		
 		NBTTagList itemList = tag.getTagList("upgrades");
+		LogHelper.logInfo("" + itemList.tagCount());
+		
 		for(int i = 0; i < itemList.tagCount(); ++i)
 			this.upgrades.add(ItemStack.loadItemStackFromNBT((NBTTagCompound)itemList.tagAt(i)));
 	}
@@ -233,7 +235,7 @@ public class TileEntityAdvancedLaser extends TileEntity {
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		
-		NBTTagList itemList = tag.getTagList("upgrades");
+		NBTTagList itemList = new NBTTagList();
 		for(int i = 0; i < this.upgrades.size(); ++i) {
 			NBTTagCompound itemTag = new NBTTagCompound();
 			this.upgrades.get(i).writeToNBT(itemTag);

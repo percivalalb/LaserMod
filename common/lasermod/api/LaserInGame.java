@@ -2,9 +2,12 @@ package lasermod.api;
 
 import java.util.ArrayList;
 
+import lasermod.ModItems;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -68,11 +71,11 @@ public class LaserInGame {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public boolean shouldRenderLaser() {
+	public float shouldRenderLaser(EntityPlayer player) {
 		for(ILaser laser : this.laserType)
-			if(!laser.shouldRenderLaser(this.side))
-				return false;
-		return true;
+			if(!laser.shouldRenderLaser(player, this.side))
+				return player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].itemID == ModItems.laserSeekingGoogles.itemID ? 0.1F : 0.0F;
+		return 0.4F;
 	}
 	
 	public void writeToNBT(NBTTagCompound tag) {
