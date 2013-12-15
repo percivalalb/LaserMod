@@ -12,12 +12,15 @@ import lasermod.api.LaserRegistry;
 import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
 import lasermod.lib.Constants;
+import lasermod.packet.PacketAdvancedLaserUpdate;
+import lasermod.packet.PacketReflectorUpdate;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
@@ -250,6 +253,11 @@ public class TileEntityAdvancedLaser extends TileEntity {
 			}
 		}
 		return laser;
+	}
+	
+	@Override
+	public Packet getDescriptionPacket() {
+	    return new PacketAdvancedLaserUpdate(this.xCoord, this.yCoord, this.zCoord, this).buildPacket();
 	}
 	
 	@Override

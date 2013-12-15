@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import lasermod.LaserMod;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
+import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityReflector;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet;
@@ -24,17 +26,18 @@ import cpw.mods.fml.common.network.Player;
 /**
  * @author ProPercivalalb
  **/
-public class PacketBasicLaserUpdate extends PacketBase {
+public class PacketAdvancedLaserUpdate extends PacketBase {
 
     public int x, y, z;
-    
+    public ArrayList<ItemStack> upgrades;
 
-    public PacketBasicLaserUpdate() {}
+    public PacketAdvancedLaserUpdate() {}
 
-    public PacketBasicLaserUpdate(int x, int y, int z, TileEntityBasicLaser reflector) {
+    public PacketAdvancedLaserUpdate(int x, int y, int z, TileEntityAdvancedLaser advancedLaser) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.upgrades = advancedLaser.upgrades;
     }
 
 	@Override
@@ -42,7 +45,9 @@ public class PacketBasicLaserUpdate extends PacketBase {
 	    x = data.readInt();
 	    y = data.readInt();
 	    z = data.readInt();
-
+	    int upgradeCount = data.readInt();
+	    for(int i = 0; i < upgradeCount; ++i)
+	    	upgrades.add(Packet.readItemStack(data));
 	}
 
 	@Override
@@ -50,16 +55,20 @@ public class PacketBasicLaserUpdate extends PacketBase {
 		data.writeInt(x);
 	    data.writeInt(y);
 	    data.writeInt(z);
+	    data.writeInt(upgrades.size());
+	    for(int i = 0; i < upgrades.size(); ++i) {
+	    	Packet.writeItemStack(upgrades.get(i), data);
+	    }
 	   
 	}
 
 	@Override
 	public void processPacket() {
-		LaserMod.proxy.handleBasicLaserPacket(this);
+		LaserMod.proxy.handleAdvancedLaserPacket(this);
 	}
 
 	@Override
 	public String getChannel() {
-		return "ewa";
+		return "laser:advanced";
 	}
 }

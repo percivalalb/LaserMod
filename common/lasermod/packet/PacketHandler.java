@@ -17,6 +17,7 @@ public class PacketHandler implements IPacketHandler {
 	
 	public PacketHandler() {
 		customPackages.put("laser:reflector", PacketReflectorUpdate.class);
+		customPackages.put("laser:advanced", PacketAdvancedLaserUpdate.class);
 		//customPackages.put("basicLaserUpdate", PacketBasicLaserUpdate.class);
 	}
 	

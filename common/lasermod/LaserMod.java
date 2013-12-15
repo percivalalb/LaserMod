@@ -67,6 +67,7 @@ public class LaserMod {
 		
 		PacketHandler packet = new PacketHandler();
 		NetworkRegistry.instance().registerChannel(packet, "laser:reflector");
+		NetworkRegistry.instance().registerChannel(packet, "laser:advanced");
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		proxy.onPreLoad();
