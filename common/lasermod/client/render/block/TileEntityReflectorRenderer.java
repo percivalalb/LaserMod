@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL12;
 
 import lasermod.client.model.block.ModelReflector;
 import lasermod.core.helper.LogHelper;
+import lasermod.core.proxy.ClientProxy;
 import lasermod.lib.ResourceReference;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.client.gui.Gui;
@@ -43,9 +44,14 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 		for(int i = 0; i < reflector.openSides.length; ++i) {
 			if(reflector.openSides[i] || reflector.containsInputSide(i) || reflector.lasers.size() == 0)
 				continue;
+			float alpha = reflector.getCreatedLaser(i).shouldRenderLaser(ClientProxy.mc.thePlayer);
+
+	    	if(alpha == 0.0F)
+	    		continue;
+	    	
 			AxisAlignedBB boundingBox = reflector.getFromLaserBox(x, y, z, i);
 			
-	    	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.4F);
+	    	GL11.glColor4f(1.0F, 0.0F, 0.0F, alpha);
 	    	drawBoundingBox(boundingBox);
 	    	drawBoundingBox(boundingBox.contract(0.12D, 0.12D, 0.12D));
 		}
