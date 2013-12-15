@@ -3,6 +3,7 @@ package lasermod.block;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.ModItems;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserRegistry;
@@ -18,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
@@ -49,7 +51,6 @@ public class BlockAdvancedLaser extends BlockContainer {
 	    this.sideIcon = iconRegister.registerIcon("lasermod:advancedLaserSide");
 	}
 
-
 	public static int getOrientation(int par1) {
 		return par1 & 7;
 	}
@@ -59,6 +60,26 @@ public class BlockAdvancedLaser extends BlockContainer {
 		ItemStack item = player.getCurrentEquippedItem();
 		if(item != null) {
 			TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)world.getBlockTileEntity(x, y, z);
+			if(item.itemID == ModItems.screwdriver.itemID) {
+				
+				if(!world.isRemote) {
+					player.addChatMessage(EnumChatFormatting.RED + String.format("Advanced Laser (%d, %d, %d)", x, y, z));
+					if(advancedLaser.getCreatedLaser().getLaserType().size() <= 1)
+						player.addChatMessage(" Currently no upgrades attached to this laser.");
+					else {
+						player.addChatMessage(" Upgrades attached to this laser...");
+						for(ILaser laser : advancedLaser.getCreatedLaser().getLaserType()) {
+							String name = LaserRegistry.getIdFromLaser(laser);
+							name = name.replaceFirst(String.valueOf(name.charAt(0)), String.valueOf(name.charAt(0)).toUpperCase());
+							player.addChatMessage(EnumChatFormatting.GREEN + "  " + name);
+						}
+					}
+				
+				}
+				
+				return true;
+			}
+			
 			ILaser laser = LaserRegistry.getLaserFromItem(item);
 			boolean power = world.isBlockIndirectlyGettingPowered(x, y, z);
 			if(laser != null && !power) {

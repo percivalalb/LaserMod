@@ -20,7 +20,7 @@ public class ItemScrewdriver extends ItemBase {
 	@Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean detailed) {
-		lore.add(EnumChatFormatting.GREEN + "Shift " + EnumChatFormatting.WHITE +"on Laser Related Blocks for more Info");
+		//lore.add(EnumChatFormatting.GREEN + "Laser best friend");
 	}
 
 }
