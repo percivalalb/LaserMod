@@ -13,8 +13,12 @@ public class LaserInGame {
 	private ArrayList<ILaser> laserType = new ArrayList<ILaser>();
 	private int side = -1;
 	
-	public LaserInGame() {
-		laserType.add(LaserRegistry.getLaserFromId("default"));
+	public LaserInGame(ILaser laser) {
+		laserType.add(laser);
+	}
+	
+	public LaserInGame(ArrayList<ILaser> lasers) {
+		laserType.addAll(lasers);
 	}
 	
 	public LaserInGame setStrength(double strength) {
@@ -66,5 +70,9 @@ public class LaserInGame {
 	
 	public int getSide() {
 		return this.side;
+	}
+
+	public int laserCount() {
+		return this.laserType.size();
 	}
 }

@@ -4,6 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import lasermod.api.LaserRegistry;
 import lasermod.block.laser.DefaultLaser;
+import lasermod.block.laser.FireLaser;
 import lasermod.core.helper.LogHelper;
 import lasermod.core.proxy.CommonProxy;
 import lasermod.lib.Reference;
@@ -51,6 +52,8 @@ public class LaserMod {
 		
 		//Registers all lasers
 		LaserRegistry.registerLaser("default", new DefaultLaser());
+		LaserRegistry.registerLaser("fire", new FireLaser());
+		
 		PacketHandler packet = new PacketHandler();
 		NetworkRegistry.instance().registerChannel(packet, "laser:reflector");
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);

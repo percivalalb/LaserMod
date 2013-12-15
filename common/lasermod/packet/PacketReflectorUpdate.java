@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import lasermod.LaserMod;
+import lasermod.api.ILaser;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.tileentity.TileEntityReflector;
@@ -52,9 +53,13 @@ public class PacketReflectorUpdate extends PacketBase {
 	    int amount = data.readInt();
 	    for(int i = 0; i < amount; ++i) {
 	    	double strength = data.readDouble();
-	    	String laserType = data.readUTF();
+	    	int laserCount = data.readInt();
+	    	ArrayList<ILaser> laserList = new ArrayList<ILaser>();
+	    	for(int j = 0; j < laserCount; ++j)
+	    		laserList.add(LaserRegistry.getLaserFromId(data.readUTF()));
 	    	int side = data.readInt();
-	    	lasers.add(new LaserInGame().setStrength(strength).setLaserType(laserType).setSide(side));
+	    	LaserInGame laserInGame = new LaserInGame(laserList).setStrength(strength).setSide(side);
+	    	lasers.add(laserInGame);
 	    }
 	   
 	}
@@ -70,7 +75,10 @@ public class PacketReflectorUpdate extends PacketBase {
 	    data.writeInt(lasers.size());
 	    for(int i = 0; i < lasers.size(); ++i) {
 	    	data.writeDouble(lasers.get(i).getStrength());
-	    	data.writeUTF(LaserRegistry.getIdFromLaser(lasers.get(i).getLaserType()));
+	    	data.writeInt(lasers.get(i).laserCount());
+	    	for(ILaser laser : lasers.get(i).getLaserType()) {
+		    	data.writeUTF(LaserRegistry.getIdFromLaser(laser));	
+	    	}
 	    	data.writeInt(lasers.get(i).getSide());
 	    }
 	}

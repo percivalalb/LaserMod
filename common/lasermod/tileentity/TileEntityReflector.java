@@ -3,8 +3,10 @@ package lasermod.tileentity;
 import java.util.ArrayList;
 
 import lasermod.ModBlocks;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserRegistry;
 import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
 import lasermod.lib.Constants;
@@ -57,6 +59,14 @@ public class TileEntityReflector extends TileEntity {
 		}
 		
 		return false;
+	}
+	
+	public int openSides() {
+		int count = 0;
+		for(boolean bool : this.openSides)
+			if(!bool)
+				count++;
+		return count;
 	}
 	
 	public boolean containsInputSide(int side) {
@@ -373,6 +383,9 @@ public class TileEntityReflector extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
+		if(this.worldObj.isRemote)
+			return;
+		
 		for(int i = 0; i < this.openSides.length; ++i) {
 			if(this.openSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
 				continue;
@@ -392,7 +405,14 @@ public class TileEntityReflector extends TileEntity {
 	
 	public LaserInGame getCreatedLaser(int side) {
 		int facing = Facing.oppositeSide[side];
-		LaserInGame laserInGame = new LaserInGame();
+		ArrayList<ILaser> laserList = new ArrayList<ILaser>();
+		for(LaserInGame lig : this.lasers) {
+			for(ILaser laser : lig.getLaserType()) {
+				laserList.add(laser);
+			}
+		}
+		
+		LaserInGame laserInGame = new LaserInGame(LaserRegistry.getLaserFromId("default"));
 		double totalPower = 0.0D;
 		
 		for(LaserInGame laser : lasers)

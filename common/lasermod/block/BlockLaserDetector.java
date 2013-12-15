@@ -2,8 +2,11 @@ package lasermod.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserRegistry;
+import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityLaserDetector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -76,6 +79,12 @@ public class BlockLaserDetector extends BlockContainer implements ILaserReciver 
 
 	@Override
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
+		LogHelper.logInfo("-------");
+		for(ILaser laser : laserInGame.getLaserType()) {
+			LogHelper.logInfo("" + LaserRegistry.getIdFromLaser(laser));
+		}
+		LogHelper.logInfo("-------");
+		
 		world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 1, 3);
 	}
 
