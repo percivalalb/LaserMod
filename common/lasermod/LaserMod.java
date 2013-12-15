@@ -54,6 +54,8 @@ public class LaserMod {
 		LaserRegistry.registerLaser("default", new DefaultLaser());
 		LaserRegistry.registerLaser("fire", new FireLaser());
 		
+		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 0, LaserRegistry.getLaserFromId("fire"));
+		
 		PacketHandler packet = new PacketHandler();
 		NetworkRegistry.instance().registerChannel(packet, "laser:reflector");
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);

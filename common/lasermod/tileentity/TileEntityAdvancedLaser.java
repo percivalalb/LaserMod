@@ -1,7 +1,10 @@
 package lasermod.tileentity;
 
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
@@ -9,6 +12,7 @@ import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
 import lasermod.lib.Constants;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
@@ -37,7 +41,13 @@ public class TileEntityAdvancedLaser extends TileEntity {
 			}
 		}
 		
-		//LogHelper.logInfo("Reciver: " + (reciver != null));
+		if(!this.worldObj.isRemote) {
+			AxisAlignedBB boundingBox = getLaserBox(this.xCoord, this.yCoord, this.zCoord);
+			List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
+			for(ILaser la : getCreatedLaser().getLaserType()) {
+				la.performActionOnEntities(this, entities);
+			}
+		}
 	}
 	
 	public ILaserReciver getFirstReciver(int meta) {
@@ -203,7 +213,7 @@ public class TileEntityAdvancedLaser extends TileEntity {
 	
 	public LaserInGame getCreatedLaser() {
 		if(laser == null)
-			laser = new LaserInGame(LaserRegistry.getLaserFromId("fire")).addLaserType(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[this.getBlockMetadata()]);
+			laser = new LaserInGame(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[this.getBlockMetadata()]);
 		
 		return laser;
 	}

@@ -36,8 +36,6 @@ public class TileEntityBasicLaser extends TileEntity {
 				reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.getCreatedLaser());
 			}
 		}
-		
-		//LogHelper.logInfo("Reciver: " + (reciver != null));
 	}
 	
 	public ILaserReciver getFirstReciver(int meta) {

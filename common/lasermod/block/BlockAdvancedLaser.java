@@ -2,7 +2,9 @@ package lasermod.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
+import lasermod.api.LaserRegistry;
 import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityReflector;
@@ -11,6 +13,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -48,6 +51,23 @@ public class BlockAdvancedLaser extends BlockContainer {
 
 	public static int getOrientation(int par1) {
 		return par1 & 7;
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+		ItemStack item = player.getCurrentEquippedItem();
+		if(item != null && !world.isRemote) {
+			TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)world.getBlockTileEntity(x, y, z);
+			ILaser laser = LaserRegistry.getLaserFromItem(item);
+			if(laser != null) {
+				item.stackSize--;
+				if(item.stackSize <= 0) {
+					player.setCurrentItemOrArmor(0, (ItemStack)null);
+				}
+				return true;
+			}
+		}
+		return true;
 	}
 	    
 	@Override
