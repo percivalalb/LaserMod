@@ -33,6 +33,7 @@ public class TileEntityReflector extends TileEntity {
 	public boolean[] openSides = new boolean[] {true, true, true, true, true, true};
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	public int[] reciverCords = new int[3];
+	public int lagReduce = 0;
 	
 	public boolean isSideOpen(ForgeDirection direction) {
 		return this.isSideOpen(direction.ordinal());
@@ -385,6 +386,11 @@ public class TileEntityReflector extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
+		if(this.lagReduce == 1) {
+			this.lagReduce = 0;
+			return;
+		}
+		
 		for(int i = 0; i < this.openSides.length; ++i) {
 			if(this.openSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
 				continue;
@@ -416,6 +422,8 @@ public class TileEntityReflector extends TileEntity {
 				}
 			}
 		}
+		
+		this.lagReduce += 1;
 	}
 	
 	public LaserInGame getCreatedLaser(int side) {
@@ -446,6 +454,18 @@ public class TileEntityReflector extends TileEntity {
 		NBTTagList list = tag.getTagList("openSides");
 		for(int i = 0; i < list.tagCount(); ++i)
 			openSides[i] = ((NBTTagByte)list.tagAt(i)).data == 1;
+		
+	    int amount = tag.getInteger("laserInGameCount");
+	    for(int i = 0; i < amount; ++i) {
+	    	double strength = tag.getDouble("strength" + i);
+	    	int laserCount = tag.getInteger("laserCount" + i);
+	    	ArrayList<ILaser> laserList = new ArrayList<ILaser>();
+	    	for(int j = 0; j < laserCount; ++j)
+	    		laserList.add(LaserRegistry.getLaserFromId(tag.getString(i + "laserId" + j)));
+	    	int side = tag.getInteger("side" + i);
+	    	LaserInGame laserInGame = new LaserInGame(laserList).setStrength(strength).setSide(side);
+	    	lasers.add(laserInGame);
+	    }
 	}
 
 	@Override
@@ -456,6 +476,18 @@ public class TileEntityReflector extends TileEntity {
 		for(int i = 0; i < openSides.length; ++i)
 			list.appendTag(new NBTTagByte("" + i, (byte)(this.openSides[i] ? 1 : 0)));
 		tag.setTag("openSides", list);
+		
+		tag.setInteger("laserInGameCount", this.lasers.size());
+	    for(int i = 0; i < lasers.size(); ++i) {
+	    	tag.setDouble("strength" + i, lasers.get(i).getStrength());
+	    	tag.setInteger("laserCount" + i, lasers.get(i).laserCount());
+	    	int j = 0;
+	    	for(ILaser laser : lasers.get(i).getLaserType()) {
+		    	tag.setString(i + "laserId" + j, LaserRegistry.getIdFromLaser(laser));
+		    	j++;
+	    	}
+	    	tag.setInteger("side" + i, lasers.get(i).getSide());
+	    }
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
  */
 public class ClientProxy extends CommonProxy {
 
+	public static int slowedByIceLaser = 40;
 	public static Minecraft mc = Minecraft.getMinecraft();
 	
 	@Override

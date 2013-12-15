@@ -14,8 +14,15 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class TileEntityLaserDetector extends TileEntity {
 
+	public int lagReduce = 0;
+	
 	@Override
 	public void updateEntity() {
+		if(this.lagReduce == 1) {
+			this.lagReduce = 0;
+			return;
+		}
+		
 		int count = 0;
 		for(int i = 0; i < 6; ++i) {
 			if(this.getBlockMetadata() == 1 && !isValidSourceOfPowerOnSide(i)) {
@@ -24,6 +31,7 @@ public class TileEntityLaserDetector extends TileEntity {
 		}
 		if(count == 6)
 			this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
+		this.lagReduce += 1;
 	}
 	
 	public boolean isValidSourceOfPowerOnSide(int side) {

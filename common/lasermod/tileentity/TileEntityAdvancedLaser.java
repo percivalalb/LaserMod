@@ -36,9 +36,14 @@ public class TileEntityAdvancedLaser extends TileEntity {
 	public LaserInGame laser = null;
 	public ArrayList<ItemStack> upgrades = new ArrayList<ItemStack>();
 	public boolean hadPower = false;
+	public int lagReduce = 0;
 	
 	@Override
 	public void updateEntity() {
+		if(this.lagReduce == 1) {
+			this.lagReduce = 0;
+			return;
+		}
 	  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
 		ILaserReciver reciver = getFirstReciver(this.getBlockMetadata());
 		if(reciver != null) {
@@ -61,6 +66,8 @@ public class TileEntityAdvancedLaser extends TileEntity {
 					la.performActionOnEntitiesServer(entities, this.getBlockMetadata());
 			}
 		}
+		
+		this.lagReduce += 1;
 	}
 	
 	public ILaserReciver getFirstReciver(int meta) {

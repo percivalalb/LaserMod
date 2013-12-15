@@ -34,11 +34,11 @@ public class PushLaser implements ILaser {
 	public void performActionOnEntitiesBoth(List<Entity> entities, int direction) {
 		for(Entity entity : entities) {
 			double verticalSpeed = 0.120000000000000003D;
-            double horizonalSpeed = 0.19999999999999999D;
+            double maxSpeed = 0.19999999999999999D;
             verticalSpeed *= SPEED_MULTIPLYER;
 
             if(entity instanceof EntityItem)
-                horizonalSpeed *= 2.34D;
+                maxSpeed *= 2.34D;
 
             if (entity instanceof EntityMinecart)
                 verticalSpeed *= 0.5D;
@@ -46,22 +46,22 @@ public class PushLaser implements ILaser {
             if ((entity instanceof EntityFallingSand) && direction == 1)
                 verticalSpeed = 0.0D;
 
-            if (direction == 0 && entity.motionY > -horizonalSpeed)
+            if (direction == 0 && entity.motionY > -maxSpeed)
                 entity.motionY += -verticalSpeed;
 
-            if (direction == 1 && entity.motionY < horizonalSpeed * 0.5D)
+            if (direction == 1 && entity.motionY < maxSpeed * 0.5D)
                 entity.motionY += verticalSpeed;
 
-            if (direction == 2 && entity.motionZ > -horizonalSpeed)
+            if (direction == 2 && entity.motionZ > -maxSpeed)
                 entity.motionZ += -verticalSpeed;
 
-            if (direction == 3 && entity.motionZ < horizonalSpeed)
+            if (direction == 3 && entity.motionZ < maxSpeed)
                 entity.motionZ += verticalSpeed;
 
-            if (direction == 4 && entity.motionX > -horizonalSpeed)
+            if (direction == 4 && entity.motionX > -maxSpeed)
                 entity.motionX += -verticalSpeed;
 
-            if (direction == 5 && entity.motionX < horizonalSpeed)
+            if (direction == 5 && entity.motionX < maxSpeed)
                 entity.motionX += verticalSpeed;
 		}
 	}

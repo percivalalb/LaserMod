@@ -2,6 +2,7 @@ package lasermod;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import lasermod.api.LaserRegistry;
 import lasermod.block.laser.DefaultLaser;
 import lasermod.block.laser.FireLaser;
@@ -10,6 +11,7 @@ import lasermod.block.laser.InvisibleLaser;
 import lasermod.block.laser.PullLaser;
 import lasermod.block.laser.PushLaser;
 import lasermod.block.laser.WaterLaser;
+import lasermod.core.handler.OverlayHandler;
 import lasermod.core.helper.LogHelper;
 import lasermod.core.proxy.CommonProxy;
 import lasermod.lib.Reference;
@@ -67,6 +69,7 @@ public class LaserMod {
 		
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 0, LaserRegistry.getLaserFromId("fire"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 1, LaserRegistry.getLaserFromId("water"));
+		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 2, LaserRegistry.getLaserFromId("ice"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 3, LaserRegistry.getLaserFromId("invisible"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 5, LaserRegistry.getLaserFromId("push"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 6, LaserRegistry.getLaserFromId("pull"));
@@ -75,6 +78,8 @@ public class LaserMod {
 		NetworkRegistry.instance().registerChannel(packet, "laser:reflector");
 		NetworkRegistry.instance().registerChannel(packet, "laser:advanced");
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
+		
+		MinecraftForge.EVENT_BUS.register(new OverlayHandler());
 		
 		proxy.onPreLoad();
 	}

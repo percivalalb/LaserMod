@@ -79,7 +79,8 @@ public class BlockLaserDetector extends BlockContainer implements ILaserReciver 
 
 	@Override
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
-		world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 1, 3);
+		if(!world.isRemote)
+			world.setBlockMetadataWithNotify(blockX, blockY, blockZ, 1, 3);
 	}
 
 	@Override

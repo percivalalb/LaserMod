@@ -23,9 +23,15 @@ public class TileEntityBasicLaser extends TileEntity {
 	public int[] reciverCords = new int[3];
 	public LaserInGame laser = null;
 	public boolean hadPower = false;
+	public int lagReduce = 0;
 	
 	@Override
 	public void updateEntity() {
+		if(this.lagReduce == 1) {
+			this.lagReduce = 0;
+			return;
+		}
+		
 		ILaserReciver reciver = getFirstReciver(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 		if(reciver != null) {
 		  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
@@ -36,6 +42,7 @@ public class TileEntityBasicLaser extends TileEntity {
 				reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.getCreatedLaser());
 			}
 		}
+		this.lagReduce += 1;
 	}
 	
 	public ILaserReciver getFirstReciver(int meta) {
