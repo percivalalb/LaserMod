@@ -3,12 +3,15 @@ package lasermod.core.proxy;
 import lasermod.ModBlocks;
 import lasermod.client.render.block.TileEntityAdvancedLaserRenderer;
 import lasermod.client.render.block.TileEntityBasicLaserRenderer;
+import lasermod.client.render.block.TileEntityColourConverterRenderer;
 import lasermod.client.render.block.TileEntityReflectorRenderer;
 import lasermod.client.render.item.ItemReflectorRenderer;
 import lasermod.packet.PacketAdvancedLaserUpdate;
+import lasermod.packet.PacketColourConverterUpdate;
 import lasermod.packet.PacketReflectorUpdate;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
+import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.tileentity.TileEntityReflector;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -30,6 +33,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicLaser.class, new TileEntityBasicLaserRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedLaser.class, new TileEntityAdvancedLaserRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReflector.class, new TileEntityReflectorRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityColourConverter.class, new TileEntityColourConverterRenderer());
 		MinecraftForgeClient.registerItemRenderer(ModBlocks.reflector.blockID, new ItemReflectorRenderer());
 	}
 	
@@ -54,6 +58,17 @@ public class ClientProxy extends CommonProxy {
 			return;
 		TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)tileEntity;
 		advancedLaser.upgrades = packet.upgrades;
+	}
+	
+	@Override
+	public void handleColourConverterPacket(PacketColourConverterUpdate packet) {
+		World world = this.mc.theWorld;
+		TileEntity tileEntity = world.getBlockTileEntity(packet.x, packet.y, packet.z);
+		
+		if(!(tileEntity instanceof TileEntityColourConverter)) 
+			return;
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter)tileEntity;
+		colourConverter.laser = packet.laser;
 	}
 	
 	@Override

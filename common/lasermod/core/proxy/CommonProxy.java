@@ -1,6 +1,7 @@
 package lasermod.core.proxy;
 
 import lasermod.packet.PacketAdvancedLaserUpdate;
+import lasermod.packet.PacketColourConverterUpdate;
 import lasermod.packet.PacketReflectorUpdate;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,7 @@ public class CommonProxy implements IGuiHandler {
 	//Packets for client
 	public void handleReflectorPacket(PacketReflectorUpdate packet) {}
 	public void handleAdvancedLaserPacket(PacketAdvancedLaserUpdate packetAdvancedLaserUpdate) {}
+	public void handleColourConverterPacket(PacketColourConverterUpdate packetColourConverterUpdate) {}
 	
 	public void registerHandlers() {}
 

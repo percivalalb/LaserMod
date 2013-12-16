@@ -85,7 +85,7 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	        return this.frontIcon;
 	    }
 	    else {
-	    	return par1 == Facing.oppositeSide[meta] ? backIcon : sideIcon;
+	    	return par1 == Facing.oppositeSide[meta] ? Block.anvil.getBlockTextureFromSide(0) : sideIcon;
 	    }
 	}
 
@@ -132,9 +132,13 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	@Override
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
 		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(blockX, blockY, blockZ);
-		colourConverter.laser = laserInGame;
-		if(!world.isRemote)
-			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+		if(colourConverter.laser == null) {
+			colourConverter.laser = laserInGame;
+			if(!world.isRemote)
+				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+		}
+		//if(!world.isRemote)
+		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
 		
 	}
 
@@ -144,15 +148,17 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 		
 		if(side == Facing.oppositeSide[colourConverter.getBlockMetadata()]) {
 			colourConverter.laser = null;
+			if(!world.isRemote)
+				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
 		}
 		
-		if(flag && !world.isRemote)
-			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+		//if(flag && !world.isRemote)
+		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
 	}
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
 		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(blockX, blockY, blockZ);
-		return !colourConverter.openSides[side] && colourConverter.lasers.size() > 0;
+		return colourConverter.laser != null && side == colourConverter.getBlockMetadata();
 	}
 }
