@@ -17,7 +17,7 @@ public class DamageLaser implements ILaser {
 	@Override
 	public void performActionOnEntitiesServer(List<Entity> entities, int direction) {
 		for(Entity entity : entities) {
-			entity.attackEntityFrom(laserDamage, 3);
+			entity.attackEntityFrom(this.laserDamage, 3);
 		}
 	}
 	
