@@ -3,6 +3,7 @@ package lasermod.client.render.block;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import lasermod.api.LaserInGame;
 import lasermod.core.helper.LogHelper;
 import lasermod.core.proxy.ClientProxy;
 import lasermod.tileentity.TileEntityColourConverter;
@@ -21,7 +22,8 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
     public void renderColourConverter(TileEntityColourConverter colourConverter, double x, double y, double z, float tick) {
     	if(colourConverter.laser == null)
     		return;
-    	float alpha = colourConverter.laser.shouldRenderLaser(ClientProxy.mc.thePlayer);
+    	LaserInGame laserInGame = colourConverter.getCreatedLaser();
+    	float alpha = laserInGame.shouldRenderLaser(ClientProxy.mc.thePlayer);
 
     	if(alpha == 0.0F)
     		return;
@@ -36,10 +38,10 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
         
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         Tessellator tessellator = Tessellator.instance;
-		tessellator.setColorRGBA(255, 0, 0, 155);
+		tessellator.setColorRGBA(laserInGame.red, laserInGame.green, laserInGame.blue, 155);
 		
 		AxisAlignedBB boundingBox = colourConverter.getLaserBox(x, y, z);
-    	GL11.glColor4f(1.0F, 0.0F, 0.0F, alpha);
+    	GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
     	drawBoundingBox(boundingBox);
     	drawBoundingBox(boundingBox.contract(0.12D, 0.12D, 0.12D));
          

@@ -59,6 +59,9 @@ public class PacketReflectorUpdate extends PacketBase {
 	    		laserList.add(LaserRegistry.getLaserFromId(data.readUTF()));
 	    	int side = data.readInt();
 	    	LaserInGame laserInGame = new LaserInGame(laserList).setStrength(strength).setSide(side);
+	    	laserInGame.red = data.readInt();
+			laserInGame.green = data.readInt();
+			laserInGame.blue = data.readInt();
 	    	lasers.add(laserInGame);
 	    }
 	   
@@ -80,6 +83,9 @@ public class PacketReflectorUpdate extends PacketBase {
 		    	data.writeUTF(LaserRegistry.getIdFromLaser(laser));	
 	    	}
 	    	data.writeInt(lasers.get(i).getSide());
+	    	data.writeInt(lasers.get(i).red);
+		    data.writeInt(lasers.get(i).green);
+		    data.writeInt(lasers.get(i).blue);
 	    }
 	}
 

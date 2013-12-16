@@ -18,6 +18,9 @@ public class LaserInGame {
 	private double strength = 100D;
 	private ArrayList<ILaser> laserType = new ArrayList<ILaser>();
 	private int side = -1;
+	public int red = 255;
+	public int green = 0;
+	public int blue = 0;
 	
 	public LaserInGame(ILaser laser) {
 		laserType.add(laser);
@@ -80,6 +83,16 @@ public class LaserInGame {
 	
 	public void writeToNBT(NBTTagCompound tag) {
 		
+	}
+	
+	public LaserInGame copy() {
+		LaserInGame laser = new LaserInGame((ArrayList<ILaser>)this.laserType.clone());
+		laser.setSide(this.side);
+		laser.setStrength(this.getStrength());
+		laser.red = this.red;
+		laser.green = this.green;
+		laser.blue = this.blue;
+		return laser;
 	}
 	
 	public int getSide() {

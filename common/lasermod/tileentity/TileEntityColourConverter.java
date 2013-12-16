@@ -1,9 +1,12 @@
 package lasermod.tileentity;
 
+import java.util.List;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.ModBlocks;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
@@ -13,6 +16,7 @@ import lasermod.lib.Constants;
 import lasermod.packet.PacketAdvancedLaserUpdate;
 import lasermod.packet.PacketColourConverterUpdate;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -24,7 +28,6 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class TileEntityColourConverter extends TileEntity {
 
-	public AxisAlignedBB last = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	public int[] reciverCords = new int[3];
 	public LaserInGame laser = null;
 	public boolean hadPower = false;
@@ -46,10 +49,22 @@ public class TileEntityColourConverter extends TileEntity {
 			}
 		}
 		
-		if(!this.isValidSourceOfPowerOnSide(this.getBlockMetadata())) {
+		if(!this.isValidSourceOfPowerOnSide(Facing.oppositeSide[this.getBlockMetadata()])) {
 			this.laser = null;
 			if(!this.worldObj.isRemote)
 				PacketDispatcher.sendPacketToAllAround(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, this.worldObj.provider.dimensionId, 512, this.getDescriptionPacket());
+		}
+		
+		if(this.laser != null) {
+			AxisAlignedBB boundingBox = getLaserBox(this.xCoord, this.yCoord, this.zCoord);
+			List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
+			for(ILaser la : this.laser.getLaserType()) {
+				la.performActionOnEntitiesBoth(entities, this.getBlockMetadata());
+				if(this.worldObj.isRemote) 
+					la.performActionOnEntitiesClient(entities, this.getBlockMetadata());
+				else
+					la.performActionOnEntitiesServer(entities, this.getBlockMetadata());
+			}
 		}
 		this.lagReduce += 1;
 	}
@@ -216,10 +231,11 @@ public class TileEntityColourConverter extends TileEntity {
 	}
 	
 	public LaserInGame getCreatedLaser() {
-		if(laser == null)
-			laser = new LaserInGame(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[this.getBlockMetadata()]);
-		
-		return laser;
+		LaserInGame laserInGame = laser.copy();
+		laserInGame.red = 100;
+		laserInGame.green = 100;
+		laserInGame.blue = 100;
+		return laserInGame;
 	}
 	
 

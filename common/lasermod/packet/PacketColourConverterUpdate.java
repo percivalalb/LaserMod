@@ -53,6 +53,9 @@ public class PacketColourConverterUpdate extends PacketBase {
 		    	laserList.add(LaserRegistry.getLaserFromId(data.readUTF()));
 		    int side = data.readInt();
 		    LaserInGame laserInGame = new LaserInGame(laserList).setStrength(strength).setSide(side);
+		    laserInGame.red = data.readInt();
+		    laserInGame.green = data.readInt();
+		    laserInGame.blue = data.readInt();
 		    laser = laserInGame;
 	    }
 	   
@@ -72,6 +75,9 @@ public class PacketColourConverterUpdate extends PacketBase {
 			    data.writeUTF(LaserRegistry.getIdFromLaser(laser2));	
 		    }
 		    data.writeInt(laser.getSide());
+		    data.writeInt(laser.red);
+		    data.writeInt(laser.green);
+		    data.writeInt(laser.blue);
 	    }
 	}
 
