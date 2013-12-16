@@ -73,7 +73,6 @@ public class PacketColourConverterUpdate extends PacketBase {
 		    }
 		    data.writeInt(laser.getSide());
 	}
-	}
 
 	@Override
 	public void processPacket() {
@@ -82,6 +81,6 @@ public class PacketColourConverterUpdate extends PacketBase {
 
 	@Override
 	public String getChannel() {
-		return "laser:reflector";
+		return "laser:colour";
 	}
 }

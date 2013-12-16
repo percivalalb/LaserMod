@@ -79,6 +79,7 @@ public class LaserMod {
 		PacketHandler packet = new PacketHandler();
 		NetworkRegistry.instance().registerChannel(packet, "laser:reflector");
 		NetworkRegistry.instance().registerChannel(packet, "laser:advanced");
+		NetworkRegistry.instance().registerChannel(packet, "laser:colour");
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		
 		MinecraftForge.EVENT_BUS.register(new OverlayHandler());

@@ -8,7 +8,10 @@ import lasermod.api.LaserRegistry;
 import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
 import lasermod.lib.Constants;
+import lasermod.packet.PacketAdvancedLaserUpdate;
+import lasermod.packet.PacketColourConverterUpdate;
 import net.minecraft.block.Block;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
@@ -211,6 +214,12 @@ public class TileEntityColourConverter extends TileEntity {
 			laser = new LaserInGame(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[this.getBlockMetadata()]);
 		
 		return laser;
+	}
+	
+
+	@Override
+	public Packet getDescriptionPacket() {
+	    return new PacketColourConverterUpdate(this.xCoord, this.yCoord, this.zCoord, this).buildPacket();
 	}
 	
 	@Override
