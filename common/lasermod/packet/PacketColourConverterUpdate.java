@@ -65,13 +65,14 @@ public class PacketColourConverterUpdate extends PacketBase {
 	    data.writeInt(z);
 
 	    data.writeBoolean(this.laser != null);
-	    if(this.laser != null)
+	    if(this.laser != null) {
 		    data.writeDouble(laser.getStrength());
 		    data.writeInt(laser.laserCount());
 		    for(ILaser laser2 : laser.getLaserType()) {
 			    data.writeUTF(LaserRegistry.getIdFromLaser(laser2));	
 		    }
 		    data.writeInt(laser.getSide());
+	    }
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import lasermod.core.helper.LogHelper;
+import lasermod.core.proxy.ClientProxy;
 import lasermod.tileentity.TileEntityColourConverter;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
@@ -20,6 +21,11 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
     public void renderColourConverter(TileEntityColourConverter colourConverter, double x, double y, double z, float tick) {
     	if(colourConverter.laser == null)
     		return;
+    	float alpha = colourConverter.laser.shouldRenderLaser(ClientProxy.mc.thePlayer);
+
+    	if(alpha == 0.0F)
+    		return;
+    	
     	GL11.glPushMatrix();
     	RenderHelper.disableStandardItemLighting();
     	GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -33,7 +39,7 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
 		tessellator.setColorRGBA(255, 0, 0, 155);
 		
 		AxisAlignedBB boundingBox = colourConverter.getLaserBox(x, y, z);
-    	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.4F);
+    	GL11.glColor4f(1.0F, 0.0F, 0.0F, alpha);
     	drawBoundingBox(boundingBox);
     	drawBoundingBox(boundingBox.contract(0.12D, 0.12D, 0.12D));
          
