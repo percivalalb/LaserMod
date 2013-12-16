@@ -1,5 +1,7 @@
 package lasermod.block;
 
+import java.util.Random;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,9 +17,12 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.Direction;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Facing;
@@ -30,6 +35,8 @@ import net.minecraft.world.World;
  */
 public class BlockAdvancedLaser extends BlockContainer {
 
+	private final Random random = new Random();
+	
 	public Icon frontIcon;
 	public Icon backIcon;
 	public Icon sideIcon;
@@ -135,6 +142,54 @@ public class BlockAdvancedLaser extends BlockContainer {
 	@Override
     public boolean renderAsNormalBlock() {
         return false;
+    }
+	
+	@Override
+	public void breakBlock(World par1World, int x, int y, int z, int oldBlockId, int oldBlockMeta)
+    {
+		TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)par1World.getBlockTileEntity(x, y, z);
+
+        if (advancedLaser != null)
+        {
+            for (int j1 = 0; j1 < advancedLaser.upgrades.size(); ++j1)
+            {
+                ItemStack itemstack = advancedLaser.upgrades.get(j1);
+                itemstack.stackSize = 1;
+
+                if (itemstack != null)
+                {
+                    float f = this.random.nextFloat() * 0.8F + 0.1F;
+                    float f1 = this.random.nextFloat() * 0.8F + 0.1F;
+                    EntityItem entityitem;
+
+                    for (float f2 = this.random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; par1World.spawnEntityInWorld(entityitem))
+                    {
+                        int k1 = this.random.nextInt(21) + 10;
+
+                        if (k1 > itemstack.stackSize)
+                        {
+                            k1 = itemstack.stackSize;
+                        }
+
+                        itemstack.stackSize -= k1;
+                        entityitem = new EntityItem(par1World, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(itemstack.itemID, k1, itemstack.getItemDamage()));
+                        float f3 = 0.05F;
+                        entityitem.motionX = (double)((float)this.random.nextGaussian() * f3);
+                        entityitem.motionY = (double)((float)this.random.nextGaussian() * f3 + 0.2F);
+                        entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
+
+                        if (itemstack.hasTagCompound())
+                        {
+                            entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+                        }
+                    }
+                }
+            }
+
+            par1World.func_96440_m(x, y, z, oldBlockId);
+        }
+
+        super.breakBlock(par1World, x, y, z, oldBlockId, oldBlockMeta);
     }
 	
 	@Override
