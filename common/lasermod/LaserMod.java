@@ -101,6 +101,7 @@ public class LaserMod {
 	    GameRegistry.addRecipe(new ItemStack(ModBlocks.basicLaser, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Block.glass, 'L', ModItems.laserCrystal, 'C', Block.cobblestone});
 	    GameRegistry.addRecipe(new ItemStack(ModBlocks.reflector, 1), new Object[] {"CGC", "GSG", "CGC", 'G', Block.glass, 'C', Block.cobblestone, 'S', Item.glowstone});
 	    GameRegistry.addRecipe(new ItemStack(ModBlocks.colourConverter, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Item.glowstone, 'L', ModItems.laserCrystal, 'C', Block.cobblestone});
+	    GameRegistry.addRecipe(new ItemStack(ModBlocks.laserDetector, 1), new Object[] {"SSS", "SBS", "SSS", 'B', Block.blockRedstone, 'S', Block.stone});
 	    
 	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 0), new Object[] {Block.obsidian, Item.fireballCharge, Item.blazePowder, Item.glowstone});
 	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 3), new Object[] {Block.obsidian, Item.goldenCarrot, Item.fermentedSpiderEye, Item.glowstone});

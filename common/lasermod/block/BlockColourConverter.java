@@ -136,7 +136,7 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				if(!world.isRemote)
-					PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+					PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 				
 				return true;
 			}
@@ -190,10 +190,10 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 		if(colourConverter.laser == null) {
 			colourConverter.laser = laserInGame;
 			if(!world.isRemote)
-				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 		}
 		//if(!world.isRemote)
-		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 		
 	}
 
@@ -204,11 +204,11 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 		if(side == Facing.oppositeSide[colourConverter.getBlockMetadata()]) {
 			colourConverter.laser = null;
 			if(!world.isRemote)
-				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 		}
 		
 		//if(flag && !world.isRemote)
-		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 	}
 	
 	@Override

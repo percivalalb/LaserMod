@@ -59,7 +59,7 @@ public class BlockBasicLaser extends BlockContainer {
 		if (meta > 5)
 	        return this.frontIcon;
 	    if (side == meta) {
-	        return this.frontIcon;
+	        return this.frontIcon; 
 	    }
 	    else {
 	    	return side == Facing.oppositeSide[meta] ? backIcon : sideIcon;

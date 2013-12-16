@@ -81,7 +81,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 			}
 			
 			if(!world.isRemote)
-				PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, reflector.getDescriptionPacket());
+				PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, 512, world.provider.dimensionId, reflector.getDescriptionPacket());
 			
 			
 			return true;
@@ -100,7 +100,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
 		reflector.addLaser(laserInGame);
 		if(!world.isRemote)
-			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, reflector.getDescriptionPacket());
+			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, reflector.getDescriptionPacket());
 		
 	}
 
@@ -112,7 +112,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 		boolean flag = reflector.removeAllLasersFromSide(side);
 		
 		if(flag && !world.isRemote)
-			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, reflector.getDescriptionPacket());
+			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, reflector.getDescriptionPacket());
 	}
 	
 	@Override
