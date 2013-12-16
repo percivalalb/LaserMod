@@ -70,6 +70,7 @@ public class ClientProxy extends CommonProxy {
 		TileEntityColourConverter colourConverter = (TileEntityColourConverter)tileEntity;
 		colourConverter.laser = packet.laser;
 		colourConverter.colour = packet.colour;
+		world.markBlockForRenderUpdate(packet.x, packet.y, packet.z);
 	}
 	
 	@Override

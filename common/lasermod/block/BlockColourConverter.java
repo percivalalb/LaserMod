@@ -29,6 +29,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -37,8 +38,7 @@ import net.minecraft.world.World;
 public class BlockColourConverter extends BlockContainer implements ILaserReciver {
 
 	public Icon frontIcon;
-	public Icon backIcon;
-	public Icon sideIcon;
+	public Icon[] front = new Icon[16];
 	
 	public BlockColourConverter(int id) {
 		super(id, Material.rock);
@@ -53,29 +53,31 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
 	    this.frontIcon = iconRegister.registerIcon("lasermod:eaw");
-	    this.backIcon = iconRegister.registerIcon("lasermod:dawe");
-	    this.sideIcon = iconRegister.registerIcon("lasermod:daw");
+	    for(int i = 0; i < 15; ++i) {
+	    	front[i] = this.frontIcon = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
+	    }
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
+    public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(x, y, z);
+		int meta = getOrientation(world.getBlockMetadata(x, y, z));
+
+		if (meta > 5)
+		    return this.front[colourConverter.colour];
+		if (side == meta) {
+		    return this.front[colourConverter.colour];
+		}
+		else {
+		 	return side == Facing.oppositeSide[meta] ? Block.anvil.getBlockTextureFromSide(0) : Block.pistonBase.getIcon(0, 1);
+		}
+    }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
     public void getSubBlocks(int id, CreativeTabs creativeTab, List tabList) {
         tabList.add(new ItemStack(id, 1, 0));
-        tabList.add(new ItemStack(id, 1, 1));
-        tabList.add(new ItemStack(id, 1, 2));
-        tabList.add(new ItemStack(id, 1, 3));
-        tabList.add(new ItemStack(id, 1, 4));
-        tabList.add(new ItemStack(id, 1, 5));
-        tabList.add(new ItemStack(id, 1, 6));
-        tabList.add(new ItemStack(id, 1, 7));
-        tabList.add(new ItemStack(id, 1, 8));
-        tabList.add(new ItemStack(id, 1, 9));
-        tabList.add(new ItemStack(id, 1, 10));
-        tabList.add(new ItemStack(id, 1, 11));
-        tabList.add(new ItemStack(id, 1, 12));
-        tabList.add(new ItemStack(id, 1, 13));
-        tabList.add(new ItemStack(id, 1, 14));
-        tabList.add(new ItemStack(id, 1, 15));
     }
 
 	public static int getOrientation(int par1) {
@@ -84,7 +86,7 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	    
 	@Override
 	public Icon getIcon(int par1, int par2) {
-	    int meta = getOrientation(par2);
+	    int meta = 2;
 
 	    if (meta > 5)
 	        return this.frontIcon;
@@ -117,11 +119,13 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 				
 				colourConverter.colour = colour;
 				
-				ILaserReciver reciver = colourConverter.getFirstReciver(colourConverter.getBlockMetadata());
-				if(reciver != null) {
-					reciver.removeLasersFromSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()]);
-				  	if(reciver.canPassOnSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()])) {
-						reciver.passLaser(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], y, y,z, colourConverter.getCreatedLaser());
+				if(colourConverter.laser != null) {
+					ILaserReciver reciver = colourConverter.getFirstReciver(colourConverter.getBlockMetadata());
+					if(reciver != null) {
+						reciver.removeLasersFromSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()]);
+					  	if(reciver.canPassOnSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()])) {
+							reciver.passLaser(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], y, y,z, colourConverter.getCreatedLaser());
+						}
 					}
 				}
 				
