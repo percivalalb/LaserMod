@@ -7,6 +7,7 @@ tile.lasermod.basicLaser.name=Basic Laser Box
 tile.lasermod.advancedLaser.name=Advanced Laser Box
 tile.lasermod.reflector.name=Laser Reflector
 tile.lasermod.detector.name=Laser Detector
+tile.lasermod.colorconverter.name=Colour Converter
 item.lasermod.upgrade.0.name=Fire Upgrade
 item.lasermod.upgrade.1.name=Water Upgrade
 item.lasermod.upgrade.2.name=Ice Upgrade

@@ -61,10 +61,7 @@ public class ItemUpgrades extends Item {
 	@SideOnly(Side.CLIENT)
     public void getSubItems(int id, CreativeTabs creativeTab, List tabList) {
         tabList.add(new ItemStack(id, 1, 0));
-        tabList.add(new ItemStack(id, 1, 1));
-        tabList.add(new ItemStack(id, 1, 2));
         tabList.add(new ItemStack(id, 1, 3));
-        tabList.add(new ItemStack(id, 1, 4));
         tabList.add(new ItemStack(id, 1, 5));
         tabList.add(new ItemStack(id, 1, 6));
         tabList.add(new ItemStack(id, 1, 7));

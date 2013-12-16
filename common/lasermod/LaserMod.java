@@ -1,6 +1,8 @@
 package lasermod;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import lasermod.api.LaserRegistry;
@@ -26,6 +28,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * @author ProPercivalalb
@@ -61,16 +64,12 @@ public class LaserMod {
 		//Registers all lasers
 		LaserRegistry.registerLaser("default", new DefaultLaser());
 		LaserRegistry.registerLaser("fire", new FireLaser());
-		LaserRegistry.registerLaser("water", new WaterLaser());
-		LaserRegistry.registerLaser("ice", new IceLaser());
 		LaserRegistry.registerLaser("invisible", new InvisibleLaser());
 		LaserRegistry.registerLaser("push", new PushLaser());
 		LaserRegistry.registerLaser("pull", new PullLaser());
 		LaserRegistry.registerLaser("damage", new DamageLaser());
 		
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 0, LaserRegistry.getLaserFromId("fire"));
-		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 1, LaserRegistry.getLaserFromId("water"));
-		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 2, LaserRegistry.getLaserFromId("ice"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 3, LaserRegistry.getLaserFromId("invisible"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 5, LaserRegistry.getLaserFromId("push"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades.itemID, 6, LaserRegistry.getLaserFromId("pull"));
@@ -94,6 +93,18 @@ public class LaserMod {
 		
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent par1) {
-		
+	    GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"BY ", "YB ", "  I", 'B', new ItemStack(Item.dyePowder, 1, 0), 'Y', new ItemStack(Item.dyePowder, 1, 10), 'I', Item.ingotIron});
+	    GameRegistry.addRecipe(new ItemStack(ModItems.laserCrystal, 1), new Object[] {"GRG", "SDS", "GRG", 'G', Block.glass, 'R', Item.redstone, 'D', Item.diamond, 'S', Item.glowstone});
+	    GameRegistry.addRecipe(new ItemStack(ModItems.laserSeekingGoogles, 1), new Object[] {"I I", "I I", "GLG", 'G', Block.glass, 'L', ModItems.laserCrystal, 'I', Item.ingotIron});
+	    GameRegistry.addRecipe(new ItemStack(ModBlocks.advancedLaser, 1), new Object[] {"OGO", "SLS", "OGO", 'G', Block.glass, 'L', ModItems.laserCrystal, 'S', Item.ingotGold, 'O', Block.obsidian});
+	    GameRegistry.addRecipe(new ItemStack(ModBlocks.basicLaser, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Block.glass, 'L', ModItems.laserCrystal, 'C', Block.cobblestone});
+	    GameRegistry.addRecipe(new ItemStack(ModBlocks.reflector, 1), new Object[] {"CGC", "GCG", "CGC", 'G', Block.glass, 'C', Block.cobblestone});
+	    GameRegistry.addRecipe(new ItemStack(ModBlocks.colourConverter, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Item.glowstone, 'L', ModItems.laserCrystal, 'C', Block.cobblestone});
+	    
+	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 0), new Object[] {Block.obsidian, Item.fireballCharge, Item.blazePowder, Item.glowstone});
+	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 3), new Object[] {Block.obsidian, Item.goldenCarrot, Item.fermentedSpiderEye, Item.glowstone});
+	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 5), new Object[] {Block.obsidian, Block.pistonBase, Item.feather, Item.glowstone});
+	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 6), new Object[] {Block.obsidian, Block.pistonStickyBase, Item.feather, Item.glowstone});
+	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 7), new Object[] {Block.obsidian, Item.swordGold, Item.spiderEye, Item.glowstone});
 	}
 }

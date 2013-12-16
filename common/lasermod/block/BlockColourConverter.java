@@ -37,7 +37,7 @@ import net.minecraft.world.World;
  */
 public class BlockColourConverter extends BlockContainer implements ILaserReciver {
 
-	public Icon frontIcon;
+	public Icon inputIcon;
 	public Icon[] front = new Icon[16];
 	
 	public BlockColourConverter(int id) {
@@ -52,9 +52,9 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-	    this.frontIcon = iconRegister.registerIcon("lasermod:eaw");
+	    this.inputIcon = iconRegister.registerIcon("lasermod:colorConverterInput");
 	    for(int i = 0; i < 15; ++i) {
-	    	front[i] = this.frontIcon = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
+	    	front[i] = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
 	    }
 	}
 
@@ -70,7 +70,7 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 		    return this.front[colourConverter.colour];
 		}
 		else {
-		 	return side == Facing.oppositeSide[meta] ? Block.anvil.getBlockTextureFromSide(0) : Block.pistonBase.getIcon(0, 1);
+		 	return side == Facing.oppositeSide[meta] ? inputIcon : Block.pistonBase.getIcon(0, 1);
 		}
     }
 	
@@ -86,15 +86,15 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	    
 	@Override
 	public Icon getIcon(int par1, int par2) {
-	    int meta = 2;
+	    int meta = 3;
 
 	    if (meta > 5)
-	        return this.frontIcon;
+	        return this.front[14];
 	    if (par1 == meta) {
-	        return this.frontIcon;
+	        return this.front[14];
 	    }
 	    else {
-	    	return par1 == Facing.oppositeSide[meta] ? Block.anvil.getBlockTextureFromSide(0) : Block.pistonBase.getIcon(0, 1);
+	    	return par1 == Facing.oppositeSide[meta] ? inputIcon : Block.pistonBase.getIcon(0, 1);
 	    }
 	}
 	
@@ -118,6 +118,7 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 					return true;
 				
 				colourConverter.colour = colour;
+				world.markBlockForRenderUpdate(x, y, z);
 				
 				if(colourConverter.laser != null) {
 					ILaserReciver reciver = colourConverter.getFirstReciver(colourConverter.getBlockMetadata());
