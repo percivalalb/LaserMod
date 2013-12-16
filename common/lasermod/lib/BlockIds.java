@@ -10,5 +10,6 @@ public class BlockIds {
 	public static int ID_ADVANCED_LASER = 1671;
 	public static int ID_REFLECTOR = 1672;
 	public static int ID_LASER_DETECTOR = 1673;
+	public static int ID_COLOUR_CONVERTER = 1674;
 	
 }
