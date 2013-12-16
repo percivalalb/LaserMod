@@ -83,6 +83,15 @@ public class BlockAdvancedLaser extends BlockContainer {
 			ILaser laser = LaserRegistry.getLaserFromItem(item);
 			boolean power = world.isBlockIndirectlyGettingPowered(x, y, z);
 			if(laser != null && !power) {
+				for(ItemStack stack : advancedLaser.upgrades) {
+					ILaser laser2 = LaserRegistry.getLaserFromItem(stack);
+					if(laser == laser2){
+						if(!world.isRemote)
+							player.addChatMessage("This Laser already has this upgrade.");
+						return true;
+					}
+				}
+				
 				advancedLaser.upgrades.add(item);
 				advancedLaser.laser = null;
 				

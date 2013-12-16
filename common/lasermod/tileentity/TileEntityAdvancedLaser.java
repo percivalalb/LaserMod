@@ -44,6 +44,7 @@ public class TileEntityAdvancedLaser extends TileEntity {
 			this.lagReduce = 0;
 			return;
 		}
+		
 	  	boolean hasSignal = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
 		ILaserReciver reciver = getFirstReciver(this.getBlockMetadata());
 		if(reciver != null) {

@@ -33,8 +33,8 @@ public class PullLaser implements ILaser {
 	@Override
 	public void performActionOnEntitiesBoth(List<Entity> entities, int direction) {
 		for(Entity entity : entities) {
-			double verticalSpeed = 0.120000000000000003D;
-            double maxSpeed = 0.19999999999999999D;
+			double verticalSpeed = 0.180000000000000003D;
+            double maxSpeed = 0.29999999999999999D;
             verticalSpeed *= SPEED_MULTIPLYER;
 
             if(entity instanceof EntityItem)
@@ -43,7 +43,7 @@ public class PullLaser implements ILaser {
             if (entity instanceof EntityMinecart)
                 verticalSpeed *= 0.5D;
 
-            if ((entity instanceof EntityFallingSand) && direction == 1)
+            if ((entity instanceof EntityFallingSand) && direction == 0)
                 verticalSpeed = 0.0D;
 
             if (direction == 1 && entity.motionY > -maxSpeed)

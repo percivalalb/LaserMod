@@ -44,24 +44,12 @@ public class TileEntityReflector extends TileEntity {
 	}
 	
 	public boolean addLaser(LaserInGame laserInGame) {
-		if(lasers.size() == 0) {
+		if(!lasers.contains(laserInGame)) {
 			lasers.add(laserInGame);
 			return true;
 		}
-		
-		for(int i = 0; i < lasers.size(); ++i) {
-			LaserInGame old = lasers.get(i);
-			
-			if(old.getLaserType() == laserInGame.getLaserType()) {
-				if(laserInGame.getStrength() > old.getStrength()) {
-					lasers.remove(i);
-					lasers.add(laserInGame);
-					return true;
-				}
-			}
-		}
-		
 		return false;
+		
 	}
 	
 	public int openSides() {
@@ -216,7 +204,7 @@ public class TileEntityReflector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -232,7 +220,7 @@ public class TileEntityReflector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, i, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -248,7 +236,7 @@ public class TileEntityReflector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -264,7 +252,7 @@ public class TileEntityReflector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -280,7 +268,7 @@ public class TileEntityReflector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -296,7 +284,7 @@ public class TileEntityReflector extends TileEntity {
         				return meta == Facing.oppositeSide[side] && hasPower;
         			}
         			else if(block != null && block instanceof ILaserReciver) {
-        				return ((ILaserReciver)block).canPassOnSide(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
+        				return ((ILaserReciver)block).isSendingSignalFromSide(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[side]);
         			}
         			break;
         		}
@@ -392,6 +380,12 @@ public class TileEntityReflector extends TileEntity {
 		}
 		
 		for(int i = 0; i < this.openSides.length; ++i) {
+			if(this.openSides[i] || !isValidSourceOfPowerOnSide(i)) {
+				this.removeAllLasersFromSide(i);
+			}
+		}
+		
+		for(int i = 0; i < this.openSides.length; ++i) {
 			if(this.openSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
 				continue;
 			ILaserReciver reciver = getFirstReciver(i);
@@ -401,24 +395,17 @@ public class TileEntityReflector extends TileEntity {
 				}
 			}
 		}
-		for(int i = 0; i < this.openSides.length; ++i) {
-			if(this.openSides[i] || !isValidSourceOfPowerOnSide(i)) {
-				this.removeAllLasersFromSide(i);
-			}
-		}
 		
 		for(int i = 0; i < this.openSides.length; ++i) {
-			if(!this.openSides[i] && this.lasers.size() > 0) {
-				if(!this.worldObj.isRemote) {
-					AxisAlignedBB boundingBox = getFromLaserBox(this.xCoord, this.yCoord, this.zCoord, i);
-					List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
-					for(ILaser la : getCreatedLaser(i).getLaserType()) {
-						la.performActionOnEntitiesBoth(entities, this.getBlockMetadata());
-						if(this.worldObj.isRemote) 
-							la.performActionOnEntitiesClient(entities, this.getBlockMetadata());
-						else
-							la.performActionOnEntitiesServer(entities, this.getBlockMetadata());
-					}
+			if(!this.containsInputSide(i) && !this.openSides[i] && this.lasers.size() > 0) {
+				AxisAlignedBB boundingBox = getFromLaserBox(this.xCoord, this.yCoord, this.zCoord, i);
+				List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, boundingBox);
+				for(ILaser la : getCreatedLaser(i).getLaserType()) {
+					la.performActionOnEntitiesBoth(entities, i);
+					if(this.worldObj.isRemote) 
+						la.performActionOnEntitiesClient(entities, i);
+					else
+						la.performActionOnEntitiesServer(entities, i);
 				}
 			}
 		}
@@ -431,7 +418,8 @@ public class TileEntityReflector extends TileEntity {
 		ArrayList<ILaser> laserList = new ArrayList<ILaser>();
 		for(LaserInGame lig : this.lasers) {
 			for(ILaser laser : lig.getLaserType()) {
-				laserList.add(laser);
+				if(!laserList.contains(laserList))
+					laserList.add(laser);
 			}
 		}
 		

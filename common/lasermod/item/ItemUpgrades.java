@@ -23,6 +23,7 @@ public class ItemUpgrades extends Item {
 	public Icon upgradeMine;
 	public Icon upgradePush;
 	public Icon upgradePull;
+	public Icon upgradeDamage;
 	
 	public ItemUpgrades(int id) {
 		super(id);
@@ -40,6 +41,7 @@ public class ItemUpgrades extends Item {
 	    this.upgradeMine = iconRegister.registerIcon("lasermod:upgradeMine");
 	    this.upgradePush = iconRegister.registerIcon("lasermod:upgradePush");
 	    this.upgradePull = iconRegister.registerIcon("lasermod:upgradePull");
+	    this.upgradeDamage = iconRegister.registerIcon("lasermod:upgradeDamage");
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -51,6 +53,7 @@ public class ItemUpgrades extends Item {
 		if(meta == 4) return this.upgradeMine;
 		if(meta == 5) return this.upgradePush;
 		if(meta == 6) return this.upgradePull;
+		if(meta == 7) return this.upgradeDamage;
         return this.itemIcon;
     }
 	
@@ -64,5 +67,12 @@ public class ItemUpgrades extends Item {
         tabList.add(new ItemStack(id, 1, 4));
         tabList.add(new ItemStack(id, 1, 5));
         tabList.add(new ItemStack(id, 1, 6));
+        tabList.add(new ItemStack(id, 1, 7));
     }
+	
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+	    int i = stack.getItemDamage();
+	    return super.getUnlocalizedName() + "." + i;
+	}
 }

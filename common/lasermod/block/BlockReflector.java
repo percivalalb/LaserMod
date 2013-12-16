@@ -92,21 +92,16 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 	@Override
 	public boolean canPassOnSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
-		return !reflector.openSides[side];
+		return !reflector.openSides[side] && !reflector.containsInputSide(side);
 	}
 	
 	@Override
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
 		TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(blockX, blockY, blockZ);
 		reflector.addLaser(laserInGame);
-		if(world instanceof WorldServer) {
-			WorldServer worldServer = (WorldServer)world;
-			MinecraftServer server = MinecraftServer.getServer();
-			
-			Packet packet = reflector.getDescriptionPacket();
-
-			server.getConfigurationManager().sendToAllNear(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, packet);
-		}
+		if(!world.isRemote)
+			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, reflector.getDescriptionPacket());
+		
 	}
 
 	@Override
@@ -116,14 +111,8 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 		
 		boolean flag = reflector.removeAllLasersFromSide(side);
 		
-		if(flag && world instanceof WorldServer) {
-			WorldServer worldServer = (WorldServer)world;
-			MinecraftServer server = MinecraftServer.getServer();
-			
-			Packet packet = reflector.getDescriptionPacket();
-
-			server.getConfigurationManager().sendToAllNear(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, packet);
-		}
+		if(flag && !world.isRemote)
+			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, world.provider.dimensionId, 512, reflector.getDescriptionPacket());
 	}
 	
 	@Override
