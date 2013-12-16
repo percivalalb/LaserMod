@@ -93,12 +93,13 @@ public class LaserMod {
 		
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent par1) {
-	    GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"BY ", "YB ", "  I", 'B', new ItemStack(Item.dyePowder, 1, 0), 'Y', new ItemStack(Item.dyePowder, 1, 10), 'I', Item.ingotIron});
+	    GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"  I", "YB ", "BY ", 'B', new ItemStack(Item.dyePowder, 1, 0), 'Y', new ItemStack(Item.dyePowder, 1, 11), 'I', Item.ingotIron});
+	    GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"  I", "BY ", "YB ", 'B', new ItemStack(Item.dyePowder, 1, 0), 'Y', new ItemStack(Item.dyePowder, 1, 11), 'I', Item.ingotIron});
 	    GameRegistry.addRecipe(new ItemStack(ModItems.laserCrystal, 1), new Object[] {"GRG", "SDS", "GRG", 'G', Block.glass, 'R', Item.redstone, 'D', Item.diamond, 'S', Item.glowstone});
 	    GameRegistry.addRecipe(new ItemStack(ModItems.laserSeekingGoogles, 1), new Object[] {"I I", "I I", "GLG", 'G', Block.glass, 'L', ModItems.laserCrystal, 'I', Item.ingotIron});
 	    GameRegistry.addRecipe(new ItemStack(ModBlocks.advancedLaser, 1), new Object[] {"OGO", "SLS", "OGO", 'G', Block.glass, 'L', ModItems.laserCrystal, 'S', Item.ingotGold, 'O', Block.obsidian});
 	    GameRegistry.addRecipe(new ItemStack(ModBlocks.basicLaser, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Block.glass, 'L', ModItems.laserCrystal, 'C', Block.cobblestone});
-	    GameRegistry.addRecipe(new ItemStack(ModBlocks.reflector, 1), new Object[] {"CGC", "GCG", "CGC", 'G', Block.glass, 'C', Block.cobblestone});
+	    GameRegistry.addRecipe(new ItemStack(ModBlocks.reflector, 1), new Object[] {"CGC", "GSG", "CGC", 'G', Block.glass, 'C', Block.cobblestone, 'S', Item.glowstone});
 	    GameRegistry.addRecipe(new ItemStack(ModBlocks.colourConverter, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Item.glowstone, 'L', ModItems.laserCrystal, 'C', Block.cobblestone});
 	    
 	    GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 0), new Object[] {Block.obsidian, Item.fireballCharge, Item.blazePowder, Item.glowstone});

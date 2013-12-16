@@ -11,6 +11,7 @@ import lasermod.api.ILaserReciver;
 import lasermod.api.LaserRegistry;
 import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityAdvancedLaser;
+import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -28,6 +29,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -119,18 +121,33 @@ public class BlockAdvancedLaser extends BlockContainer {
 		}
 		return false;
 	}
-	    
+	
 	@Override
-	public Icon getIcon(int par1, int par2) {
-	    int meta = getOrientation(par2);
+	@SideOnly(Side.CLIENT)
+    public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+		int meta = getOrientation(world.getBlockMetadata(x, y, z));
 
-	    if (meta > 5)
+		if (meta > 5)
 	        return this.frontIcon;
-	    if (par1 == meta) {
+	    if (side == meta) {
 	        return this.frontIcon;
 	    }
 	    else {
-	    	return par1 == Facing.oppositeSide[meta] ? backIcon : sideIcon;
+	    	return side == Facing.oppositeSide[meta] ? backIcon : sideIcon;
+	    }
+    }
+	    
+	@Override
+	public Icon getIcon(int side, int par2) {
+	    int meta = 3;
+
+	    if (meta > 5)
+	        return this.frontIcon;
+	    if (side == meta) {
+	        return this.frontIcon;
+	    }
+	    else {
+	    	return side == Facing.oppositeSide[meta] ? backIcon : sideIcon;
 	    }
 	}
 
