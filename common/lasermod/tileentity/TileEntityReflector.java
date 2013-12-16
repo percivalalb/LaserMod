@@ -425,7 +425,19 @@ public class TileEntityReflector extends TileEntity {
 		
 		LaserInGame laserInGame = new LaserInGame(laserList);
 		double totalPower = 0.0D;
+		int red = lasers.get(0).red;
+		int green = lasers.get(0).green;
+		int blue = lasers.get(0).blue;
+		for(int i = 1; i < lasers.size(); ++i) {
+			red = (red * lasers.get(i).red) / 255;
+			green = (green * lasers.get(i).green) / 255;
+			blue = (blue * lasers.get(i).blue) / 255;
+		}
 		
+		laserInGame.red = red;
+		laserInGame.green = green;
+		laserInGame.blue = blue;
+				
 		for(LaserInGame laser : lasers)
 			totalPower += laser.getStrength();
 		

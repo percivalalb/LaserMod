@@ -29,6 +29,7 @@ public class PacketColourConverterUpdate extends PacketBase {
 
     public int x, y, z;
     public LaserInGame laser;
+    public int colour;
 
     public PacketColourConverterUpdate() {}
 
@@ -37,6 +38,7 @@ public class PacketColourConverterUpdate extends PacketBase {
         this.y = y;
         this.z = z;
         this.laser = colourConvertor.laser;
+        this.colour = colourConvertor.colour;
     }
 
 	@Override
@@ -44,7 +46,7 @@ public class PacketColourConverterUpdate extends PacketBase {
 	    x = data.readInt();
 	    y = data.readInt();
 	    z = data.readInt();
-	    
+	    colour = data.readInt();
 	    if(data.readBoolean()) {
 		    double strength = data.readDouble();
 		    int laserCount = data.readInt();
@@ -66,7 +68,7 @@ public class PacketColourConverterUpdate extends PacketBase {
 		data.writeInt(x);
 	    data.writeInt(y);
 	    data.writeInt(z);
-
+	    data.writeInt(colour);
 	    data.writeBoolean(this.laser != null);
 	    if(this.laser != null) {
 		    data.writeDouble(laser.getStrength());

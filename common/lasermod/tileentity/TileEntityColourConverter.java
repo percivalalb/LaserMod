@@ -17,6 +17,7 @@ import lasermod.packet.PacketAdvancedLaserUpdate;
 import lasermod.packet.PacketColourConverterUpdate;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -32,6 +33,8 @@ public class TileEntityColourConverter extends TileEntity {
 	public LaserInGame laser = null;
 	public boolean hadPower = false;
 	public int lagReduce = 0;
+	public int colour = 14;
+	public static float[][] laserColourTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.0F, 1.0F, 0.0F}, {1.0F, 0.0F, 0.0F}, {0.0F, 0.0F, 0.0F}};
 	
 	@Override
 	public void updateEntity() {
@@ -44,7 +47,7 @@ public class TileEntityColourConverter extends TileEntity {
 			ILaserReciver reciver = getFirstReciver(this.getBlockMetadata());
 			if(reciver != null) {
 			  	if(reciver.canPassOnSide(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()])) {
-					reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.laser);
+					reciver.passLaser(worldObj, reciverCords[0], reciverCords[1], reciverCords[2], this.xCoord, this.yCoord, this.zCoord, this.getCreatedLaser());
 				}
 			}
 		}
@@ -232,9 +235,9 @@ public class TileEntityColourConverter extends TileEntity {
 	
 	public LaserInGame getCreatedLaser() {
 		LaserInGame laserInGame = laser.copy();
-		laserInGame.red = 100;
-		laserInGame.green = 100;
-		laserInGame.blue = 100;
+		laserInGame.red = (int)(this.laserColourTable[this.colour][0] * 255);
+		laserInGame.green = (int)(this.laserColourTable[this.colour][1] * 255);
+		laserInGame.blue = (int)(this.laserColourTable[this.colour][2] * 255);
 		return laserInGame;
 	}
 	

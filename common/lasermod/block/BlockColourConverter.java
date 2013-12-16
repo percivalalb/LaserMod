@@ -5,9 +5,13 @@ import java.util.List;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.ModItems;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserRegistry;
 import lasermod.core.helper.LogHelper;
+import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
 import net.minecraft.block.Block;
@@ -16,9 +20,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
@@ -85,8 +92,51 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	        return this.frontIcon;
 	    }
 	    else {
-	    	return par1 == Facing.oppositeSide[meta] ? Block.anvil.getBlockTextureFromSide(0) : sideIcon;
+	    	return par1 == Facing.oppositeSide[meta] ? Block.anvil.getBlockTextureFromSide(0) : Block.pistonBase.getIcon(0, 1);
 	    }
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+		ItemStack item = player.getCurrentEquippedItem();
+		if(item != null) {
+			TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(x, y, z);
+			if(item.itemID == ModItems.screwdriver.itemID) {
+				return true;
+			}
+			
+			if(item.itemID == Item.dyePowder.itemID) {
+				int colour = 15 - item.getItemDamage();
+				if(colour > 15)
+					colour = 15;
+				else if(colour < 0)
+					colour = 0;
+				
+				if(colour == colourConverter.colour)
+					return true;
+				
+				colourConverter.colour = colour;
+				
+				ILaserReciver reciver = colourConverter.getFirstReciver(colourConverter.getBlockMetadata());
+				if(reciver != null) {
+					reciver.removeLasersFromSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()]);
+				  	if(reciver.canPassOnSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()])) {
+						reciver.passLaser(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], y, y,z, colourConverter.getCreatedLaser());
+					}
+				}
+				
+				if(!player.capabilities.isCreativeMode)
+					item.stackSize--;
+				if(item.stackSize <= 0)
+					player.setCurrentItemOrArmor(0, (ItemStack)null);
+				
+				if(!world.isRemote)
+					PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, world.provider.dimensionId, 512, colourConverter.getDescriptionPacket());
+				
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
