@@ -80,12 +80,7 @@ public class LaserMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		LogHelper.init();
-		MinecraftForge.EVENT_BUS.register(new OverlayHandler());
-		proxy.onPreLoad();
-	}
 
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
 		basicLaser = new BlockBasicLaser(BlockIds.ID_BASIC_LASER).setHardness(1.0F).setUnlocalizedName("lasermod.basicLaser").setCreativeTab(LaserMod.laserTab);
 		advancedLaser = new BlockAdvancedLaser(BlockIds.ID_ADVANCED_LASER).setHardness(1.0F).setUnlocalizedName("lasermod.advancedLaser").setCreativeTab(LaserMod.laserTab);
 		reflector = new BlockReflector(BlockIds.ID_REFLECTOR).setUnlocalizedName("lasermod.reflector").setHardness(1.0F).setCreativeTab(LaserMod.laserTab);
@@ -139,6 +134,12 @@ public class LaserMod {
 		NetworkRegistry.instance().registerChannel(p, "laser:colour");
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
+		MinecraftForge.EVENT_BUS.register(new OverlayHandler());
+		proxy.onPreLoad();
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
 		proxy.registerHandlers();
 	}
 
