@@ -29,10 +29,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author ProPercivalalb
  */
 public class BlockColourConverter extends BlockContainer implements ILaserReciver {
-
 	public Icon inputIcon;
 	public Icon[] front = new Icon[16];
-	
+
 	public BlockColourConverter(int id) {
 		super(id, Material.rock);
 	}
@@ -41,96 +40,91 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityColourConverter();
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-	    this.inputIcon = iconRegister.registerIcon("lasermod:colorConverterInput");
-	    for(int i = 0; i < 15; ++i) {
-	    	front[i] = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
-	    }
+		this.inputIcon = iconRegister.registerIcon("lasermod:colorConverterInput");
+		for (int i = 0; i < 15; ++i)
+			front[i] = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
-		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(x, y, z);
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter) world.getBlockTileEntity(x, y, z);
 		int meta = getOrientation(world.getBlockMetadata(x, y, z));
 
 		if (meta > 5)
-		    return this.front[colourConverter.colour];
+			return this.front[colourConverter.colour];
 		if (side == meta) {
-		    return this.front[colourConverter.colour];
+			return this.front[colourConverter.colour];
+		} else {
+			return side == Facing.oppositeSide[meta] ? inputIcon : Block.pistonBase.getIcon(0, 1);
 		}
-		else {
-		 	return side == Facing.oppositeSide[meta] ? inputIcon : Block.pistonBase.getIcon(0, 1);
-		}
-    }
-	
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(int id, CreativeTabs creativeTab, List tabList) {
-        tabList.add(new ItemStack(id, 1, 0));
-    }
+	public void getSubBlocks(int id, CreativeTabs creativeTab, List tabList) {
+		tabList.add(new ItemStack(id, 1, 0));
+	}
 
 	public static int getOrientation(int par1) {
 		return par1 & 7;
 	}
-	    
+
 	@Override
 	public Icon getIcon(int par1, int par2) {
-	    int meta = 3;
+		int meta = 3;
 
-	    if (meta > 5)
-	        return this.front[14];
-	    if (par1 == meta) {
-	        return this.front[14];
-	    }
-	    else {
-	    	return par1 == Facing.oppositeSide[meta] ? inputIcon : Block.pistonBase.getIcon(0, 1);
-	    }
+		if (meta > 5)
+			return this.front[14];
+		if (par1 == meta) {
+			return this.front[14];
+		} else {
+			return par1 == Facing.oppositeSide[meta] ? inputIcon : Block.pistonBase.getIcon(0, 1);
+		}
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
 		ItemStack item = player.getCurrentEquippedItem();
-		if(item != null) {
-			TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(x, y, z);
-			if(item.itemID == LaserMod.screwdriver.itemID) {
+		if (item != null) {
+			TileEntityColourConverter colourConverter = (TileEntityColourConverter) world.getBlockTileEntity(x, y, z);
+			if (item.itemID == LaserMod.screwdriver.itemID)
 				return true;
-			}
-			
-			if(item.itemID == Item.dyePowder.itemID) {
+
+			if (item.itemID == Item.dyePowder.itemID) {
 				int colour = 15 - item.getItemDamage();
-				if(colour > 15)
+				if (colour > 15)
 					colour = 15;
-				else if(colour < 0)
+				else if (colour < 0)
 					colour = 0;
-				
-				if(colour == colourConverter.colour)
+
+				if (colour == colourConverter.colour)
 					return true;
-				
+
 				colourConverter.colour = colour;
 				world.markBlockForRenderUpdate(x, y, z);
-				
-				if(colourConverter.laser != null) {
+
+				if (colourConverter.laser != null) {
 					ILaserReciver reciver = colourConverter.getFirstReciver(colourConverter.getBlockMetadata());
-					if(reciver != null) {
+					if (reciver != null) {
 						reciver.removeLasersFromSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()]);
-					  	if(reciver.canPassOnSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()])) {
-							reciver.passLaser(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], y, y,z, colourConverter.getCreatedLaser());
-						}
+						if (reciver.canPassOnSide(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], x, y, z, Facing.oppositeSide[colourConverter.getBlockMetadata()]))
+							reciver.passLaser(world, colourConverter.reciverCords[0], colourConverter.reciverCords[1], colourConverter.reciverCords[2], y, y, z, colourConverter.getCreatedLaser());
 					}
 				}
-				
-				if(!player.capabilities.isCreativeMode)
+
+				if (!player.capabilities.isCreativeMode)
 					item.stackSize--;
-				if(item.stackSize <= 0)
-					player.setCurrentItemOrArmor(0, (ItemStack)null);
-				
-				if(!world.isRemote)
+				if (item.stackSize <= 0)
+					player.setCurrentItemOrArmor(0, (ItemStack) null);
+
+				if (!world.isRemote)
 					PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
-				
+
 				return true;
 			}
 		}
@@ -139,74 +133,70 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 
 	@Override
 	public boolean isOpaqueCube() {
-        return false;
-    }
+		return false;
+	}
 
 	@Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-	
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+
 	@Override
 	public void onBlockPlacedBy(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
-		 int rotation = determineOrientation(par1World, x, y, z, par5EntityLiving);
-		 par1World.setBlockMetadataWithNotify(x, y, z, rotation, 2);
+		int rotation = determineOrientation(par1World, x, y, z, par5EntityLiving);
+		par1World.setBlockMetadataWithNotify(x, y, z, rotation, 2);
 	}
-	
+
 	public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLivingBase par4EntityLivingBase) {
-        if (MathHelper.abs((float)par4EntityLivingBase.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLivingBase.posZ - (float)par3) < 2.0F) {
-            double d0 = par4EntityLivingBase.posY + 1.82D - (double)par4EntityLivingBase.yOffset;
+		if (MathHelper.abs((float) par4EntityLivingBase.posX - (float) par1) < 2.0F && MathHelper.abs((float) par4EntityLivingBase.posZ - (float) par3) < 2.0F) {
+			double d0 = par4EntityLivingBase.posY + 1.82D - (double) par4EntityLivingBase.yOffset;
 
-            if (d0 - (double)par2 > 2.0D) {
-                return 0;
-            }
+			if (d0 - (double) par2 > 2.0D)
+				return 0;
 
-            if ((double)par2 - d0 > 0.0D)
-            {
-                return 1;
-            }
-        }
+			if ((double) par2 - d0 > 0.0D)
+				return 1;
+		}
 
-        int l = MathHelper.floor_double((double)(par4EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        return l == 0 ? 3 : (l == 1 ? 4 : (l == 2 ? 2 : (l == 3 ? 5 : 1)));
-    }
-	
+		int l = MathHelper.floor_double((double) (par4EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		return l == 0 ? 3 : (l == 1 ? 4 : (l == 2 ? 2 : (l == 3 ? 5 : 1)));
+	}
+
 	@Override
 	public boolean canPassOnSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
-		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(blockX, blockY, blockZ);
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter) world.getBlockTileEntity(blockX, blockY, blockZ);
 		return side == Facing.oppositeSide[colourConverter.getBlockMetadata()];
 	}
-	
+
 	@Override
 	public void passLaser(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
-		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(blockX, blockY, blockZ);
-		if(colourConverter.laser == null) {
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter) world.getBlockTileEntity(blockX, blockY, blockZ);
+		if (colourConverter.laser == null) {
 			colourConverter.laser = laserInGame;
-			if(!world.isRemote)
+			if (!world.isRemote)
 				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 		}
-		//if(!world.isRemote)
-		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
-		
+//		if (!world.isRemote)
+//			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 	}
 
 	@Override
 	public void removeLasersFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
-		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(blockX, blockY, blockZ);
-		
-		if(side == Facing.oppositeSide[colourConverter.getBlockMetadata()]) {
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter) world.getBlockTileEntity(blockX, blockY, blockZ);
+
+		if (side == Facing.oppositeSide[colourConverter.getBlockMetadata()]) {
 			colourConverter.laser = null;
-			if(!world.isRemote)
+			if (!world.isRemote)
 				PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 		}
-		
-		//if(flag && !world.isRemote)
-		//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
+
+//		if (!world.isRemote)
+//			PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
 	}
-	
+
 	@Override
 	public boolean isSendingSignalFromSide(World world, int blockX, int blockY, int blockZ, int orginX, int orginY, int orginZ, int side) {
-		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(blockX, blockY, blockZ);
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter) world.getBlockTileEntity(blockX, blockY, blockZ);
 		return colourConverter.laser != null && side == colourConverter.getBlockMetadata();
 	}
 }

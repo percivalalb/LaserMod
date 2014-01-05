@@ -1,10 +1,6 @@
 package lasermod.core.handler;
 
-import lasermod.core.helper.LogHelper;
 import lasermod.core.proxy.ClientProxy;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -12,9 +8,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraft.network.MemoryConnection;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author ProPercivalalb
@@ -28,9 +24,8 @@ public class OverlayHandler {
 				ScaledResolution var5 = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 				int width = var5.getScaledWidth();
 				int height = var5.getScaledHeight();
-				// LogHelper.logInfo("" + ClientProxy.slowedByIceLaser);
-				// if(ClientProxy.slowedByIceLaser >= 40 &&
-				// !((MemoryConnection)ClientProxy.mc.thePlayer.sendQueue.getNetManager()).isGamePaused())
+//				LogHelper.logInfo("" + ClientProxy.slowedByIceLaser);
+//				if (ClientProxy.slowedByIceLaser >= 40 && !((MemoryConnection) ClientProxy.mc.thePlayer.sendQueue.getNetManager()).isGamePaused())
 				ClientProxy.slowedByIceLaser -= 2;
 				int tempTime = ClientProxy.slowedByIceLaser;
 				if (tempTime >= 80)
@@ -38,9 +33,8 @@ public class OverlayHandler {
 
 				float time = tempTime / 100F;
 
-				if (time > 0.4F) {
-					// this.renderIceOverlay(time, width, height);
-				}
+//				if (time > 0.4F)
+//					this.renderIceOverlay(time, width, height);
 			}
 		}
 	}
