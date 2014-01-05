@@ -1,0 +1,10 @@
+# OS cache files
+.DS_Store
+
+# Compiled files
+*.class
+
+# Packaged files
+*.jar
+*.war
+*.ear
