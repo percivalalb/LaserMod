@@ -2,13 +2,11 @@ package lasermod.api;
 
 import java.util.ArrayList;
 
-import lasermod.ModItems;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
+import lasermod.LaserMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
@@ -77,7 +75,7 @@ public class LaserInGame {
 	public float shouldRenderLaser(EntityPlayer player) {
 		for(ILaser laser : this.laserType)
 			if(!laser.shouldRenderLaser(player, this.side))
-				return player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].itemID == ModItems.laserSeekingGoogles.itemID ? 0.1F : 0.0F;
+				return player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].itemID == LaserMod.laserSeekingGoogles.itemID ? 0.1F : 0.0F;
 		return 0.4F;
 	}
 	

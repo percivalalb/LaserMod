@@ -3,7 +3,7 @@ package lasermod.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
-import lasermod.ModBlocks;
+import lasermod.LaserMod;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
@@ -12,8 +12,6 @@ import lasermod.api.LaserWhitelist;
 import lasermod.core.helper.LogHelper;
 import lasermod.lib.Constants;
 import lasermod.packet.PacketReflectorUpdate;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagByte;
@@ -24,6 +22,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
@@ -198,7 +198,7 @@ public class TileEntityReflector extends TileEntity {
         	for(int i = this.yCoord - 1; this.yCoord - i >= 0; --i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
-        			if(block != null && (block.blockID == ModBlocks.basicLaser.blockID || block.blockID == ModBlocks.advancedLaser.blockID)) {
+        			if(block != null && (block.blockID == LaserMod.basicLaser.blockID || block.blockID == LaserMod.advancedLaser.blockID)) {
             			int meta = this.worldObj.getBlockMetadata(this.xCoord, i, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, i, this.zCoord);
         				return meta == Facing.oppositeSide[side] && hasPower;
@@ -214,7 +214,7 @@ public class TileEntityReflector extends TileEntity {
         	for(int i = this.yCoord + 1; i < this.yCoord + Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, i, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, i, this.zCoord)];
-        			if(block != null && (block.blockID == ModBlocks.basicLaser.blockID || block.blockID == ModBlocks.advancedLaser.blockID)) {
+        			if(block != null && (block.blockID == LaserMod.basicLaser.blockID || block.blockID == LaserMod.advancedLaser.blockID)) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord, i, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, i, this.zCoord);
         				return meta == Facing.oppositeSide[side] && hasPower;
@@ -230,7 +230,7 @@ public class TileEntityReflector extends TileEntity {
         	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord - i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord - i)];
-        			if(block != null && (block.blockID == ModBlocks.basicLaser.blockID || block.blockID == ModBlocks.advancedLaser.blockID)) {
+        			if(block != null && (block.blockID == LaserMod.basicLaser.blockID || block.blockID == LaserMod.advancedLaser.blockID)) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - i);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord - i);
         				return meta == Facing.oppositeSide[side] && hasPower;
@@ -246,7 +246,7 @@ public class TileEntityReflector extends TileEntity {
         	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord, this.yCoord, this.zCoord + i)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord + i)];
-        			if(block != null && (block.blockID == ModBlocks.basicLaser.blockID || block.blockID == ModBlocks.advancedLaser.blockID)) {
+        			if(block != null && (block.blockID == LaserMod.basicLaser.blockID || block.blockID == LaserMod.advancedLaser.blockID)) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + i);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord + i);
         				return meta == Facing.oppositeSide[side] && hasPower;
@@ -262,7 +262,7 @@ public class TileEntityReflector extends TileEntity {
         	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord - i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord - i, this.yCoord, this.zCoord)];
-        			if(block != null && (block.blockID == ModBlocks.basicLaser.blockID || block.blockID == ModBlocks.advancedLaser.blockID)) {
+        			if(block != null && (block.blockID == LaserMod.basicLaser.blockID || block.blockID == LaserMod.advancedLaser.blockID)) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord - i, this.yCoord, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord - i, this.yCoord, this.zCoord);
         				return meta == Facing.oppositeSide[side] && hasPower;
@@ -278,7 +278,7 @@ public class TileEntityReflector extends TileEntity {
         	for(int i = 1; i < Constants.LASER_REACH; ++i) {
         		if(!LaserWhitelist.canLaserPassThrought(this.worldObj, this.xCoord + i, this.yCoord, this.zCoord)) {
         			Block block = Block.blocksList[this.worldObj.getBlockId(this.xCoord + i, this.yCoord, this.zCoord)];
-        			if(block != null && (block.blockID == ModBlocks.basicLaser.blockID || block.blockID == ModBlocks.advancedLaser.blockID)) {
+        			if(block != null && (block.blockID == LaserMod.basicLaser.blockID || block.blockID == LaserMod.advancedLaser.blockID)) {
         				int meta = this.worldObj.getBlockMetadata(this.xCoord + i, this.yCoord, this.zCoord);
             			boolean hasPower = worldObj.isBlockIndirectlyGettingPowered(this.xCoord + i, this.yCoord, this.zCoord);
         				return meta == Facing.oppositeSide[side] && hasPower;

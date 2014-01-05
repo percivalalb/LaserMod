@@ -2,17 +2,9 @@ package lasermod.block;
 
 import java.util.List;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lasermod.ModItems;
-import lasermod.api.ILaser;
+import lasermod.LaserMod;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
-import lasermod.api.LaserRegistry;
-import lasermod.core.helper.LogHelper;
-import lasermod.tileentity.TileEntityAdvancedLaser;
-import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -24,13 +16,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
@@ -103,7 +96,7 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 		ItemStack item = player.getCurrentEquippedItem();
 		if(item != null) {
 			TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getBlockTileEntity(x, y, z);
-			if(item.itemID == ModItems.screwdriver.itemID) {
+			if(item.itemID == LaserMod.screwdriver.itemID) {
 				return true;
 			}
 			

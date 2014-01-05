@@ -2,18 +2,10 @@ package lasermod.block;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lasermod.ModItems;
+import lasermod.LaserMod;
 import lasermod.api.ILaser;
-import lasermod.api.ILaserReciver;
 import lasermod.api.LaserRegistry;
-import lasermod.core.helper.LogHelper;
 import lasermod.tileentity.TileEntityAdvancedLaser;
-import lasermod.tileentity.TileEntityColourConverter;
-import lasermod.tileentity.TileEntityReflector;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -23,14 +15,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.Direction;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
@@ -69,7 +62,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 		ItemStack item = player.getCurrentEquippedItem();
 		if(item != null) {
 			TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)world.getBlockTileEntity(x, y, z);
-			if(item.itemID == ModItems.screwdriver.itemID) {
+			if(item.itemID == LaserMod.screwdriver.itemID) {
 				
 				if(!world.isRemote) {
 					player.addChatMessage(EnumChatFormatting.RED + String.format("Advanced Laser (%d, %d, %d)", x, y, z));
