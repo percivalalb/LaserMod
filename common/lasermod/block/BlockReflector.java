@@ -54,7 +54,7 @@ public class BlockReflector extends BlockContainer implements ILaserReciver {
 
 	@Override
 	public boolean renderAsNormalBlock() {
-		return false;
+		return true;
 	}
 
 	@Override

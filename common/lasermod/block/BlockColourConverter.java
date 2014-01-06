@@ -138,7 +138,7 @@ public class BlockColourConverter extends BlockContainer implements ILaserRecive
 
 	@Override
 	public boolean renderAsNormalBlock() {
-		return false;
+		return true;
 	}
 
 	@Override
