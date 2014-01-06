@@ -1,5 +1,2 @@
-Modjam3
-==================
-
-The repo for the mod we, The Lumpkins will be creating for Modjam 3
-Starting on the 13th I will start coding and commiting code. While working on the code I will be commiting about every 15 minutes (I will try my best). If I have not commited for more that 15 mintues I have most probably take a break :D
+# Laser Mod
+A mod for Minecraft that adds in lasers! Check out the forum thread for more information [here](http://www.minecraftforum.net/topic/2209405-16x-laser-mod-made-in-modjam-vote-for-us/).

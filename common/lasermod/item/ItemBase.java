@@ -1,18 +1,17 @@
 package lasermod.item;
 
 import lasermod.LaserMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
 public class ItemBase extends Item {
-
 	public String texture;
-	
+
 	public ItemBase(int id, String texture) {
 		super(id);
 		this.texture = texture;
@@ -22,6 +21,6 @@ public class ItemBase extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-	    this.itemIcon = iconRegister.registerIcon("lasermod:" + texture);
+		this.itemIcon = iconRegister.registerIcon("lasermod:" + texture);
 	}
 }
