@@ -7,6 +7,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import lasermod.lib.Reference;
 import lasermod.network.NetworkManager;
 import lasermod.proxy.CommonProxy;
@@ -37,6 +38,9 @@ public class LaserMod {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		NETWORK_MANAGER = new NetworkManager(Reference.CHANNEL_NAME);
+    	NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+			
 		proxy.registerHandlers();
 	}
 	
