@@ -1,0 +1,18 @@
+[
+{
+  "modid": "LaserMod",
+  "name": "Laser Mod",
+  "description": "Zap sheep, zap your best friend. LASERS!! (Made for Modjam3)",
+  "version": "v1.0.0",
+  "credits": "Coded by ProPercivalalb, textured by Frodo207",
+  "mcversion": "",
+  "updateUrl": "",
+  "authors": [ "ProPercivalalb", "Frodo207"],
+  "logoFile": "",
+  "parent":"",
+  "screenshots": [],
+  "dependencies": [
+     "mod_MinecraftForge"
+  ]
+}
+]
