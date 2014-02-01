@@ -1,0 +1,17 @@
+Map Making Tools - Changelog
+
+Update List Key
+(+) A new feature
+(-) A removed feature
+(#) A changed feature
+(*) A bug fix
+(/) Other
+
+v1.1.0a
++ Updated to 1.7.2
+
+# Laser will now pass through glass panes and ice
+
+v1.0.0a
+
++ Inital Release
