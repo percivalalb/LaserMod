@@ -28,6 +28,10 @@ public class LaserMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		
+		ModBlocks.inti();
+		ModItems.inti();
+		ModEntities.inti();
+		
 		proxy.onPreLoad();
 	}
 	
