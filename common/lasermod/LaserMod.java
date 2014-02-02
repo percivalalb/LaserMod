@@ -8,6 +8,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import lasermod.api.LaserRegistry;
+import lasermod.laser.DefaultLaser;
 import lasermod.lib.Reference;
 import lasermod.network.NetworkManager;
 import lasermod.proxy.CommonProxy;
@@ -46,6 +48,6 @@ public class LaserMod {
 	
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent event) {
-		
+		LaserRegistry.registerLaser("default", new DefaultLaser());
 	}
 }

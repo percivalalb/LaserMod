@@ -85,6 +85,7 @@ public class LaserInGame {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public LaserInGame copy() {
 		LaserInGame laser = new LaserInGame((ArrayList<ILaser>)this.laserType.clone());
 		laser.setSide(this.side);
