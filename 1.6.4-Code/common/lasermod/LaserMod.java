@@ -56,6 +56,28 @@ public class LaserMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		LogHelper.init();
+		
+		try
+        	{
+        		Configuration c = new Configuration(event.getSuggestedConfigurationFile());
+        	 	c.load();
+            		BlockIds.ID_BASIC_LASER = c.getBlock("basicLaser", 1670).getInt();
+            		BlockIds.ID_ADVANCED_LASER = c.getBlock("advancedLaser", 1671).getInt();
+            		BlockIds.ID_REFLECTOR = c.getBlock("reflector", 1672).getInt();
+            		BlockIds.ID_LASER_DETECTOR = c.getBlock("detector", 1673).getInt();
+            		BlockIds.ID_COLOUR_CONVERTER = c.getBlock("converter", 1674).getInt();
+            		ItemIds.ID_LASER_CRYSTAL = c.getItem("crystal", 5670).getInt();
+            		ItemIds.ID_LASER_SEEKING_GOOGLES = c.getItem("goggles", 5671).getInt();
+            		ItemIds.ID_SCREWDRIVER = c.getItem("scredriver", 5672).getInt();
+            		ItemIds.ID_UPGRADES = c.getItem("upgrades", 5673).getInt();
+            		c.save();
+        	}
+        	catch (Exception e)
+        	{
+            		LogHelper.log(Level.SEVERE, "Couldn't initialize the config file");
+            		e.printStackTrace();
+        	}
+		
 		//Loads the Blocks/Items
 		ModBlocks.inti();
 		ModItems.inti();
