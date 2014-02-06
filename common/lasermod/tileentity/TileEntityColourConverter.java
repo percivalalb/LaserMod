@@ -1,11 +1,15 @@
 package lasermod.tileentity;
 
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.LaserMod;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
+import lasermod.network.packet.PacketColourConverter;
 import lasermod.util.LaserUtil;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 
@@ -20,12 +24,21 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	public int colour = 14;
 	
 	@Override
-	public void func_145845_h() {
-		if(this.field_145850_b.isRemote) return;
+	public void updateEntity() {
+		if(this.worldObj.isRemote) return;
 		
 		this.lagReduce += 1;
 		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
-		
+	
+		if(this.laser != null) {
+			ILaserReciver reciver = LaserUtil.getFirstReciver(this, this.getBlockMetadata());
+			if(reciver != null) {
+				LaserInGame laserInGame = this.getOutputLaser(this.getBlockMetadata());
+			  	if(reciver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame)) {
+					reciver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame);
+				}
+			}
+		}
 	}
 	
 	public void setLaser(LaserInGame laser) {
@@ -34,54 +47,86 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	}
 	
 	@Override
-	public LaserInGame getOutputLaser() {
-		if(this.requiresUpdate() && this.laser != null) {
-			FMLLog.info("Update");
-			this.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
-			this.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
-			this.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
-			this.setNoUpdate();
-		}
-		return this.laser;
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		if(tag.hasKey("colour"))
+			this.colour = tag.getInteger("colour");
+		if(tag.hasKey("laser"))
+			this.laser = new LaserInGame(tag.getCompoundTag("laser"));
+		else 
+			this.laser = null;
 	}
 	
 	@Override
-	public int getX() { return this.field_145851_c; }
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setInteger("colour", this.colour);
+		if(this.laser != null)
+			tag.setTag("laser", this.laser.writeToNBT(new NBTTagCompound()));
+	}
+	
 	@Override
-	public int getY() { return this.field_145848_d; }
+	public LaserInGame getOutputLaser(int side) {
+		if(this.laser != null) {
+			this.laser.setSide(Facing.oppositeSide[side]);
+			if(this.requiresUpdate()) {
+				this.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
+				this.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
+				this.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
+				this.setNoUpdate();
+			}
+			return this.laser.copy();
+		}
+		return null;
+	}
+	
 	@Override
-	public int getZ() { return this.field_145849_e; }
+	public int getX() { return this.xCoord; }
+	@Override
+	public int getY() { return this.yCoord; }
+	@Override
+	public int getZ() { return this.zCoord; }
 
 	@Override
 	public World getWorld() {
-		return this.field_145850_b;
+		return this.worldObj;
 	}
 
 	@Override
-	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side) {
-		return side == Facing.oppositeSide[this.func_145832_p()];
+	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
+		return side == Facing.oppositeSide[this.getBlockMetadata()];
 	}
 	
 	@Override
-	public void passLaser(World world, int orginX, int orginY, int orginZ, LaserInGame laserInGame) {
-		if(this.getOutputLaser() == null) {
+	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
+		if(this.getOutputLaser(side) == null) {
 			this.setLaser(laserInGame);
-			///if(!world.isRemote)
-				//PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this.xCoord, this.yCoord, this.zCoord, this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		}
 	}
 
 	@Override
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		if(side == Facing.oppositeSide[this.func_145832_p()]) {
+		if(side == Facing.oppositeSide[this.getBlockMetadata()]) {
 			this.setLaser(null);
-			//if(!world.isRemote)
-			//	PacketDispatcher.sendPacketToAllAround(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this.xCoord, this.yCoord, this.zCoord, this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		}
 	}
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return this.getOutputLaser() != null && side == this.func_145832_p();
+		return this.getOutputLaser(side) != null && side == this.getBlockMetadata();
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+    	return INFINITE_EXTENT_AABB;
+    }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared() {
+        return 65536.0D;
+    }
 }

@@ -7,7 +7,6 @@ import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.util.LaserUtil;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
@@ -20,41 +19,47 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	private int lagReduce = -1;
 	
 	@Override
-	public void func_145845_h() {
-		if(this.field_145850_b.isRemote) return;
+	public void updateEntity() {
+		if(this.worldObj.isRemote) return;
 		
 		this.lagReduce += 1;
 		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
 		
-		ILaserReciver reciver = LaserUtil.getFirstReciver(this, this.func_145832_p());
+		ILaserReciver reciver = LaserUtil.getFirstReciver(this, this.getBlockMetadata());
 		if(reciver != null) {
-		  	boolean hasSignal = (this.field_145850_b.isBlockIndirectlyGettingPowered(this.field_145851_c, this.field_145848_d, this.field_145849_e));
+		  	boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
 		  	
+		  	LaserInGame laserInGame = this.getOutputLaser(this.getBlockMetadata());
 		  	if(!hasSignal) {
-		  		reciver.removeLasersFromSide(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, Facing.oppositeSide[this.func_145832_p()]);
+		  		reciver.removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()]);
 		  	}
-		  	else if(reciver.canPassOnSide(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, Facing.oppositeSide[this.func_145832_p()])) {
-				reciver.passLaser(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, this.getOutputLaser());
+		  	else if(reciver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame)) {
+				reciver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame);
 			}
 		}
 		this.lagReduce += 1;
 	}
 	
 	@Override
-	public int getX() { return this.field_145851_c; }
+	public LaserInGame getOutputLaser(int side) {
+		return new LaserInGame(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[side]);
+	}
+	
 	@Override
-	public int getY() { return this.field_145848_d; }
+	public int getX() { return this.xCoord; }
 	@Override
-	public int getZ() { return this.field_145849_e; }
+	public int getY() { return this.yCoord; }
+	@Override
+	public int getZ() { return this.zCoord; }
 
 	@Override
 	public World getWorld() {
-		return this.field_145850_b;
+		return this.worldObj;
 	}
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return this.field_145850_b.isBlockIndirectlyGettingPowered(this.field_145851_c, this.field_145848_d, this.field_145849_e) && this.func_145832_p() == side;
+		return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) && this.getBlockMetadata() == side;
 	}
 	
 	@Override
@@ -65,12 +70,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public double func_145833_n() {
+    public double getMaxRenderDistanceSquared() {
         return 65536.0D;
     }
-
-	@Override
-	public LaserInGame getOutputLaser() {
-		return new LaserInGame(LaserRegistry.getLaserFromId("default"));
-	}
 }

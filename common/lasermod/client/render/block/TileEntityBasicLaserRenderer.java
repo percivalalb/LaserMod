@@ -17,7 +17,7 @@ import net.minecraft.util.AxisAlignedBB;
 public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
 
     public void renderBasicLaser(TileEntityBasicLaser basicLaser, double x, double y, double z, float tick) {
-    	if(!basicLaser.func_145831_w().isBlockIndirectlyGettingPowered(basicLaser.field_145851_c, basicLaser.field_145848_d, basicLaser.field_145849_e))
+    	if(!basicLaser.getWorldObj().isBlockIndirectlyGettingPowered(basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord))
     		return;
     	GL11.glPushMatrix();
     	RenderHelper.disableStandardItemLighting();
@@ -28,7 +28,7 @@ public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 		
-        AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(basicLaser, basicLaser.func_145832_p(), x, y, z);
+        AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(basicLaser, basicLaser.getBlockMetadata(), x, y, z);
     	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.4F);
     	LaserRenderer.drawBoundingBox(laserOutline);
     	LaserRenderer.drawBoundingBox(laserOutline.contract(0.12D, 0.12D, 0.12D));
@@ -43,7 +43,7 @@ public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
     }
 
     @Override
-    public void func_147500_a(TileEntity tileEntity, double x, double y, double z, float tick) {
+    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick) {
         renderBasicLaser((TileEntityBasicLaser)tileEntity, x, y, z, tick);
     }
 }

@@ -2,18 +2,22 @@ package lasermod.block;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.LaserMod;
 import lasermod.ModItems;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
+import lasermod.network.packet.PacketColourConverter;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,19 +45,19 @@ public class BlockColourConverter extends BlockContainer {
 	public IIcon[] front = new IIcon[16];
 	
 	public BlockColourConverter() {
-		super(Material.field_151576_e);
-		this.func_149711_c(1.0F);
-		this.func_149647_a(CreativeTabs.tabBrewing);
+		super(Material.rock);
+		this.setHardness(1.0F);
+		this.setCreativeTab(CreativeTabs.tabBrewing);
 	}
 
 	@Override
-	public TileEntity func_149915_a(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityColourConverter();
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_149651_a(IIconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 	    this.inputIcon = iconRegister.registerIcon("lasermod:colorConverterInput");
 	    for(int i = 0; i < 16; ++i) {
 	    	front[i] = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
@@ -62,8 +66,8 @@ public class BlockColourConverter extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public IIcon func_149673_e(IBlockAccess world, int x, int y, int z, int side) {
-		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.func_147438_o(x, y, z);
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
 		int meta = LaserUtil.getOrientation(world.getBlockMetadata(x, y, z));
 
 		if (meta > 5)
@@ -71,11 +75,11 @@ public class BlockColourConverter extends BlockContainer {
 		if (side == meta)
 		    return this.front[colourConverter.colour];
 		else
-		 	return side == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.func_149691_a(0, 1);
+		 	return side == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.getIcon(0, 1);
     }
-	    
+	
 	@Override
-	public IIcon func_149691_a(int par1, int par2) {
+	public IIcon getIcon(int par1, int par2) {
 	    int meta = 3;
 
 	    if (meta > 5)
@@ -83,19 +87,16 @@ public class BlockColourConverter extends BlockContainer {
 	    if (par1 == meta)
 	        return this.front[14];
 	    else
-	    	return par1 == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.func_149691_a(0, 1);
+	    	return par1 == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.getIcon(0, 1);
 	}
 	
 	@Override
-	public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
 		ItemStack item = player.getCurrentEquippedItem();
-		if(item != null) {
-			TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.func_147438_o(x, y, z);
-			//TODO if(item.itemID == ModItems.screwdriver.itemID) {
-			//	return true;
-			///}
-			
+		if(!world.isRemote && item != null) {
 			if(item.getItem() == Items.dye) {
+				TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
+				
 				int colour = 15 - item.getItemDamage();
 				if(colour > 15)
 					colour = 15;
@@ -106,25 +107,14 @@ public class BlockColourConverter extends BlockContainer {
 					return true;
 				
 				colourConverter.colour = colour;
-				//TODO world.markBlockForRenderUpdate(x, y, z);
-				
-				if(colourConverter.getOutputLaser() != null) {
-					ILaserReciver reciver = LaserUtil.getFirstReciver(colourConverter, colourConverter.func_145832_p());
-					if(reciver != null) {
-						reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourConverter.func_145832_p()]);
-					  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[colourConverter.func_145832_p()])) {
-							reciver.passLaser(world, y, y,z, colourConverter.getOutputLaser());
-						}
-					}
-				}
 				
 				if(!player.capabilities.isCreativeMode)
 					item.stackSize--;
 				if(item.stackSize <= 0)
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
-				//TODO if(!world.isRemote)
-				//	PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, 512, world.provider.dimensionId, colourConverter.getDescriptionPacket());
+				FMLLog.info("interact");
+				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(x, y, z, colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 				
 				return true;
 			}
@@ -132,28 +122,9 @@ public class BlockColourConverter extends BlockContainer {
 		return false;
 	}
 
-	
 	@Override
-	public void func_149689_a(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack item) {
-		 int rotation = determineOrientation(world, x, y, z, entityLiving);
-		 world.setBlockMetadataWithNotify(x, y, z, rotation, 2);
+	public void onBlockPlacedBy(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
+		 int rotation = BlockPistonBase.determineOrientation(par1World, x, y, z, par5EntityLiving);
+		 par1World.setBlockMetadataWithNotify(x, y, z, Facing.oppositeSide[rotation], 2);
 	}
-	
-	public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLivingBase par4EntityLivingBase) {
-        if (MathHelper.abs((float)par4EntityLivingBase.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLivingBase.posZ - (float)par3) < 2.0F) {
-            double d0 = par4EntityLivingBase.posY + 1.82D - (double)par4EntityLivingBase.yOffset;
-
-            if (d0 - (double)par2 > 2.0D) {
-                return 0;
-            }
-
-            if ((double)par2 - d0 > 0.0D)
-            {
-                return 1;
-            }
-        }
-
-        int l = MathHelper.floor_double((double)(par4EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        return l == 0 ? 3 : (l == 1 ? 4 : (l == 2 ? 2 : (l == 3 ? 5 : 1)));
-    }
 }

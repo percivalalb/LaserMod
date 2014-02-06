@@ -2,14 +2,20 @@ package lasermod.block;
 
 import java.util.Arrays;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import lasermod.LaserMod;
 import lasermod.ModItems;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
+import lasermod.network.packet.PacketReflector;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,43 +34,37 @@ import net.minecraft.world.WorldServer;
 public class BlockReflector extends BlockContainer {
 
 	public BlockReflector() {
-		super(Material.field_151576_e);
-		this.func_149711_c(1.0F);
-		this.func_149647_a(CreativeTabs.tabBrewing);
+		super(Material.rock);
+		this.setHardness(1.0F);
+		this.setCreativeTab(CreativeTabs.tabBrewing);
 	}
 
 	@Override
-	public TileEntity func_149915_a(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityReflector();
 	}
 
 	@Override
-	public int func_149645_b() {
+	public int getRenderType() {
         return -1;
     }
 	
 	@Override
-	public IIcon func_149691_a(int par1, int par2) {
-	    int meta = 1;
-
-	    if (meta > 5)
-	        return this.field_149761_L;
-	    if (par1 == meta)
-	        return this.field_149761_L;
-	    else
-	    	return par1 == Facing.oppositeSide[meta] ? Blocks.planks.func_149691_a(2, 2) : Blocks.planks.func_149691_a(0, 1);
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister iconRegister) {
+	    this.blockIcon = iconRegister.registerIcon("lasermod:reflector");
 	}
 	
 	@Override
-	public boolean func_149662_c() {
+	public boolean isOpaqueCube() {
 	    return false;
 	}
 	
 	@Override
-	public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
 		ItemStack item = player.getCurrentEquippedItem();
-		if(item != null && item.itemID == ModItems.screwdriver.itemID) {
-			TileEntityReflector reflector = (TileEntityReflector)world.getBlockTileEntity(x, y, z);
+		if(!world.isRemote ) {//&& item != null && item.getItem() == ModItems.screwdriver) {
+			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
 			reflector.openSides[side] = !reflector.openSides[side];
 			world.getChunkFromBlockCoords(x, z).setChunkModified();
 			if(reflector.openSides[side]) {
@@ -73,7 +73,7 @@ public class BlockReflector extends BlockContainer {
 			}
 			
 			if(!world.isRemote)
-				PacketDispatcher.sendPacketToAllAround(x + 0.5D, y + 0.5D, z + 0.5D, 512, world.provider.dimensionId, reflector.getDescriptionPacket());
+				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(x, y, z, reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 			
 			
 			return true;

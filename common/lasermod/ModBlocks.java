@@ -22,10 +22,10 @@ public class ModBlocks {
 	public static Block colourConverter;
 	
 	public static void inti() {
-		basicLaser = new BlockBasicLaser().func_149663_c("lasermod:basicLaser");
-		laserDetector = new BlockLaserDetector().func_149663_c("lasermod.detector");
-		reflector = new BlockReflector().func_149663_c("lasermod.reflector");
-		colourConverter = new BlockColourConverter().func_149663_c("lasermod.colorconverter");
+		basicLaser = new BlockBasicLaser().setBlockName("lasermod:basicLaser");
+		laserDetector = new BlockLaserDetector().setBlockName("lasermod.detector");
+		reflector = new BlockReflector().setBlockName("lasermod.reflector");
+		colourConverter = new BlockColourConverter().setBlockName("lasermod.colorconverter");
 		
 		GameRegistry.registerBlock(basicLaser, "lasermod.basicLaser");
 		GameRegistry.registerBlock(laserDetector, "lasermod.detector");

@@ -40,9 +40,9 @@ public class LaserUtil {
 			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
 				break;
 			
-			Block block = laserProvider.getWorld().func_147439_a(xTemp, yTemp, zTemp);
+			Block block = laserProvider.getWorld().getBlock(xTemp, yTemp, zTemp);
 			int blockMeta = laserProvider.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
-			TileEntity tileEntity = laserProvider.getWorld().func_147438_o(xTemp, yTemp, zTemp);
+			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
 			//The next block is instance of ILaserReciver so return it
 			if(tileEntity instanceof ILaserReciver)
@@ -66,13 +66,15 @@ public class LaserUtil {
 			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
 				break;
 			
-			Block block = laserReciver.getWorld().func_147439_a(xTemp, yTemp, zTemp);
+			Block block = laserReciver.getWorld().getBlock(xTemp, yTemp, zTemp);
 			int blockMeta = laserReciver.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
-			TileEntity tileEntity = laserReciver.getWorld().func_147438_o(xTemp, yTemp, zTemp);
+			TileEntity tileEntity = laserReciver.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
 			if(!LaserWhitelist.canLaserPassThrought(block, blockMeta))
 				if(tileEntity instanceof ILaserProvider)
 					return ((ILaserProvider)tileEntity).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
+			else
+				break;
 		}
 		
     	return false;
@@ -96,9 +98,9 @@ public class LaserUtil {
 			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
 				break;
 			
-			Block block = laserProvider.getWorld().func_147439_a(xTemp, yTemp, zTemp);
+			Block block = laserProvider.getWorld().getBlock(xTemp, yTemp, zTemp);
 			int blockMeta = laserProvider.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
-			TileEntity tileEntity = laserProvider.getWorld().func_147438_o(xTemp, yTemp, zTemp);
+			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
 			//Can't pass through the next block
 			if(LaserWhitelist.canLaserPassThrought(block, blockMeta))

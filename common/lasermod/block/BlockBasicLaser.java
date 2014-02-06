@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,19 +31,19 @@ public class BlockBasicLaser extends BlockContainer {
 	public IIcon sideIcon;
 	
 	public BlockBasicLaser() {
-		super(Material.field_151576_e);
-		this.func_149711_c(1.0F);
-		this.func_149647_a(CreativeTabs.tabBrewing);
+		super(Material.rock);
+		this.setHardness(1.0F);
+		this.setCreativeTab(CreativeTabs.tabBrewing);
 	}
 
 	@Override
-	public TileEntity func_149915_a(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityBasicLaser();
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_149651_a(IIconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 	    this.frontIcon = iconRegister.registerIcon("lasermod:basicLaserFront");
 	    this.backIcon = iconRegister.registerIcon("lasermod:basicLaserBack");
 	    this.sideIcon = iconRegister.registerIcon("lasermod:basicLaserSide");
@@ -50,7 +51,7 @@ public class BlockBasicLaser extends BlockContainer {
 	    
 	@Override
 	@SideOnly(Side.CLIENT)
-    public IIcon func_149673_e(IBlockAccess world, int x, int y, int z, int side) {
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		int meta = LaserUtil.getOrientation(world.getBlockMetadata(x, y, z));
 
 		if (meta > 5)
@@ -63,7 +64,7 @@ public class BlockBasicLaser extends BlockContainer {
 	    
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon func_149691_a(int side, int meta) {
+	public IIcon getIcon(int side, int meta) {
 	    int rotation = 3;
 
 	    if (rotation > 5)
@@ -75,26 +76,8 @@ public class BlockBasicLaser extends BlockContainer {
 	}
 	
 	@Override
-	public void func_149689_a(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
-		 int rotation = determineOrientation(par1World, x, y, z, par5EntityLiving);
+	public void onBlockPlacedBy(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
+		 int rotation = BlockPistonBase.determineOrientation(par1World, x, y, z, par5EntityLiving);
 		 par1World.setBlockMetadataWithNotify(x, y, z, rotation, 2);
 	}
-	
-	public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityLivingBase par4EntityLivingBase) {
-        if (MathHelper.abs((float)par4EntityLivingBase.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityLivingBase.posZ - (float)par3) < 2.0F) {
-            double d0 = par4EntityLivingBase.posY + 1.82D - (double)par4EntityLivingBase.yOffset;
-
-            if (d0 - (double)par2 > 2.0D) {
-                return 1;
-            }
-
-            if ((double)par2 - d0 > 0.0D)
-            {
-                return 0;
-            }
-        }
-
-        int l = MathHelper.floor_double((double)(par4EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
-    }
 }

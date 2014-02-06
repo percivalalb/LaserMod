@@ -21,10 +21,10 @@ public class LaserWhitelist {
 	public static List<List> WHITELIST = new ArrayList<List>();
 	
 	//Convenience method
-	public static void addToWhiteList(Block block, int blockMeta) { addToWhiteList(Block.field_149771_c.func_148750_c(block), blockMeta); }
-	public static void addToWhiteList(int blockId, int blockMeta) { addToWhiteList(Block.field_149771_c.func_148750_c(Block.func_149729_e(blockId)), blockMeta); }
-	public static void addToWhiteList(int blockId) { addToWhiteList(Block.field_149771_c.func_148750_c(Block.func_149729_e(blockId)), -1); }
-	public static void addToWhiteList(Block block) { addToWhiteList(Block.field_149771_c.func_148750_c(block), -1); }
+	public static void addToWhiteList(Block block, int blockMeta) { addToWhiteList(Block.blockRegistry.getNameForObject(block), blockMeta); }
+	public static void addToWhiteList(int blockId, int blockMeta) { addToWhiteList(Block.blockRegistry.getNameForObject(Block.getBlockById(blockId)), blockMeta); }
+	public static void addToWhiteList(int blockId) { addToWhiteList(Block.blockRegistry.getNameForObject(Block.getBlockById(blockId)), -1); }
+	public static void addToWhiteList(Block block) { addToWhiteList(Block.blockRegistry.getNameForObject(block), -1); }
 	
 	
 	public static void addToWhiteList(String blockName, int blockMeta) {
@@ -41,7 +41,7 @@ public class LaserWhitelist {
 		if(chunk == null || !chunk.isChunkLoaded)
 			return false;
 		
-		return canLaserPassThrought(world.func_147439_a(x, y, z), world.getBlockMetadata(x, y, z)); 
+		return canLaserPassThrought(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z)); 
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class LaserWhitelist {
 	 * @return If the laser is stopped by the given block
 	 */
 	public static boolean canLaserPassThrought(Block block, int meta) {
-		return WHITELIST.contains(Arrays.asList(Block.field_149771_c.func_148750_c(block), meta));
+		return WHITELIST.contains(Arrays.asList(Block.blockRegistry.getNameForObject(block), meta));
 	}
 	
 	static {

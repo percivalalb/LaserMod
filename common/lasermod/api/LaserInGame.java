@@ -9,6 +9,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 /**
  * @author ProPercivalalb
@@ -21,6 +23,10 @@ public class LaserInGame {
 	public int red = 255;
 	public int green = 0;
 	public int blue = 0;
+	
+	public LaserInGame(NBTTagCompound tag) {
+		this.readFromNBT(tag);
+	}
 	
 	public LaserInGame(ILaser laser) {
 		laserType.add(laser);
@@ -69,20 +75,43 @@ public class LaserInGame {
 		return this.laserType;
 	}
 	
-	public void readFromNBT(NBTTagCompound tag) {
-		
-	}
-	
 	@SideOnly(Side.CLIENT)
 	public float shouldRenderLaser(EntityPlayer player) {
 		for(ILaser laser : this.laserType)
 			if(!laser.shouldRenderLaser(player, this.side))
-				return player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].itemID == ModItems.laserSeekingGoogles.itemID ? 0.1F : 0.0F;
+				return player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].getItem() == ModItems.laserSeekingGoogles ? 0.1F : 0.0F;
 		return 0.4F;
 	}
 	
-	public void writeToNBT(NBTTagCompound tag) {
+	public LaserInGame readFromNBT(NBTTagCompound tag) {
+		this.strength = tag.getDouble("strength");
+		this.side = tag.getInteger("side");
+		this.red = tag.getInteger("red");
+		this.green = tag.getInteger("green");
+		this.blue = tag.getInteger("blue");
 		
+		NBTTagList list = (NBTTagList)tag.getTag("laserTypes");
+		for(int i = 0; i < list.tagCount(); ++i)
+			this.addLaserType(list.getStringTagAt(i));
+		
+		return this;
+	}
+	
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setDouble("strength", this.strength);
+		tag.setInteger("side", this.side);
+		tag.setInteger("red", this.red);
+		tag.setInteger("green", this.green);
+		tag.setInteger("blue", this.blue);
+		
+		NBTTagList list = new NBTTagList();
+	
+		for(ILaser laser : this.laserType)
+			list.appendTag(new NBTTagString(LaserRegistry.getIdFromLaser(laser)));
+		
+		tag.setTag("laserTypes", list);
+
+		return tag;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -102,5 +131,15 @@ public class LaserInGame {
 
 	public int laserCount() {
 		return this.laserType.size();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof LaserInGame) {
+			LaserInGame laser = (LaserInGame)obj;
+			return this.red == laser.red && this.green == laser.green && this.blue == laser.blue && this.laserType.equals(laser.laserType);
+		}
+		return false;
+		
 	}
 }
