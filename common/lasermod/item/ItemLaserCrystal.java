@@ -13,7 +13,7 @@ public class ItemLaserCrystal extends Item {
 	
 	public ItemLaserCrystal() {
 		super();
-		this.setCreativeTab(CreativeTabs.tabBrewing);
+		this.setCreativeTab(LaserMod.tabLaser);
 	}
 
 	@Override
