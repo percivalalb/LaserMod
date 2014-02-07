@@ -60,10 +60,9 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 		}
 		
          
-        //GL11.glEnable(GL11.GL_DEPTH_TEST); //Make the line see thought blocks
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_LIGHTING); //Make the line see thought blocks
+        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         RenderHelper.enableStandardItemLighting();
