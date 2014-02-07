@@ -35,6 +35,13 @@ public class LaserMod {
 		ModItems.inti();
 		ModEntities.inti();
 		
+		/*
+		* Temporary place for the creative tab. Clear it up when you want (or I'll do it on Sunday)
+		* Sorry if this causes any errors, I am not using an IDE for this.
+		*/
+		
+		public static CreativeTabs tabLaser = new CreativeTabs("tabLaser");
+		
 		proxy.onPreLoad();
 	}
 	
