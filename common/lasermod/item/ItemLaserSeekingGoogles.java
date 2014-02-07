@@ -16,7 +16,7 @@ public class ItemLaserSeekingGoogles extends ItemArmor {
 	
 	public ItemLaserSeekingGoogles() {
 		super(ArmorMaterial.CHAIN, LaserMod.proxy.armorRender("laserSeekingGoogles"), 0);
-		this.setCreativeTab(CreativeTabs.tabBrewing);
+		this.setCreativeTab(LaserMod.tabLaser);
 	}
 
 	@Override
