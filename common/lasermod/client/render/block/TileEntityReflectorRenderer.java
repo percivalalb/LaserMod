@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL12;
 import lasermod.api.LaserInGame;
 import lasermod.client.model.block.ModelReflector;
 import lasermod.client.render.LaserRenderer;
+import lasermod.helper.ClientHelper;
 import lasermod.lib.ResourceReference;
 import lasermod.tileentity.TileEntityReflector;
 import lasermod.util.LaserUtil;
@@ -45,7 +46,7 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 			if(reflector.openSides[i] || reflector.containsInputSide(i) || reflector.lasers.size() == 0)
 				continue;
 		  	LaserInGame laserInGame = reflector.getOutputLaser(i);
-	    	float alpha = 0.4F;//laserInGame.shouldRenderLaser(ClientProxy.mc.thePlayer);
+	    	float alpha = laserInGame.shouldRenderLaser(ClientHelper.getPlayer());
 	    	
 	    	if(alpha == 0.0F)
 	    		continue;

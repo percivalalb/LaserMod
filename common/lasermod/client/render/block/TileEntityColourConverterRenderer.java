@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL12;
 
 import lasermod.api.LaserInGame;
 import lasermod.client.render.LaserRenderer;
+import lasermod.helper.ClientHelper;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.util.LaserUtil;
 import net.minecraft.client.gui.Gui;
@@ -24,10 +25,10 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
     	if(colourConverter.getOutputLaser(colourConverter.getBlockMetadata()) == null)
     		return;
     	LaserInGame laserInGame = colourConverter.getOutputLaser(colourConverter.getBlockMetadata());
-    	float alpha = 0.4F;//laserInGame.shouldRenderLaser(ClientProxy.mc.thePlayer);
+    	float alpha = laserInGame.shouldRenderLaser(ClientHelper.getPlayer());
 
-    	//if(alpha == 0.0F)
-    	//	return;
+    	if(alpha == 0.0F)
+    		return;
     	
     	GL11.glPushMatrix();
     	RenderHelper.disableStandardItemLighting();
