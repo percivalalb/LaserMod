@@ -41,6 +41,7 @@ public class LaserMod {
 		*/
 		
 		public static CreativeTabs tabLaser = new CreativeTabs("tabLaser");
+		LanguageRegistry.instance().addStringLocalization("itemGroup.tabLaser", "en_US", "LaserMod");
 		
 		proxy.onPreLoad();
 	}
@@ -48,7 +49,7 @@ public class LaserMod {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		NETWORK_MANAGER = new NetworkManager(Reference.CHANNEL_NAME);
-    	NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+    		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 			
 		proxy.registerHandlers();
 	}
