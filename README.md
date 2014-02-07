@@ -1,5 +1,5 @@
 Modjam3
 ==================
 
-The repo for the mod we, The Lumpkins will be creating for Modjam 3
-Starting on the 13th I will start coding and commiting code. While working on the code I will be commiting about every 15 minutes (I will try my best). If I have not commited for more that 15 mintues I have most probably take a break :D
+The repo for the mod we, The Lumpkins, will be creating for Modjam 3
+Starting on the 13th I will start coding and commiting code changes. While working on the code, I will to my best to commit about every 15 minutes. If I have not commited for more that 15 mintues, that means I'm on a break :D
