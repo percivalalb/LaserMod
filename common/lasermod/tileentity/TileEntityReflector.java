@@ -28,7 +28,7 @@ import net.minecraft.world.World;
  */
 public class TileEntityReflector extends TileEntityLaserDevice implements ILaserProvider, ILaserReciver {
 
-	public boolean[] openSides = new boolean[] {true, true, true, true, true, true};
+	public boolean[] closedSides = new boolean[] {true, true, true, true, true, true};
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	
 	private int lagReduce = -1;
@@ -40,12 +40,12 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		this.lagReduce += 1;
 		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
 		
-		for(int i = 0; i < this.openSides.length; ++i)
+		for(int i = 0; i < this.closedSides.length; ++i)
 			if(!LaserUtil.isValidSourceOfPowerOnSide(this, i))
 				this.removeAllLasersFromSide(i);
 		
-		for(int i = 0; i < this.openSides.length; ++i) {
-			if(this.openSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
+		for(int i = 0; i < this.closedSides.length; ++i) {
+			if(this.closedSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
 				continue;
 			ILaserReciver reciver = LaserUtil.getFirstReciver(this, i);
 			if(reciver != null) {
@@ -61,9 +61,9 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		
-		int[] open = tag.getIntArray("openSides");
-		for(int i = 0; i < open.length; ++i)
-			this.openSides[i] = open[i] == 1;
+		int[] close = tag.getIntArray("closeSides");
+		for(int i = 0; i < close.length; ++i)
+			this.closedSides[i] = close[i] == 1;
 		
 		int amount = tag.getInteger("laserCount");
 		 for(int i = 0; i < amount; ++i)
@@ -74,10 +74,10 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		
-		int[] open = new int[this.openSides.length];
-		for(int i = 0; i < this.openSides.length; ++i)
-			open[i] = this.openSides[i] ? 1 : 0;
-		tag.setIntArray("openSides", open);
+		int[] close = new int[this.closedSides.length];
+		for(int i = 0; i < this.closedSides.length; ++i)
+			close[i] = this.closedSides[i] ? 1 : 0;
+		tag.setIntArray("closeSides", close);
 		
 		tag.setInteger("laserCount", this.lasers.size());
 		
@@ -86,24 +86,14 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	}
 	
 	public boolean addLaser(LaserInGame laserInGame, int side) {
-		int i = getIndexOfLaserSide(side);
-		if(i == -1) {
-			FMLLog.info("-1");
-			lasers.add(laserInGame);
-			return true;
-		}
-		else {
-			FMLLog.info("" + i);
-			lasers.add(i, laserInGame);
-			lasers.remove(i + 1);
-			return true;
-		}
+		lasers.add(laserInGame);
+		return true;
 		
 	}
 	
 	public int openSides() {
 		int count = 0;
-		for(boolean bool : this.openSides)
+		for(boolean bool : this.closedSides)
 			if(!bool)
 				count++;
 		return count;
@@ -148,8 +138,8 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	}
 	
 	public void checkAllRecivers() {
-		for(int i = 0; i < this.openSides.length; ++i) {
-			if((!this.openSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
+		for(int i = 0; i < this.closedSides.length; ++i) {
+			if((!this.closedSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
 				continue;
 			ILaserReciver reciver = LaserUtil.getFirstReciver(this, i);
 			
@@ -208,11 +198,12 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	
 	@Override
 	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return !this.openSides[side] && (!this.containsInputSide(side) || !this.getLaserFromSide(side).equals(lasers));
+		return !this.closedSides[side] && (!this.containsInputSide(side) || !this.getLaserFromSide(side).equals(laserInGame));
 	}
 	
 	@Override
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
+		boolean flag = this.removeAllLasersFromSide(side);
 		this.addLaser(laserInGame, side);
 		
 		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(this.xCoord, this.yCoord, this.zCoord, this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
@@ -230,7 +221,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return !this.openSides[side] && this.lasers.size() > 0;
+		return !this.closedSides[side] && this.lasers.size() > 0;
 	}
 	
 	@Override

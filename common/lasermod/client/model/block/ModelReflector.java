@@ -170,7 +170,7 @@ public class ModelReflector extends ModelBase {
     	columnBR.render(0.0625F);
     	ModelRenderer[] blockers = new ModelRenderer[] {bottomBlocker, topBlocker, backBlocker, frontBlocker, rightBlocker, leftBlocker};
     	for(int i = 0; i < 6; ++i)
-    		if(reflector.openSides[i])
+    		if(reflector.closedSides[i])
     			blockers[i].render(0.0625F);
     	bitTB.render(0.0625F);
     	bitTF.render(0.0625F);

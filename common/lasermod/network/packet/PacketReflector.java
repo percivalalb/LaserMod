@@ -31,7 +31,7 @@ public class PacketReflector implements IPacket {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.openSides = reflector.openSides;
+        this.openSides = reflector.closedSides;
         this.lasers = reflector.lasers;
     }
     
@@ -72,7 +72,7 @@ public class PacketReflector implements IPacket {
 		if(!(tileEntity instanceof TileEntityReflector)) 
 			return;
 		TileEntityReflector reflector = (TileEntityReflector)tileEntity;
-		reflector.openSides = this.openSides;
+		reflector.closedSides = this.openSides;
 		reflector.lasers = this.lasers;
 	}
 }

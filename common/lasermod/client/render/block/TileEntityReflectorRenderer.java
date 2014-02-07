@@ -42,8 +42,8 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-		for(int i = 0; i < reflector.openSides.length; ++i) {
-			if(reflector.openSides[i] || reflector.containsInputSide(i) || reflector.lasers.size() == 0)
+		for(int i = 0; i < reflector.closedSides.length; ++i) {
+			if(reflector.closedSides[i] || reflector.containsInputSide(i) || reflector.lasers.size() == 0)
 				continue;
 		  	LaserInGame laserInGame = reflector.getOutputLaser(i);
 	    	float alpha = laserInGame.shouldRenderLaser(ClientHelper.getPlayer());

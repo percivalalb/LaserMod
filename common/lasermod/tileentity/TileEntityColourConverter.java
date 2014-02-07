@@ -69,12 +69,9 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	public LaserInGame getOutputLaser(int side) {
 		if(this.laser != null) {
 			this.laser.setSide(Facing.oppositeSide[side]);
-			if(this.requiresUpdate()) {
-				this.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
-				this.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
-				this.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
-				this.setNoUpdate();
-			}
+			this.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
+			this.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
+			this.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
 			return this.laser.copy();
 		}
 		return null;
