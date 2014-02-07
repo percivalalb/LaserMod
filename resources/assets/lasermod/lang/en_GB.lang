@@ -1,4 +1,4 @@
-itemGroup.lasermod=Laser Mod
+itemGroup.tabLaser=Laser Mod
 
 item.lasermod.laserCrystal.name=Laser Crystal
 item.lasermod.laserSeekingGoogles.name=Laser Seeking Googles

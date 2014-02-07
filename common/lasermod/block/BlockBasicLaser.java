@@ -2,6 +2,7 @@ package lasermod.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lasermod.LaserMod;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.BlockContainer;
