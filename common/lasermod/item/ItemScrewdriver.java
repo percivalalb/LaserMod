@@ -13,7 +13,7 @@ public class ItemScrewdriver extends Item {
 	
 	public ItemScrewdriver() {
 		super();
-		this.setCreativeTab(CreativeTabs.tabBrewing);
+		this.setCreativeTab(LaserMod.tabLaser);
 	}
 
 	@Override
