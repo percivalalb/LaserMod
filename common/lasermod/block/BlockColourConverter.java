@@ -47,7 +47,7 @@ public class BlockColourConverter extends BlockContainer {
 	public BlockColourConverter() {
 		super(Material.rock);
 		this.setHardness(1.0F);
-		this.setCreativeTab(CreativeTabs.tabBrewing);
+		this.setCreativeTab(LaserMod.tabLaser);
 	}
 
 	@Override
