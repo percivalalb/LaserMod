@@ -24,7 +24,7 @@ public class LaserMod {
 	public static LaserMod instance;
 	
 	@SidedProxy(clientSide = Reference.SP_CLIENT, serverSide = Reference.SP_SERVER)
-    public static CommonProxy proxy;
+    	public static CommonProxy proxy;
 	
 	public static NetworkManager NETWORK_MANAGER;
 	
