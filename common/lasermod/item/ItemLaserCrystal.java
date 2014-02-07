@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 /**
  * @author ProPercivalalb
  */
-public class ItemScrewdriver extends Item {
+public class ItemLaserCrystal extends Item {
 	
-	public ItemScrewdriver() {
+	public ItemLaserCrystal() {
 		super();
 		this.setCreativeTab(CreativeTabs.tabBrewing);
 	}
@@ -19,6 +19,6 @@ public class ItemScrewdriver extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
-	    this.itemIcon = iconRegister.registerIcon("lasermod:screwdriver");
+	    this.itemIcon = iconRegister.registerIcon("lasermod:laserCrystal");
 	}
 }

@@ -12,6 +12,8 @@ v1.1.0a
 
 # Laser will now pass through glass panes and ice
 
+* Fixed bug where shift clicking googles would make them go on your feet
+
 v1.0.0a
 
 + Inital Release
