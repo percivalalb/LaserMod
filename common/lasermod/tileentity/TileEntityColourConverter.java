@@ -1,19 +1,17 @@
 package lasermod.tileentity;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.LaserMod;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketColourConverter;
-import lasermod.network.packet.PacketReflector;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb

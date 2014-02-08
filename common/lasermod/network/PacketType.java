@@ -1,6 +1,7 @@
 package lasermod.network;
 
-import lasermod.network.packet.*;
+import lasermod.network.packet.PacketColourConverter;
+import lasermod.network.packet.PacketReflector;
 
 /**
  * @author ProPercivalalb

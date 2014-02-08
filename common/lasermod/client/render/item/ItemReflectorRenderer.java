@@ -2,7 +2,6 @@ package lasermod.client.render.item;
 
 import lasermod.client.model.block.ModelReflector;
 import lasermod.lib.ResourceReference;
-import net.minecraft.client.model.ModelChest;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 

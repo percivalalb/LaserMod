@@ -2,17 +2,16 @@ package lasermod.helper;
 
 import io.netty.buffer.ByteBuf;
 
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import com.google.common.base.Charsets;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.google.common.base.Charsets;
 
 /**
  * @author ProPercivalalb

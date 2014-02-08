@@ -1,20 +1,17 @@
 package lasermod.client.render.block;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import lasermod.api.LaserInGame;
 import lasermod.client.render.LaserRenderer;
 import lasermod.helper.ClientHelper;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.util.LaserUtil;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author ProPercivalalb

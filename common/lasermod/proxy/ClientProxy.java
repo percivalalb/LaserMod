@@ -1,7 +1,5 @@
 package lasermod.proxy;
 
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
 import lasermod.ModBlocks;
 import lasermod.client.render.block.TileEntityBasicLaserRenderer;
 import lasermod.client.render.block.TileEntityColourConverterRenderer;
@@ -10,6 +8,8 @@ import lasermod.client.render.item.ItemReflectorRenderer;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.tileentity.TileEntityReflector;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 

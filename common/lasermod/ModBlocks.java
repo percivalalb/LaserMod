@@ -1,7 +1,5 @@
 package lasermod;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 import lasermod.block.BlockBasicLaser;
 import lasermod.block.BlockColourConverter;
 import lasermod.block.BlockLaserDetector;
@@ -10,6 +8,8 @@ import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.tileentity.TileEntityLaserDetector;
 import lasermod.tileentity.TileEntityReflector;
+import net.minecraft.block.Block;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * @author ProPercivalalb

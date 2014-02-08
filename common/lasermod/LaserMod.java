@@ -1,5 +1,10 @@
 package lasermod;
 
+import lasermod.api.LaserRegistry;
+import lasermod.laser.DefaultLaser;
+import lasermod.lib.Reference;
+import lasermod.network.NetworkManager;
+import lasermod.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.Mod;
@@ -12,11 +17,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import lasermod.api.LaserRegistry;
-import lasermod.laser.DefaultLaser;
-import lasermod.lib.Reference;
-import lasermod.network.NetworkManager;
-import lasermod.proxy.CommonProxy;
 
 /**
  * @author ProPercivalalb
@@ -53,7 +53,7 @@ public class LaserMod {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		NETWORK_MANAGER = new NetworkManager(Reference.CHANNEL_NAME);
+		NETWORK_MANAGER = new NetworkManager();
     	NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 			
 		proxy.registerHandlers();

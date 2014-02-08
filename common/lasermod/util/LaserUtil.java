@@ -1,13 +1,13 @@
 package lasermod.util;
 
+import lasermod.api.ILaserProvider;
+import lasermod.api.ILaserReciver;
+import lasermod.api.LaserWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraftforge.common.util.ForgeDirection;
-import lasermod.api.ILaserProvider;
-import lasermod.api.ILaserReciver;
-import lasermod.api.LaserWhitelist;
 
 /**
  * @author ProPercivalalb

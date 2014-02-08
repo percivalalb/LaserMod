@@ -1,10 +1,10 @@
 package lasermod;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import lasermod.item.ItemLaserCrystal;
 import lasermod.item.ItemLaserSeekingGoogles;
 import lasermod.item.ItemScrewdriver;
 import net.minecraft.item.Item;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * @author ProPercivalalb

@@ -2,10 +2,9 @@ package lasermod.network;
 
 import java.util.EnumMap;
 
+import lasermod.lib.Reference;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.network.play.server.S3FPacketCustomPayload;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -21,13 +20,11 @@ public class NetworkManager {
     public final ChannelHandler channelHandler;
     private final FMLEmbeddedChannel clientOutboundChannel;
     private final FMLEmbeddedChannel serverOutboundChannel;
-    private final String channelName;
     
-    public NetworkManager(String channelName) {
+    public NetworkManager() {
         this.channelHandler = new ChannelHandler();
-        this.channelName = channelName;
         
-        EnumMap<Side, FMLEmbeddedChannel> channelPair = NetworkRegistry.INSTANCE.newChannel(channelName, channelHandler);
+        EnumMap<Side, FMLEmbeddedChannel> channelPair = NetworkRegistry.INSTANCE.newChannel(Reference.CHANNEL_NAME, channelHandler);
         this.clientOutboundChannel = channelPair.get(Side.CLIENT);
         this.serverOutboundChannel = channelPair.get(Side.SERVER);
     }
