@@ -7,7 +7,6 @@ import lasermod.network.packet.*;
  */
 public enum PacketType {
 
-	TEMP(PacketTemp.class),
 	COLOUR_CONVERTER(PacketColourConverter.class),
 	REFLECTOR(PacketReflector.class);
 	
