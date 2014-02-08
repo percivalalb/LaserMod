@@ -3,6 +3,8 @@ package lasermod.client.render.block;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.common.FMLLog;
+
 import lasermod.api.LaserInGame;
 import lasermod.client.model.block.ModelReflector;
 import lasermod.client.render.LaserRenderer;
@@ -30,7 +32,7 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5F, y + 1.5F, z + 0.5F);
         GL11.glScalef(1.0F, -1F, -1F);
-        modelReflector.renderModel(reflector);
+        this.modelReflector.renderModel(reflector);
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
@@ -50,7 +52,6 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 	    	
 	    	if(alpha == 0.0F)
 	    		continue;
-	    	
 	    	GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
 	    	
 			AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(reflector, i, x, y, z);

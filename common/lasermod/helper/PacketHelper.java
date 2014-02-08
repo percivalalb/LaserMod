@@ -2,6 +2,9 @@ package lasermod.helper;
 
 import io.netty.buffer.ByteBuf;
 
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.google.common.base.Charsets;
@@ -24,6 +27,17 @@ public class PacketHelper {
             byte[] data = CompressedStreamTools.compress(tagCompound);
             bytes.writeShort((short)data.length);
             bytes.writeBytes(data);
+        }
+    }
+	
+	public static void writeNBTTagCompound(NBTTagCompound tagCompound, DataOutputStream dos) throws IOException {
+        if (tagCompound == null) {
+        	dos.writeShort(-1);
+        }
+        else {
+            byte[] data = CompressedStreamTools.compress(tagCompound);
+            dos.writeShort((short)data.length);
+            dos.write(data);
         }
     }
 	
@@ -104,6 +118,19 @@ public class PacketHelper {
 	    else {
 	        byte[] data = new byte[length];
 	        bytes.readBytes(data);
+	        return CompressedStreamTools.decompress(data);
+	    }
+	}
+	
+	public static NBTTagCompound readNBTTagCompound(DataInputStream dis) throws IOException {
+	    short length = dis.readShort();
+
+	    if (length < 0) {
+	        return null;
+	    }
+	    else {
+	        byte[] data = new byte[length];
+	        dis.readFully(data);
 	        return CompressedStreamTools.decompress(data);
 	    }
 	}

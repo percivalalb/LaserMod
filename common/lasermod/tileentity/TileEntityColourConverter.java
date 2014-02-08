@@ -1,5 +1,6 @@
 package lasermod.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lasermod.LaserMod;
@@ -7,6 +8,7 @@ import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketColourConverter;
+import lasermod.network.packet.PacketReflector;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -30,6 +32,11 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		this.lagReduce += 1;
 		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
 	
+		if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
+			this.setLaser(null);
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+		}
+		
 		if(this.laser != null) {
 			ILaserReciver reciver = LaserUtil.getFirstReciver(this, this.getBlockMetadata());
 			if(reciver != null) {
@@ -98,15 +105,17 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		if(this.getOutputLaser(side) == null) {
 			this.setLaser(laserInGame);
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this.xCoord, this.yCoord, this.zCoord, this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		}
 	}
 
 	@Override
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
 		if(side == Facing.oppositeSide[this.getBlockMetadata()]) {
+			boolean change = this.laser != null;
 			this.setLaser(null);
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this.xCoord, this.yCoord, this.zCoord, this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			if(change)
+				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		}
 	}
 	

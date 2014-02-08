@@ -1,5 +1,9 @@
 package lasermod.network;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import lasermod.helper.PacketHelper;
@@ -7,6 +11,7 @@ import lasermod.helper.PacketHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,26 +28,42 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<IPacket>{
 
     @Override
     public void encodeInto(ChannelHandlerContext ctx, IPacket msg, ByteBuf bytes) throws Exception {
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	DataOutputStream dos = new DataOutputStream(bos);
+    	
     	if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-    		PacketHelper.writeString(FMLClientHandler.instance().getClientPlayerEntity().getCommandSenderName(), bytes);
-        	 
-    	msg.write(ctx, bytes);
+        	dos.writeUTF(FMLClientHandler.instance().getClientPlayerEntity().getCommandSenderName());
+
+    	msg.write(dos);
+    	bytes.writeBytes(bos.toByteArray());
     }
 
     @Override
     public void decodeInto(ChannelHandlerContext ctx, ByteBuf bytes, IPacket msg)  {
 		try {
+			byte[] data = new byte[bytes.capacity()];
+			for(int i = 0; i < data.length; ++i)
+				data[i] = bytes.readByte();
+			
+			FMLLog.info("Size: " + data.length * 4);
+			
+			ByteArrayInputStream bis = new ByteArrayInputStream(data);
+	        DataInputStream dis = new DataInputStream(bis);
+	
 			EntityPlayer player;
-				
+			
 			if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 				player = FMLClientHandler.instance().getClientPlayerEntity();
 			else
-				player = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(PacketHelper.readString(256, bytes));
+				player = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(dis.readUTF());
 				
-			msg.read(ctx, bytes);
+			if(player != null)
+				FMLLog.info(player.getCommandSenderName());
+
+			msg.read(dis);
 			msg.execute(player);
 		} 
-    	catch(IOException e) {
+    	catch(Exception e) {
 			e.printStackTrace();
 		}
     }

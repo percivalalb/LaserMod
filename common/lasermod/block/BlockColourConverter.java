@@ -114,7 +114,7 @@ public class BlockColourConverter extends BlockContainer {
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				FMLLog.info("interact");
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(x, y, z, colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 				
 				return true;
 			}

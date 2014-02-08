@@ -32,7 +32,7 @@ public class LaserMod {
 	
 	public static NetworkManager NETWORK_MANAGER;
 	
-	/** Laser Mods Creative tab **/
+	/** Laser Mod Creative tab **/
 	public static CreativeTabs tabLaser = new CreativeTabs("tabLaser") {
 		@Override
 		@SideOnly(Side.CLIENT)

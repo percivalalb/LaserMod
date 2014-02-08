@@ -38,10 +38,7 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
         //GL11.glDisable(GL11.GL_DEPTH_TEST); //Make the line see thought blocks
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Tessellator tessellator = Tessellator.instance;
-		tessellator.setColorRGBA(laserInGame.red, laserInGame.green, laserInGame.blue, 155);
 		
 		AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(colourConverter, colourConverter.getBlockMetadata(), x, y, z);
     	GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);

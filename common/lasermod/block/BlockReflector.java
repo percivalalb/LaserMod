@@ -66,14 +66,11 @@ public class BlockReflector extends BlockContainer {
 		if(!world.isRemote && item != null && item.getItem() == ModItems.screwdriver) {
 			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
 			reflector.closedSides[side] = !reflector.closedSides[side];
-			world.getChunkFromBlockCoords(x, z).setChunkModified();
-			if(reflector.closedSides[side]) {
-				boolean flag = reflector.removeAllLasersFromSide(side);
-				reflector.checkAllRecivers();
-			}
 			
-			if(!world.isRemote)
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(x, y, z, reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+			if(reflector.closedSides[side])
+				reflector.removeAllLasersFromSide(side);
+			
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 			
 			
 			return true;

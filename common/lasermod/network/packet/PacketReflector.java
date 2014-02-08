@@ -3,6 +3,8 @@ package lasermod.network.packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,48 +22,48 @@ import lasermod.tileentity.TileEntityReflector;
 /**
  * @author ProPercivalalb
  */
-public class PacketReflector implements IPacket {
+public class PacketReflector extends IPacket {
 
 	public int x, y, z;
 	public boolean[] openSides;
 	public ArrayList<LaserInGame> lasers;
     
     public PacketReflector() {}
-    public PacketReflector(int x, int y, int z, TileEntityReflector reflector) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public PacketReflector(TileEntityReflector reflector) {
+        this.x = reflector.xCoord;
+        this.y = reflector.yCoord;
+        this.z = reflector.zCoord;
         this.openSides = reflector.closedSides;
         this.lasers = reflector.lasers;
     }
     
 	@Override
-	public void read(ChannelHandlerContext ctx, ByteBuf bytes) throws IOException {
-		this.x = bytes.readInt();
-		this.y = bytes.readInt();
-		this.z = bytes.readInt();
+	public void read(DataInputStream data) throws IOException {
+		this.x = data.readInt();
+		this.y = data.readInt();
+		this.z = data.readInt();
 		this.openSides = new boolean[6];
 	    for(int i = 0; i < 6; ++i)
-	    	this.openSides[i] = bytes.readBoolean();
+	    	this.openSides[i] = data.readBoolean();
 		
 	    this.lasers = new ArrayList<LaserInGame>();
-	    int count = bytes.readInt();
+	    int count = data.readInt();
 	    for(int i = 0; i < count; ++i)
-	    	this.lasers.add(new LaserInGame(PacketHelper.readNBTTagCompound(bytes)));
+	    	this.lasers.add(new LaserInGame().readFromPacket(data));
 	}
 	
 	@Override
-	public void write(ChannelHandlerContext ctx, ByteBuf bytes) throws IOException {
-		bytes.writeInt(this.x);
-		bytes.writeInt(this.y);
-		bytes.writeInt(this.z);
+	public void write(DataOutputStream data) throws IOException {
+		data.writeInt(this.x);
+		data.writeInt(this.y);
+		data.writeInt(this.z);
 		for(int i = 0; i < 6; ++i)
-			bytes.writeBoolean(this.openSides[i]);
+			data.writeBoolean(this.openSides[i]);
 		
-		bytes.writeInt(this.lasers.size());
+		data.writeInt(this.lasers.size());
 		
 		for(int i = 0; i < this.lasers.size(); ++i) 
-			PacketHelper.writeNBTTagCompound(this.lasers.get(i).writeToNBT(new NBTTagCompound()), bytes);
+			this.lasers.get(i).writeToPacket(data);
 	}
 	
 	@Override
@@ -74,5 +76,6 @@ public class PacketReflector implements IPacket {
 		TileEntityReflector reflector = (TileEntityReflector)tileEntity;
 		reflector.closedSides = this.openSides;
 		reflector.lasers = this.lasers;
+		FMLLog.info("LOADDING");
 	}
 }

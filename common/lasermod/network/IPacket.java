@@ -1,19 +1,59 @@
 package lasermod.network;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+
+import cpw.mods.fml.client.FMLClientHandler;
+
+import lasermod.lib.Reference;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
+import net.minecraft.network.play.server.S3FPacketCustomPayload;
 
 /**
  * @author ProPercivalalb
  */
-public interface IPacket {
+public abstract class IPacket {
 	
-	public void read(ChannelHandlerContext ctx, ByteBuf bytes) throws IOException;
-	public void write(ChannelHandlerContext ctx, ByteBuf bytes) throws IOException;
+	public abstract void read(DataInputStream data) throws IOException;
+	public abstract void write(DataOutputStream data) throws IOException;
 	
-	public void execute(EntityPlayer player);
+	public abstract void execute(EntityPlayer player);
+	
+	public S3FPacketCustomPayload getServerToClientPacket() {
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	    	DataOutputStream dos = new DataOutputStream(bos);
+	    	dos.writeByte(PacketType.getIdFromClass(this.getClass()));
+			this.write(dos);
+	    	return new S3FPacketCustomPayload(Reference.CHANNEL_NAME, bos.toByteArray());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public C17PacketCustomPayload getClientToServerPacket() {
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	    	DataOutputStream dos = new DataOutputStream(bos);
+	    	dos.writeByte(PacketType.getIdFromClass(this.getClass()));
+	    	dos.writeUTF(FMLClientHandler.instance().getClientPlayerEntity().getCommandSenderName());
+			this.write(dos);
+	    	return new C17PacketCustomPayload(Reference.CHANNEL_NAME, bos.toByteArray());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }

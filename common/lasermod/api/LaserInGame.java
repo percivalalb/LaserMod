@@ -1,5 +1,8 @@
 package lasermod.api;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import lasermod.ModItems;
@@ -24,17 +27,10 @@ public class LaserInGame {
 	public int green = 0;
 	public int blue = 0;
 	
-	public LaserInGame(NBTTagCompound tag) {
-		this.readFromNBT(tag);
-	}
-	
-	public LaserInGame(ILaser laser) {
-		laserType.add(laser);
-	}
-	
-	public LaserInGame(ArrayList<ILaser> lasers) {
-		laserType.addAll(lasers);
-	}
+	public LaserInGame() {}
+	public LaserInGame(NBTTagCompound tag) { this.readFromNBT(tag); }
+	public LaserInGame(ILaser laser) { this.laserType.add(laser);}
+	public LaserInGame(ArrayList<ILaser> lasers) { this.laserType.addAll(lasers); }
 	
 	public LaserInGame setStrength(double strength) {
 		if(strength < 0.0D)
@@ -114,6 +110,32 @@ public class LaserInGame {
 		return tag;
 	}
 	
+	public void writeToPacket(DataOutputStream data) throws IOException {
+		data.writeDouble(this.strength);
+		data.writeInt(this.side);
+		data.writeInt(this.red);
+		data.writeInt(this.green);
+		data.writeInt(this.blue);
+		
+		data.writeInt(this.laserCount());
+		for(ILaser laser : this.laserType)
+			data.writeUTF(LaserRegistry.getIdFromLaser(laser));
+	}
+	
+	public LaserInGame readFromPacket(DataInputStream data) throws IOException {
+		this.strength = data.readDouble();
+		this.side = data.readInt();
+		this.red = data.readInt();
+		this.green = data.readInt();
+		this.blue = data.readInt();
+		
+		int count = data.readInt();
+		for(int i = 0; i < count; ++i)
+			this.addLaserType(data.readUTF());
+		
+		return this;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public LaserInGame copy() {
 		LaserInGame laser = new LaserInGame((ArrayList<ILaser>)this.laserType.clone());
@@ -137,7 +159,7 @@ public class LaserInGame {
 	public boolean equals(Object obj) {
 		if(obj instanceof LaserInGame) {
 			LaserInGame laser = (LaserInGame)obj;
-			return this.red == laser.red && this.green == laser.green && this.blue == laser.blue && this.laserType.equals(laser.laserType);
+			return this.red == laser.red && this.green == laser.green && this.blue == laser.blue; //TODO && this.laserType.equals(laser.laserType);
 		}
 		return false;
 		
