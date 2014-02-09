@@ -3,7 +3,6 @@ package lasermod.network;
 import java.util.EnumMap;
 
 import lasermod.lib.Reference;
-
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;

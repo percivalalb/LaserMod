@@ -7,8 +7,6 @@ import lasermod.helper.ClientHelper;
 import lasermod.lib.ResourceReference;
 import lasermod.tileentity.TileEntityReflector;
 import lasermod.util.LaserUtil;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -29,16 +27,10 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
         GL11.glScalef(1.0F, -1F, -1F);
         this.modelReflector.renderModel(reflector);
         GL11.glPopMatrix();
-
-        GL11.glPushMatrix();
-    	RenderHelper.disableStandardItemLighting();
-    	OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 160F, 160F);
-    	GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glDepthMask(false);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glPushMatrix();
+	    LaserRenderer.preLaserRender();
+        
 		for(int i = 0; i < reflector.closedSides.length; ++i) {
 			if(reflector.closedSides[i] || reflector.containsInputSide(i) || reflector.lasers.size() == 0)
 				continue;
@@ -55,13 +47,7 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 	    	LaserRenderer.drawBoundingBox(boundingBox.contract(0.12D, 0.12D, 0.12D));
 		}
 		
-         
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        RenderHelper.enableStandardItemLighting();
+		LaserRenderer.postLaserRender();
         GL11.glPopMatrix();
         
     }
