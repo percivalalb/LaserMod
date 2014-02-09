@@ -83,7 +83,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 
 	@Override
 	public Packet getDescriptionPacket() {
-	    return new PacketReflector(this).getServerToClientPacket();
+	    return new PacketReflector(this).getPacket();
 	}
 	
 	public boolean addLaser(LaserInGame laserInGame, int side) {

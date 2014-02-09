@@ -7,9 +7,11 @@ import java.io.IOException;
 
 import lasermod.lib.Reference;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 /**
  * @author ProPercivalalb
@@ -21,29 +23,22 @@ public abstract class IPacket {
 	
 	public abstract void execute(EntityPlayer player);
 	
-	public S3FPacketCustomPayload getServerToClientPacket() {
-		try {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	    	DataOutputStream dos = new DataOutputStream(bos);
-	    	dos.writeByte(PacketType.getIdFromClass(this.getClass()));
-			this.write(dos);
-	    	return new S3FPacketCustomPayload(Reference.CHANNEL_NAME, bos.toByteArray());
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+	public Packet getPacket() {
+		if(FMLCommonHandler.instance().getSide().isClient())
+			return new C17PacketCustomPayload(Reference.CHANNEL_NAME, this.getPacketBytes(true));
+		else
+			return new S3FPacketCustomPayload(Reference.CHANNEL_NAME, this.getPacketBytes(false));
 	}
 	
-	public C17PacketCustomPayload getClientToServerPacket() {
+	private byte[] getPacketBytes(boolean isClient) {
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	    	DataOutputStream dos = new DataOutputStream(bos);
 	    	dos.writeByte(PacketType.getIdFromClass(this.getClass()));
-	    	dos.writeUTF(FMLClientHandler.instance().getClientPlayerEntity().getCommandSenderName());
+	    	if(isClient)
+	    		dos.writeUTF(FMLClientHandler.instance().getClientPlayerEntity().getCommandSenderName());
 			this.write(dos);
-	    	return new C17PacketCustomPayload(Reference.CHANNEL_NAME, bos.toByteArray());
+	    	return bos.toByteArray();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

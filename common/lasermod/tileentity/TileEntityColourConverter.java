@@ -7,6 +7,7 @@ import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketColourConverter;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
@@ -68,6 +69,11 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		tag.setInteger("colour", this.colour);
 		if(this.laser != null)
 			tag.setTag("laser", this.laser.writeToNBT(new NBTTagCompound()));
+	}
+	
+	@Override
+	public Packet getDescriptionPacket() {
+	    return new PacketColourConverter(this).getPacket();
 	}
 	
 	@Override
