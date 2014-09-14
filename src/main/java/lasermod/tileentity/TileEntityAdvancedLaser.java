@@ -3,6 +3,7 @@ package lasermod.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReciver;
@@ -32,30 +33,16 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public void updateEntity() {
-		if(this.worldObj.isRemote) return;
-		
 		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
-		
-	  	boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
-		
-		ILaserReciver reciver = LaserUtil.getFirstReciver(this, this.getBlockMetadata());
-		if(reciver != null) {
-		  	
-		  	LaserInGame laserInGame = this.getOutputLaser(this.getBlockMetadata());
-
-		  	if(!hasSignal) {
-		  		reciver.removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()]);
-		  	}
-		  	else if(reciver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame)) {
-				reciver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame);
-			}
+		if(this.lagReduce % LaserUtil.TICK_RATE == 0) {
+			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.advancedLaser, 0);
 		}
+		if(this.lagReduce % LaserUtil.LASER_RATE == 0) {
+			boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
 		
-		if(hasSignal)
-			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
-		
-		this.lagReduce += 1;
+			if(hasSignal)
+				LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
+		}
 	}
 	
 	@Override

@@ -5,6 +5,8 @@ import java.util.Random;
 import lasermod.LaserMod;
 import lasermod.ModItems;
 import lasermod.api.ILaser;
+import lasermod.api.ILaserReciver;
+import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.network.packet.PacketAdvancedLaser;
 import lasermod.network.packet.PacketColourConverter;
@@ -19,6 +21,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -28,6 +31,7 @@ import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -91,9 +95,85 @@ public class BlockAdvancedLaser extends BlockContainer {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
-		 int rotation = BlockPistonBase.determineOrientation(par1World, x, y, z, par5EntityLiving);
-		 par1World.setBlockMetadataWithNotify(x, y, z, rotation, 2);
+	public void onBlockAdded(World world, int x, int y, int z) {
+        if (!world.isRemote) {
+        	TileEntityAdvancedLaser advancedlaser = (TileEntityAdvancedLaser)world.getTileEntity(x, y, z);
+        	
+            if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
+            	
+            	ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+        		if(reciver != null) {
+        			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()]);
+        		}
+            }
+            else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+        		ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+        		if(reciver != null) {
+        		  	
+        		  	LaserInGame laserInGame = advancedlaser.getOutputLaser(advancedlaser.getBlockMetadata());
+
+        		  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()], laserInGame)) {
+        				reciver.passLaser(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()], laserInGame);
+        			}
+        		}
+            }
+        }
+    }
+	
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+		if (!world.isRemote) {
+        	TileEntityAdvancedLaser advancedlaser = (TileEntityAdvancedLaser)world.getTileEntity(x, y, z);
+        	
+            if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
+            	
+            	ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+        		if(reciver != null) {
+        			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()]);
+        		}
+            }
+            else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+        		ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+        		if(reciver != null) {
+        		  	
+        		  	LaserInGame laserInGame = advancedlaser.getOutputLaser(advancedlaser.getBlockMetadata());
+
+        		  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()], laserInGame)) {
+        				reciver.passLaser(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()], laserInGame);
+        			}
+        		}
+            }
+        }
+    }
+
+	@Override
+    public void updateTick(World world, int x, int y, int z, Random random) {
+		TileEntityAdvancedLaser advancedlaser = (TileEntityAdvancedLaser)world.getTileEntity(x, y, z);
+    	
+        if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
+        	
+        	ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+    		if(reciver != null) {
+    			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()]);
+    		}
+        }
+        else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+    		ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+    		if(reciver != null) {
+    		  	
+    		  	LaserInGame laserInGame = advancedlaser.getOutputLaser(advancedlaser.getBlockMetadata());
+
+    		  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()], laserInGame)) {
+    				reciver.passLaser(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()], laserInGame);
+    			}
+    		}
+        }
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack heldStack) {
+		 int rotation = BlockPistonBase.determineOrientation(world, x, y, z, entityLiving);
+		 world.setBlockMetadataWithNotify(x, y, z, rotation, 2);
 	}
 	
 	@Override

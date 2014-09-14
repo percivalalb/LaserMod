@@ -1,5 +1,6 @@
 package lasermod.tileentity;
 
+import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
@@ -20,24 +21,11 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	
 	@Override
 	public void updateEntity() {
-		if(this.worldObj.isRemote) return;
 		
 		this.lagReduce += 1;
 		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
 		
-		ILaserReciver reciver = LaserUtil.getFirstReciver(this, this.getBlockMetadata());
-		if(reciver != null) {
-		  	boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
-		  	
-		  	LaserInGame laserInGame = this.getOutputLaser(this.getBlockMetadata());
-		  	if(!hasSignal) {
-		  		reciver.removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()]);
-		  	}
-		  	else if(reciver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame)) {
-				reciver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame);
-			}
-		}
-		this.lagReduce += 1;
+		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.basicLaser, 0);
 	}
 	
 	@Override

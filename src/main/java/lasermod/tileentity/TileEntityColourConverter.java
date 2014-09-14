@@ -1,6 +1,7 @@
 package lasermod.tileentity;
 
 import lasermod.LaserMod;
+import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
@@ -21,35 +22,26 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 
 	private int lagReduce = -1;
 	
-	private LaserInGame laser;
+	public LaserInGame laser;
 	public int colour = 14;
 	
 	@Override
 	public void updateEntity() {
-		if(this.worldObj.isRemote) return;
-		
 		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
-	
-		if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
-			this.setLaser(null);
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
-		}
+		if(this.lagReduce % LaserUtil.TICK_RATE != 0)  {
 		
-		if(this.laser != null) {
-			ILaserReciver reciver = LaserUtil.getFirstReciver(this, this.getBlockMetadata());
-			if(reciver != null) {
-				LaserInGame laserInGame = this.getOutputLaser(this.getBlockMetadata());
-			  	if(reciver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame)) {
-					reciver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[this.getBlockMetadata()], laserInGame);
-				}
+			if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
+				this.setLaser(null);
+				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 			}
+			
+			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 		}
 		
-		boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
-		
-		if(hasSignal)
-			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
+		if(this.lagReduce % LaserUtil.LASER_RATE == 0) {
+			if(this.laser != null)
+				LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
+		}
 	}
 	
 	public void setLaser(LaserInGame laser) {
@@ -115,6 +107,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		if(this.getOutputLaser(side) == null) {
 			this.setLaser(laserInGame);
 			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 		}
 	}
 
@@ -123,8 +116,10 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		if(side == Facing.oppositeSide[this.getBlockMetadata()]) {
 			boolean change = this.laser != null;
 			this.setLaser(null);
-			if(change)
+			if(change) {
 				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
+			}
 		}
 	}
 	

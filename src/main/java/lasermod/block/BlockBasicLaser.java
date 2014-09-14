@@ -1,8 +1,14 @@
 package lasermod.block;
 
+import java.util.Random;
+
 import lasermod.LaserMod;
+import lasermod.api.ILaserReciver;
+import lasermod.api.LaserInGame;
+import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.util.LaserUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
@@ -72,6 +78,82 @@ public class BlockBasicLaser extends BlockContainer {
 	        return this.frontIcon;
 	    else
 	    	return side == Facing.oppositeSide[rotation] ? this.backIcon : this.sideIcon;
+	}
+	
+	@Override
+	public void onBlockAdded(World world, int x, int y, int z) {
+        if (!world.isRemote) {
+        	TileEntityBasicLaser basiclaser = (TileEntityBasicLaser)world.getTileEntity(x, y, z);
+        	
+            if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
+            	
+            	ILaserReciver reciver = LaserUtil.getFirstReciver(basiclaser, basiclaser.getBlockMetadata());
+        		if(reciver != null) {
+        			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()]);
+        		}
+            }
+            else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+        		ILaserReciver reciver = LaserUtil.getFirstReciver(basiclaser, basiclaser.getBlockMetadata());
+        		if(reciver != null) {
+        		  	
+        		  	LaserInGame laserInGame = basiclaser.getOutputLaser(basiclaser.getBlockMetadata());
+
+        		  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame)) {
+        				reciver.passLaser(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame);
+        			}
+        		}
+            }
+        }
+    }
+	
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+		if (!world.isRemote) {
+			TileEntityBasicLaser basiclaser = (TileEntityBasicLaser)world.getTileEntity(x, y, z);
+        	
+            if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
+            	
+            	ILaserReciver reciver = LaserUtil.getFirstReciver(basiclaser, basiclaser.getBlockMetadata());
+        		if(reciver != null) {
+        			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()]);
+        		}
+            }
+            else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+        		ILaserReciver reciver = LaserUtil.getFirstReciver(basiclaser, basiclaser.getBlockMetadata());
+        		if(reciver != null) {
+        		  	
+        		  	LaserInGame laserInGame = basiclaser.getOutputLaser(basiclaser.getBlockMetadata());
+
+        		  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame)) {
+        				reciver.passLaser(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame);
+        			}
+        		}
+            }
+        }
+    }
+
+	@Override
+    public void updateTick(World world, int x, int y, int z, Random random) {
+		TileEntityBasicLaser basiclaser = (TileEntityBasicLaser)world.getTileEntity(x, y, z);
+    	
+        if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
+        	
+        	ILaserReciver reciver = LaserUtil.getFirstReciver(basiclaser, basiclaser.getBlockMetadata());
+    		if(reciver != null) {
+    			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()]);
+    		}
+        }
+        else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+    		ILaserReciver reciver = LaserUtil.getFirstReciver(basiclaser, basiclaser.getBlockMetadata());
+    		if(reciver != null) {
+    		  	
+    		  	LaserInGame laserInGame = basiclaser.getOutputLaser(basiclaser.getBlockMetadata());
+
+    		  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame)) {
+    				reciver.passLaser(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame);
+    			}
+    		}
+        }
 	}
 	
 	@Override

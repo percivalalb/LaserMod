@@ -1,16 +1,24 @@
 package lasermod.block;
 
+import java.util.Random;
+
 import lasermod.LaserMod;
+import lasermod.ModBlocks;
 import lasermod.ModItems;
+import lasermod.api.ILaserReciver;
+import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketReflector;
 import lasermod.proxy.CommonProxy;
 import lasermod.tileentity.TileEntityReflector;
+import lasermod.util.LaserUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,6 +51,80 @@ public class BlockReflector extends BlockContainer {
 	}
 	
 	@Override
+	public void onBlockAdded(World world, int x, int y, int z) {
+        if (!world.isRemote) {
+        	TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
+        	for(int i = 0; i < reflector.closedSides.length; ++i) {
+    			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
+    				ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+    				if(reciver != null)
+    					reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
+    				continue;
+    			}
+    			if(reflector.containsInputSide(i)) 
+    				continue;
+    			
+    			ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+    			if(reciver != null) {
+    				LaserInGame laserInGame = reflector.getOutputLaser(i);
+    			  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
+    					reciver.passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
+    				}
+    			}
+    		}
+        }
+    }
+	
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+		if (!world.isRemote) {
+			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
+	    	for(int i = 0; i < reflector.closedSides.length; ++i) {
+				if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
+					ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+					if(reciver != null)
+						reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
+
+					continue;
+				}
+				if(reflector.containsInputSide(i)) 
+					continue;
+				
+				ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+				if(reciver != null) {
+					LaserInGame laserInGame = reflector.getOutputLaser(i);
+				  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
+						reciver.passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
+					}
+				}
+			}
+        }
+    }
+
+	@Override
+    public void updateTick(World world, int x, int y, int z, Random random) {
+		TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
+    	for(int i = 0; i < reflector.closedSides.length; ++i) {
+			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
+				ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+				if(reciver != null)
+					reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
+				continue;
+			}
+			if(reflector.containsInputSide(i)) 
+				continue;
+			
+			ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+			if(reciver != null) {
+				LaserInGame laserInGame = reflector.getOutputLaser(i);
+			  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
+					reciver.passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
+				}
+			}
+		}
+	}
+	
+	@Override
 	public boolean isOpaqueCube() {
 	    return false;
 	}
@@ -56,6 +138,8 @@ public class BlockReflector extends BlockContainer {
 			
 			if(reflector.closedSides[side])
 				reflector.removeAllLasersFromSide(side);
+			
+			//world.scheduleBlockUpdate(x, y, z, ModBlocks.reflector, 2);
 			
 			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 			

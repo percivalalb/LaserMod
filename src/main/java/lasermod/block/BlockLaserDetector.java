@@ -1,14 +1,23 @@
 package lasermod.block;
 
+import java.util.Random;
+
 import lasermod.LaserMod;
+import lasermod.api.ILaserReciver;
+import lasermod.api.LaserInGame;
+import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityLaserDetector;
+import lasermod.util.LaserUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,6 +49,58 @@ public class BlockLaserDetector extends BlockContainer {
 			return this.stateOff;
         return this.blockIcon;
     }
+	
+	@Override
+	public void onBlockAdded(World world, int x, int y, int z) {
+        if (!world.isRemote) {
+        	TileEntityLaserDetector laserdetector = (TileEntityLaserDetector)world.getTileEntity(x, y, z);
+			
+			if(laserdetector.getBlockMetadata() != 1)
+				return;
+			
+			int count = 0;
+			for(int i = 0; i < 6; ++i)
+				if(!LaserUtil.isValidSourceOfPowerOnSide(laserdetector, i))
+					count++;
+			
+			if(count == 6)
+				world.setBlockMetadataWithNotify(x, y, z, 0, 3);
+        }
+    }
+	
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+		if (!world.isRemote) {
+			TileEntityLaserDetector laserdetector = (TileEntityLaserDetector)world.getTileEntity(x, y, z);
+			
+			if(laserdetector.getBlockMetadata() != 1)
+				return;
+			
+			int count = 0;
+			for(int i = 0; i < 6; ++i)
+				if(!LaserUtil.isValidSourceOfPowerOnSide(laserdetector, i))
+					count++;
+			
+			if(count == 6)
+				world.setBlockMetadataWithNotify(x, y, z, 0, 3);
+        }
+    }
+
+	@Override
+    public void updateTick(World world, int x, int y, int z, Random random) {
+		TileEntityLaserDetector laserdetector = (TileEntityLaserDetector)world.getTileEntity(x, y, z);
+		
+		if(laserdetector.getBlockMetadata() != 1)
+			return;
+		
+		int count = 0;
+		for(int i = 0; i < 6; ++i)
+			if(!LaserUtil.isValidSourceOfPowerOnSide(laserdetector, i))
+				count++;
+		
+		if(count == 6)
+			world.setBlockMetadataWithNotify(x, y, z, 0, 3);
+	}
 	
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

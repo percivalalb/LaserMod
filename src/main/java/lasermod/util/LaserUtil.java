@@ -19,7 +19,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class LaserUtil {
 
 	public static int LASER_REACH = 64; //Distance in blocks
-	public static int TICK_RATE = 2;
+	public static int TICK_RATE = 10;
+	public static int LASER_RATE = 2;
 	public static double LASER_SIZE = 0.4D; //The distance across the entire beam
 	public static float[][] LASER_COLOUR_TABLE = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.0F, 1.0F, 0.0F}, {1.0F, 0.0F, 0.0F}, {0.0F, 0.0F, 0.0F}};
 	

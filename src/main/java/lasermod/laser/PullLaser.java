@@ -18,16 +18,12 @@ public class PullLaser implements ILaser {
 	
 	@Override
 	public void performActionOnEntitiesServer(List<Entity> entities, int direction) {
-		for(Entity entity : entities) {
-			
-		}
+
 	}
 	
 	@Override
 	public void performActionOnEntitiesClient(List<Entity> entities, int direction) {
-		for(Entity entity : entities) {
-			
-		}
+		
 	}
 	
 	@Override

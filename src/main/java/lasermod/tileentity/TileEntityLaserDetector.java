@@ -1,5 +1,6 @@
 package lasermod.tileentity;
 
+import lasermod.ModBlocks;
 import lasermod.api.ILaserReciver;
 import lasermod.api.LaserInGame;
 import lasermod.util.LaserUtil;
@@ -14,7 +15,6 @@ public class TileEntityLaserDetector extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public void updateEntity() {
-		if(this.worldObj.isRemote) return;
 		
 		this.lagReduce += 1;
 		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
@@ -53,6 +53,6 @@ public class TileEntityLaserDetector extends TileEntityLaserDevice implements IL
 
 	@Override
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		
+		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.laserDetector, 4);
 	}
 }
