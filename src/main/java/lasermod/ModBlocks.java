@@ -24,7 +24,7 @@ public class ModBlocks {
 	public static Block reflector;
 	public static Block colourConverter;
 	
-	public static void inti() {
+	public static void init() {
 		basicLaser = new BlockBasicLaser().setBlockName("lasermod.basicLaser");
 		advancedLaser = new BlockAdvancedLaser().setBlockName("lasermod.advancedLaser");
 		laserDetector = new BlockLaserDetector().setBlockName("lasermod.detector");

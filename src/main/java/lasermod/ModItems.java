@@ -17,7 +17,7 @@ public class ModItems {
 	public static Item screwdriver;
 	public static Item upgrades;
 	
-	public static void inti() {
+	public static void init() {
 		laserCrystal = new ItemLaserCrystal().setUnlocalizedName("lasermod.laserCrystal");
 		laserSeekingGoogles = new ItemLaserSeekingGoogles().setUnlocalizedName("lasermod.laserSeekingGoogles");
 		screwdriver = new ItemScrewdriver().setUnlocalizedName("lasermod.screwdriver");

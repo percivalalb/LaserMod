@@ -1,12 +1,7 @@
 package lasermod;
 
 import lasermod.api.LaserRegistry;
-import lasermod.laser.DamageLaser;
-import lasermod.laser.DefaultLaser;
-import lasermod.laser.FireLaser;
-import lasermod.laser.InvisibleLaser;
-import lasermod.laser.PullLaser;
-import lasermod.laser.PushLaser;
+import lasermod.laser.*;
 import lasermod.lib.Reference;
 import lasermod.network.NetworkManager;
 import lasermod.proxy.CommonProxy;
@@ -49,9 +44,9 @@ public class LaserMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		
-		ModBlocks.inti();
-		ModItems.inti();
-		ModEntities.inti();
+		ModBlocks.init();
+		ModItems.init();
+		ModEntities.init();
 		
 		proxy.onPreLoad();
 	}
@@ -68,6 +63,8 @@ public class LaserMod {
 	public void modsLoaded(FMLPostInitializationEvent event) {
 		//Registers all lasers
 		LaserRegistry.registerLaser("default", new DefaultLaser());
+		LaserRegistry.registerLaser("water", new WaterLaser());
+		LaserRegistry.registerLaser("ice", new IceLaser());
 		LaserRegistry.registerLaser("fire", new FireLaser());
 		LaserRegistry.registerLaser("invisible", new InvisibleLaser());
 		LaserRegistry.registerLaser("push", new PushLaser());
@@ -75,6 +72,8 @@ public class LaserMod {
 		LaserRegistry.registerLaser("damage", new DamageLaser());
 				
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 0, LaserRegistry.getLaserFromId("fire"));
+		LaserRegistry.registerItemToLaser(ModItems.upgrades, 1, LaserRegistry.getLaserFromId("water"));
+		LaserRegistry.registerItemToLaser(ModItems.upgrades, 2, LaserRegistry.getLaserFromId("ice"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 3, LaserRegistry.getLaserFromId("invisible"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 5, LaserRegistry.getLaserFromId("push"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 6, LaserRegistry.getLaserFromId("pull"));

@@ -19,7 +19,7 @@ public class ItemUpgrades extends Item {
 	public IIcon upgradeFire;
 	public IIcon upgradeWater;
 	public IIcon upgradeIce;
-	public IIcon upgradeInvisable;
+	public IIcon upgradeInvisible;
 	public IIcon upgradeMine;
 	public IIcon upgradePush;
 	public IIcon upgradePull;
@@ -37,7 +37,7 @@ public class ItemUpgrades extends Item {
 	    this.upgradeFire = iconRegister.registerIcon("lasermod:upgradeFire");
 	    this.upgradeWater = iconRegister.registerIcon("lasermod:upgradeWater");
 	    this.upgradeIce = iconRegister.registerIcon("lasermod:upgradeIce");
-	    this.upgradeInvisable = iconRegister.registerIcon("lasermod:upgradeInvisable");
+	    this.upgradeInvisible = iconRegister.registerIcon("lasermod:upgradeInvisable");
 	    this.upgradeMine = iconRegister.registerIcon("lasermod:upgradeMine");
 	    this.upgradePush = iconRegister.registerIcon("lasermod:upgradePush");
 	    this.upgradePull = iconRegister.registerIcon("lasermod:upgradePull");
@@ -49,7 +49,7 @@ public class ItemUpgrades extends Item {
 		if(meta == 0) return this.upgradeFire;
 		if(meta == 1) return this.upgradeWater;
 		if(meta == 2) return this.upgradeIce;
-		if(meta == 3) return this.upgradeInvisable;
+		if(meta == 3) return this.upgradeInvisible;
 		if(meta == 4) return this.upgradeMine;
 		if(meta == 5) return this.upgradePush;
 		if(meta == 6) return this.upgradePull;
@@ -61,6 +61,8 @@ public class ItemUpgrades extends Item {
 	@SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs creativeTab, List tabList) {
         tabList.add(new ItemStack(item, 1, 0));
+        tabList.add(new ItemStack(item, 1, 1));
+        tabList.add(new ItemStack(item, 1, 2));
         tabList.add(new ItemStack(item, 1, 3));
         tabList.add(new ItemStack(item, 1, 5));
         tabList.add(new ItemStack(item, 1, 6));
