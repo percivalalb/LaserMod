@@ -3,6 +3,7 @@ package lasermod.laser;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +29,7 @@ public class IceLaser implements ILaser {
 	public void performActionOnEntitiesBoth(List<Entity> entities, int direction) {
 		for(Entity entity : entities) {
 			double verticalSpeed = 0.120000000000000003D;
-            double maxSpeed = 0.19999999999999999D;            
+            double maxSpeed = 0.19999999999999999D;     
 		}
 	}
 	
