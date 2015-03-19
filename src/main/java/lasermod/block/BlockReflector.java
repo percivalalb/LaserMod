@@ -5,7 +5,7 @@ import java.util.Random;
 import lasermod.LaserMod;
 import lasermod.ModBlocks;
 import lasermod.ModItems;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketReflector;
 import lasermod.proxy.CommonProxy;
@@ -56,7 +56,7 @@ public class BlockReflector extends BlockContainer {
         	TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
         	for(int i = 0; i < reflector.closedSides.length; ++i) {
     			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-    				ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+    				ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
     				if(reciver != null)
     					reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
     				continue;
@@ -64,7 +64,7 @@ public class BlockReflector extends BlockContainer {
     			if(reflector.containsInputSide(i)) 
     				continue;
     			
-    			ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+    			ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
     			if(reciver != null) {
     				LaserInGame laserInGame = reflector.getOutputLaser(i);
     			  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
@@ -81,7 +81,7 @@ public class BlockReflector extends BlockContainer {
 			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
 	    	for(int i = 0; i < reflector.closedSides.length; ++i) {
 				if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-					ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+					ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
 					if(reciver != null)
 						reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
 
@@ -90,7 +90,7 @@ public class BlockReflector extends BlockContainer {
 				if(reflector.containsInputSide(i)) 
 					continue;
 				
-				ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+				ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
 				if(reciver != null) {
 					LaserInGame laserInGame = reflector.getOutputLaser(i);
 				  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
@@ -106,7 +106,7 @@ public class BlockReflector extends BlockContainer {
 		TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
     	for(int i = 0; i < reflector.closedSides.length; ++i) {
 			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-				ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+				ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
 				if(reciver != null)
 					reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
 				continue;
@@ -114,7 +114,7 @@ public class BlockReflector extends BlockContainer {
 			if(reflector.containsInputSide(i)) 
 				continue;
 			
-			ILaserReciver reciver = LaserUtil.getFirstReciver(reflector, i);
+			ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
 			if(reciver != null) {
 				LaserInGame laserInGame = reflector.getOutputLaser(i);
 			  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {

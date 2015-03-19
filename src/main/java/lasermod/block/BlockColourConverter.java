@@ -3,7 +3,7 @@ package lasermod.block;
 import java.util.Random;
 
 import lasermod.LaserMod;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketColourConverter;
 import lasermod.tileentity.TileEntityColourConverter;
@@ -85,7 +85,7 @@ public class BlockColourConverter extends BlockContainer {
 	public void onBlockAdded(World world, int x, int y, int z) {
         if (!world.isRemote) {
         	TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
-    		ILaserReciver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
+    		ILaserReceiver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
     		if(reciver != null) {
     			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
             	if(colourconverter.laser == null) {
@@ -102,7 +102,7 @@ public class BlockColourConverter extends BlockContainer {
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
 		if (!world.isRemote) {
 			TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
-			ILaserReciver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
+			ILaserReceiver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
 			if(reciver != null) {
 				LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
 	        	if(colourconverter.laser == null) {
@@ -118,7 +118,7 @@ public class BlockColourConverter extends BlockContainer {
 	@Override
     public void updateTick(World world, int x, int y, int z, Random random) {
 		TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
-		ILaserReciver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
+		ILaserReceiver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
 		if(reciver != null) {
 			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
         	if(colourconverter.laser == null) {

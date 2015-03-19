@@ -6,7 +6,7 @@ import java.util.List;
 import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.network.packet.PacketAdvancedLaser;

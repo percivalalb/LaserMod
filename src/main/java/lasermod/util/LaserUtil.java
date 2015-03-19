@@ -4,7 +4,7 @@ import java.util.List;
 
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -33,7 +33,7 @@ public class LaserUtil {
 		return meta & 7;
 	}
 	
-	public static ILaserReciver getFirstReciver(ILaserProvider laserProvider, int meta) {
+	public static ILaserReceiver getFirstReciver(ILaserProvider laserProvider, int meta) {
 		int orientation = getOrientation(meta);
 		
 		for(int distance = 1; distance <= LASER_REACH; distance++) {
@@ -50,8 +50,8 @@ public class LaserUtil {
 			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
 			//The next block is instance of ILaserReciver so return it
-			if(tileEntity instanceof ILaserReciver)
-				return (ILaserReciver)tileEntity;
+			if(tileEntity instanceof ILaserReceiver)
+				return (ILaserReceiver)tileEntity;
 			
 			//Can't pass through the next block
 			if(!LaserWhitelist.canLaserPassThrought(block, blockMeta))
@@ -61,7 +61,7 @@ public class LaserUtil {
         return null;
 	}
 	
-	public static boolean isValidSourceOfPowerOnSide(ILaserReciver laserReciver, int side) {
+	public static boolean isValidSourceOfPowerOnSide(ILaserReceiver laserReciver, int side) {
 		for(int distance = 1; distance <= LASER_REACH; distance++) {
 			int xTemp = laserReciver.getX() + ForgeDirection.VALID_DIRECTIONS[side].offsetX * distance;
 			int yTemp = laserReciver.getY() + ForgeDirection.VALID_DIRECTIONS[side].offsetY * distance;

@@ -2,7 +2,7 @@ package lasermod.tileentity;
 
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.util.LaserUtil;

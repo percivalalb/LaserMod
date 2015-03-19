@@ -5,9 +5,10 @@ import java.util.Random;
 import lasermod.LaserMod;
 import lasermod.ModItems;
 import lasermod.api.ILaser;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
+import lasermod.client.gui.GuiAdvancedLaser;
 import lasermod.network.packet.PacketAdvancedLaser;
 import lasermod.network.packet.PacketColourConverter;
 import lasermod.tileentity.TileEntityAdvancedLaser;
@@ -101,13 +102,13 @@ public class BlockAdvancedLaser extends BlockContainer {
         	
             if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
             	
-            	ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+            	ILaserReceiver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
         		if(reciver != null) {
         			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()]);
         		}
             }
             else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
-        		ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+        		ILaserReceiver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
         		if(reciver != null) {
         		  	
         		  	LaserInGame laserInGame = advancedlaser.getOutputLaser(advancedlaser.getBlockMetadata());
@@ -127,13 +128,13 @@ public class BlockAdvancedLaser extends BlockContainer {
         	
             if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
             	
-            	ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+            	ILaserReceiver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
         		if(reciver != null) {
         			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()]);
         		}
             }
             else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
-        		ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+        		ILaserReceiver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
         		if(reciver != null) {
         		  	
         		  	LaserInGame laserInGame = advancedlaser.getOutputLaser(advancedlaser.getBlockMetadata());
@@ -152,13 +153,13 @@ public class BlockAdvancedLaser extends BlockContainer {
     	
         if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
         	
-        	ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+        	ILaserReceiver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
     		if(reciver != null) {
     			reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[advancedlaser.getBlockMetadata()]);
     		}
         }
         else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
-    		ILaserReciver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
+    		ILaserReceiver reciver = LaserUtil.getFirstReciver(advancedlaser, advancedlaser.getBlockMetadata());
     		if(reciver != null) {
     		  	
     		  	LaserInGame laserInGame = advancedlaser.getOutputLaser(advancedlaser.getBlockMetadata());
@@ -189,6 +190,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 						player.addChatMessage(new ChatComponentText(" Currently no upgrades attached to this laser."));
 					}
 					else {
+						//player.openGui(LaserMod.instance, GuiAdvancedLaser.GUI_ID, world, x, y, z);
 						//player.addChatMessage(" Upgrades attached to this laser...");
 						for(ILaser laser : advancedLaser.getOutputLaser(advancedLaser.getBlockMetadata()).getLaserType()) {
 							String name = LaserRegistry.getIdFromLaser(laser);

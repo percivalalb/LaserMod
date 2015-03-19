@@ -6,7 +6,7 @@ import lasermod.LaserMod;
 import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketReflector;
 import lasermod.util.LaserUtil;
@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityReflector extends TileEntityLaserDevice implements ILaserProvider, ILaserReciver {
+public class TileEntityReflector extends TileEntityLaserDevice implements ILaserProvider, ILaserReceiver {
 
 	public boolean[] closedSides = new boolean[] {true, true, true, true, true, true};
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
@@ -146,7 +146,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		for(int i = 0; i < this.closedSides.length; ++i) {
 			if((!this.closedSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
 				continue;
-			ILaserReciver reciver = LaserUtil.getFirstReciver(this, i);
+			ILaserReceiver reciver = LaserUtil.getFirstReciver(this, i);
 			
 			if(reciver != null) {
 			  	reciver.removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);

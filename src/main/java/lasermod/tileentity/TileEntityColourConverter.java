@@ -3,7 +3,7 @@ package lasermod.tileentity;
 import lasermod.LaserMod;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketColourConverter;
 import lasermod.util.LaserUtil;
@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityColourConverter extends TileEntityLaserDevice implements ILaserProvider, ILaserReciver {
+public class TileEntityColourConverter extends TileEntityLaserDevice implements ILaserProvider, ILaserReceiver {
 
 	private int lagReduce = -1;
 	

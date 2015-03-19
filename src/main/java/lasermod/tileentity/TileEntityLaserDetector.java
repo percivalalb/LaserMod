@@ -1,7 +1,7 @@
 package lasermod.tileentity;
 
 import lasermod.ModBlocks;
-import lasermod.api.ILaserReciver;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.util.LaserUtil;
 import net.minecraft.world.World;
@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityLaserDetector extends TileEntityLaserDevice implements ILaserReciver {
+public class TileEntityLaserDetector extends TileEntityLaserDevice implements ILaserReceiver {
 
 	private int lagReduce = -1;
 	

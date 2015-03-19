@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public interface ILaserReciver {
+public interface ILaserReceiver {
 
 	public int getX();
 	public int getY();

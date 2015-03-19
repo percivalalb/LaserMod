@@ -12,7 +12,7 @@ import lasermod.api.ILaser;
  * @author ProPercivalalb
  */
 public class IceLaser implements ILaser {
-
+	
 	@Override
 	public void performActionOnEntitiesServer(List<Entity> entities, int direction) {
 		for(Entity entity : entities) {
