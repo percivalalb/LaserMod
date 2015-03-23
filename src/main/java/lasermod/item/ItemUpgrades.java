@@ -24,6 +24,7 @@ public class ItemUpgrades extends Item {
 	public IIcon upgradePush;
 	public IIcon upgradePull;
 	public IIcon upgradeDamage;
+	public IIcon upgradeHealing;
 	
 	public ItemUpgrades() {
 		super();
@@ -42,6 +43,7 @@ public class ItemUpgrades extends Item {
 	    this.upgradePush = iconRegister.registerIcon("lasermod:upgradePush");
 	    this.upgradePull = iconRegister.registerIcon("lasermod:upgradePull");
 	    this.upgradeDamage = iconRegister.registerIcon("lasermod:upgradeDamage");
+	    this.upgradeHealing = iconRegister.registerIcon("lasermod:upgradeHealing");
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -54,6 +56,7 @@ public class ItemUpgrades extends Item {
 		if(meta == 5) return this.upgradePush;
 		if(meta == 6) return this.upgradePull;
 		if(meta == 7) return this.upgradeDamage;
+		if(meta == 8) return this.upgradeHealing;
         return this.itemIcon;
     }
 	
@@ -67,6 +70,7 @@ public class ItemUpgrades extends Item {
         tabList.add(new ItemStack(item, 1, 5));
         tabList.add(new ItemStack(item, 1, 6));
         tabList.add(new ItemStack(item, 1, 7));
+        tabList.add(new ItemStack(item, 1, 8));
     }
 	
 	@Override

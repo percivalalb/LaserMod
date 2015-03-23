@@ -16,5 +16,6 @@ item.lasermod.upgrade.4.name=Mine Upgrade
 item.lasermod.upgrade.5.name=Push Upgrade
 item.lasermod.upgrade.6.name=Pull Upgrade
 item.lasermod.upgrade.7.name=Damage Upgrade
+item.lasermod.upgrade.8.name=Healing Upgrade [WIP]
 
 death.attack.lasermod.damage=%1$s got zapped by a Laser

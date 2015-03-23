@@ -70,6 +70,7 @@ public class LaserMod {
 		LaserRegistry.registerLaser("push", new PushLaser());
 		LaserRegistry.registerLaser("pull", new PullLaser());
 		LaserRegistry.registerLaser("damage", new DamageLaser());
+		LaserRegistry.registerLaser("healing", new HealingLaser());
 				
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 0, LaserRegistry.getLaserFromId("fire"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 1, LaserRegistry.getLaserFromId("water"));
@@ -78,5 +79,6 @@ public class LaserMod {
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 5, LaserRegistry.getLaserFromId("push"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 6, LaserRegistry.getLaserFromId("pull"));
 		LaserRegistry.registerItemToLaser(ModItems.upgrades, 7, LaserRegistry.getLaserFromId("damage"));
+		LaserRegistry.registerItemToLaser(ModItems.upgrades, 8, LaserRegistry.getLaserFromId("healing"));
 	}
 }

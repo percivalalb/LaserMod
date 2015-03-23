@@ -11,13 +11,21 @@ import lasermod.api.ILaser;
 /**
  * @author webmilio
  */
-public class GrowthLaser implements ILaser {
+public class HealingLaser implements ILaser {
 
 	@Override
 	public void performActionOnEntitiesBoth(List<Entity> entities, int direction) {
 		for (Entity entity : entities)
 		{
-			
+			float healRate = 0.05F;
+			if (entity instanceof EntityLiving)
+			{
+				((EntityLiving) entity).heal(healRate);
+			}
+			else if(entity instanceof EntityPlayer)
+			{
+				((EntityPlayer) entity).heal(healRate);
+			}
 		}
 	}
 
@@ -33,7 +41,6 @@ public class GrowthLaser implements ILaser {
 
 	@Override
 	public boolean shouldRenderLaser(EntityPlayer player, int direction) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	
