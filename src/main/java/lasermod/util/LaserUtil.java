@@ -54,7 +54,7 @@ public class LaserUtil {
 				return (ILaserReceiver)tileEntity;
 			
 			//Can't pass through the next block
-			if(!LaserWhitelist.canLaserPassThrought(block, blockMeta))
+			if(!LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp))
 				break;
 		}
 		
@@ -75,7 +75,7 @@ public class LaserUtil {
 			int blockMeta = laserReciver.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
 			TileEntity tileEntity = laserReciver.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
-			if(!LaserWhitelist.canLaserPassThrought(block, blockMeta))
+			if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp))
 				if(tileEntity instanceof ILaserProvider)
 					return ((ILaserProvider)tileEntity).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
 			else
@@ -125,7 +125,7 @@ public class LaserUtil {
 			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
 			//Can't pass through the next block
-			if(LaserWhitelist.canLaserPassThrought(block, blockMeta))
+			if(LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp))
 				extra[orientation] += 1;
 			else {
 				extra[orientation] += 1 - offsetMax + 0.01D;
