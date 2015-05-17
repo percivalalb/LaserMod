@@ -38,7 +38,9 @@ public class LaserWhitelist {
 		Chunk chunk = world.getChunkFromBlockCoords(x, z);
 		if(chunk == null || !chunk.isChunkLoaded)
 			return false;
-		boolean blockaccepted =  (world.getBlock(x, y, z).isAir(world,x,y,z) == true || world.getBlock(x, y, z).isOpaqueCube() == false || canLaserPassThrought(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z)) == true );
+		
+		Block block = world.getBlock(x, y, z);
+		boolean blockaccepted = block.isAir(world,x,y,z) || !block.isOpaqueCube() || canLaserPassThrought(block, world.getBlockMetadata(x, y, z));
 	
 		return blockaccepted; 
 	}
