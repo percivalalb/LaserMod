@@ -41,7 +41,7 @@ public class LaserWhitelist {
 			return false;
 		
 		Block block = world.getBlock(x, y, z);
-		boolean blockaccepted = block.isAir(world,x,y,z) || !block.isOpaqueCube() || canLaserPassThrought(block, world.getBlockMetadata(x, y, z));
+		boolean blockaccepted = block.isAir(world,x,y,z) || canLaserPassThrought(block, world.getBlockMetadata(x, y, z));
 	
 		return blockaccepted; 
 	}
