@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import lasermod.ModItems;
+import lasermod.lib.PacketLib;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -108,28 +110,28 @@ public class LaserInGame {
 		return tag;
 	}
 	
-	public void writeToPacket(DataOutputStream data) throws IOException {
-		data.writeDouble(this.strength);
-		data.writeInt(this.side);
-		data.writeInt(this.red);
-		data.writeInt(this.green);
-		data.writeInt(this.blue);
+	public void writeToPacket(PacketBuffer packetbuffer) throws IOException {
+		packetbuffer.writeDouble(this.strength);
+		packetbuffer.writeInt(this.side);
+		packetbuffer.writeInt(this.red);
+		packetbuffer.writeInt(this.green);
+		packetbuffer.writeInt(this.blue);
 		
-		data.writeInt(this.laserCount());
+		packetbuffer.writeInt(this.laserCount());
 		for(ILaser laser : this.laserType)
-			data.writeUTF(LaserRegistry.getIdFromLaser(laser));
+			packetbuffer.writeStringToBuffer(LaserRegistry.getIdFromLaser(laser));
 	}
 	
-	public LaserInGame readFromPacket(DataInputStream data) throws IOException {
-		this.strength = data.readDouble();
-		this.side = data.readInt();
-		this.red = data.readInt();
-		this.green = data.readInt();
-		this.blue = data.readInt();
+	public LaserInGame readFromPacket(PacketBuffer packetbuffer) throws IOException {
+		this.strength = packetbuffer.readDouble();
+		this.side = packetbuffer.readInt();
+		this.red = packetbuffer.readInt();
+		this.green = packetbuffer.readInt();
+		this.blue = packetbuffer.readInt();
 		
-		int count = data.readInt();
+		int count = packetbuffer.readInt();
 		for(int i = 0; i < count; ++i)
-			this.addLaserType(data.readUTF());
+			this.addLaserType(packetbuffer.readStringFromBuffer(PacketLib.MAX_STRING_LEN));
 		
 		return this;
 	}

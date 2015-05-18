@@ -8,6 +8,7 @@ import lasermod.api.LaserInGame;
 import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityColourConverter;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -30,24 +31,24 @@ public class PacketColourConverter extends IPacket {
     }
     
 	@Override
-	public void read(DataInputStream data) throws IOException {
-		this.x = data.readInt();
-		this.y = data.readInt();
-		this.z = data.readInt();
-		if(data.readBoolean())
-			this.laser = new LaserInGame().readFromPacket(data);
-		this.colour = data.readInt();
+	public void read(PacketBuffer packetbuffer) throws IOException {
+		this.x = packetbuffer.readInt();
+		this.y = packetbuffer.readInt();
+		this.z = packetbuffer.readInt();
+		if(packetbuffer.readBoolean())
+			this.laser = new LaserInGame().readFromPacket(packetbuffer);
+		this.colour = packetbuffer.readInt();
 	}
 	
 	@Override
-	public void write(DataOutputStream data) throws IOException {
-		data.writeInt(this.x);
-		data.writeInt(this.y);
-		data.writeInt(this.z);
-		data.writeBoolean(this.laser != null);
+	public void write(PacketBuffer packetbuffer) throws IOException {
+		packetbuffer.writeInt(this.x);
+		packetbuffer.writeInt(this.y);
+		packetbuffer.writeInt(this.z);
+		packetbuffer.writeBoolean(this.laser != null);
 		if(this.laser != null)
-			this.laser.writeToPacket(data);
-		data.writeInt(this.colour);
+			this.laser.writeToPacket(packetbuffer);
+		packetbuffer.writeInt(this.colour);
 	}
 	
 	@Override

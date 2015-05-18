@@ -13,6 +13,9 @@ import org.lwjgl.opengl.GL11;
 public class LaserRenderer {
 	
 	public static void preLaserRender() {
+		GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+		GL11.glDisable(GL11.GL_LIGHTING);
+
 	    RenderHelper.disableStandardItemLighting();
 	    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 160F, 160F);
 	    GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -28,6 +31,8 @@ public class LaserRenderer {
 		 GL11.glDepthMask(true);
 	     GL11.glDisable(GL11.GL_BLEND);
 	     GL11.glEnable(GL11.GL_TEXTURE_2D);
+	     GL11.glEnable(GL11.GL_LIGHTING);
+	     GL11.glPopAttrib();
 	}
 	
     public static void drawBoundingBox(AxisAlignedBB boundingBox) {

@@ -9,6 +9,7 @@ import lasermod.api.LaserInGame;
 import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLLog;
@@ -32,32 +33,32 @@ public class PacketReflector extends IPacket {
     }
     
 	@Override
-	public void read(DataInputStream data) throws IOException {
-		this.x = data.readInt();
-		this.y = data.readInt();
-		this.z = data.readInt();
+	public void read(PacketBuffer packetbuffer) throws IOException {
+		this.x = packetbuffer.readInt();
+		this.y = packetbuffer.readInt();
+		this.z = packetbuffer.readInt();
 		this.openSides = new boolean[6];
 	    for(int i = 0; i < 6; ++i)
-	    	this.openSides[i] = data.readBoolean();
+	    	this.openSides[i] = packetbuffer.readBoolean();
 		
 	    this.lasers = new ArrayList<LaserInGame>();
-	    int count = data.readInt();
+	    int count = packetbuffer.readInt();
 	    for(int i = 0; i < count; ++i)
-	    	this.lasers.add(new LaserInGame().readFromPacket(data));
+	    	this.lasers.add(new LaserInGame().readFromPacket(packetbuffer));
 	}
 	
 	@Override
-	public void write(DataOutputStream data) throws IOException {
-		data.writeInt(this.x);
-		data.writeInt(this.y);
-		data.writeInt(this.z);
+	public void write(PacketBuffer packetbuffer) throws IOException {
+		packetbuffer.writeInt(this.x);
+		packetbuffer.writeInt(this.y);
+		packetbuffer.writeInt(this.z);
 		for(int i = 0; i < 6; ++i)
-			data.writeBoolean(this.openSides[i]);
+			packetbuffer.writeBoolean(this.openSides[i]);
 		
-		data.writeInt(this.lasers.size());
+		packetbuffer.writeInt(this.lasers.size());
 		
 		for(int i = 0; i < this.lasers.size(); ++i) 
-			this.lasers.get(i).writeToPacket(data);
+			this.lasers.get(i).writeToPacket(packetbuffer);
 	}
 	
 	@Override

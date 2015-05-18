@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import lasermod.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -61,6 +62,7 @@ public class LaserWhitelist {
 		addToWhiteList(Blocks.tallgrass);
 		addToWhiteList(Blocks.double_plant);
 		addToWhiteList(Blocks.leaves);
+		addToWhiteList(Blocks.leaves2);
 		addToWhiteList(Blocks.lever);
 		addToWhiteList(Blocks.torch);
 		addToWhiteList(Blocks.redstone_torch);

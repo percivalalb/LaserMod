@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import lasermod.api.LaserInGame;
-import lasermod.helper.PacketHelper;
 import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -31,24 +31,24 @@ public class PacketAdvancedLaser extends IPacket {
     }
     
 	@Override
-	public void read(DataInputStream data) throws IOException {
-		this.x = data.readInt();
-		this.y = data.readInt();
-		this.z = data.readInt();
+	public void read(PacketBuffer packetbuffer) throws IOException {
+		this.x = packetbuffer.readInt();
+		this.y = packetbuffer.readInt();
+		this.z = packetbuffer.readInt();
 		this.upgrades = new ArrayList<ItemStack>();
-	    int upgradeCount = data.readInt();
+	    int upgradeCount = packetbuffer.readInt();
 	    for(int i = 0; i < upgradeCount; ++i)
-	    	upgrades.add(PacketHelper.readItemStack(data));
+	    	upgrades.add(packetbuffer.readItemStackFromBuffer());
 	}
 	
 	@Override
-	public void write(DataOutputStream data) throws IOException {
-		data.writeInt(this.x);
-		data.writeInt(this.y);
-		data.writeInt(this.z);
-		data.writeInt(this.upgrades.size());
+	public void write(PacketBuffer packetbuffer) throws IOException {
+		packetbuffer.writeInt(this.x);
+		packetbuffer.writeInt(this.y);
+		packetbuffer.writeInt(this.z);
+		packetbuffer.writeInt(this.upgrades.size());
 	    for(int i = 0; i < this.upgrades.size(); ++i) {
-	    	PacketHelper.writeItemStack(this.upgrades.get(i), data);
+	    	packetbuffer.writeItemStackToBuffer(this.upgrades.get(i));
 	    }
 	}
 	
