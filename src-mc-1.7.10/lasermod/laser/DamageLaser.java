@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import lasermod.api.ILaser;
+import lasermod.util.BlockActionPos;
 
 /**
  * @author ProPercivalalb
@@ -36,4 +37,8 @@ public class DamageLaser implements ILaser {
 		return true;
 	}
 
+	@Override
+	public void actionOnBlock(BlockActionPos action) {
+		
+	}
 }

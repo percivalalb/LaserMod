@@ -67,6 +67,7 @@ public class ItemUpgrades extends Item {
         tabList.add(new ItemStack(item, 1, 1));
         tabList.add(new ItemStack(item, 1, 2));
         tabList.add(new ItemStack(item, 1, 3));
+        tabList.add(new ItemStack(item, 1, 4));
         tabList.add(new ItemStack(item, 1, 5));
         tabList.add(new ItemStack(item, 1, 6));
         tabList.add(new ItemStack(item, 1, 7));

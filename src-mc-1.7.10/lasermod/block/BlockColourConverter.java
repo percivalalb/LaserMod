@@ -3,10 +3,12 @@ package lasermod.block;
 import java.util.Random;
 
 import lasermod.LaserMod;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketColourConverter;
 import lasermod.tileentity.TileEntityColourConverter;
+import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -85,14 +87,14 @@ public class BlockColourConverter extends BlockContainer {
 	public void onBlockAdded(World world, int x, int y, int z) {
         if (!world.isRemote) {
         	TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
-    		ILaserReceiver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
-    		if(reciver != null) {
+    		BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
+    		if(reciver != null && reciver.isLaserReciver()) {
     			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
             	if(colourconverter.laser == null) {
-            		reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
+            		reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
             	}
-            	else if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-    				reciver.passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
+            	else if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
+            		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
     			}
     		}
         }
@@ -102,14 +104,14 @@ public class BlockColourConverter extends BlockContainer {
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
 		if (!world.isRemote) {
 			TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
-			ILaserReceiver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
-			if(reciver != null) {
+			BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
+			if(reciver != null && reciver.isLaserReciver()) {
 				LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
 	        	if(colourconverter.laser == null) {
-	        		reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
+	        		reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
 	        	}
-	        	else if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-					reciver.passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
+	        	else if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
+	        		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
 				}
 			}
         }
@@ -118,14 +120,23 @@ public class BlockColourConverter extends BlockContainer {
 	@Override
     public void updateTick(World world, int x, int y, int z, Random random) {
 		TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
-		ILaserReceiver reciver = LaserUtil.getFirstReciver(colourconverter, colourconverter.getBlockMetadata());
-		if(reciver != null) {
+		BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
+		if(reciver != null && reciver.isLaserReciver()) {
 			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
-        	if(colourconverter.laser == null) {
-        		reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
+        	if(laserInGame == null) {
+        		reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
         	}
-        	else if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-				reciver.passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
+        	else if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
+        		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
+			}
+		}
+		else if(reciver != null) {
+			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
+			
+			if(laserInGame != null) {
+				for(ILaser laser : laserInGame.getLaserType()) {
+					laser.actionOnBlock(reciver);
+				}
 			}
 		}
 	}

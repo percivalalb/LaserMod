@@ -51,6 +51,11 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	}
 	
 	@Override
+	public int getDistance() {
+		return 64;
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
     	return INFINITE_EXTENT_AABB;

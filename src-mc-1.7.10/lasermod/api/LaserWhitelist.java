@@ -41,7 +41,7 @@ public class LaserWhitelist {
 			return false;
 		
 		Block block = world.getBlock(x, y, z);
-		boolean blockaccepted = block.isAir(world,x,y,z) || canLaserPassThrought(block, world.getBlockMetadata(x, y, z));
+		boolean blockaccepted = block.isAir(world, x, y, z) || canLaserPassThrought(block, world.getBlockMetadata(x, y, z));
 	
 		return blockaccepted; 
 	}
@@ -65,10 +65,16 @@ public class LaserWhitelist {
 		addToWhiteList(Blocks.leaves2);
 		addToWhiteList(Blocks.lever);
 		addToWhiteList(Blocks.torch);
+		addToWhiteList(Blocks.ladder);
 		addToWhiteList(Blocks.redstone_torch);
 		addToWhiteList(Blocks.unlit_redstone_torch);
 		addToWhiteList(Blocks.redstone_wire);
 		addToWhiteList(Blocks.glass);
+		addToWhiteList(Blocks.stained_glass);
 		addToWhiteList(Blocks.glass_pane);
+		addToWhiteList(Blocks.stained_glass_pane);
+		
+		//Mods
+		addToWhiteList("TConstruct:decoration.stonetorch", -1);
 	}
 }

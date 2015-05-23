@@ -2,6 +2,7 @@ package lasermod.api;
 
 import java.util.List;
 
+import lasermod.util.BlockActionPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -15,4 +16,5 @@ public interface ILaser {
 	public void performActionOnEntitiesServer(List<Entity> entities, int direction);
 	
 	public boolean shouldRenderLaser(EntityPlayer player, int direction);
+	public void actionOnBlock(BlockActionPos reciver);
 }

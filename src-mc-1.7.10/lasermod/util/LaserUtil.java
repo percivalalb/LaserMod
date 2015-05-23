@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
@@ -18,10 +19,9 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class LaserUtil {
 
-	public static int LASER_REACH = 64; //Distance in blocks
 	public static int TICK_RATE = 10;
 	public static int LASER_RATE = 2;
-	public static double LASER_SIZE = 0.4D; //The distance across the entire beam
+	public static double LASER_SIZE = 0.3D; //The distance across the entire beam
 	public static float[][] LASER_COLOUR_TABLE = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.0F, 1.0F, 0.0F}, {1.0F, 0.0F, 0.0F}, {0.0F, 0.0F, 0.0F}};
 	
 	/**
@@ -33,6 +33,7 @@ public class LaserUtil {
 		return meta & 7;
 	}
 	
+	/**
 	public static ILaserReceiver getFirstReciver(ILaserProvider laserProvider, int meta) {
 		int orientation = getOrientation(meta);
 		
@@ -45,8 +46,6 @@ public class LaserUtil {
 			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
 				break;
 			
-			Block block = laserProvider.getWorld().getBlock(xTemp, yTemp, zTemp);
-			int blockMeta = laserProvider.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
 			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
 			//The next block is instance of ILaserReciver so return it
@@ -59,10 +58,60 @@ public class LaserUtil {
 		}
 		
         return null;
+	}**/
+	
+	public static BlockActionPos getFirstBlock(ILaserProvider laserProvider, int meta) {
+		int orientation = getOrientation(meta);
+		
+		for(int distance = 1; distance <= laserProvider.getDistance(); distance++) {
+			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
+			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
+			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
+			
+			//Check whether the coordinates are in range
+			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
+				break;
+			
+			BlockActionPos blockActionPos = new BlockActionPos(laserProvider.getWorld(), xTemp, yTemp, zTemp);
+			
+			
+			//Can't pass through the next block
+			if(blockActionPos.isLaserReciver() || !LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp))
+				return blockActionPos;
+		}
+		
+        return null;
 	}
 	
-	public static boolean isValidSourceOfPowerOnSide(ILaserReceiver laserReciver, int side) {
+	/**
+	public static ILaserReceiver lightUp(ILaserProvider laserProvider, int meta) {
+		int orientation = getOrientation(meta);
+		
 		for(int distance = 1; distance <= LASER_REACH; distance++) {
+			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
+			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
+			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
+			
+			//Check whether the coordinates are in range
+			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
+				break;
+
+			
+			if(LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp)) {
+				laserProvider.getWorld().setLightValue(EnumSkyBlock.Block, xTemp, yTemp, zTemp, 15);
+				//laserProvider.getWorld().markBlockForUpdate(xTemp, yTemp, zTemp);
+			}
+			else {
+				//extra[orientation] += 1;
+				break;
+			}
+		}
+		
+        return null;
+	}**/
+	
+	public static boolean isValidSourceOfPowerOnSide(ILaserReceiver laserReciver, int side) {
+		for(int distance = 1; distance <= 64; distance++) {
 			int xTemp = laserReciver.getX() + ForgeDirection.VALID_DIRECTIONS[side].offsetX * distance;
 			int yTemp = laserReciver.getY() + ForgeDirection.VALID_DIRECTIONS[side].offsetY * distance;
 			int zTemp = laserReciver.getZ() + ForgeDirection.VALID_DIRECTIONS[side].offsetZ * distance;
@@ -88,7 +137,7 @@ public class LaserUtil {
 	public static void performLaserAction(ILaserProvider laserProvider, int meta, double renderX, double renderY, double renderZ) {
 		AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(laserProvider, meta, renderX, renderY, renderZ);
 		
-		//Gets all entities within the 'laser beam' 
+		//Gets all entities within the 'laser beam'
 		List<Entity> entities = laserProvider.getWorld().getEntitiesWithinAABB(Entity.class, boundingBox);
 		
 		for(ILaser ilaser : laserProvider.getOutputLaser(meta).getLaserType()) {
@@ -111,7 +160,7 @@ public class LaserUtil {
 		
 		double[] extra = new double[ForgeDirection.VALID_DIRECTIONS.length];
 		
-		for(int distance = 1; distance <= LaserUtil.LASER_REACH; distance++) {
+		for(int distance = 1; distance <= laserProvider.getDistance(); distance++) {
 			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
 			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
 			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
@@ -128,7 +177,7 @@ public class LaserUtil {
 			if(LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp))
 				extra[orientation] += 1;
 			else {
-				extra[orientation] += 1 - offsetMax + 0.01D;
+				extra[orientation] += 1 - offsetMax;
 				break;
 			}
 			

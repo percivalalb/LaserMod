@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
@@ -38,6 +39,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.advancedLaser, 0);
 		}
 		if(this.lagReduce % LaserUtil.LASER_RATE == 0) {
+	
 			boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
 		
 			if(hasSignal)
@@ -99,6 +101,11 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
 		return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) && this.getBlockMetadata() == side;
+	}
+	
+	@Override
+	public int getDistance() {
+		return 64;
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package lasermod.laser;
 import java.util.List;
 
 import lasermod.api.ILaser;
+import lasermod.util.BlockActionPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -31,4 +32,8 @@ public class DefaultLaser implements ILaser {
 		return true;
 	}
 
+	@Override
+	public void actionOnBlock(BlockActionPos action) {
+		
+	}
 }

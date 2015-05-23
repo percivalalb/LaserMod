@@ -4,19 +4,18 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import lasermod.api.ILaser;
 import lasermod.util.BlockActionPos;
 
 /**
  * @author ProPercivalalb
  */
-public class FireLaser implements ILaser {
+public class MiningLaser implements ILaser {
 
 	@Override
 	public void performActionOnEntitiesServer(List<Entity> entities, int direction) {
-		for(Entity entity : entities) {
-			entity.setFire(4);
-		}
+		
 	}
 	
 	@Override
@@ -36,6 +35,7 @@ public class FireLaser implements ILaser {
 	
 	@Override
 	public void actionOnBlock(BlockActionPos action) {
-		
+		action.block.dropBlockAsItem(action.world, action.x, action.y, action.z, action.meta, 0);
+		action.world.setBlock(action.x, action.y, action.z, Blocks.air);
 	}
 }

@@ -31,7 +31,7 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
 		AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(colourConverter, colourConverter.getBlockMetadata(), x, y, z);
     	GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
     	LaserRenderer.drawBoundingBox(boundingBox);
-    	LaserRenderer.drawBoundingBox(boundingBox.contract(0.12D, 0.12D, 0.12D));
+    	LaserRenderer.drawBoundingBox(boundingBox.contract(0.1D, 0.1D, 0.1D));
          
     	LaserRenderer.postLaserRender();
         GL11.glPopMatrix();

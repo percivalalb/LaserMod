@@ -9,6 +9,7 @@ import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketReflector;
+import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
@@ -33,7 +34,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	public void updateEntity() {
 		
 		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE != 0) {
+		if(this.lagReduce % LaserUtil.TICK_RATE == 0) {
 			
 			for(int i = 0; i < this.closedSides.length; ++i)
 				if(!LaserUtil.isValidSourceOfPowerOnSide(this, i))
@@ -125,18 +126,14 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	}
 	
 	public boolean removeAllLasersFromSide(int side) {
+		
 		boolean flag = false;
 		for(int i = 0; i < lasers.size(); ++i) {
 			LaserInGame old = lasers.get(i);
 			if(old.getSide() == side) {
 				lasers.remove(i);
-				FMLLog.info("REmove " + i);
 				flag = true;
 			}
-		}
-		if(flag) {
-			//this.checkAllRecivers();
-			
 		}
 		
 		return flag;
@@ -146,10 +143,10 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		for(int i = 0; i < this.closedSides.length; ++i) {
 			if((!this.closedSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
 				continue;
-			ILaserReceiver reciver = LaserUtil.getFirstReciver(this, i);
+			BlockActionPos reciver = LaserUtil.getFirstBlock(this, i);
 			
-			if(reciver != null) {
-			  	reciver.removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
+			if(reciver != null && reciver.isLaserReciver()) {
+			  	reciver.getLaserReceiver().removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}
 	}
@@ -170,10 +167,12 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		int red = lasers.get(0).red;
 		int green = lasers.get(0).green;
 		int blue = lasers.get(0).blue;
+		double ratio = 0.5D;
+		
 		for(int i = 1; i < lasers.size(); ++i) {
-			red = (red * lasers.get(i).red) / 255;
-			green = (green * lasers.get(i).green) / 255;
-			blue = (blue * lasers.get(i).blue) / 255;
+			red = (int)((red * ratio) + (lasers.get(i).red * 0.5D));
+			green = (int)((green * ratio) + (lasers.get(i).green * 0.5D));
+			blue = (int)((blue * ratio) + (lasers.get(i).blue * 0.5D));
 		}
 	
 		laserInGame.red = red;
@@ -188,7 +187,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		
 		return laserInGame;
 	}
-	
+
 	@Override
 	public int getX() { return this.xCoord; }
 	@Override
@@ -227,6 +226,19 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
 		return !this.closedSides[side] && this.lasers.size() > 0;
+	}
+	
+	@Override
+	public int getDistance() {
+		int total = 0;
+		
+		for(int i = 0; i < 6; i++)
+			if(!this.closedSides[i] && !this.containsInputSide(i)) 
+				total += 1;
+		if(total == 0)
+			return 0;
+		
+		return 64 / total;
 	}
 	
 	@Override

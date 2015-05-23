@@ -19,7 +19,7 @@ import cpw.mods.fml.common.FMLLog;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
+public class TileEntityMirrorRenderer extends TileEntitySpecialRenderer {
 
 	private ModelReflector modelReflector = new ModelReflector();
 	

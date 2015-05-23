@@ -8,6 +8,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import lasermod.api.ILaser;
+import lasermod.util.BlockActionPos;
 
 /**
  * @author ProPercivalalb
@@ -36,5 +37,10 @@ public class IceLaser implements ILaser {
 	@Override
 	public boolean shouldRenderLaser(EntityPlayer player, int direction) {
 		return true;
+	}
+	
+	@Override
+	public void actionOnBlock(BlockActionPos action) {
+		
 	}
 }

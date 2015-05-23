@@ -4,6 +4,8 @@ import lasermod.item.ItemLaserCrystal;
 import lasermod.item.ItemLaserSeekingGoogles;
 import lasermod.item.ItemScrewdriver;
 import lasermod.item.ItemUpgrades;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -29,14 +31,5 @@ public class ModItems {
 		GameRegistry.registerItem(laserSeekingGoogles, "laserSeekingGoogles");
 		GameRegistry.registerItem(screwdriver, "screwdriver");
 		GameRegistry.registerItem(upgrades, "upgrades");
-
-		ItemStack glassStack = new ItemStack(Item.getItemFromBlock(Block.getBlockFromName("glass")));
-		ItemStack redstoneStack = new ItemStack(Item.getItemById(331));
-
-		GameRegistry.addRecipe(new ItemStack(laserCrystal),
-		" y ",
-		"yxy",
-		" y ",
-		'x', glassStack, 'y', redstoneStack);
 	}
 }

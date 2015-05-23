@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import lasermod.api.ILaser;
+import lasermod.util.BlockActionPos;
 
 /**
  * @author webmilio
@@ -44,4 +45,8 @@ public class HealingLaser implements ILaser {
 		return true;
 	}
 	
+	@Override
+	public void actionOnBlock(BlockActionPos action) {
+		
+	}
 }

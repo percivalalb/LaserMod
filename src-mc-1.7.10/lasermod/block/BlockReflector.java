@@ -5,11 +5,13 @@ import java.util.Random;
 import lasermod.LaserMod;
 import lasermod.ModBlocks;
 import lasermod.ModItems;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketReflector;
 import lasermod.proxy.CommonProxy;
 import lasermod.tileentity.TileEntityReflector;
+import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -20,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,7 +44,7 @@ public class BlockReflector extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-        return CommonProxy.REFLECTOR_RENDER_ID;
+        return -1;
     }
 	
 	@Override
@@ -56,19 +59,19 @@ public class BlockReflector extends BlockContainer {
         	TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
         	for(int i = 0; i < reflector.closedSides.length; ++i) {
     			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-    				ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
-    				if(reciver != null)
-    					reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
+    				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
+    				if(reciver != null && reciver.isLaserReciver())
+    					reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
     				continue;
     			}
     			if(reflector.containsInputSide(i)) 
     				continue;
     			
-    			ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
-    			if(reciver != null) {
+    			BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
+    			if(reciver != null && reciver.isLaserReciver()) {
     				LaserInGame laserInGame = reflector.getOutputLaser(i);
-    			  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
-    					reciver.passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
+    			  	if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
+    			  		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
     				}
     			}
     		}
@@ -81,20 +84,20 @@ public class BlockReflector extends BlockContainer {
 			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
 	    	for(int i = 0; i < reflector.closedSides.length; ++i) {
 				if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-					ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
-					if(reciver != null)
-						reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
+					BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
+					if(reciver != null && reciver.isLaserReciver())
+						reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
 
 					continue;
 				}
 				if(reflector.containsInputSide(i)) 
 					continue;
 				
-				ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
-				if(reciver != null) {
+				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
+				if(reciver != null && reciver.isLaserReciver()) {
 					LaserInGame laserInGame = reflector.getOutputLaser(i);
-				  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
-						reciver.passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
+				  	if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
+				  		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
 					}
 				}
 			}
@@ -106,19 +109,26 @@ public class BlockReflector extends BlockContainer {
 		TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
     	for(int i = 0; i < reflector.closedSides.length; ++i) {
 			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-				ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
-				if(reciver != null)
-					reciver.removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
+				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
+				if(reciver != null && reciver.isLaserReciver())
+					reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
 				continue;
 			}
 			if(reflector.containsInputSide(i)) 
 				continue;
 			
-			ILaserReceiver reciver = LaserUtil.getFirstReciver(reflector, i);
-			if(reciver != null) {
+			BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
+			if(reciver != null && reciver.isLaserReciver()) {
 				LaserInGame laserInGame = reflector.getOutputLaser(i);
-			  	if(reciver.canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
-					reciver.passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
+			  	if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
+			  		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
+				}
+			}
+			else if(reciver != null) {
+				LaserInGame laserInGame = reflector.getOutputLaser(i);
+				
+				for(ILaser laser : laserInGame.getLaserType()) {
+					laser.actionOnBlock(reciver);
 				}
 			}
 		}
@@ -138,8 +148,6 @@ public class BlockReflector extends BlockContainer {
 			
 			if(reflector.closedSides[side])
 				reflector.removeAllLasersFromSide(side);
-			
-			//world.scheduleBlockUpdate(x, y, z, ModBlocks.reflector, 2);
 			
 			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 			

@@ -34,7 +34,7 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
         AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(advancedLaser, advancedLaser.getBlockMetadata(), x, y, z);
         GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
     	LaserRenderer.drawBoundingBox(laserOutline);
-    	LaserRenderer.drawBoundingBox(laserOutline.contract(0.12D, 0.12D, 0.12D));
+    	LaserRenderer.drawBoundingBox(laserOutline.contract(0.1D, 0.1D, 0.1D));
 
     	LaserRenderer.postLaserRender();
         GL11.glPopMatrix();

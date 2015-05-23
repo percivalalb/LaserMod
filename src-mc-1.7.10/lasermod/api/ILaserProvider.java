@@ -12,6 +12,7 @@ public interface ILaserProvider {
 	public int getZ();
 	public World getWorld();
 	public LaserInGame getOutputLaser(int side);
+	public int getDistance();
 	
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side);
 }
