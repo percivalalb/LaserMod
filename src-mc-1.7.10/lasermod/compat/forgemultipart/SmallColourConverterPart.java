@@ -1,4 +1,4 @@
-package lasermod.forgemultipart; 
+package lasermod.compat.forgemultipart; 
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +43,9 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * @author ProPercivalalb
+ */
 public class SmallColourConverterPart extends McSidedMetaPart implements ILaserProvider, ILaserReceiver {
 
 	public int colour;
@@ -93,7 +96,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 		
 
         if(meta == ForgeDirection.DOWN.ordinal())
-        	 return new Cuboid6(0.2F, 0.8F, 0.2F, 0.8F, 9.0F, 0.8F);
+        	 return new Cuboid6(0.2F, 0.8F, 0.2F, 0.8F, 1.0F, 0.8F);
         else if(meta == ForgeDirection.UP.ordinal())
         	return new Cuboid6(0.2F, 0.0F, 0.2F, 0.8F, 0.2F, 0.8F);
     	else if(meta == ForgeDirection.SOUTH.ordinal())
@@ -108,6 +111,11 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
        		return new Cuboid6(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
 	}
 	
+	public Cuboid6 infi = new Cuboid6(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+	
+	public Cuboid6 getRenderBounds() {
+		return infi;
+	}
 	@Override
     public boolean renderStatic(Vector3 pos, int pass) {
         if(pass == 0) {

@@ -1,4 +1,4 @@
-package lasermod.forgemultipart;
+package lasermod.compat.forgemultipart;
 
 import java.util.Arrays;
 
@@ -12,6 +12,9 @@ import codechicken.multipart.MultiPartRegistry.IPartConverter;
 import codechicken.multipart.MultiPartRegistry.IPartFactory;
 import codechicken.multipart.TMultiPart;
 
+/**
+ * @author ProPercivalalb
+ */
 public class PartRegister implements IPartFactory, IPartConverter {
 
 	@Override

@@ -1,4 +1,4 @@
-package lasermod.forgemultipart;
+package lasermod.compat.forgemultipart;
 
 import lasermod.tileentity.TileEntitySmallColourConverter;
 import net.minecraft.tileentity.TileEntity;
@@ -8,6 +8,9 @@ import codechicken.multipart.minecraft.IPartMeta;
 import codechicken.multipart.minecraft.PartMetaAccess;
 import cpw.mods.fml.common.FMLLog;
 
+/**
+ * @author ProPercivalalb
+ */
 public class PartLaserAccess extends PartMetaAccess {
 
 	public PartLaserAccess(IPartMeta p) {

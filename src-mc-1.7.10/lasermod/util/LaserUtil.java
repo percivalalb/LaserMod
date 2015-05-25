@@ -9,7 +9,7 @@ import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserWhitelist;
-import lasermod.forgemultipart.SmallColourConverterPart;
+import lasermod.compat.forgemultipart.SmallColourConverterPart;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;

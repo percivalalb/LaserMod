@@ -5,7 +5,7 @@ import codechicken.multipart.TileMultipart;
 import cpw.mods.fml.common.FMLLog;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
-import lasermod.forgemultipart.SmallColourConverterPart;
+import lasermod.compat.forgemultipart.SmallColourConverterPart;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

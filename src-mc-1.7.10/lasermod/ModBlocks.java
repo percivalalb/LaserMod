@@ -44,7 +44,6 @@ public class ModBlocks {
 		GameRegistry.registerBlock(laserDetector, "detector");
 		GameRegistry.registerBlock(reflector, "reflector");
 		GameRegistry.registerBlock(colourConverter, "colorconverter");
-		GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
 		GameRegistry.registerBlock(mirror, "mirror");
 		
 		GameRegistry.registerTileEntity(TileEntityBasicLaser.class, "lasermod.basicLaser");

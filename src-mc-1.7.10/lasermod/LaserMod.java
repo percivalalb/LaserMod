@@ -1,8 +1,8 @@
 package lasermod;
 
-import codechicken.multipart.MultiPartRegistry;
 import lasermod.api.LaserRegistry;
-import lasermod.forgemultipart.PartRegister;
+import lasermod.compat.forgemultipart.ForgeMultipartCompat;
+import lasermod.compat.forgemultipart.PartRegister;
 import lasermod.laser.*;
 import lasermod.lib.Reference;
 import lasermod.network.NetworkManager;
@@ -55,6 +55,14 @@ public class LaserMod {
 		ModEntities.init();
 		
 		proxy.onPreLoad();
+		
+		try {
+			ForgeMultipartCompat.init();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			GameRegistry.registerBlock(ModBlocks.smallColourConverter, "smallcolorconverter");
+		}
 	}
 	
 	@EventHandler
@@ -67,9 +75,6 @@ public class LaserMod {
 	
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent event) {
-		PartRegister part = new PartRegister();
-		MultiPartRegistry.registerConverter(part);
-		MultiPartRegistry.registerParts(part, new String[] {"lasermod:smallcolorconverter"});
 		
 		//Registers all lasers
 		LaserRegistry.registerLaser("default", new DefaultLaser());
