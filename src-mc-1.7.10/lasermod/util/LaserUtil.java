@@ -2,6 +2,7 @@ package lasermod.util;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
@@ -76,7 +77,7 @@ public class LaserUtil {
 			
 			
 			//Can't pass through the next block
-			if(blockActionPos.isLaserReciver() || !LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp))
+			if(blockActionPos.isLaserReciver(orientation) || !LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite()))
 				return blockActionPos;
 		}
 		
@@ -124,7 +125,7 @@ public class LaserUtil {
 			int blockMeta = laserReciver.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
 			TileEntity tileEntity = laserReciver.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
-			if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp))
+			if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]))
 				if(tileEntity instanceof ILaserProvider)
 					return ((ILaserProvider)tileEntity).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
 			else
@@ -165,6 +166,23 @@ public class LaserUtil {
 			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
 			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
 			
+			
+			//Check whether the coordinates are in range
+			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
+				break;
+			
+			BlockActionPos blockActionPos = new BlockActionPos(laserProvider.getWorld(), xTemp, yTemp, zTemp);
+			
+			
+			//Can't pass through the next block
+			if((!blockActionPos.isLaserReciver(orientation) && LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())))
+				extra[orientation] += 1;
+			else {
+				//FMLLog.info("stop" + blockActionPos.block.toString());
+				extra[orientation] += 1 - offsetMax - 0.01;
+				break;
+			}
+			/**
 			//Check whether the coordinates are in range
 			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
 				break;
@@ -174,14 +192,16 @@ public class LaserUtil {
 			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
 			
 			//Can't pass through the next block
-			if(LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp))
+			if(LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite()))
 				extra[orientation] += 1;
 			else {
 				extra[orientation] += 1 - offsetMax;
+				extra[ForgeDirection.OPPOSITES[orientation]] += offsetMax;
 				break;
-			}
+			}**/
 			
 		}
+		extra[ForgeDirection.OPPOSITES[orientation]] = offsetMin - 0.01;
 		
         boundingBox.setBounds(boundingBox.minX - extra[4], boundingBox.minY - extra[0], boundingBox.minZ - extra[2], boundingBox.maxX + extra[5], boundingBox.maxY + extra[1], boundingBox.maxZ + extra[3]);
         

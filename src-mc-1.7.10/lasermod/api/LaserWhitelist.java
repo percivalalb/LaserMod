@@ -7,8 +7,10 @@ import java.util.List;
 import lasermod.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author ProPercivalalb
@@ -35,13 +37,14 @@ public class LaserWhitelist {
 	}
 	
 	//Convenience method
-	public static boolean canLaserPassThrought(World world, int x, int y, int z) {
+	public static boolean canLaserPassThrought(World world, int x, int y, int z, ForgeDirection sideHit) {
 		Chunk chunk = world.getChunkFromBlockCoords(x, z);
 		if(chunk == null || !chunk.isChunkLoaded)
 			return false;
 		
 		Block block = world.getBlock(x, y, z);
-		boolean blockaccepted = block.isAir(world, x, y, z) || canLaserPassThrought(block, world.getBlockMetadata(x, y, z));
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		boolean blockaccepted = block.isAir(world, x, y, z) || !(block.isSideSolid(world, x, y, z, sideHit) || block.isSideSolid(world, x, y, z, sideHit.getOpposite())) || canLaserPassThrought(block, world.getBlockMetadata(x, y, z));
 	
 		return blockaccepted; 
 	}

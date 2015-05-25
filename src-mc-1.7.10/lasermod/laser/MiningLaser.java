@@ -37,5 +37,6 @@ public class MiningLaser implements ILaser {
 	public void actionOnBlock(BlockActionPos action) {
 		action.block.dropBlockAsItem(action.world, action.x, action.y, action.z, action.meta, 0);
 		action.world.setBlock(action.x, action.y, action.z, Blocks.air);
+		action.world.playSoundEffect(action.x + 0.5D, action.y + 0.5D, action.z + 0.5D, "random.fizz", 0.3F, action.world.rand.nextFloat() * 0.4F + 0.2F);
 	}
 }

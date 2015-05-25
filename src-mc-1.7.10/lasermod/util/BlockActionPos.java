@@ -1,6 +1,10 @@
 package lasermod.util;
 
+import codechicken.multipart.TMultiPart;
+import codechicken.multipart.TileMultipart;
+import cpw.mods.fml.common.FMLLog;
 import lasermod.api.ILaserReceiver;
+import lasermod.forgemultipart.SmallColourConverterPart;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -12,6 +16,7 @@ public class BlockActionPos {
 	public Block block;
 	public int meta;
 	public TileEntity tileEntity;
+	public SmallColourConverterPart part;
 	
 	public BlockActionPos(World world, int x, int y, int z, Block block, int meta, TileEntity tileEntity) {
 		this.world = world;
@@ -33,11 +38,25 @@ public class BlockActionPos {
 		this.meta = world.getBlockMetadata(x, y, z);
 	}
 	
-	public boolean isLaserReciver() {
+	public boolean isLaserReciver(int orientation) {
+		if(this.tileEntity instanceof TileMultipart) {
+            TileMultipart tem = (TileMultipart)this.tileEntity;
+
+            for (TMultiPart t : tem.jPartList()) {
+                if(t instanceof SmallColourConverterPart)
+                	if(((SmallColourConverterPart) t).meta == orientation) {
+                		part = (SmallColourConverterPart)t;
+                		return true;
+                	}
+            }
+        }
+	
 		return this.tileEntity instanceof ILaserReceiver;
 	}
 	
 	public ILaserReceiver getLaserReceiver() {
-		return (ILaserReceiver)tileEntity;
+		if(this.part != null)
+			return this.part;
+		return (ILaserReceiver)this.tileEntity;
 	}
 }

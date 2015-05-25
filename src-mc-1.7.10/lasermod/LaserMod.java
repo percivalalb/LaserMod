@@ -1,6 +1,8 @@
 package lasermod;
 
+import codechicken.multipart.MultiPartRegistry;
 import lasermod.api.LaserRegistry;
+import lasermod.forgemultipart.PartRegister;
 import lasermod.laser.*;
 import lasermod.lib.Reference;
 import lasermod.network.NetworkManager;
@@ -65,6 +67,10 @@ public class LaserMod {
 	
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent event) {
+		PartRegister part = new PartRegister();
+		MultiPartRegistry.registerConverter(part);
+		MultiPartRegistry.registerParts(part, new String[] {"lasermod:smallcolorconverter"});
+		
 		//Registers all lasers
 		LaserRegistry.registerLaser("default", new DefaultLaser());
 		LaserRegistry.registerLaser("water", new WaterLaser());
