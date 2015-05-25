@@ -3,6 +3,7 @@ package lasermod.util;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import cpw.mods.fml.common.FMLLog;
+import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.forgemultipart.SmallColourConverterPart;
 import net.minecraft.block.Block;
@@ -58,5 +59,27 @@ public class BlockActionPos {
 		if(this.part != null)
 			return this.part;
 		return (ILaserReceiver)this.tileEntity;
+	}
+	
+	public boolean isLaserProvider(int orientation) {
+		if(this.tileEntity instanceof TileMultipart) {
+            TileMultipart tem = (TileMultipart)this.tileEntity;
+
+            for (TMultiPart t : tem.jPartList()) {
+                if(t instanceof SmallColourConverterPart)
+                	if(((SmallColourConverterPart) t).meta == orientation) {
+                		part = (SmallColourConverterPart)t;
+                		return true;
+                	}
+            }
+        }
+	
+		return this.tileEntity instanceof ILaserProvider;
+	}
+	
+	public ILaserProvider getLaserProvider() {
+		if(this.part != null)
+			return this.part;
+		return (ILaserProvider)this.tileEntity;
 	}
 }

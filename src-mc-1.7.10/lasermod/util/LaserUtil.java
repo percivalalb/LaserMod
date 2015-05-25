@@ -2,11 +2,14 @@ package lasermod.util;
 
 import java.util.List;
 
+import codechicken.multipart.TMultiPart;
+import codechicken.multipart.TileMultipart;
 import cpw.mods.fml.common.FMLLog;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserWhitelist;
+import lasermod.forgemultipart.SmallColourConverterPart;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -128,6 +131,16 @@ public class LaserUtil {
 			if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]))
 				if(tileEntity instanceof ILaserProvider)
 					return ((ILaserProvider)tileEntity).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
+				else if(tileEntity instanceof TileMultipart) {
+			            TileMultipart tem = (TileMultipart)tileEntity;
+
+			            for (TMultiPart t : tem.jPartList()) {
+			                if(t instanceof SmallColourConverterPart)
+			                	if(((SmallColourConverterPart) t).meta == side) {
+			                		return ((SmallColourConverterPart)t).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
+			                	}
+			            }
+			        }
 			else
 				break;
 		}

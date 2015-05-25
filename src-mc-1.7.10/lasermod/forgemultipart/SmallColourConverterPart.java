@@ -5,11 +5,14 @@ import java.util.Arrays;
 
 import lasermod.LaserMod;
 import lasermod.ModBlocks;
+import lasermod.api.ILaser;
+import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.client.render.block.TileEntitySmallColourConverterRenderer;
 import lasermod.network.packet.PacketSmallColourConverter;
 import lasermod.tileentity.TileEntitySmallColourConverter;
+import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -40,9 +43,10 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SmallColourConverterPart extends McSidedMetaPart implements ILaserReceiver {
+public class SmallColourConverterPart extends McSidedMetaPart implements ILaserProvider, ILaserReceiver {
 
 	public int colour;
+	private LaserInGame laser;
 	
 	public SmallColourConverterPart() {
 		
@@ -69,12 +73,19 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserR
     public void writeDesc(MCDataOutput packet) {
       	super.writeDesc(packet);
       	packet.writeInt(this.colour);
+      	packet.writeBoolean(this.laser != null);
+      	if(this.laser != null)
+      		packet.writeNBTTagCompound(this.laser.writeToNBT(new NBTTagCompound()));
     }
     
     @Override
     public void readDesc(MCDataInput packet) {
         super.readDesc(packet);
         this.colour = packet.readInt();
+        if(packet.readBoolean())
+        	this.laser = new LaserInGame(packet.readNBTTagCompound());
+        else
+        	this.laser = null;
     }
 	
 	@Override
@@ -126,11 +137,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserR
 			tileEntity.yCoord = y();
 			tileEntity.zCoord = z();
 			tileEntity.blockMetadata = meta;
-			tileEntity.laser = new LaserInGame();
-			tileEntity.laser.setSide(Facing.oppositeSide[meta]);
-			tileEntity.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
-			tileEntity.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
-			tileEntity.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
+			tileEntity.laser = this.laser;
 			tileEntity.setWorldObj(this.getWorld());
 			this.render.renderTileEntityAt(tileEntity, pos.x, pos.y, pos.z, 0);
         }
@@ -156,14 +163,37 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserR
     
     @Override
     public void update() {
-    	
+    	if(!this.world().isRemote) {
+	    	if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[meta])) {
+				this.setLaser(null);
+				this.sendDescUpdate();
+			}
+	    	
+	    	BlockActionPos reciver = LaserUtil.getFirstBlock(this, this.meta);
+			if(reciver != null && reciver.isLaserReciver(this.meta)) {
+				LaserInGame laserInGame = this.getOutputLaser(this.meta);
+	        	if(laserInGame == null) {
+	        		reciver.getLaserReceiver().removeLasersFromSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta]);
+	        	}
+	        	else if(reciver.getLaserReceiver().canPassOnSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame)) {
+	        		reciver.getLaserReceiver().passLaser(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame);
+				}
+			}
+			else if(reciver != null) {
+				LaserInGame laserInGame = this.getOutputLaser(this.meta);
+				
+				if(laserInGame != null) {
+					for(ILaser laser : laserInGame.getLaserType()) {
+						laser.actionOnBlock(reciver);
+					}
+				}
+			}
+    	}
     }
     
     public boolean doesTick() {
     	return true;
     }
-	
-    
     
 	@Override
     public boolean activate(EntityPlayer player, MovingObjectPosition part, ItemStack item) {
@@ -187,9 +217,6 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserR
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				this.sendDescUpdate();
-				
-				//LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketSmallColourConverter(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
-				
 				return true;
 			}
 		}
@@ -229,17 +256,52 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserR
 
 	@Override
 	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return false;
+		return side == Facing.oppositeSide[meta];
 	}
 
 	@Override
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		
+		if(this.getOutputLaser(side) == null) {
+			this.setLaser(laserInGame);
+			this.sendDescUpdate();
+		}
 	}
 
 	@Override
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		
+		if(side == Facing.oppositeSide[this.meta]) {
+			boolean change = this.laser != null;
+			this.setLaser(null);
+			if(change) {
+				this.sendDescUpdate();
+			}
+		}
+	}
+
+	@Override
+	public LaserInGame getOutputLaser(int side) {
+		if(this.laser != null) {
+			this.laser.setSide(Facing.oppositeSide[side]);
+			this.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
+			this.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
+			this.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
+			return this.laser.copy();
+		}
+		return null;
+	}
+
+	@Override
+	public int getDistance() {
+		return 64;
+	}
+
+	@Override
+	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
+		return this.getOutputLaser(side) != null && side == this.meta;
+	}
+	
+	public void setLaser(LaserInGame laser) {
+		this.laser = laser;
 	}
 
 }
