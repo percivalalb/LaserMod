@@ -4,6 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
+import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
@@ -83,6 +84,9 @@ public class LaserUtil {
 			if(blockActionPos.isLaserReciver(orientation) && !(xTemp == laserProvider.getX() && yTemp == laserProvider.getY() && zTemp == laserProvider.getZ())) {
 				return blockActionPos;
 			}
+			else if(blockActionPos.block == ModBlocks.smallColourConverter && blockActionPos.meta == Facing.oppositeSide[orientation]) {
+				break;
+			}
 			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
 				return blockActionPos;
 			}	
@@ -153,6 +157,9 @@ public class LaserUtil {
 				
 				return distanceApart <= provider.getDistance() && provider.isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
 			}
+			else if(blockActionPos.block == ModBlocks.smallColourConverter && blockActionPos.meta == side) {
+				break;
+			}
 			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
 				break;
 			}	
@@ -218,6 +225,10 @@ public class LaserUtil {
 				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
 				break;
 			}	
+			else if(blockActionPos.block == ModBlocks.smallColourConverter && blockActionPos.meta == Facing.oppositeSide[orientation]) {
+				extra[orientation] += (distance == 0 ? 0 : 1) + offsetMin - 0.01;
+				break;
+			}
 			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) {
 				extra[orientation] += offsetMin - 0.01;
 				break;

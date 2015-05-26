@@ -1,6 +1,7 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import lasermod.LaserMod;
 import lasermod.ModBlocks;
@@ -206,7 +207,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	
 	@Override
 	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return !this.closedSides[side] && (!this.containsInputSide(side) || !laserInGame.equals(this.getLaserFromSide(side)));
+		return !this.closedSides[side] && (!this.containsInputSide(side) || !Objects.equals(laserInGame, this.getLaserFromSide(side)));
 	}
 	
 	@Override

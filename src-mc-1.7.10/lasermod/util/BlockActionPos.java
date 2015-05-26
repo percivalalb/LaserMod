@@ -5,8 +5,10 @@ import cpw.mods.fml.common.Loader;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.compat.forgemultipart.ForgeMultipartCompat;
+import lasermod.tileentity.TileEntitySmallColourConverter;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 
 public class BlockActionPos {
@@ -48,7 +50,11 @@ public class BlockActionPos {
 			
 			}
     	}
-	
+		
+		if(this.tileEntity instanceof TileEntitySmallColourConverter) {
+			return side == this.tileEntity.getBlockMetadata() && Facing.oppositeSide[side] != this.tileEntity.getBlockMetadata();
+		}
+
 		return this.tileEntity instanceof ILaserReceiver;
 	}
 	
@@ -78,7 +84,10 @@ public class BlockActionPos {
 			
 			}
     	}
-	
+		if(this.tileEntity instanceof TileEntitySmallColourConverter) {
+			return side != this.tileEntity.getBlockMetadata() && Facing.oppositeSide[side] == this.tileEntity.getBlockMetadata();
+		}
+		
 		return this.tileEntity instanceof ILaserProvider;
 	}
 	

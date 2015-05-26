@@ -100,6 +100,7 @@ public class LaserWhitelist {
 		addToWhiteList("TConstruct:decoration.stonetorch", -1);
 		
 		
-		//addToBlackList(Blocks.ice);
+		addToBlackList(ModBlocks.laserDetector);
+		//addToBlackList(ModBlocks.smallColourConverter);
 	}
 }

@@ -1,5 +1,12 @@
 package lasermod.block;
 
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+
 import java.util.Random;
 
 import lasermod.LaserMod;
@@ -143,6 +150,32 @@ public class BlockSmallColourConverter extends BlockContainer {
     }
 	
 	@Override
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
+        ForgeDirection dir = ForgeDirection.getOrientation(side);
+        return (dir == NORTH && world.isSideSolid(x, y, z + 1, NORTH)) ||
+               (dir == SOUTH && world.isSideSolid(x, y, z - 1, SOUTH)) ||
+               (dir == WEST  && world.isSideSolid(x + 1, y, z, WEST)) ||
+               (dir == EAST  && world.isSideSolid(x - 1, y, z, EAST)) ||
+               (dir == UP  && world.isSideSolid(x, y - 1, z, UP)) ||
+               (dir == DOWN  && world.isSideSolid(x, y + 1, z, DOWN));
+    }
+
+	@Override
+    public boolean canPlaceBlockAt(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_) {
+        return (p_149742_1_.isSideSolid(p_149742_2_ - 1, p_149742_3_, p_149742_4_, EAST)) ||
+               (p_149742_1_.isSideSolid(p_149742_2_ + 1, p_149742_3_, p_149742_4_, WEST)) ||
+               (p_149742_1_.isSideSolid(p_149742_2_, p_149742_3_, p_149742_4_ - 1, SOUTH)) ||
+               (p_149742_1_.isSideSolid(p_149742_2_, p_149742_3_, p_149742_4_ + 1, NORTH)) ||
+               (p_149742_1_.isSideSolid(p_149742_2_, p_149742_3_ - 1, p_149742_4_, UP)) ||
+               (p_149742_1_.isSideSolid(p_149742_2_, p_149742_3_ + 1, p_149742_4_, DOWN));
+    }
+	
+	@Override
+	public boolean canBlockStay(World world, int x, int y, int z) {
+        return this.canPlaceBlockOnSide(world, x, y, z, world.getBlockMetadata(x, y, z));
+    }
+
+	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
 		if (!world.isRemote) {
 			TileEntitySmallColourConverter colourconverter = (TileEntitySmallColourConverter)world.getTileEntity(x, y, z);
@@ -156,6 +189,11 @@ public class BlockSmallColourConverter extends BlockContainer {
 	        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
 				}
 			}
+        }
+		
+		if(!this.canBlockStay(world, x, y, z)) {
+			this.dropBlockAsItem(world, x, y, z, 0, 0);
+			world.setBlockToAir(x, y, z);
         }
     }
 
