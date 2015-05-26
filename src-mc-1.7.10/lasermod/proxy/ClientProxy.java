@@ -4,14 +4,14 @@ import lasermod.ModBlocks;
 import lasermod.client.render.block.TileEntityAdvancedLaserRenderer;
 import lasermod.client.render.block.TileEntityBasicLaserRenderer;
 import lasermod.client.render.block.TileEntityColourConverterRenderer;
-import lasermod.client.render.block.TileEntityMirrorRenderer;
+import lasermod.client.render.block.TileEntityLuminousPanelRenderer;
 import lasermod.client.render.block.TileEntityReflectorRenderer;
 import lasermod.client.render.block.TileEntitySmallColourConverterRenderer;
 import lasermod.client.render.item.ItemReflectorRenderer;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
-import lasermod.tileentity.TileEntityMirror;
+import lasermod.tileentity.TileEntityLuminousPanel;
 import lasermod.tileentity.TileEntityReflector;
 import lasermod.tileentity.TileEntitySmallColourConverter;
 import net.minecraft.client.Minecraft;
@@ -33,7 +33,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedLaser.class, new TileEntityAdvancedLaserRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityColourConverter.class, new TileEntityColourConverterRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReflector.class, new TileEntityReflectorRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMirror.class, new TileEntityMirrorRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLuminousPanel.class, new TileEntityLuminousPanelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallColourConverter.class, new TileEntitySmallColourConverterRenderer());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.reflector), new ItemReflectorRenderer());
 	}
