@@ -176,6 +176,6 @@ public class BlockColourConverter extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World par1World, int x, int y, int z, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
 		 int rotation = BlockPistonBase.determineOrientation(par1World, x, y, z, par5EntityLiving);
-		 par1World.setBlockMetadataWithNotify(x, y, z, Facing.oppositeSide[rotation], 2);
+		 par1World.setBlockMetadataWithNotify(x, y, z, rotation, 2);
 	}
 }
