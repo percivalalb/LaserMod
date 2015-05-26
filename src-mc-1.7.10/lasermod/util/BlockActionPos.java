@@ -1,11 +1,10 @@
 package lasermod.util;
 
-import codechicken.multipart.TMultiPart;
-import codechicken.multipart.TileMultipart;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
-import lasermod.compat.forgemultipart.SmallColourConverterPart;
+import lasermod.compat.forgemultipart.ForgeMultipartCompat;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -17,7 +16,6 @@ public class BlockActionPos {
 	public Block block;
 	public int meta;
 	public TileEntity tileEntity;
-	public SmallColourConverterPart part;
 	
 	public BlockActionPos(World world, int x, int y, int z, Block block, int meta, TileEntity tileEntity) {
 		this.world = world;
@@ -40,46 +38,66 @@ public class BlockActionPos {
 	}
 	
 	public boolean isLaserReciver(int orientation) {
-		if(this.tileEntity instanceof TileMultipart) {
-            TileMultipart tem = (TileMultipart)this.tileEntity;
-
-            for (TMultiPart t : tem.jPartList()) {
-                if(t instanceof SmallColourConverterPart)
-                	if(((SmallColourConverterPart) t).meta == orientation) {
-                		part = (SmallColourConverterPart)t;
-                		return true;
-                	}
-            }
-        }
+		if(Loader.isModLoaded("ForgeMultipart")) {
+			try {
+				if(ForgeMultipartCompat.isTileMultipart(this.tileEntity))
+					return true;
+			}
+			catch(Throwable e) {
+				e.printStackTrace();
+			
+			}
+    	}
 	
 		return this.tileEntity instanceof ILaserReceiver;
 	}
 	
 	public ILaserReceiver getLaserReceiver() {
-		if(this.part != null)
-			return this.part;
+		if(Loader.isModLoaded("ForgeMultipart")) {
+			try {
+				ILaserReceiver reciver = ForgeMultipartCompat.getLaserReciverFromPart(this.tileEntity);
+				if(reciver != null)
+					return reciver;
+			}
+			catch(Throwable e) {
+				e.printStackTrace();
+			
+			}
+    	}
 		return (ILaserReceiver)this.tileEntity;
 	}
 	
 	public boolean isLaserProvider(int orientation) {
-		if(this.tileEntity instanceof TileMultipart) {
-            TileMultipart tem = (TileMultipart)this.tileEntity;
-
-            for (TMultiPart t : tem.jPartList()) {
-                if(t instanceof SmallColourConverterPart)
-                	if(((SmallColourConverterPart) t).meta == orientation) {
-                		part = (SmallColourConverterPart)t;
-                		return true;
-                	}
-            }
-        }
+		if(Loader.isModLoaded("ForgeMultipart")) {
+			try {
+				if(ForgeMultipartCompat.isTileMultipart(this.tileEntity))
+					return true;
+			}
+			catch(Throwable e) {
+				e.printStackTrace();
+			
+			}
+    	}
 	
 		return this.tileEntity instanceof ILaserProvider;
 	}
 	
 	public ILaserProvider getLaserProvider() {
-		if(this.part != null)
-			return this.part;
+		if(Loader.isModLoaded("ForgeMultipart")) {
+			try {
+				ILaserProvider provider = ForgeMultipartCompat.getLaserProviderFromPart(this.tileEntity);
+				if(provider != null)
+					return provider;
+			}
+			catch(Throwable e) {
+				e.printStackTrace();
+			
+			}
+    	}
 		return (ILaserProvider)this.tileEntity;
+	}
+	
+	public String toString() {
+		return String.format("%d, %d, %d", this.x, this.y, this.z);
 	}
 }

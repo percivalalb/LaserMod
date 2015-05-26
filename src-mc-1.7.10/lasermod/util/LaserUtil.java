@@ -125,13 +125,17 @@ public class LaserUtil {
 				break;
 			
 			BlockActionPos blockActionPos = new BlockActionPos(laserReciver.getWorld(), xTemp, yTemp, zTemp);
-			//FMLLog.info(blockActionPos.toString());
 			
 			//Can't pass through the next block
 			if(blockActionPos.isLaserProvider(side)) {
-				return blockActionPos.getLaserProvider().isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
+				ILaserProvider provider = blockActionPos.getLaserProvider();
+				int distanceX = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetX * (laserReciver.getX() - provider.getX()));
+				int distanceY = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetY * (laserReciver.getY() - provider.getY()));
+				int distanceZ = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetZ * (laserReciver.getZ() - provider.getZ()));
 				
+				int distanceApart = distanceX + distanceY + distanceZ;
 				
+				return distanceApart <= provider.getDistance() && provider.isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
 			}
 			else if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]))
 				break;
