@@ -13,6 +13,7 @@ public interface ILaserProvider {
 	public World getWorld();
 	public LaserInGame getOutputLaser(int side);
 	public int getDistance();
+	public boolean isForgeMultipart();
 	
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side);
 }

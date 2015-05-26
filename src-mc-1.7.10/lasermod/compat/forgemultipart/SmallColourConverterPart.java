@@ -145,6 +145,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 			tileEntity.yCoord = y();
 			tileEntity.zCoord = z();
 			tileEntity.blockMetadata = meta;
+			tileEntity.multipart = true;
 			tileEntity.laser = this.laser;
 			tileEntity.setWorldObj(this.getWorld());
 			this.render.renderTileEntityAt(tileEntity, pos.x, pos.y, pos.z, 0);
@@ -310,6 +311,11 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	
 	public void setLaser(LaserInGame laser) {
 		this.laser = laser;
+	}
+
+	@Override
+	public boolean isForgeMultipart() {
+		return true;
 	}
 
 }

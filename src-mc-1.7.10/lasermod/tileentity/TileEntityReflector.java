@@ -256,4 +256,9 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
     public double getMaxRenderDistanceSquared() {
         return 65536.0D;
     }
+
+	@Override
+	public boolean isForgeMultipart() {
+		return false;
+	}
 }

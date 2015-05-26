@@ -119,4 +119,9 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
     public double getMaxRenderDistanceSquared() {
         return 65536.0D;
     }
+	
+	@Override
+	public boolean isForgeMultipart() {
+		return false;
+	}
 }

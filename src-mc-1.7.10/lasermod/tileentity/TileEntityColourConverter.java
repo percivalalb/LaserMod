@@ -144,4 +144,9 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
     public double getMaxRenderDistanceSquared() {
         return 65536.0D;
     }
+
+	@Override
+	public boolean isForgeMultipart() {
+		return false;
+	}
 }

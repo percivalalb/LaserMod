@@ -168,8 +168,8 @@ public class LaserUtil {
 		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(renderX + offsetMin, renderY + offsetMin, renderZ + offsetMin, renderX + offsetMax, renderY + offsetMax, renderZ + offsetMax);
 		
 		double[] extra = new double[ForgeDirection.VALID_DIRECTIONS.length];
-		
-		for(int distance = 1; distance <= laserProvider.getDistance(); distance++) {
+		FMLLog.info(laserProvider.isForgeMultipart() + "");
+		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance <= laserProvider.getDistance(); distance++) {
 			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
 			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
 			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
@@ -181,31 +181,25 @@ public class LaserUtil {
 			
 			BlockActionPos blockActionPos = new BlockActionPos(laserProvider.getWorld(), xTemp, yTemp, zTemp);
 			
-			
-			//Can't pass through the next block
-			if((!blockActionPos.isLaserReciver(orientation) && LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())))
-				extra[orientation] += 1;
-			else {
-				extra[orientation] += 1 - offsetMax - 0.01;
+			if(blockActionPos.isLaserReciver(orientation) && !(xTemp == laserProvider.getX() && yTemp == laserProvider.getY() && zTemp == laserProvider.getZ())) {
+				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
 				break;
 			}
-			/**
-			//Check whether the coordinates are in range
-			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
+			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) {
+				extra[orientation] += offsetMin - 0.01;
 				break;
-			
-			Block block = laserProvider.getWorld().getBlock(xTemp, yTemp, zTemp);
-			int blockMeta = laserProvider.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
-			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
-			
-			//Can't pass through the next block
-			if(LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite()))
-				extra[orientation] += 1;
+			}
+			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation])) {
+				extra[orientation] += (distance == 0 ? 0 : 1) + offsetMin - 0.01;
+				break;
+			}
+			else if(!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite()) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
+				extra[orientation] += (distance == 0 ? 0 : 1);
+			}
 			else {
-				extra[orientation] += 1 - offsetMax;
-				extra[ForgeDirection.OPPOSITES[orientation]] += offsetMax;
+				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
 				break;
-			}**/
+			}
 			
 		}
 		extra[ForgeDirection.OPPOSITES[orientation]] = offsetMin - 0.01;

@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntitySmallColourConverter extends TileEntityLaserDevice implements ILaserProvider, ILaserReceiver {
 
 	private int lagReduce = -1;
-	
+	public boolean multipart = false;
 	public LaserInGame laser;
 	public int colour = 14;
 	
@@ -150,4 +150,9 @@ public class TileEntitySmallColourConverter extends TileEntityLaserDevice implem
     public double getMaxRenderDistanceSquared() {
         return 65536.0D;
     }
+
+	@Override
+	public boolean isForgeMultipart() {
+		return this.multipart;
+	}
 }
