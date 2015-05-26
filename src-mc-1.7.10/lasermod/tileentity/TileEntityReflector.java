@@ -150,7 +150,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 			BlockActionPos reciver = LaserUtil.getFirstBlock(this, i);
 			
 			if(reciver != null && reciver.isLaserReciver(this.getBlockMetadata())) {
-			  	reciver.getLaserReceiver().removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
+			  	reciver.getLaserReceiver(this.getBlockMetadata()).removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}
 	}

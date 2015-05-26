@@ -133,10 +133,10 @@ public class BlockSmallColourConverter extends BlockContainer {
     		if(reciver != null && reciver.isLaserReciver(colourconverter.getBlockMetadata())) {
     			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
             	if(colourconverter.laser == null) {
-            		reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
+            		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
             	}
-            	else if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-            		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
+            	else if(reciver.getLaserReceiver(colourconverter.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
+            		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
     			}
     		}
         }
@@ -150,10 +150,10 @@ public class BlockSmallColourConverter extends BlockContainer {
 			if(reciver != null && reciver.isLaserReciver(colourconverter.getBlockMetadata())) {
 				LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
 	        	if(colourconverter.laser == null) {
-	        		reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
+	        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
 	        	}
-	        	else if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-	        		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
+	        	else if(reciver.getLaserReceiver(colourconverter.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
+	        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
 				}
 			}
         }
@@ -166,10 +166,10 @@ public class BlockSmallColourConverter extends BlockContainer {
 		if(reciver != null && reciver.isLaserReciver(colourconverter.getBlockMetadata())) {
 			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
         	if(laserInGame == null) {
-        		reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
+        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
         	}
-        	else if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-        		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
+        	else if(reciver.getLaserReceiver(colourconverter.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
+        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
 			}
 		}
 		else if(reciver != null) {

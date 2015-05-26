@@ -114,7 +114,7 @@ public class BlockAdvancedLaser extends BlockContainer {
         	
         	BlockActionPos reciver = LaserUtil.getFirstBlock(basiclaser, basiclaser.getBlockMetadata());
     		if(reciver != null && reciver.isLaserReciver(basiclaser.getBlockMetadata())) {
-    			reciver.getLaserReceiver().removeLasersFromSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()]);
+    			reciver.getLaserReceiver(basiclaser.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()]);
     		}
         }
         else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
@@ -123,8 +123,8 @@ public class BlockAdvancedLaser extends BlockContainer {
     		  	
     		  	LaserInGame laserInGame = basiclaser.getOutputLaser(basiclaser.getBlockMetadata());
 
-    		  	if(reciver.getLaserReceiver().canPassOnSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame)) {
-    		  		reciver.getLaserReceiver().passLaser(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame);
+    		  	if(reciver.getLaserReceiver(basiclaser.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame)) {
+    		  		reciver.getLaserReceiver(basiclaser.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame);
     			}
     		}
     		else if(reciver != null) {

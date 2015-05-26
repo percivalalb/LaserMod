@@ -37,10 +37,10 @@ public class BlockActionPos {
 		this.meta = world.getBlockMetadata(x, y, z);
 	}
 	
-	public boolean isLaserReciver(int orientation) {
+	public boolean isLaserReciver(int side) {
 		if(Loader.isModLoaded("ForgeMultipart")) {
 			try {
-				if(ForgeMultipartCompat.isTileMultipart(this.tileEntity))
+				if(ForgeMultipartCompat.isTileMultipart(this.tileEntity, side))
 					return true;
 			}
 			catch(Throwable e) {
@@ -52,10 +52,10 @@ public class BlockActionPos {
 		return this.tileEntity instanceof ILaserReceiver;
 	}
 	
-	public ILaserReceiver getLaserReceiver() {
+	public ILaserReceiver getLaserReceiver(int side) {
 		if(Loader.isModLoaded("ForgeMultipart")) {
 			try {
-				ILaserReceiver reciver = ForgeMultipartCompat.getLaserReciverFromPart(this.tileEntity);
+				ILaserReceiver reciver = ForgeMultipartCompat.getLaserReciverFromPart(this.tileEntity, side);
 				if(reciver != null)
 					return reciver;
 			}
@@ -67,10 +67,10 @@ public class BlockActionPos {
 		return (ILaserReceiver)this.tileEntity;
 	}
 	
-	public boolean isLaserProvider(int orientation) {
+	public boolean isLaserProvider(int side) {
 		if(Loader.isModLoaded("ForgeMultipart")) {
 			try {
-				if(ForgeMultipartCompat.isTileMultipart(this.tileEntity))
+				if(ForgeMultipartCompat.isTileMultipart(this.tileEntity, side))
 					return true;
 			}
 			catch(Throwable e) {
@@ -82,10 +82,10 @@ public class BlockActionPos {
 		return this.tileEntity instanceof ILaserProvider;
 	}
 	
-	public ILaserProvider getLaserProvider() {
+	public ILaserProvider getLaserProvider(int side) {
 		if(Loader.isModLoaded("ForgeMultipart")) {
 			try {
-				ILaserProvider provider = ForgeMultipartCompat.getLaserProviderFromPart(this.tileEntity);
+				ILaserProvider provider = ForgeMultipartCompat.getLaserProviderFromPart(this.tileEntity, side);
 				if(provider != null)
 					return provider;
 			}

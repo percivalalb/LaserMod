@@ -181,10 +181,10 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 			if(reciver != null && reciver.isLaserReciver(this.meta)) {
 				LaserInGame laserInGame = this.getOutputLaser(this.meta);
 	        	if(laserInGame == null) {
-	        		reciver.getLaserReceiver().removeLasersFromSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta]);
+	        		reciver.getLaserReceiver(this.meta).removeLasersFromSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta]);
 	        	}
-	        	else if(reciver.getLaserReceiver().canPassOnSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame)) {
-	        		reciver.getLaserReceiver().passLaser(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame);
+	        	else if(reciver.getLaserReceiver(this.meta).canPassOnSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame)) {
+	        		reciver.getLaserReceiver(this.meta).passLaser(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame);
 				}
 			}
 			else if(reciver != null) {

@@ -128,7 +128,7 @@ public class LaserUtil {
 			
 			//Can't pass through the next block
 			if(blockActionPos.isLaserProvider(side)) {
-				ILaserProvider provider = blockActionPos.getLaserProvider();
+				ILaserProvider provider = blockActionPos.getLaserProvider(side);
 				int distanceX = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetX * (laserReciver.getX() - provider.getX()));
 				int distanceY = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetY * (laserReciver.getY() - provider.getY()));
 				int distanceZ = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetZ * (laserReciver.getZ() - provider.getZ()));

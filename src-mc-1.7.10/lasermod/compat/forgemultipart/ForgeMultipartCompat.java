@@ -23,7 +23,7 @@ public class ForgeMultipartCompat {
 		codechicken.multipart.MultiPartRegistry.registerParts(part, new String[] {"lasermod:smallcolorconverter"});
 	}
 
-	public static boolean isTileMultipart(TileEntity tileEntity) {
+	public static boolean isTileMultipart(TileEntity tileEntity, int side) {
 		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
 			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
 
@@ -37,7 +37,7 @@ public class ForgeMultipartCompat {
         return false;
 	}
 	
-	public static ILaserReceiver getLaserReciverFromPart(TileEntity tileEntity) {
+	public static ILaserReceiver getLaserReciverFromPart(TileEntity tileEntity, int side) {
 		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
 			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
 
@@ -51,7 +51,7 @@ public class ForgeMultipartCompat {
         return null;
 	}
 	
-	public static ILaserProvider getLaserProviderFromPart(TileEntity tileEntity) {
+	public static ILaserProvider getLaserProviderFromPart(TileEntity tileEntity, int side) {
 		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
 			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
 
@@ -63,20 +63,5 @@ public class ForgeMultipartCompat {
             }
 		}
         return null;
-	}
-	
-	public static boolean validSourcePower(TileEntity tileEntity, ILaserReceiver laserReciver, int side) {
-		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
-			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
-
-            for(codechicken.multipart.TMultiPart t : tem.jPartList()) {
-                if(t instanceof SmallColourConverterPart) {
-                	if(((SmallColourConverterPart) t).meta == side) {
-                		return ((SmallColourConverterPart)t).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
-                	}
-                }
-            }
-        }
-		
 	}
 }
