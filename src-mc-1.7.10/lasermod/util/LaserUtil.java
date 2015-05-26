@@ -67,7 +67,7 @@ public class LaserUtil {
 	public static BlockActionPos getFirstBlock(ILaserProvider laserProvider, int meta) {
 		int orientation = getOrientation(meta);
 		
-		for(int distance = 1; distance <= laserProvider.getDistance(); distance++) {
+		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance <= laserProvider.getDistance(); distance++) {
 			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
 			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
 			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
@@ -80,8 +80,24 @@ public class LaserUtil {
 			
 			
 			//Can't pass through the next block
-			if(blockActionPos.isLaserReciver(orientation) || !LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite()))
+			if(blockActionPos.isLaserReciver(orientation) && !(xTemp == laserProvider.getX() && yTemp == laserProvider.getY() && zTemp == laserProvider.getZ())) {
 				return blockActionPos;
+			}
+			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
+				return blockActionPos;
+			}	
+			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) {
+				return blockActionPos;
+			}
+			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation])) {
+				return blockActionPos;
+			}
+			else if(blockActionPos.block.isAir(laserProvider.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
+				
+			}
+			else {
+				return blockActionPos;
+			}
 		}
 		
         return null;
@@ -137,8 +153,21 @@ public class LaserUtil {
 				
 				return distanceApart <= provider.getDistance() && provider.isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
 			}
-			else if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]))
+			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
 				break;
+			}	
+			else if(blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side].getOpposite())) {
+				break;
+			}
+			else if(blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side])) {
+				break;
+			}
+			else if(blockActionPos.block.isAir(laserReciver.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]) && !blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side].getOpposite())) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
+				
+			}
+			else {
+				break;
+			}
 		}
     	return false;
 	}
@@ -168,7 +197,7 @@ public class LaserUtil {
 		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(renderX + offsetMin, renderY + offsetMin, renderZ + offsetMin, renderX + offsetMax, renderY + offsetMax, renderZ + offsetMax);
 		
 		double[] extra = new double[ForgeDirection.VALID_DIRECTIONS.length];
-		FMLLog.info(laserProvider.isForgeMultipart() + "");
+		
 		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance <= laserProvider.getDistance(); distance++) {
 			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
 			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
@@ -185,6 +214,10 @@ public class LaserUtil {
 				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
 				break;
 			}
+			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
+				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
+				break;
+			}	
 			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) {
 				extra[orientation] += offsetMin - 0.01;
 				break;
@@ -193,7 +226,7 @@ public class LaserUtil {
 				extra[orientation] += (distance == 0 ? 0 : 1) + offsetMin - 0.01;
 				break;
 			}
-			else if(!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite()) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(laserProvider.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
 				extra[orientation] += (distance == 0 ? 0 : 1);
 			}
 			else {

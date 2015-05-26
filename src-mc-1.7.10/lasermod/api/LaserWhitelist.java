@@ -20,12 +20,19 @@ public class LaserWhitelist {
 	public static int ALL_METADATA = -1;
 	
 	public static List<List> WHITELIST = new ArrayList<List>();
+	public static List<List> BLACKLIST = new ArrayList<List>();
 	
 	//Convenience method
 	public static void addToWhiteList(Block block, int blockMeta) { addToWhiteList(Block.blockRegistry.getNameForObject(block), blockMeta); }
 	public static void addToWhiteList(int blockId, int blockMeta) { addToWhiteList(Block.blockRegistry.getNameForObject(Block.getBlockById(blockId)), blockMeta); }
 	public static void addToWhiteList(int blockId) { addToWhiteList(Block.blockRegistry.getNameForObject(Block.getBlockById(blockId)), -1); }
 	public static void addToWhiteList(Block block) { addToWhiteList(Block.blockRegistry.getNameForObject(block), -1); }
+	
+	//Convenience method
+	public static void addToBlackList(Block block, int blockMeta) { addToBlackList(Block.blockRegistry.getNameForObject(block), blockMeta); }
+	public static void addToBlackList(int blockId, int blockMeta) { addToBlackList(Block.blockRegistry.getNameForObject(Block.getBlockById(blockId)), blockMeta); }
+	public static void addToBlackList(int blockId) { addToBlackList(Block.blockRegistry.getNameForObject(Block.getBlockById(blockId)), -1); }
+	public static void addToBlackList(Block block) { addToBlackList(Block.blockRegistry.getNameForObject(block), -1); }
 	
 	
 	public static void addToWhiteList(String blockName, int blockMeta) {
@@ -34,6 +41,14 @@ public class LaserWhitelist {
 				WHITELIST.add(Arrays.asList(blockName, i));
 		else
 			WHITELIST.add(Arrays.asList(blockName, blockMeta));
+	}
+	
+	public static void addToBlackList(String blockName, int blockMeta) {
+		if(blockMeta == ALL_METADATA)
+			for(int i = 0; i < 16; ++i)
+				BLACKLIST.add(Arrays.asList(blockName, i));
+		else
+			BLACKLIST.add(Arrays.asList(blockName, blockMeta));
 	}
 	
 	//Convenience method
@@ -59,6 +74,10 @@ public class LaserWhitelist {
 		return WHITELIST.contains(Arrays.asList(Block.blockRegistry.getNameForObject(block), meta));
 	}
 	
+	public static boolean neverAllowThrough(Block block, int meta) {
+		return BLACKLIST.contains(Arrays.asList(Block.blockRegistry.getNameForObject(block), meta));
+	}
+	
 	static {
 		addToWhiteList(Blocks.air);
 		addToWhiteList(Blocks.ice);
@@ -79,5 +98,8 @@ public class LaserWhitelist {
 		
 		//Mods
 		addToWhiteList("TConstruct:decoration.stonetorch", -1);
+		
+		
+		//addToBlackList(Blocks.ice);
 	}
 }
