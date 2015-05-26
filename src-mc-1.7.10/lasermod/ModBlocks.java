@@ -7,6 +7,7 @@ import lasermod.block.BlockLaserDetector;
 import lasermod.block.BlockMirror;
 import lasermod.block.BlockReflector;
 import lasermod.block.BlockSmallColourConverter;
+import lasermod.compat.forgemultipart.ForgeMultipartCompat;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
@@ -15,6 +16,7 @@ import lasermod.tileentity.TileEntityMirror;
 import lasermod.tileentity.TileEntityReflector;
 import lasermod.tileentity.TileEntitySmallColourConverter;
 import net.minecraft.block.Block;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -44,6 +46,20 @@ public class ModBlocks {
 		GameRegistry.registerBlock(laserDetector, "detector");
 		GameRegistry.registerBlock(reflector, "reflector");
 		GameRegistry.registerBlock(colourConverter, "colorconverter");
+		
+		if(Loader.isModLoaded("ForgeMultipart")) {
+			try {
+				ForgeMultipartCompat.registerBlock();
+			}
+			catch(Throwable e) {
+				GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
+				e.printStackTrace();
+			
+			}
+		}
+		else
+			GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
+		
 		GameRegistry.registerBlock(mirror, "mirror");
 		
 		GameRegistry.registerTileEntity(TileEntityBasicLaser.class, "lasermod.basicLaser");

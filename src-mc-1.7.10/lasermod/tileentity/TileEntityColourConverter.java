@@ -28,7 +28,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	@Override
 	public void updateEntity() {
 		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE != 0)  {
+		if(this.lagReduce % LaserUtil.TICK_RATE == 0)  {
 		
 			if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
 				this.setLaser(null);

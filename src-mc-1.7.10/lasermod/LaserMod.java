@@ -2,7 +2,6 @@ package lasermod;
 
 import lasermod.api.LaserRegistry;
 import lasermod.compat.forgemultipart.ForgeMultipartCompat;
-import lasermod.compat.forgemultipart.PartRegister;
 import lasermod.laser.*;
 import lasermod.lib.Reference;
 import lasermod.network.NetworkManager;
@@ -12,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -56,20 +56,22 @@ public class LaserMod {
 		
 		proxy.onPreLoad();
 		
-		try {
-			ForgeMultipartCompat.init();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			GameRegistry.registerBlock(ModBlocks.smallColourConverter, "smallcolorconverter");
-		}
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		NETWORK_MANAGER = new NetworkManager();
     	NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+    	if(Loader.isModLoaded("ForgeMultipart")) {
+			try {
+				ForgeMultipartCompat.init();
+			}
+			catch(Throwable e) {
+				e.printStackTrace();
 			
+			}
+    	}
+    	
 		proxy.registerHandlers();
 	}
 	

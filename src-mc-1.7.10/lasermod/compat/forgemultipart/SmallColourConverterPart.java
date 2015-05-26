@@ -93,8 +93,6 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	
 	@Override
 	public Cuboid6 getBounds() {
-		
-
         if(meta == ForgeDirection.DOWN.ordinal())
         	 return new Cuboid6(0.2F, 0.8F, 0.2F, 0.8F, 1.0F, 0.8F);
         else if(meta == ForgeDirection.UP.ordinal())
@@ -113,9 +111,11 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	
 	public Cuboid6 infi = new Cuboid6(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 	
+	@Override
 	public Cuboid6 getRenderBounds() {
 		return infi;
 	}
+	
 	@Override
     public boolean renderStatic(Vector3 pos, int pass) {
         if(pass == 0) {

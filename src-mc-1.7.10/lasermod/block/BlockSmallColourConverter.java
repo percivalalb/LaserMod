@@ -2,7 +2,6 @@ package lasermod.block;
 
 import java.util.Random;
 
-import codechicken.lib.vec.Cuboid6;
 import lasermod.LaserMod;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;

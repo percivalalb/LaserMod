@@ -1,5 +1,6 @@
 package lasermod.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
@@ -15,17 +16,20 @@ public class TileEntityLaserDetector extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public void updateEntity() {
-		
 		this.lagReduce += 1;
 		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
 		
-		int count = 0;
-		for(int i = 0; i < 6; ++i)
-			if(this.getBlockMetadata() == 1 && !LaserUtil.isValidSourceOfPowerOnSide(this, i))
-				count++;
-		
-		if(count == 6)
-			this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
+		if(!this.worldObj.isRemote) {
+			if(this.getBlockMetadata() == 1) {
+				int count = 0;
+				for(int i = 0; i < 6; ++i)
+					if(!LaserUtil.isValidSourceOfPowerOnSide(this, i))
+						count++;
+				
+				if(count == 6)
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
+			}
+		}
 	}
 	
 	@Override

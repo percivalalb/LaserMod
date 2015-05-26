@@ -2,13 +2,13 @@ package lasermod.util;
 
 import java.util.List;
 
-import codechicken.multipart.TMultiPart;
-import codechicken.multipart.TileMultipart;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserWhitelist;
+import lasermod.compat.forgemultipart.ForgeMultipartCompat;
 import lasermod.compat.forgemultipart.SmallColourConverterPart;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -124,27 +124,18 @@ public class LaserUtil {
 			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
 				break;
 			
-			Block block = laserReciver.getWorld().getBlock(xTemp, yTemp, zTemp);
-			int blockMeta = laserReciver.getWorld().getBlockMetadata(xTemp, yTemp, zTemp);
-			TileEntity tileEntity = laserReciver.getWorld().getTileEntity(xTemp, yTemp, zTemp);
+			BlockActionPos blockActionPos = new BlockActionPos(laserReciver.getWorld(), xTemp, yTemp, zTemp);
+			//FMLLog.info(blockActionPos.toString());
 			
-			if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]))
-				if(tileEntity instanceof ILaserProvider)
-					return ((ILaserProvider)tileEntity).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
-				else if(tileEntity instanceof TileMultipart) {
-			            TileMultipart tem = (TileMultipart)tileEntity;
-
-			            for (TMultiPart t : tem.jPartList()) {
-			                if(t instanceof SmallColourConverterPart)
-			                	if(((SmallColourConverterPart) t).meta == side) {
-			                		return ((SmallColourConverterPart)t).isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
-			                	}
-			            }
-			        }
-			else
+			//Can't pass through the next block
+			if(blockActionPos.isLaserProvider(side)) {
+				return blockActionPos.getLaserProvider().isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
+				
+				
+			}
+			else if(!LaserWhitelist.canLaserPassThrought(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]))
 				break;
 		}
-		
     	return false;
 	}
 	
@@ -191,7 +182,6 @@ public class LaserUtil {
 			if((!blockActionPos.isLaserReciver(orientation) && LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())))
 				extra[orientation] += 1;
 			else {
-				//FMLLog.info("stop" + blockActionPos.block.toString());
 				extra[orientation] += 1 - offsetMax - 0.01;
 				break;
 			}
