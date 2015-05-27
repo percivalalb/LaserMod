@@ -8,7 +8,7 @@ import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
-import lasermod.api.LaserWhitelist;
+import lasermod.api.LaserModAPI;
 import lasermod.compat.forgemultipart.ForgeMultipartCompat;
 import lasermod.compat.forgemultipart.SmallColourConverterPart;
 import net.minecraft.block.Block;
@@ -87,7 +87,7 @@ public class LaserUtil {
 			else if(blockActionPos.block == ModBlocks.smallColourConverter && blockActionPos.meta == Facing.oppositeSide[orientation]) {
 				break;
 			}
-			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
+			else if(LaserModAPI.LASER_BLACKLIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				return blockActionPos;
 			}	
 			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) {
@@ -96,7 +96,7 @@ public class LaserUtil {
 			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation])) {
 				return blockActionPos;
 			}
-			else if(blockActionPos.block.isAir(laserProvider.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(laserProvider.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				
 			}
 			else {
@@ -159,7 +159,7 @@ public class LaserUtil {
 			else if(blockActionPos.block == ModBlocks.smallColourConverter && blockActionPos.meta == side) {
 				break;
 			}
-			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
+			else if(LaserModAPI.LASER_BLACKLIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				break;
 			}	
 			else if(blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side].getOpposite())) {
@@ -168,7 +168,7 @@ public class LaserUtil {
 			else if(blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side])) {
 				break;
 			}
-			else if(blockActionPos.block.isAir(laserReciver.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]) && !blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side].getOpposite())) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(laserReciver.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side]) && !blockActionPos.block.isSideSolid(laserReciver.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[side].getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				
 			}
 			else {
@@ -220,7 +220,7 @@ public class LaserUtil {
 				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
 				break;
 			}
-			else if(LaserWhitelist.neverAllowThrough(blockActionPos.block, blockActionPos.meta)) {
+			else if(LaserModAPI.LASER_BLACKLIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
 				break;
 			}	
@@ -236,7 +236,7 @@ public class LaserUtil {
 				extra[orientation] += (distance == 0 ? 0 : 1) + offsetMin - 0.01;
 				break;
 			}
-			else if(blockActionPos.block.isAir(laserProvider.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) || LaserWhitelist.canLaserPassThrought(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(laserProvider.getWorld(), xTemp, yTemp, zTemp) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation]) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), xTemp, yTemp, zTemp, ForgeDirection.VALID_DIRECTIONS[orientation].getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				extra[orientation] += (distance == 0 ? 0 : 1);
 			}
 			else {

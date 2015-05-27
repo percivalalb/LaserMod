@@ -1,5 +1,6 @@
 package lasermod;
 
+import lasermod.api.LaserModAPI;
 import lasermod.api.LaserRegistry;
 import lasermod.compat.forgemultipart.ForgeMultipartCompat;
 import lasermod.laser.*;
@@ -115,5 +116,39 @@ public class LaserMod {
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 5), new Object[] {Blocks.obsidian, Blocks.piston, Items.feather, Items.glowstone_dust});
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 6), new Object[] {Blocks.obsidian, Blocks.sticky_piston, Items.feather, Items.glowstone_dust});
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 7), new Object[] {Blocks.obsidian, Items.golden_sword, Items.spider_eye, Items.glowstone_dust});
+	
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.air);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.ice);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.tallgrass);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.double_plant);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.leaves);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.leaves2);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.lever);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.torch);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.ladder);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.redstone_torch);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.unlit_redstone_torch);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.redstone_wire);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.glass);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.stained_glass);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.glass_pane);
+		LaserModAPI.LASER_WHITELIST.addToList(Blocks.stained_glass_pane);
+		LaserModAPI.LASER_WHITELIST.addToList("TConstruct:decoration.stonetorch");
+		
+		LaserModAPI.LASER_BLACKLIST.addToList(ModBlocks.basicLaser);
+		LaserModAPI.LASER_BLACKLIST.addToList(ModBlocks.advancedLaser);
+		LaserModAPI.LASER_BLACKLIST.addToList(ModBlocks.colourConverter);
+		LaserModAPI.LASER_BLACKLIST.addToList(ModBlocks.laserDetector);
+		LaserModAPI.LASER_BLACKLIST.addToList(ModBlocks.luminousLamp);
+		LaserModAPI.LASER_BLACKLIST.addToList(ModBlocks.reflector);
+		
+		LaserModAPI.MINING_BLACKLIST.addToList(Blocks.bedrock);
+		LaserModAPI.MINING_BLACKLIST.addToList(ModBlocks.basicLaser);
+		LaserModAPI.MINING_BLACKLIST.addToList(ModBlocks.advancedLaser);
+		LaserModAPI.MINING_BLACKLIST.addToList(ModBlocks.colourConverter);
+		LaserModAPI.MINING_BLACKLIST.addToList(ModBlocks.laserDetector);
+		LaserModAPI.MINING_BLACKLIST.addToList(ModBlocks.luminousLamp);
+		LaserModAPI.MINING_BLACKLIST.addToList(ModBlocks.reflector);
+		LaserModAPI.MINING_BLACKLIST.addToList(ModBlocks.smallColourConverter);
 	}
 }
