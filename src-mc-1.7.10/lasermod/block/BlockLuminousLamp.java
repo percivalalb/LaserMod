@@ -81,4 +81,14 @@ public class BlockLuminousLamp extends BlockContainer {
 		}
 		return 0;
 	}
+	
+	@Override
+	public boolean isOpaqueCube() {
+	    return false;
+	}
+	
+	@Override
+	public boolean renderAsNormalBlock() {
+	    return false;
+	}
 }
