@@ -70,10 +70,10 @@ public class BlockLuminousPanel extends BlockContainer {
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		
-		if(meta > 5)
+		TileEntityLuminousPanel panel = (TileEntityLuminousPanel)world.getTileEntity(x, y, z);
+		if(meta == 1) {
 			return 15;
-		
+		}
 		return 0;
 	}
 }

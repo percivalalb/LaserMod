@@ -12,12 +12,10 @@ import net.minecraft.world.World;
  */
 public class TileEntityLaserDetector extends TileEntityLaserDevice implements ILaserReceiver {
 
-	private int lagReduce = -1;
 	
 	@Override
 	public void updateEntity() {
-		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
+		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE != 0) return;
 		
 		if(!this.worldObj.isRemote) {
 			if(this.getBlockMetadata() == 1) {

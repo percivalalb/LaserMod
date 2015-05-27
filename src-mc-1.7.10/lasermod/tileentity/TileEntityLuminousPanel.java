@@ -1,10 +1,15 @@
 package lasermod.tileentity;
 
 import cpw.mods.fml.common.FMLLog;
+import lasermod.LaserMod;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
+import lasermod.network.packet.PacketAdvancedLaser;
+import lasermod.network.packet.PacketLuminousPanel;
+import lasermod.network.packet.PacketReflector;
 import lasermod.util.LaserUtil;
+import net.minecraft.network.Packet;
 import net.minecraft.world.World;
 
 /**
@@ -12,12 +17,11 @@ import net.minecraft.world.World;
  */
 public class TileEntityLuminousPanel extends TileEntityLaserDevice implements ILaserReceiver {
 
-	private int lagReduce = -1;
+	public LaserInGame laser;
 	
 	@Override
 	public void updateEntity() {
-		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
+		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE != 0) return;
 		
 		if(!this.worldObj.isRemote) {
 			if(this.getBlockMetadata() == 1) {
@@ -30,6 +34,11 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
 			}
 		}
+	}
+	
+	@Override
+	public Packet getDescriptionPacket() {
+	    return new PacketLuminousPanel(this).getPacket();
 	}
 	
 	@Override
@@ -46,17 +55,21 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side,  LaserInGame laserInGame) {
-		return world.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) != 1;
+		return this.laser == null;
 	}
 
 	@Override
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		if(!world.isRemote)
-			world.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 1, 3);
+		this.laser = laserInGame;
+		world.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 1, 3);
+		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 	}
 
 	@Override
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
 		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.luminousPanel, 4);
+		world.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
+		this.laser = null;
+		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 	}
 }

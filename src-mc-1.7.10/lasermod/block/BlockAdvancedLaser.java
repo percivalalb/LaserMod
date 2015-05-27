@@ -98,12 +98,12 @@ public class BlockAdvancedLaser extends BlockContainer {
 	
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
-		world.markBlockForUpdate(x, y, z);
+		//world.markBlockForUpdate(x, y, z);
     }
 	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
-		world.markBlockForUpdate(x, y, z);
+		//world.markBlockForUpdate(x, y, z);
     }
 
 	@Override

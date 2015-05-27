@@ -9,6 +9,7 @@ import lasermod.util.LaserUtil;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,14 +18,10 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILaserProvider {
 
-	private int lagReduce = -1;
-	
 	@Override
 	public void updateEntity() {
 		
-		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE != 0) return;
-		
+		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE != 0) return;
 		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.basicLaser, 0);
 	}
 	

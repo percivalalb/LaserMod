@@ -19,16 +19,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author ProPercivalalb
  */
 public class TileEntityColourConverter extends TileEntityLaserDevice implements ILaserProvider, ILaserReceiver {
-
-	private int lagReduce = -1;
 	
 	public LaserInGame laser;
 	public int colour = 14;
 	
 	@Override
 	public void updateEntity() {
-		this.lagReduce += 1;
-		if(this.lagReduce % LaserUtil.TICK_RATE == 0)  {
+
+		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0)  {
 		
 			if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
 				this.setLaser(null);
@@ -38,7 +36,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 		}
 		
-		if(this.lagReduce % LaserUtil.LASER_RATE == 0) {
+		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0) {
 			if(this.laser != null)
 				LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
 		}

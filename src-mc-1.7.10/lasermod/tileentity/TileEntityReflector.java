@@ -30,13 +30,10 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	public boolean[] closedSides = new boolean[] {true, true, true, true, true, true};
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	
-	private int lagReduce = -1;
-	
 	@Override
 	public void updateEntity() {
 		
-		this.lagReduce += 1;
-		if(!this.worldObj.isRemote && this.lagReduce % LaserUtil.TICK_RATE == 0) {
+		if(!this.worldObj.isRemote && this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0) {
 			
 			if(this.lasers != null && this.lasers.size() > 0) {
 				for(int i = 0; i < this.closedSides.length; ++i)
@@ -49,7 +46,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
 		}
 		
-		if(this.lagReduce % LaserUtil.LASER_RATE == 0) {
+		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0) {
 			for(int i = 0; i < this.closedSides.length; ++i) {
 				if(this.closedSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
 					continue;
@@ -214,7 +211,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		this.addLaser(laserInGame, side);
 		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
-		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 4);
+		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
 	}
 
 	@Override
