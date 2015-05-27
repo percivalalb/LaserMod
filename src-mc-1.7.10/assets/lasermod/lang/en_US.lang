@@ -10,6 +10,7 @@ tile.lasermod.detector.name=Laser Detector
 tile.lasermod.colorconverter.name=Colour Converter
 tile.lasermod.smallcolorconverter.name=Miniature Colour Converter
 tile.lasermod.luminouslamp.name=Luminous Lamp
+tile.lasermod.lensworkbench.name=Lens Workbench
 item.lasermod.upgrade.0.name=Fire Upgrade
 item.lasermod.upgrade.1.name=Water Upgrade [WIP]
 item.lasermod.upgrade.2.name=Ice Upgrade [WIP]

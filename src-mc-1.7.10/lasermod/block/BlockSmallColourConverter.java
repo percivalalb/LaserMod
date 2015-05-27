@@ -88,9 +88,7 @@ public class BlockSmallColourConverter extends BlockContainer {
 
 	@Override
     public void setBlockBoundsForItemRender() {
-        float f = 0.0625F;
-        float f1 = 0.5F;
-        this.setBlockBounds(f, 0.0F, f, 1.0F - f, f1, 1.0F - f);
+		this.setBlockBounds(0.2F, 0.2F, 0.3F, 0.8F, 0.8F, 0.5F);
     }
 
 	@Override

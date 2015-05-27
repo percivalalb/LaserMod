@@ -4,6 +4,7 @@ import lasermod.block.BlockAdvancedLaser;
 import lasermod.block.BlockBasicLaser;
 import lasermod.block.BlockColourConverter;
 import lasermod.block.BlockLaserDetector;
+import lasermod.block.BlockLensWorkbench;
 import lasermod.block.BlockLuminousLamp;
 import lasermod.block.BlockReflector;
 import lasermod.block.BlockSmallColourConverter;
@@ -31,6 +32,7 @@ public class ModBlocks {
 	public static Block colourConverter;
 	public static Block smallColourConverter;
 	public static Block luminousLamp;
+	public static Block lensWorkbench;
 	
 	public static void init() {
 		basicLaser = new BlockBasicLaser().setBlockName("lasermod.basicLaser");
@@ -40,6 +42,7 @@ public class ModBlocks {
 		colourConverter = new BlockColourConverter().setBlockName("lasermod.colorconverter");
 		smallColourConverter = new BlockSmallColourConverter().setBlockName("lasermod.smallcolorconverter");
 		luminousLamp = new BlockLuminousLamp().setBlockName("lasermod.luminouslamp");
+		lensWorkbench = new BlockLensWorkbench().setBlockName("lasermod.lensworkbench");
 		
 		GameRegistry.registerBlock(basicLaser, "basicLaser");
 		GameRegistry.registerBlock(advancedLaser, "advancedLaser");
@@ -60,6 +63,7 @@ public class ModBlocks {
 			GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
 		
 		GameRegistry.registerBlock(luminousLamp, "luminouslamp");
+		GameRegistry.registerBlock(lensWorkbench, "lensWorkbench");
 		
 		GameRegistry.registerTileEntity(TileEntityBasicLaser.class, "lasermod.basicLaser");
 		GameRegistry.registerTileEntity(TileEntityAdvancedLaser.class, "lasermod.advancedLaser");
