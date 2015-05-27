@@ -54,7 +54,6 @@ public class ModBlocks {
 			catch(Throwable e) {
 				GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
 				e.printStackTrace();
-			
 			}
 		}
 		else

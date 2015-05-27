@@ -28,6 +28,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockLuminousLamp extends BlockContainer {
 
+	@SideOnly(Side.CLIENT)
+	public IIcon stateOff;
 	
 	public BlockLuminousLamp() {
 		super(Material.glass);
@@ -38,13 +40,16 @@ public class BlockLuminousLamp extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-	    
+	    this.blockIcon = iconRegister.registerIcon("lasermod:luminouslampon");
+	    this.stateOff = iconRegister.registerIcon("lasermod:luminouslampoff");
 	}
 
 	@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.wool.getIcon(side, 0);
+		if(meta == 0)
+			return this.stateOff;
+        return this.blockIcon;
     }
 	
 	@Override
