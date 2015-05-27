@@ -148,14 +148,12 @@ public class LaserUtil {
 			
 			//Can't pass through the next block
 			if(blockActionPos.isLaserProvider(side)) {
-				FMLLog.info("provider " + blockActionPos.toString());
 				ILaserProvider provider = blockActionPos.getLaserProvider(side);
 				int distanceX = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetX * (laserReciver.getX() - provider.getX()));
 				int distanceY = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetY * (laserReciver.getY() - provider.getY()));
 				int distanceZ = Math.abs(ForgeDirection.VALID_DIRECTIONS[side].offsetZ * (laserReciver.getZ() - provider.getZ()));
 				
 				int distanceApart = distanceX + distanceY + distanceZ;
-				
 				return distanceApart <= provider.getDistance() && provider.isSendingSignalFromSide(laserReciver.getWorld(), laserReciver.getX(), laserReciver.getY(), laserReciver.getZ(), Facing.oppositeSide[side]);
 			}
 			else if(blockActionPos.block == ModBlocks.smallColourConverter && blockActionPos.meta == side) {

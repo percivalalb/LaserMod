@@ -3,11 +3,13 @@ package lasermod.network.packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import lasermod.api.LaserInGame;
 import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.tileentity.TileEntityLuminousPanel;
+import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,14 +21,14 @@ import net.minecraft.world.World;
 public class PacketLuminousPanel extends IPacket {
 
 	public int x, y, z;
-    public LaserInGame laser;
+	public ArrayList<LaserInGame> lasers;
     
     public PacketLuminousPanel() {}
-    public PacketLuminousPanel(TileEntityLuminousPanel colourConverter) {
-        this.x = colourConverter.xCoord;
-        this.y = colourConverter.yCoord;
-        this.z = colourConverter.zCoord;
-        this.laser = colourConverter.laser;
+    public PacketLuminousPanel(TileEntityLuminousPanel luminousPanel) {
+        this.x = luminousPanel.xCoord;
+        this.y = luminousPanel.yCoord;
+        this.z = luminousPanel.zCoord;
+        this.lasers = luminousPanel.lasers;
     }
     
 	@Override
@@ -34,8 +36,11 @@ public class PacketLuminousPanel extends IPacket {
 		this.x = packetbuffer.readInt();
 		this.y = packetbuffer.readInt();
 		this.z = packetbuffer.readInt();
-		if(packetbuffer.readBoolean())
-			this.laser = new LaserInGame().readFromPacket(packetbuffer);
+		
+	    this.lasers = new ArrayList<LaserInGame>();
+	    int count = packetbuffer.readInt();
+	    for(int i = 0; i < count; ++i)
+	    	this.lasers.add(new LaserInGame().readFromPacket(packetbuffer));
 	}
 	
 	@Override
@@ -43,9 +48,11 @@ public class PacketLuminousPanel extends IPacket {
 		packetbuffer.writeInt(this.x);
 		packetbuffer.writeInt(this.y);
 		packetbuffer.writeInt(this.z);
-		packetbuffer.writeBoolean(this.laser != null);
-		if(this.laser != null)
-			this.laser.writeToPacket(packetbuffer);
+		
+		packetbuffer.writeInt(this.lasers.size());
+		
+		for(int i = 0; i < this.lasers.size(); ++i) 
+			this.lasers.get(i).writeToPacket(packetbuffer);
 	}
 	
 	@Override
@@ -56,7 +63,7 @@ public class PacketLuminousPanel extends IPacket {
 		if(!(tileEntity instanceof TileEntityLuminousPanel)) 
 			return;
 		TileEntityLuminousPanel colourConverter = (TileEntityLuminousPanel)tileEntity;
-		colourConverter.laser = this.laser;
+		colourConverter.lasers = this.lasers;
 		world.markBlockForUpdate(this.x, this.y, this.z);
 	}
 }

@@ -31,7 +31,6 @@ public class ForgeMultipartCompat {
             for(codechicken.multipart.TMultiPart t : tem.jPartList()) {
                 if(t instanceof SmallColourConverterPart) {
                 	if(((SmallColourConverterPart) t).meta == side) {
-                	FMLLog.info("found");
                 		return true;
                 	}
                 }

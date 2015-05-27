@@ -307,6 +307,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
+		FMLLog.info("colour");
 		return this.getOutputLaser(side) != null && side == Facing.oppositeSide[this.meta];
 	}
 	
