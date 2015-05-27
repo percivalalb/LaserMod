@@ -7,7 +7,7 @@ import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityLaserDetector;
-import lasermod.tileentity.TileEntityLuminousPanel;
+import lasermod.tileentity.TileEntityLuminousLamp;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -26,10 +26,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-public class BlockLuminousPanel extends BlockContainer {
+public class BlockLuminousLamp extends BlockContainer {
 
 	
-	public BlockLuminousPanel() {
+	public BlockLuminousLamp() {
 		super(Material.glass);
 		this.setHardness(1.0F);
 		this.setCreativeTab(LaserMod.tabLaser);
@@ -64,13 +64,13 @@ public class BlockLuminousPanel extends BlockContainer {
 	
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityLuminousPanel();
+		return new TileEntityLuminousLamp();
 	}
 	
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		TileEntityLuminousPanel panel = (TileEntityLuminousPanel)world.getTileEntity(x, y, z);
+		TileEntityLuminousLamp panel = (TileEntityLuminousLamp)world.getTileEntity(x, y, z);
 		if(meta == 1) {
 			return 15;
 		}

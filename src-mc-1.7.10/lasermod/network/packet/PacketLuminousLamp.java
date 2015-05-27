@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import lasermod.api.LaserInGame;
 import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityColourConverter;
-import lasermod.tileentity.TileEntityLuminousPanel;
+import lasermod.tileentity.TileEntityLuminousLamp;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -18,13 +18,13 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class PacketLuminousPanel extends IPacket {
+public class PacketLuminousLamp extends IPacket {
 
 	public int x, y, z;
 	public ArrayList<LaserInGame> lasers;
     
-    public PacketLuminousPanel() {}
-    public PacketLuminousPanel(TileEntityLuminousPanel luminousPanel) {
+    public PacketLuminousLamp() {}
+    public PacketLuminousLamp(TileEntityLuminousLamp luminousPanel) {
         this.x = luminousPanel.xCoord;
         this.y = luminousPanel.yCoord;
         this.z = luminousPanel.zCoord;
@@ -60,9 +60,9 @@ public class PacketLuminousPanel extends IPacket {
 		World world = player.worldObj;
 		TileEntity tileEntity = world.getTileEntity(this.x, this.y, this.z);
 		
-		if(!(tileEntity instanceof TileEntityLuminousPanel)) 
+		if(!(tileEntity instanceof TileEntityLuminousLamp)) 
 			return;
-		TileEntityLuminousPanel colourConverter = (TileEntityLuminousPanel)tileEntity;
+		TileEntityLuminousLamp colourConverter = (TileEntityLuminousLamp)tileEntity;
 		colourConverter.lasers = this.lasers;
 		world.markBlockForUpdate(this.x, this.y, this.z);
 	}

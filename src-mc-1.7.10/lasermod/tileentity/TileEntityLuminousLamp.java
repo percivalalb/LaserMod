@@ -10,7 +10,7 @@ import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.packet.PacketAdvancedLaser;
-import lasermod.network.packet.PacketLuminousPanel;
+import lasermod.network.packet.PacketLuminousLamp;
 import lasermod.network.packet.PacketReflector;
 import lasermod.util.LaserUtil;
 import net.minecraft.network.Packet;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityLuminousPanel extends TileEntityLaserDevice implements ILaserReceiver {
+public class TileEntityLuminousLamp extends TileEntityLaserDevice implements ILaserReceiver {
 
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	
@@ -41,7 +41,7 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 				}
 				
 				if(change)
-					LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+					LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousLamp(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 				
 				if(this.lasers == null || this.lasers.size() == 0) {
 					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
@@ -127,7 +127,7 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public Packet getDescriptionPacket() {
-	    return new PacketLuminousPanel(this).getPacket();
+	    return new PacketLuminousLamp(this).getPacket();
 	}
 	
 	@Override
@@ -150,7 +150,7 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 	@Override
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		this.addLaser(laserInGame, side);
-		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousLamp(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 1, 3);
 	}
 
@@ -160,7 +160,7 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 		boolean flag = this.removeAllLasersFromSide(side);
 		
 		if(flag) {
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousLamp(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		}
 	}
 }

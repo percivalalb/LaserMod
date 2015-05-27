@@ -101,7 +101,7 @@ public class LaserWhitelist {
 		
 		
 		addToBlackList(ModBlocks.laserDetector);
-		addToBlackList(ModBlocks.luminousPanel);
+		addToBlackList(ModBlocks.luminousLamp);
 		//addToBlackList(ModBlocks.smallColourConverter);
 	}
 }

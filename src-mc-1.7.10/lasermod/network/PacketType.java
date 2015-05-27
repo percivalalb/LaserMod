@@ -2,7 +2,7 @@ package lasermod.network;
 
 import lasermod.network.packet.PacketAdvancedLaser;
 import lasermod.network.packet.PacketColourConverter;
-import lasermod.network.packet.PacketLuminousPanel;
+import lasermod.network.packet.PacketLuminousLamp;
 import lasermod.network.packet.PacketReflector;
 import lasermod.network.packet.PacketSmallColourConverter;
 
@@ -15,7 +15,7 @@ public enum PacketType {
 	COLOUR_CONVERTER(PacketColourConverter.class),
 	SMALL_COLOUR_CONVERTER(PacketSmallColourConverter.class),
 	REFLECTOR(PacketReflector.class),
-	LUMINOUS_PANEL(PacketLuminousPanel.class);
+	LUMINOUS_PANEL(PacketLuminousLamp.class);
 	
 	public Class<? extends IPacket> packetClass;
 	
