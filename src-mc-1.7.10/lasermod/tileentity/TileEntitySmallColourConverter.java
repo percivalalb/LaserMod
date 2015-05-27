@@ -130,7 +130,7 @@ public class TileEntitySmallColourConverter extends TileEntityLaserDevice implem
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return this.getOutputLaser(side) != null && side == this.getBlockMetadata();
+		return this.getOutputLaser(side) != null && side == Facing.oppositeSide[this.getBlockMetadata()];
 	}
 	
 	@Override

@@ -30,8 +30,11 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 					if(!LaserUtil.isValidSourceOfPowerOnSide(this, i))
 						count++;
 				
-				if(count == 6)
+				if(count == 6) {
+					this.laser = null;
 					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
+					LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), this.getWorldObj().provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				}
 			}
 		}
 	}
@@ -54,7 +57,7 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side,  LaserInGame laserInGame) {
+	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		return this.laser == null;
 	}
 
@@ -67,9 +70,11 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 
 	@Override
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.luminousPanel, 4);
-		world.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
+		boolean change = this.laser != null;
 		this.laser = null;
-		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+		if(change) {
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			world.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
+		}
 	}
 }

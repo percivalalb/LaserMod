@@ -200,6 +200,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
     	}
     }
     
+    @Override
     public boolean doesTick() {
     	return true;
     }
@@ -306,7 +307,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return this.getOutputLaser(side) != null && side == this.meta;
+		return this.getOutputLaser(side) != null && side == Facing.oppositeSide[this.meta];
 	}
 	
 	public void setLaser(LaserInGame laser) {

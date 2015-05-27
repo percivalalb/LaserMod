@@ -5,6 +5,7 @@ import net.minecraft.util.Facing;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -29,8 +30,10 @@ public class ForgeMultipartCompat {
 
             for(codechicken.multipart.TMultiPart t : tem.jPartList()) {
                 if(t instanceof SmallColourConverterPart) {
-                	if(((SmallColourConverterPart) t).meta == side)
+                	if(((SmallColourConverterPart) t).meta == side) {
+                	FMLLog.info("found");
                 		return true;
+                	}
                 }
             }
 		}

@@ -23,7 +23,7 @@ public class TileEntityLaserDetector extends TileEntityLaserDevice implements IL
 				for(int i = 0; i < 6; ++i)
 					if(!LaserUtil.isValidSourceOfPowerOnSide(this, i))
 						count++;
-				
+				FMLLog.info("" + count);
 				if(count == 6)
 					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
 			}

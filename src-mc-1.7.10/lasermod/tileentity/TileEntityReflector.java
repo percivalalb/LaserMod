@@ -37,7 +37,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 			
 			if(this.lasers != null && this.lasers.size() > 0) {
 				for(int i = 0; i < this.closedSides.length; ++i)
-					if(!closedSides[i] && this.containsInputSide(i) && !LaserUtil.isValidSourceOfPowerOnSide(this, i)) {
+					if(!this.closedSides[i] && this.containsInputSide(i) && !LaserUtil.isValidSourceOfPowerOnSide(this, i)) {
 						FMLLog.info("not valid");
 						if(this.removeAllLasersFromSide(i))
 							LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);

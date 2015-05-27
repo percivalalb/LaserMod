@@ -88,18 +88,20 @@ public class BlockLaserDetector extends BlockContainer {
 
 	@Override
     public void updateTick(World world, int x, int y, int z, Random random) {
-		TileEntityLaserDetector laserdetector = (TileEntityLaserDetector)world.getTileEntity(x, y, z);
-		
-		if(laserdetector.getBlockMetadata() != 1)
-			return;
-		
-		int count = 0;
-		for(int i = 0; i < 6; ++i)
-			if(!LaserUtil.isValidSourceOfPowerOnSide(laserdetector, i))
-				count++;
-		
-		if(count == 6)
-			world.setBlockMetadataWithNotify(x, y, z, 0, 3);
+		if (!world.isRemote) {
+			TileEntityLaserDetector laserdetector = (TileEntityLaserDetector)world.getTileEntity(x, y, z);
+			
+			if(laserdetector.getBlockMetadata() != 1)
+				return;
+			
+			int count = 0;
+			for(int i = 0; i < 6; ++i)
+				if(!LaserUtil.isValidSourceOfPowerOnSide(laserdetector, i))
+					count++;
+			
+			if(count == 6)
+				world.setBlockMetadataWithNotify(x, y, z, 0, 3);
+		}
 	}
 	
 	@Override

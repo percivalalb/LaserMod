@@ -1,6 +1,7 @@
 package lasermod.network;
 
 import lasermod.LaserMod;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
@@ -25,7 +26,7 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<IPacket>{
     @Override
     public void encodeInto(ChannelHandlerContext ctx, IPacket msg, ByteBuf bytes) throws Exception {
     	PacketBuffer packetbuffer = new PacketBuffer(bytes);
-
+    	FMLLog.info("send packet");
     	msg.write(packetbuffer);
     }
 

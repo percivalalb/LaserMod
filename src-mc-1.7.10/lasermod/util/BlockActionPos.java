@@ -85,7 +85,7 @@ public class BlockActionPos {
 			}
     	}
 		if(this.tileEntity instanceof TileEntitySmallColourConverter) {
-			return side != this.tileEntity.getBlockMetadata() && Facing.oppositeSide[side] == this.tileEntity.getBlockMetadata();
+			return side == this.tileEntity.getBlockMetadata();
 		}
 		
 		return this.tileEntity instanceof ILaserProvider;
