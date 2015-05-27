@@ -172,7 +172,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
     
     @Override
     public void update() {
-    	if(!this.world().isRemote) {
+    	if(!this.world().isRemote && this.world().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0) {
 	    	if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[meta])) {
 				this.setLaser(null);
 				this.sendDescUpdate();

@@ -35,7 +35,6 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 				if(this.lasers != null && this.lasers.size() > 0) {
 					for(int i = 0; i < 6; ++i)
 						if(!LaserUtil.isValidSourceOfPowerOnSide(this, i)) {
-		
 							if(this.removeAllLasersFromSide(i))
 								change = true;
 						}
@@ -152,7 +151,7 @@ public class TileEntityLuminousPanel extends TileEntityLaserDevice implements IL
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		this.addLaser(laserInGame, side);
 		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousPanel(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
-		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
+		this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 1, 3);
 	}
 
 	@Override
