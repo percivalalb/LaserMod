@@ -30,7 +30,7 @@ public class ModBlocks {
 	public static Block reflector;
 	public static Block colourConverter;
 	public static Block smallColourConverter;
-	public static Block luminousPanel;
+	public static Block luminousLamp;
 	
 	public static void init() {
 		basicLaser = new BlockBasicLaser().setBlockName("lasermod.basicLaser");
@@ -39,7 +39,7 @@ public class ModBlocks {
 		reflector = new BlockReflector().setBlockName("lasermod.reflector");
 		colourConverter = new BlockColourConverter().setBlockName("lasermod.colorconverter");
 		smallColourConverter = new BlockSmallColourConverter().setBlockName("lasermod.smallcolorconverter");
-		luminousPanel = new BlockLuminousLamp().setBlockName("lasermod.luminouspanel");
+		luminousLamp = new BlockLuminousLamp().setBlockName("lasermod.luminouslamp");
 		
 		GameRegistry.registerBlock(basicLaser, "basicLaser");
 		GameRegistry.registerBlock(advancedLaser, "advancedLaser");
@@ -60,7 +60,7 @@ public class ModBlocks {
 		else
 			GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
 		
-		GameRegistry.registerBlock(luminousPanel, "luminouspanel");
+		GameRegistry.registerBlock(luminousLamp, "luminouslamp");
 		
 		GameRegistry.registerTileEntity(TileEntityBasicLaser.class, "lasermod.basicLaser");
 		GameRegistry.registerTileEntity(TileEntityAdvancedLaser.class, "lasermod.advancedLaser");
@@ -68,7 +68,7 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileEntityReflector.class, "lasermod.reflector");
 		GameRegistry.registerTileEntity(TileEntityColourConverter.class, "lasermod.colourconverter");
 		GameRegistry.registerTileEntity(TileEntitySmallColourConverter.class, "lasermod.smallcolourconverter");
-		GameRegistry.registerTileEntity(TileEntityLuminousLamp.class, "lasermod.luminouspanel");
+		GameRegistry.registerTileEntity(TileEntityLuminousLamp.class, "lasermod.luminouslamp");
 		
 		//MinecraftForge.setBlockHarvestLevel(basicLaser, "pickaxe", 1);
 	}
