@@ -68,7 +68,7 @@ public class LaserUtil {
 	public static BlockActionPos getFirstBlock(ILaserProvider laserProvider, int meta) {
 		int orientation = getOrientation(meta);
 		
-		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance <= laserProvider.getDistance(); distance++) {
+		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance < laserProvider.getDistance(); distance++) {
 			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
 			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
 			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
@@ -204,7 +204,7 @@ public class LaserUtil {
 		
 		double[] extra = new double[ForgeDirection.VALID_DIRECTIONS.length];
 		
-		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance <= laserProvider.getDistance(); distance++) {
+		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance < laserProvider.getDistance(); distance++) {
 			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
 			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
 			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;

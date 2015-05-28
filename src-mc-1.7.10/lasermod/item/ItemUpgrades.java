@@ -27,7 +27,6 @@ public class ItemUpgrades extends Item {
 	public IIcon upgradeHealing;
 	
 	public ItemUpgrades() {
-		super();
 		this.setCreativeTab(LaserMod.tabLaser);
 		this.setHasSubtypes(true);
 	}

@@ -1,6 +1,7 @@
 package lasermod.client.render.block;
 
 import lasermod.api.LaserCollisionBoxes;
+import lasermod.api.LaserToRender;
 import lasermod.client.render.LaserRenderer;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.util.LaserUtil;
@@ -18,18 +19,9 @@ public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
     public void renderBasicLaser(TileEntityBasicLaser basicLaser, double x, double y, double z, float tick) {
     	if(!basicLaser.getWorldObj().isBlockIndirectlyGettingPowered(basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord))
     		return;
-    	
-    	GL11.glPushMatrix();
-    	LaserRenderer.preLaserRender();
 
         AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(basicLaser, basicLaser.getBlockMetadata(), x, y, z);
-        LaserCollisionBoxes.addLaserCollision(laserOutline.getOffsetBoundingBox(basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord).getOffsetBoundingBox(-x, -y, -z));
-    	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.4F);
-    	LaserRenderer.drawBoundingBox(laserOutline);
-    	LaserRenderer.drawBoundingBox(laserOutline.contract(0.1D, 0.1D, 0.1D));
-
-    	LaserRenderer.postLaserRender();
-        GL11.glPopMatrix();
+        LaserCollisionBoxes.addLaserCollision(new LaserToRender(basicLaser.getOutputLaser(basicLaser.blockMetadata), laserOutline, x, y, z, basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord, basicLaser.getBlockMetadata()));
 
     }
 

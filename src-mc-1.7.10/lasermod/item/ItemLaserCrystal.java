@@ -12,7 +12,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemLaserCrystal extends Item {
 	
 	public ItemLaserCrystal() {
-		super();
 		this.setCreativeTab(LaserMod.tabLaser);
 	}
 

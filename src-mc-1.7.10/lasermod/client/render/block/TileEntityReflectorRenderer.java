@@ -3,6 +3,7 @@ package lasermod.client.render.block;
 import lasermod.api.ILaser;
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserToRender;
 import lasermod.client.model.block.ModelReflector;
 import lasermod.client.render.LaserRenderer;
 import lasermod.helper.ClientHelper;
@@ -33,9 +34,6 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
         this.modelReflector.renderModel(reflector);
         GL11.glPopMatrix();
         
-        GL11.glPushMatrix();
-	    LaserRenderer.preLaserRender();
-        
 		for(int i = 0; i < reflector.closedSides.length; ++i) {
 			if(reflector.closedSides[i] || reflector.containsInputSide(i) || reflector.lasers.size() == 0)
 				continue;
@@ -44,16 +42,10 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 
 	    	if(alpha == 0.0F)
 	    		continue;
-	    	GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
 	    	
 			AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(reflector, i, x, y, z);
-			LaserCollisionBoxes.addLaserCollision(boundingBox.getOffsetBoundingBox(reflector.xCoord, reflector.yCoord, reflector.zCoord).getOffsetBoundingBox(-x, -y, -z));
-	    	LaserRenderer.drawBoundingBox(boundingBox);
-	    	LaserRenderer.drawBoundingBox(boundingBox.contract(0.1D, 0.1D, 0.1D));
+			LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, reflector.xCoord, reflector.yCoord, reflector.zCoord, i));
 		}
-		
-		LaserRenderer.postLaserRender();
-        GL11.glPopMatrix();
         
     }
 

@@ -9,6 +9,7 @@ import lasermod.client.render.block.TileEntityReflectorRenderer;
 import lasermod.client.render.block.TileEntitySmallColourConverterRenderer;
 import lasermod.client.render.item.ItemReflectorRenderer;
 import lasermod.helper.ScreenRenderHandler;
+import lasermod.helper.WorldOverlayHandler;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
@@ -49,6 +50,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerHandlers() {
 		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
+		MinecraftForge.EVENT_BUS.register(new WorldOverlayHandler());
 	}
 	
 	@Override

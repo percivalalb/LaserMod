@@ -2,6 +2,7 @@ package lasermod.client.render.block;
 
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserToRender;
 import lasermod.client.render.LaserRenderer;
 import lasermod.helper.ClientHelper;
 import lasermod.tileentity.TileEntityColourConverter;
@@ -25,18 +26,9 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
 
     	if(alpha == 0.0F)
     		return;
-    	
-    	GL11.glPushMatrix();
-    	LaserRenderer.preLaserRender();
-    	
+
 		AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(colourConverter, colourConverter.getBlockMetadata(), x, y, z);
-		LaserCollisionBoxes.addLaserCollision(boundingBox.getOffsetBoundingBox(colourConverter.xCoord, colourConverter.yCoord, colourConverter.zCoord).getOffsetBoundingBox(-x, -y, -z));
-    	GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
-    	LaserRenderer.drawBoundingBox(boundingBox);
-    	LaserRenderer.drawBoundingBox(boundingBox.contract(0.1D, 0.1D, 0.1D));
-         
-    	LaserRenderer.postLaserRender();
-        GL11.glPopMatrix();
+		LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, colourConverter.xCoord, colourConverter.yCoord, colourConverter.zCoord, colourConverter.getBlockMetadata()));
 
     }
     @Override

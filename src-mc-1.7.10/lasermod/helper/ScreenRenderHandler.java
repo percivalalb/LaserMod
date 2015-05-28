@@ -7,7 +7,9 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import lasermod.ModItems;
 import lasermod.api.LaserCollisionBoxes;
+import lasermod.api.LaserToRender;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
@@ -40,7 +42,7 @@ public class ScreenRenderHandler {
 		EntityPlayer player = ClientHelper.getPlayer();
 		World world = player.worldObj;
 		ItemStack stack = ClientHelper.mc.thePlayer.getHeldItem();
-		if(event.type == RenderGameOverlayEvent.ElementType.HELMET) {
+		if(event.type == RenderGameOverlayEvent.ElementType.HELMET && stack != null && stack.getItem() == ModItems.handheldSensor) {
 			double lookDistance = ClientHelper.mc.playerController.getBlockReachDistance();
 			
 	        MovingObjectPosition mop = ClientHelper.mc.renderViewEntity.rayTrace(lookDistance, event.partialTicks);
@@ -61,11 +63,8 @@ public class ScreenRenderHandler {
                 lookDistance = d1;
             }
 
-
-	        
-			if(mop != null) {
+			if(mop != null)
 				d1 = mop.hitVec.distanceTo(posVec);
-			}
 			
 	        Vec3 lookVec = ClientHelper.mc.renderViewEntity.getLook(event.partialTicks);
 	        Vec3 combinedVec = posVec.addVector(lookVec.xCoord * lookDistance, lookVec.yCoord * lookDistance, lookVec.zCoord * lookDistance);
@@ -76,10 +75,10 @@ public class ScreenRenderHandler {
             double d2 = d1;
 
             int lookingAtIndex = -1;
-            //FMLLog.info("Size " + LaserCollisionBoxes.lasers.size());
-            for (int i = 0; i < LaserCollisionBoxes.lasers.size(); ++i) {
-            	AxisAlignedBB axisalignedbb = LaserCollisionBoxes.lasers.get(i);
-
+            for (int i = 0; i < LaserCollisionBoxes.lasers2.size(); ++i) {
+            	LaserToRender ltr = LaserCollisionBoxes.lasers2.get(i);
+            	AxisAlignedBB axisalignedbb = ltr.collision.getOffsetBoundingBox(ltr.blockX, ltr.blockY, ltr.blockZ).getOffsetBoundingBox(-ltr.renderX, -ltr.renderY, -ltr.renderZ);
+            	
                 MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(posVec, combinedVec);
                 if (axisalignedbb.isVecInside(posVec)) {
                     if (0.0D < d2 || d2 == 0.0D) {
@@ -100,7 +99,7 @@ public class ScreenRenderHandler {
                 }
            
             }
-            LaserCollisionBoxes.lasers.clear();
+            //LaserCollisionBoxes.lasers.clear();
 	        
             if(lookingAtIndex != -1) {
             	drawHoveringText(Arrays.asList("TEST", "Line2"), 0, 100, 1000, 200, ClientHelper.mc.fontRenderer);

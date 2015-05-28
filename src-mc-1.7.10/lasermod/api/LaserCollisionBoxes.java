@@ -9,9 +9,13 @@ import net.minecraft.util.AxisAlignedBB;
  */
 public class LaserCollisionBoxes {
 
-	public static ArrayList<AxisAlignedBB> lasers = new ArrayList<AxisAlignedBB>();
+	public static ArrayList<LaserToRender> lasers = new ArrayList<LaserToRender>();
+	public static ArrayList<LaserToRender> lasers2 = new ArrayList<LaserToRender>();
 	
-	public static void addLaserCollision(AxisAlignedBB aabb) {
-		lasers.add(aabb);
+	public static void addLaserCollision(LaserToRender laserToRender) {
+		if(!lasers.contains(laserToRender))
+			lasers.add(laserToRender);
+		else
+			lasers.set(lasers.indexOf(laserToRender), laserToRender);
 	}
 }

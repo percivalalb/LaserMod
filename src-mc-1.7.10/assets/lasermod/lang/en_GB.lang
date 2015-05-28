@@ -3,6 +3,7 @@ itemGroup.tabLaser=Laser Mod
 item.lasermod.laserCrystal.name=Laser Crystal
 item.lasermod.laserSeekingGoogles.name=Laser Seeking Googles
 item.lasermod.screwdriver.name=Screwdriver
+item.lasermod.handheldsensor.name=Handheld Sensor
 tile.lasermod.basicLaser.name=Basic Laser Box
 tile.lasermod.advancedLaser.name=Advanced Laser Box
 tile.lasermod.reflector.name=Laser Reflector

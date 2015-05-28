@@ -2,6 +2,7 @@ package lasermod.client.render.block;
 
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserToRender;
 import lasermod.client.render.LaserRenderer;
 import lasermod.helper.ClientHelper;
 import lasermod.proxy.ClientProxy;
@@ -30,19 +31,10 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
 
     	if(alpha == 0.0F)
     		return;
-    	
-    	GL11.glPushMatrix();
-    	LaserRenderer.preLaserRender();
+
 
         AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(advancedLaser, advancedLaser.getBlockMetadata(), x, y, z);
-        //TODO 
-        LaserCollisionBoxes.addLaserCollision(laserOutline.getOffsetBoundingBox(advancedLaser.xCoord, advancedLaser.yCoord, advancedLaser.zCoord).getOffsetBoundingBox(-x, -y, -z));
-        GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
-    	LaserRenderer.drawBoundingBox(laserOutline);
-    	LaserRenderer.drawBoundingBox(laserOutline.contract(0.1D, 0.1D, 0.1D));
-
-    	LaserRenderer.postLaserRender();
-        GL11.glPopMatrix();
+        LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, laserOutline, x, y, z, advancedLaser.xCoord, advancedLaser.yCoord, advancedLaser.zCoord, advancedLaser.getBlockMetadata()));
 
     }
 
