@@ -110,7 +110,9 @@ public class LaserMod {
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.reflector, 1), new Object[] {"CGC", "GSG", "CGC", 'G', Blocks.glass, 'C', Blocks.cobblestone, 'S', Items.glowstone_dust});
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.colourConverter, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Items.glowstone_dust, 'L', ModItems.laserCrystal, 'C', Blocks.cobblestone});
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.laserDetector, 1), new Object[] {"SSS", "SBS", "SSS", 'B', Blocks.redstone_block, 'S', Blocks.stone});
-		    
+		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.colourConverter, 1, 0), new Object[] {ModBlocks.smallColourConverter});    
+		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.smallColourConverter, 1, 0), new Object[] {ModBlocks.colourConverter});
+		
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 0), new Object[] {Blocks.obsidian, Items.fire_charge, Items.blaze_powder, Items.glowstone_dust});
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 3), new Object[] {Blocks.obsidian, Items.golden_carrot, Items.fermented_spider_eye, Items.glowstone_dust});
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 5), new Object[] {Blocks.obsidian, Blocks.piston, Items.feather, Items.glowstone_dust});
