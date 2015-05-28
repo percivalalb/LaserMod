@@ -1,5 +1,6 @@
 package lasermod.client.render.block;
 
+import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.client.render.LaserRenderer;
 import lasermod.helper.ClientHelper;
@@ -12,6 +13,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb
@@ -32,6 +35,8 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
     	LaserRenderer.preLaserRender();
 
         AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(advancedLaser, advancedLaser.getBlockMetadata(), x, y, z);
+        //TODO 
+        LaserCollisionBoxes.addLaserCollision(laserOutline.getOffsetBoundingBox(advancedLaser.xCoord, advancedLaser.yCoord, advancedLaser.zCoord).getOffsetBoundingBox(-x, -y, -z));
         GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
     	LaserRenderer.drawBoundingBox(laserOutline);
     	LaserRenderer.drawBoundingBox(laserOutline.contract(0.1D, 0.1D, 0.1D));

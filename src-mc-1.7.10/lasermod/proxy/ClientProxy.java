@@ -8,6 +8,7 @@ import lasermod.client.render.block.TileEntityLuminousLampRenderer;
 import lasermod.client.render.block.TileEntityReflectorRenderer;
 import lasermod.client.render.block.TileEntitySmallColourConverterRenderer;
 import lasermod.client.render.item.ItemReflectorRenderer;
+import lasermod.helper.ScreenRenderHandler;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
@@ -18,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -46,7 +48,7 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void registerHandlers() {
-		
+		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
 	}
 	
 	@Override

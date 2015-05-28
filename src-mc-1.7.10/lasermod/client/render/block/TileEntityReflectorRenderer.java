@@ -1,6 +1,7 @@
 package lasermod.client.render.block;
 
 import lasermod.api.ILaser;
+import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.client.model.block.ModelReflector;
 import lasermod.client.render.LaserRenderer;
@@ -46,7 +47,7 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 	    	GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
 	    	
 			AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(reflector, i, x, y, z);
-			
+			LaserCollisionBoxes.addLaserCollision(boundingBox.getOffsetBoundingBox(reflector.xCoord, reflector.yCoord, reflector.zCoord).getOffsetBoundingBox(-x, -y, -z));
 	    	LaserRenderer.drawBoundingBox(boundingBox);
 	    	LaserRenderer.drawBoundingBox(boundingBox.contract(0.1D, 0.1D, 0.1D));
 		}

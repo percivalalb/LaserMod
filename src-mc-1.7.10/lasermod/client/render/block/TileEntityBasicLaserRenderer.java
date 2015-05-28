@@ -1,5 +1,6 @@
 package lasermod.client.render.block;
 
+import lasermod.api.LaserCollisionBoxes;
 import lasermod.client.render.LaserRenderer;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.util.LaserUtil;
@@ -22,6 +23,7 @@ public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
     	LaserRenderer.preLaserRender();
 
         AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(basicLaser, basicLaser.getBlockMetadata(), x, y, z);
+        LaserCollisionBoxes.addLaserCollision(laserOutline.getOffsetBoundingBox(basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord).getOffsetBoundingBox(-x, -y, -z));
     	GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.4F);
     	LaserRenderer.drawBoundingBox(laserOutline);
     	LaserRenderer.drawBoundingBox(laserOutline.contract(0.1D, 0.1D, 0.1D));
