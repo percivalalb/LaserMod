@@ -50,8 +50,30 @@ public class BlockReflector extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-	    this.blockIcon = iconRegister.registerIcon("lasermod:reflector");
+	    this.blockIcon = iconRegister.registerIcon("lasermod:reflector_particles");
 	}
+	
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+		if(world != null 
+				&& !world.isRemote 
+				&& player != null 
+				&& player.getHeldItem() != null 
+				&& player.getHeldItem().getItem() == ModItems.screwdriver) {
+			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
+			reflector.closedSides[side] = !reflector.closedSides[side];
+			
+			if(reflector.closedSides[side])
+				reflector.removeAllLasersFromSide(side);
+			
+			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+			
+			
+			return true;
+		}
+        return false;
+    }
 	
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
@@ -138,22 +160,4 @@ public class BlockReflector extends BlockContainer {
 	public boolean isOpaqueCube() {
 	    return false;
 	}
-
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
-		ItemStack item = player.getCurrentEquippedItem();
-		if(!world.isRemote && item != null && item.getItem() == ModItems.screwdriver) {
-			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
-			reflector.closedSides[side] = !reflector.closedSides[side];
-			
-			if(reflector.closedSides[side])
-				reflector.removeAllLasersFromSide(side);
-			
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
-			
-			
-			return true;
-		}
-        return false;
-    }
 }
