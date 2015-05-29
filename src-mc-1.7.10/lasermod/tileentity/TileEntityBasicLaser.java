@@ -27,7 +27,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	
 	@Override
 	public LaserInGame getOutputLaser(int side) {
-		return new LaserInGame(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[side]);
+		return new LaserInGame().setSide(Facing.oppositeSide[side]);
 	}
 	
 	@Override

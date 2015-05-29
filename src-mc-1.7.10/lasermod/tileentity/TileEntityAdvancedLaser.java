@@ -75,7 +75,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public LaserInGame getOutputLaser(int side) {
-		LaserInGame laser = new LaserInGame(LaserRegistry.getLaserFromId("default")).setSide(Facing.oppositeSide[side]);
+		LaserInGame laser = new LaserInGame().setSide(Facing.oppositeSide[side]);
 
 		for(ItemStack stack : this.upgrades) {
 			ILaser ilaser = LaserRegistry.getLaserFromItem(stack);

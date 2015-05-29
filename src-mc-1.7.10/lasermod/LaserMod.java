@@ -80,7 +80,6 @@ public class LaserMod {
 	public void modsLoaded(FMLPostInitializationEvent event) {
 		
 		//Registers all lasers
-		LaserRegistry.registerLaser("default", new DefaultLaser());
 		LaserRegistry.registerLaser("water", new WaterLaser());
 		LaserRegistry.registerLaser("ice", new IceLaser());
 		LaserRegistry.registerLaser("fire", new FireLaser());

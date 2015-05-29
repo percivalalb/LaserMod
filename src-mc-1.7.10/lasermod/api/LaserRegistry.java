@@ -46,6 +46,6 @@ public class LaserRegistry {
 			if(mappings.get(id) == laser)
 				return id;
 		}
-		return "default";
+		return "unknown";
 	}
 }

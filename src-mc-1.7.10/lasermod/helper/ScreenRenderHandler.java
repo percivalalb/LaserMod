@@ -114,7 +114,7 @@ public class ScreenRenderHandler {
             	LaserInGame laser = ltr.laser;
             	Color colour = new Color(laser.red, laser.green, laser.blue);
             	List<String> list = new ArrayList<String>();
-            	list.add(EnumChatFormatting.AQUA + "Laser");
+            	list.add("Laser");
             	
             	list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
             	list.add("Orgin: " + ltr.blockX + ", " + ltr.blockY + ", " + ltr.blockZ);
