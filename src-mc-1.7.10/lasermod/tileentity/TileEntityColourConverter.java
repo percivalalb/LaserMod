@@ -127,7 +127,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	}
 	
 	@Override
-	public int getDistance() {
+	public int getDistance(int side) {
 		return 64;
 	}
 	

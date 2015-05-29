@@ -99,7 +99,6 @@ public class ScreenRenderHandler {
                 }
            
             }
-            //LaserCollisionBoxes.lasers.clear();
 	        
             if(lookingAtIndex != -1) {
             	drawHoveringText(Arrays.asList("TEST", "Line2"), 0, 100, 1000, 200, ClientHelper.mc.fontRenderer);

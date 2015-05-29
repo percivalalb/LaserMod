@@ -36,13 +36,8 @@ public class WorldOverlayHandler {
         	
 			GL11.glPushMatrix();
 	    	LaserRenderer.preLaserRender();
-	
-	    	float alpha = laserInGame.shouldRenderLaser(ClientHelper.getPlayer());
-
-	    	if(alpha == 0.0F)
-	    		continue;
 	    	
-	        GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, alpha);
+	        GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, ltr.alpha);
 	    	LaserRenderer.drawBoundingBox(axisalignedbb);
 	    	LaserRenderer.drawBoundingBox(axisalignedbb.contract(0.1D, 0.1D, 0.1D));
 	
@@ -50,7 +45,7 @@ public class WorldOverlayHandler {
 	        GL11.glPopMatrix();
 
 	    }
-	    FMLLog.info("test1");
+	    
 	    LaserCollisionBoxes.lasers2 = (ArrayList<LaserToRender>)LaserCollisionBoxes.lasers.clone();
 	    LaserCollisionBoxes.lasers.clear();
 	}

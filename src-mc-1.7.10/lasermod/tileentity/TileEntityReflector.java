@@ -235,7 +235,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	}
 	
 	@Override
-	public int getDistance() {
+	public int getDistance(int side) {
 		int total = 0;
 		
 		for(int i = 0; i < 6; i++)

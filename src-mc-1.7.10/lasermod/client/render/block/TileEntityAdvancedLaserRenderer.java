@@ -34,7 +34,7 @@ public class TileEntityAdvancedLaserRenderer extends TileEntitySpecialRenderer {
 
 
         AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(advancedLaser, advancedLaser.getBlockMetadata(), x, y, z);
-        LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, laserOutline, x, y, z, advancedLaser.xCoord, advancedLaser.yCoord, advancedLaser.zCoord, advancedLaser.getBlockMetadata()));
+        LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, laserOutline, x, y, z, advancedLaser.xCoord, advancedLaser.yCoord, advancedLaser.zCoord, advancedLaser.getBlockMetadata(), alpha));
 
     }
 

@@ -48,7 +48,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	}
 	
 	@Override
-	public int getDistance() {
+	public int getDistance(int side) {
 		return 64;
 	}
 	

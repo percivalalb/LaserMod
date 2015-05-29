@@ -103,7 +103,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	public int getDistance() {
+	public int getDistance(int side) {
 		return 64;
 	}
 	

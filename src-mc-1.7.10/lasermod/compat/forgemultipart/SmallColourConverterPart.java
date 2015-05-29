@@ -299,7 +299,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	}
 
 	@Override
-	public int getDistance() {
+	public int getDistance(int side) {
 		return 64;
 	}
 
