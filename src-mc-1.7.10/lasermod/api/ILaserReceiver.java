@@ -1,5 +1,7 @@
 package lasermod.api;
 
+import java.util.List;
+
 import net.minecraft.world.World;
 
 /**
@@ -17,4 +19,5 @@ public interface ILaserReceiver {
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame);
 
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side);
+	public List<LaserInGame> getInputLasers();
 }

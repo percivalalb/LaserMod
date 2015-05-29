@@ -88,7 +88,7 @@ public class BlockColourConverter extends BlockContainer {
         if (!world.isRemote) {
         	TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
     		BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
-    		if(reciver != null && reciver.isLaserReciver(colourconverter.getBlockMetadata())) {
+    		if(reciver != null && reciver.isLaserReceiver(colourconverter.getBlockMetadata())) {
     			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
             	if(colourconverter.laser == null) {
             		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
@@ -105,7 +105,7 @@ public class BlockColourConverter extends BlockContainer {
 		if (!world.isRemote) {
 			TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
 			BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
-			if(reciver != null && reciver.isLaserReciver(colourconverter.getBlockMetadata())) {
+			if(reciver != null && reciver.isLaserReceiver(colourconverter.getBlockMetadata())) {
 				LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
 	        	if(colourconverter.laser == null) {
 	        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
@@ -121,7 +121,7 @@ public class BlockColourConverter extends BlockContainer {
     public void updateTick(World world, int x, int y, int z, Random random) {
 		TileEntityColourConverter colourconverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
 		BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
-		if(reciver != null && reciver.isLaserReciver(colourconverter.getBlockMetadata())) {
+		if(reciver != null && reciver.isLaserReceiver(colourconverter.getBlockMetadata())) {
 			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
         	if(laserInGame == null) {
         		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);

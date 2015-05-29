@@ -39,7 +39,7 @@ public class BlockActionPos {
 		this.meta = world.getBlockMetadata(x, y, z);
 	}
 	
-	public boolean isLaserReciver(int side) {
+	public boolean isLaserReceiver(int side) {
 		if(Loader.isModLoaded("ForgeMultipart")) {
 			try {
 				if(ForgeMultipartCompat.isTileMultipart(this.tileEntity, side))
@@ -61,7 +61,7 @@ public class BlockActionPos {
 	public ILaserReceiver getLaserReceiver(int side) {
 		if(Loader.isModLoaded("ForgeMultipart")) {
 			try {
-				ILaserReceiver reciver = ForgeMultipartCompat.getLaserReciverFromPart(this.tileEntity, side);
+				ILaserReceiver reciver = ForgeMultipartCompat.getLaserReceiverFromPart(this.tileEntity, side);
 				if(reciver != null)
 					return reciver;
 			}

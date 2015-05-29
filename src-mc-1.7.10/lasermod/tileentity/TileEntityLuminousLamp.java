@@ -1,6 +1,8 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import cpw.mods.fml.common.FMLLog;
@@ -162,5 +164,10 @@ public class TileEntityLuminousLamp extends TileEntityLaserDevice implements ILa
 		if(flag) {
 			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketLuminousLamp(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		}
+	}
+
+	@Override
+	public List<LaserInGame> getInputLasers() {
+		return this.lasers;
 	}
 }

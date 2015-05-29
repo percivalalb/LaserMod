@@ -1,5 +1,8 @@
 package lasermod.tileentity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import cpw.mods.fml.common.FMLLog;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserReceiver;
@@ -12,6 +15,7 @@ import net.minecraft.world.World;
  */
 public class TileEntityLaserDetector extends TileEntityLaserDevice implements ILaserReceiver {
 
+	
 	
 	@Override
 	public void updateEntity() {
@@ -56,5 +60,10 @@ public class TileEntityLaserDetector extends TileEntityLaserDevice implements IL
 	@Override
 	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
 		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.laserDetector, 4);
+	}
+
+	@Override
+	public List<LaserInGame> getInputLasers() {
+		return Arrays.asList();
 	}
 }

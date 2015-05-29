@@ -1,6 +1,7 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import lasermod.LaserMod;
@@ -151,7 +152,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 				continue;
 			BlockActionPos reciver = LaserUtil.getFirstBlock(this, i);
 			
-			if(reciver != null && reciver.isLaserReciver(this.getBlockMetadata())) {
+			if(reciver != null && reciver.isLaserReceiver(this.getBlockMetadata())) {
 			  	reciver.getLaserReceiver(this.getBlockMetadata()).removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
 			}
 		}
@@ -262,5 +263,10 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	@Override
 	public boolean isForgeMultipart() {
 		return false;
+	}
+
+	@Override
+	public List<LaserInGame> getInputLasers() {
+		return this.lasers;
 	}
 }

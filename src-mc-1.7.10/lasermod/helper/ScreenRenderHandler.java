@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL12;
 
 import lasermod.ModItems;
 import lasermod.api.ILaser;
+import lasermod.api.ILaserProvider;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
@@ -123,19 +125,32 @@ public class ScreenRenderHandler {
             		list.add(LaserRegistry.getIdFromLaser(laserType));
             	}
             	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
-                this.drawRect(12, 24, 12 + 9, 24 + 9, colour.getRGB());
+                this.drawRect(12, 24, 12 + 9, 24 + 9, colour.getRGB(), 400.0D);
             	
             }
             else if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
             	List<String> list = new ArrayList<String>();
             	
             	BlockActionPos action = new BlockActionPos(world, mop.blockX, mop.blockY, mop.blockZ);
+             	if(action.isLaserReceiver(-1)) {
+            		list.add("Receiving");
+             		
+            		ILaserReceiver reciver = action.getLaserReceiver(-1);
+            		for(LaserInGame laser : reciver.getInputLasers()) {
+            			Color colour = new Color(laser.red, laser.green, laser.blue);
+            			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB(), 400.0D);
+            			list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
+                    	list.add("Direction traveling: " + ForgeDirection.getOrientation(laser.getSide()).getOpposite().name());
+                    	for(ILaser laserType : laser.getLaserType()) {
+                    		list.add(LaserRegistry.getIdFromLaser(laserType));
+                    	}
+            		}
+            	}
             	if(action.isLaserProvider(-1)) {
+            		ILaserProvider provider = action.getLaserProvider(-1);
             		list.add("PROVIDER");
             	}
-            	if(action.isLaserReciver(-1)) {
-            		list.add("RECIVER");
-            	}
+  
             	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
             }
 		}
@@ -256,7 +271,7 @@ public class ScreenRenderHandler {
 	    }
 	 
     
-	    public static void drawRect(int par0, int par1, int par2, int par3, int par4)
+	    public static void drawRect(int par0, int par1, int par2, int par3, int par4, double zLevel)
 	    {
 	        int j1;
 
@@ -284,10 +299,10 @@ public class ScreenRenderHandler {
 	        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 	        GL11.glColor4f(f, f1, f2, f3);
 	        tessellator.startDrawingQuads();
-	        tessellator.addVertex((double)par0, (double)par3, 0.0D);
-	        tessellator.addVertex((double)par2, (double)par3, 0.0D);
-	        tessellator.addVertex((double)par2, (double)par1, 0.0D);
-	        tessellator.addVertex((double)par0, (double)par1, 0.0D);
+	        tessellator.addVertex((double)par0, (double)par3, zLevel);
+	        tessellator.addVertex((double)par2, (double)par3, zLevel);
+	        tessellator.addVertex((double)par2, (double)par1, zLevel);
+	        tessellator.addVertex((double)par0, (double)par1, zLevel);
 	        tessellator.draw();
 	        GL11.glEnable(GL11.GL_TEXTURE_2D);
 	        GL11.glDisable(GL11.GL_BLEND);

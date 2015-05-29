@@ -2,6 +2,7 @@ package lasermod.compat.forgemultipart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import lasermod.LaserMod;
 import lasermod.ModBlocks;
@@ -177,7 +178,7 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 			}
 	    	
 	    	BlockActionPos reciver = LaserUtil.getFirstBlock(this, this.meta);
-			if(reciver != null && reciver.isLaserReciver(this.meta)) {
+			if(reciver != null && reciver.isLaserReceiver(this.meta)) {
 				LaserInGame laserInGame = this.getOutputLaser(this.meta);
 	        	if(laserInGame == null) {
 	        		reciver.getLaserReceiver(this.meta).removeLasersFromSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta]);
@@ -318,4 +319,8 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 		return true;
 	}
 
+	@Override
+	public List<LaserInGame> getInputLasers() {
+		return Arrays.asList(this.laser);
+	}
 }

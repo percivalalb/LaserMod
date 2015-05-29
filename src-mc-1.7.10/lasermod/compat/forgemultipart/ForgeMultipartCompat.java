@@ -39,7 +39,7 @@ public class ForgeMultipartCompat {
         return false;
 	}
 	
-	public static ILaserReceiver getLaserReciverFromPart(TileEntity tileEntity, int side) {
+	public static ILaserReceiver getLaserReceiverFromPart(TileEntity tileEntity, int side) {
 		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
 			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
 

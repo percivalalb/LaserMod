@@ -38,33 +38,6 @@ public class LaserUtil {
 		return meta & 7;
 	}
 	
-	/**
-	public static ILaserReceiver getFirstReciver(ILaserProvider laserProvider, int meta) {
-		int orientation = getOrientation(meta);
-		
-		for(int distance = 1; distance <= LASER_REACH; distance++) {
-			int xTemp = laserProvider.getX() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetX * distance;
-			int yTemp = laserProvider.getY() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetY * distance;
-			int zTemp = laserProvider.getZ() + ForgeDirection.VALID_DIRECTIONS[orientation].offsetZ * distance;
-			
-			//Check whether the coordinates are in range
-			if(xTemp < -30000000 || zTemp < -30000000 || xTemp >= 30000000 || zTemp >= 30000000 || yTemp < 0 || yTemp >= 256)
-				break;
-			
-			TileEntity tileEntity = laserProvider.getWorld().getTileEntity(xTemp, yTemp, zTemp);
-			
-			//The next block is instance of ILaserReciver so return it
-			if(tileEntity instanceof ILaserReceiver)
-				return (ILaserReceiver)tileEntity;
-			
-			//Can't pass through the next block
-			if(!LaserWhitelist.canLaserPassThrought(laserProvider.getWorld(), xTemp, yTemp, zTemp))
-				break;
-		}
-		
-        return null;
-	}**/
-	
 	public static BlockActionPos getFirstBlock(ILaserProvider laserProvider, int meta) {
 		int orientation = getOrientation(meta);
 		
@@ -81,7 +54,7 @@ public class LaserUtil {
 			
 			
 			//Can't pass through the next block
-			if(blockActionPos.isLaserReciver(orientation) && !(xTemp == laserProvider.getX() && yTemp == laserProvider.getY() && zTemp == laserProvider.getZ())) {
+			if(blockActionPos.isLaserReceiver(orientation) && !(xTemp == laserProvider.getX() && yTemp == laserProvider.getY() && zTemp == laserProvider.getZ())) {
 				return blockActionPos;
 			}
 			else if(blockActionPos.block == ModBlocks.smallColourConverter && blockActionPos.meta == Facing.oppositeSide[orientation]) {
@@ -216,7 +189,7 @@ public class LaserUtil {
 			
 			BlockActionPos blockActionPos = new BlockActionPos(laserProvider.getWorld(), xTemp, yTemp, zTemp);
 			
-			if(blockActionPos.isLaserReciver(orientation) && !(xTemp == laserProvider.getX() && yTemp == laserProvider.getY() && zTemp == laserProvider.getZ())) {
+			if(blockActionPos.isLaserReceiver(orientation) && !(xTemp == laserProvider.getX() && yTemp == laserProvider.getY() && zTemp == laserProvider.getZ())) {
 				extra[orientation] += (distance == 0 ? 0 : 1) - offsetMax - 0.01;
 				break;
 			}

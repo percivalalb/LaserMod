@@ -1,5 +1,8 @@
 package lasermod.tileentity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import lasermod.LaserMod;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
@@ -146,5 +149,10 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	@Override
 	public boolean isForgeMultipart() {
 		return false;
+	}
+
+	@Override
+	public List<LaserInGame> getInputLasers() {
+		return Arrays.asList(this.laser);
 	}
 }

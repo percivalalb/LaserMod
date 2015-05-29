@@ -82,7 +82,7 @@ public class BlockReflector extends BlockContainer {
         	for(int i = 0; i < reflector.closedSides.length; ++i) {
     			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
     				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-    				if(reciver != null && reciver.isLaserReciver(i))
+    				if(reciver != null && reciver.isLaserReceiver(i))
     					reciver.getLaserReceiver(i).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
     				continue;
     			}
@@ -90,7 +90,7 @@ public class BlockReflector extends BlockContainer {
     				continue;
     			
     			BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-    			if(reciver != null && reciver.isLaserReciver(i)) {
+    			if(reciver != null && reciver.isLaserReceiver(i)) {
     				LaserInGame laserInGame = reflector.getOutputLaser(i);
     			  	if(reciver.getLaserReceiver(i).canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
     			  		reciver.getLaserReceiver(i).passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
@@ -107,7 +107,7 @@ public class BlockReflector extends BlockContainer {
 	    	for(int i = 0; i < reflector.closedSides.length; ++i) {
 				if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
 					BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-					if(reciver != null && reciver.isLaserReciver(i))
+					if(reciver != null && reciver.isLaserReceiver(i))
 						reciver.getLaserReceiver(i).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
 
 					continue;
@@ -116,7 +116,7 @@ public class BlockReflector extends BlockContainer {
 					continue;
 				
 				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-				if(reciver != null && reciver.isLaserReciver(i)) {
+				if(reciver != null && reciver.isLaserReceiver(i)) {
 					LaserInGame laserInGame = reflector.getOutputLaser(i);
 				  	if(reciver.getLaserReceiver(i).canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
 				  		reciver.getLaserReceiver(i).passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
@@ -132,7 +132,7 @@ public class BlockReflector extends BlockContainer {
     	for(int i = 0; i < reflector.closedSides.length; ++i) {
 			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
 				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-				if(reciver != null && reciver.isLaserReciver(i))
+				if(reciver != null && reciver.isLaserReceiver(i))
 					reciver.getLaserReceiver(i).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
 				continue;
 			}
@@ -140,7 +140,7 @@ public class BlockReflector extends BlockContainer {
 				continue;
 			
 			BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-			if(reciver != null && reciver.isLaserReciver(i)) {
+			if(reciver != null && reciver.isLaserReceiver(i)) {
 				LaserInGame laserInGame = reflector.getOutputLaser(i);
 			  	if(reciver.getLaserReceiver(i).canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
 			  		reciver.getLaserReceiver(i).passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
