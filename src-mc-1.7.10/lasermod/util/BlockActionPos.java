@@ -52,7 +52,7 @@ public class BlockActionPos {
     	}
 		
 		if(this.tileEntity instanceof TileEntitySmallColourConverter) {
-			return side == this.tileEntity.getBlockMetadata() && Facing.oppositeSide[side] != this.tileEntity.getBlockMetadata();
+			return side == this.tileEntity.getBlockMetadata() || side == -1;
 		}
 
 		return this.tileEntity instanceof ILaserReceiver;
@@ -85,7 +85,7 @@ public class BlockActionPos {
 			}
     	}
 		if(this.tileEntity instanceof TileEntitySmallColourConverter) {
-			return side == this.tileEntity.getBlockMetadata();
+			return side == this.tileEntity.getBlockMetadata() || side == -1;
 		}
 		
 		return this.tileEntity instanceof ILaserProvider;

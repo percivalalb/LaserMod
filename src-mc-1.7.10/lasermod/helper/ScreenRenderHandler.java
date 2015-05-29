@@ -1,5 +1,7 @@
 package lasermod.helper;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -8,8 +10,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import lasermod.ModItems;
+import lasermod.api.ILaser;
 import lasermod.api.LaserCollisionBoxes;
+import lasermod.api.LaserInGame;
+import lasermod.api.LaserRegistry;
 import lasermod.api.LaserToRender;
+import lasermod.util.BlockActionPos;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
@@ -22,12 +28,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author ProPercivalalb
@@ -101,7 +110,33 @@ public class ScreenRenderHandler {
             }
 	        
             if(lookingAtIndex != -1) {
-            	drawHoveringText(Arrays.asList("TEST", "Line2"), 0, 100, 1000, 200, ClientHelper.mc.fontRenderer);
+            	LaserToRender ltr = LaserCollisionBoxes.lasers2.get(lookingAtIndex);
+            	LaserInGame laser = ltr.laser;
+            	Color colour = new Color(laser.red, laser.green, laser.blue);
+            	List<String> list = new ArrayList<String>();
+            	list.add(EnumChatFormatting.AQUA + "Laser");
+            	
+            	list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
+            	list.add("Orgin: " + ltr.blockX + ", " + ltr.blockY + ", " + ltr.blockZ);
+            	list.add("Direction traveling: " + ForgeDirection.getOrientation(laser.getSide()).getOpposite().name());
+            	for(ILaser laserType : laser.getLaserType()) {
+            		list.add(LaserRegistry.getIdFromLaser(laserType));
+            	}
+            	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
+                this.drawRect(12, 24, 12 + 9, 24 + 9, colour.getRGB());
+            	
+            }
+            else if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
+            	List<String> list = new ArrayList<String>();
+            	
+            	BlockActionPos action = new BlockActionPos(world, mop.blockX, mop.blockY, mop.blockZ);
+            	if(action.isLaserProvider(-1)) {
+            		list.add("PROVIDER");
+            	}
+            	if(action.isLaserReciver(-1)) {
+            		list.add("RECIVER");
+            	}
+            	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
             }
 		}
 	}
@@ -145,24 +180,22 @@ public class ScreenRenderHandler {
                 j1 = height - k1 - 6;
             }
 
-            int l1 = -267386864;
+            int l1 = Color.darkGray.getRGB();
             this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
             this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
             this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 + k1 + 3, l1, l1);
             this.drawGradientRect(i1 - 4, j1 - 3, i1 - 3, j1 + k1 + 3, l1, l1);
             this.drawGradientRect(i1 + k + 3, j1 - 3, i1 + k + 4, j1 + k1 + 3, l1, l1);
-            int i2 = 1347420415;
-            int j2 = (i2 & 16711422) >> 1 | i2 & -16777216;
+            int i2 = Color.gray.getRGB();
+            int j2 = Color.gray.getRGB();
             this.drawGradientRect(i1 - 3, j1 - 3 + 1, i1 - 3 + 1, j1 + k1 + 3 - 1, i2, j2);
             this.drawGradientRect(i1 + k + 2, j1 - 3 + 1, i1 + k + 3, j1 + k1 + 3 - 1, i2, j2);
             this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 - 3 + 1, i2, i2);
             this.drawGradientRect(i1 - 3, j1 + k1 + 2, i1 + k + 3, j1 + k1 + 3, j2, j2);
 
-            for (int k2 = 0; k2 < par1List.size(); ++k2)
-            {
+            for (int k2 = 0; k2 < par1List.size(); ++k2) {
                 String s1 = (String)par1List.get(k2);
                 font.drawStringWithShadow(s1, i1, j1, -1);
-
                 if (k2 == 0)
                 {
                     j1 += 2;

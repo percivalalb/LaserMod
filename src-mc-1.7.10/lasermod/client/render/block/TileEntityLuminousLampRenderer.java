@@ -24,7 +24,7 @@ public class TileEntityLuminousLampRenderer extends TileEntitySpecialRenderer {
     	if(laser == null) return;
 
     	ModBlocks.luminousLamp.setBlockBoundsBasedOnState(panel.getWorldObj(), (int)x, (int)y, (int)z);
-    	AxisAlignedBB panelOutline = AxisAlignedBB.getBoundingBox(x + ModBlocks.luminousLamp.getBlockBoundsMinX(), y + ModBlocks.luminousLamp.getBlockBoundsMinY(), z + ModBlocks.luminousLamp.getBlockBoundsMinZ(), x + ModBlocks.luminousLamp.getBlockBoundsMaxX(), y + ModBlocks.luminousLamp.getBlockBoundsMaxY(), z + ModBlocks.luminousLamp.getBlockBoundsMaxZ()).expand(tick / 50, tick / 50, tick / 50).expand(0.01, 0.01, 0.01);
+    	AxisAlignedBB panelOutline = AxisAlignedBB.getBoundingBox(x + ModBlocks.luminousLamp.getBlockBoundsMinX(), y + ModBlocks.luminousLamp.getBlockBoundsMinY(), z + ModBlocks.luminousLamp.getBlockBoundsMinZ(), x + ModBlocks.luminousLamp.getBlockBoundsMaxX(), y + ModBlocks.luminousLamp.getBlockBoundsMaxY(), z + ModBlocks.luminousLamp.getBlockBoundsMaxZ()).expand(tick / 50, tick / 50, tick / 50).expand(0.05, 0.05, 0.05);
     	LaserCollisionBoxes.addLaserCollision(new LaserToRender(laser, panelOutline, x, y, z, panel.xCoord, panel.yCoord, panel.zCoord, 0, 0.7F));
 
     }
