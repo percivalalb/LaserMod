@@ -8,6 +8,12 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * @author ProPercivalalb
+ * Thanks to coolAlias for providing the tutorial 
+ * that contains most of this network handler code
+ * https://github.com/coolAlias/Tutorial-Demo
+ */
 public abstract class AbstractMessageHandler<T extends IMessage> implements IMessageHandler <T, IMessage> {
 	
 	@SideOnly(Side.CLIENT)

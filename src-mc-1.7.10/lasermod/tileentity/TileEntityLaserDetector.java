@@ -15,8 +15,6 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class TileEntityLaserDetector extends TileEntityLaserDevice implements ILaserReceiver {
 
-	
-	
 	@Override
 	public void updateEntity() {
 		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE != 0) return;

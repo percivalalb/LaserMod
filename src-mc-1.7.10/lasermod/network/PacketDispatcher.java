@@ -15,6 +15,12 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
+/**
+ * @author ProPercivalalb
+ * Thanks to coolAlias for providing the tutorial 
+ * that contains most of this network handler code
+ * https://github.com/coolAlias/Tutorial-Demo
+ */
 public class PacketDispatcher {
 	
 	private static byte packetId = 0;
