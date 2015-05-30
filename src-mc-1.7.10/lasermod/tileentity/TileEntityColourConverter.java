@@ -3,7 +3,6 @@ package lasermod.tileentity;
 import java.util.Arrays;
 import java.util.List;
 
-import lasermod.LaserMod;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;

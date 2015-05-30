@@ -2,14 +2,13 @@ package lasermod.laser;
 
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.LaserModAPI;
 import lasermod.util.BlockActionPos;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb

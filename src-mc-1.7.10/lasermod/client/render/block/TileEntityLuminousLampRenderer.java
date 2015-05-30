@@ -4,15 +4,10 @@ import lasermod.ModBlocks;
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserToRender;
-import lasermod.client.render.LaserRenderer;
-import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityLuminousLamp;
-import lasermod.util.LaserUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author ProPercivalalb

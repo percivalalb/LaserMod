@@ -3,9 +3,7 @@ package lasermod.block;
 import java.util.Random;
 
 import lasermod.LaserMod;
-import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;

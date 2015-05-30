@@ -1,16 +1,11 @@
 package lasermod;
-import net.minecraft.block.Block;
 import lasermod.item.ItemHandheldSensor;
 import lasermod.item.ItemLaserCrystal;
 import lasermod.item.ItemLaserSeekingGoogles;
 import lasermod.item.ItemScrewdriver;
 import lasermod.item.ItemUpgrades;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.item.crafting.ShapedRecipes;;
 
 /**
  * @author ProPercivalalb

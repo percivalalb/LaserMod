@@ -2,21 +2,14 @@ package lasermod.util;
 
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserModAPI;
-import lasermod.compat.forgemultipart.ForgeMultipartCompat;
-import lasermod.compat.forgemultipart.SmallColourConverterPart;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**

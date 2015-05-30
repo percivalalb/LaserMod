@@ -2,8 +2,6 @@ package lasermod.api;
 
 import java.util.ArrayList;
 
-import net.minecraft.util.AxisAlignedBB;
-
 /**
  * @author ProPercivalalb
  */

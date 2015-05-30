@@ -2,13 +2,13 @@ package lasermod.laser;
 
 import java.util.List;
 
+import lasermod.api.ILaser;
+import lasermod.util.BlockActionPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
-import lasermod.api.ILaser;
-import lasermod.util.BlockActionPos;
 
 /**
  * @author ProPercivalalb

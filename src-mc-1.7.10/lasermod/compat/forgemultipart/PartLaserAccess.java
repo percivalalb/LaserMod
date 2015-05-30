@@ -6,7 +6,6 @@ import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import codechicken.multipart.minecraft.IPartMeta;
 import codechicken.multipart.minecraft.PartMetaAccess;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb

@@ -6,16 +6,12 @@ import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserToRender;
 import lasermod.client.render.LaserRenderer;
-import lasermod.util.LaserUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**

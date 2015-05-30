@@ -2,11 +2,11 @@ package lasermod.laser;
 
 import java.util.List;
 
+import lasermod.api.ILaser;
+import lasermod.util.BlockActionPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import lasermod.api.ILaser;
-import lasermod.util.BlockActionPos;
 
 /**
  * @author ProPercivalalb

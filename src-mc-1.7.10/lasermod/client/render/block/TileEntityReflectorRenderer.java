@@ -1,11 +1,9 @@
 package lasermod.client.render.block;
 
-import lasermod.api.ILaser;
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserToRender;
 import lasermod.client.model.block.ModelReflector;
-import lasermod.client.render.LaserRenderer;
 import lasermod.helper.ClientHelper;
 import lasermod.lib.ResourceReference;
 import lasermod.tileentity.TileEntityReflector;
@@ -15,8 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb

@@ -3,14 +3,11 @@ package lasermod.block;
 import java.util.Random;
 
 import lasermod.LaserMod;
-import lasermod.ModBlocks;
 import lasermod.ModItems;
 import lasermod.api.ILaser;
-import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ReflectorMessage;
-import lasermod.proxy.CommonProxy;
 import lasermod.tileentity.TileEntityReflector;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
@@ -19,11 +16,9 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

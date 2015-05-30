@@ -1,15 +1,13 @@
 package lasermod.util;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.compat.forgemultipart.ForgeMultipartCompat;
 import lasermod.tileentity.TileEntitySmallColourConverter;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.Loader;
 
 public class BlockActionPos {
 

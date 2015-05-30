@@ -3,12 +3,12 @@ package lasermod.tileentity;
 import java.util.Arrays;
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.util.LaserUtil;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb

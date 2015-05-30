@@ -1,12 +1,9 @@
 package lasermod.compat.forgemultipart;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Facing;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
+import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**

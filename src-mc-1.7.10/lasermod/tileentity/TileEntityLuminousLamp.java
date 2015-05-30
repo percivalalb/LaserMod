@@ -1,13 +1,9 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import cpw.mods.fml.common.FMLLog;
-import lasermod.LaserMod;
-import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
@@ -15,7 +11,6 @@ import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.LuminousLampMessage;
 import lasermod.util.LaserUtil;
 import net.minecraft.network.Packet;
-import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 
 /**

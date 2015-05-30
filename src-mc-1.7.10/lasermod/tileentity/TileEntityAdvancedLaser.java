@@ -1,27 +1,22 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
-import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.util.LaserUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

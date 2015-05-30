@@ -4,7 +4,6 @@ import java.util.Random;
 
 import lasermod.LaserMod;
 import lasermod.api.ILaser;
-import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ColourConverterMessage;
