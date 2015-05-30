@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import lasermod.ModItems;
-import lasermod.lib.PacketLib;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
