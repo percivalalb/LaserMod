@@ -9,7 +9,8 @@ import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
-import lasermod.network.packet.PacketAdvancedLaser;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.util.LaserUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -70,7 +71,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public Packet getDescriptionPacket() {
-	    return new PacketAdvancedLaser(this).getPacket();
+	    return PacketDispatcher.getPacket(new AdvancedLaserMessage(this));
 	}
 	
 	@Override

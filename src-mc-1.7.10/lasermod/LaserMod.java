@@ -5,7 +5,7 @@ import lasermod.api.LaserRegistry;
 import lasermod.compat.forgemultipart.ForgeMultipartCompat;
 import lasermod.laser.*;
 import lasermod.lib.Reference;
-import lasermod.network.NetworkManager;
+import lasermod.network.PacketDispatcher;
 import lasermod.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -37,8 +37,6 @@ public class LaserMod {
 	@SidedProxy(clientSide = Reference.SP_CLIENT, serverSide = Reference.SP_SERVER)
     public static CommonProxy proxy;
 	
-	public static NetworkManager NETWORK_MANAGER;
-	
 	/** Laser Mod Creative tab **/
 	public static CreativeTabs tabLaser = new CreativeTabs("tabLaser") {
 		@Override
@@ -50,18 +48,16 @@ public class LaserMod {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		
 		ModBlocks.init();
 		ModItems.init();
 		ModEntities.init();
 		
 		proxy.onPreLoad();
-		
+		PacketDispatcher.registerPackets();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		NETWORK_MANAGER = new NetworkManager();
     	NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
     	if(Loader.isModLoaded("ForgeMultipart")) {
 			try {

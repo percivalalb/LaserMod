@@ -24,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * @author ProPercivalalb
@@ -43,8 +44,8 @@ public class ClientProxy extends CommonProxy {
 	
 
 	@Override
-	public EntityPlayer getClientPlayer() {
-		return FMLClientHandler.instance().getClientPlayerEntity();
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntity(ctx));
 	}
 	
 	@Override

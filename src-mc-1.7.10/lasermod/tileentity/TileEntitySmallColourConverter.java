@@ -8,8 +8,8 @@ import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.network.packet.PacketColourConverter;
-import lasermod.network.packet.PacketSmallColourConverter;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.SmallColourConverterMessage;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
@@ -35,7 +35,7 @@ public class TileEntitySmallColourConverter extends TileEntityLaserDevice implem
 		
 			if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
 				this.setLaser(null);
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketSmallColourConverter(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 			}
 			
 			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.smallColourConverter, 4);
@@ -78,7 +78,7 @@ public class TileEntitySmallColourConverter extends TileEntityLaserDevice implem
 	
 	@Override
 	public Packet getDescriptionPacket() {
-	    return new PacketSmallColourConverter(this).getPacket();
+	    return PacketDispatcher.getPacket(new SmallColourConverterMessage(this));
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class TileEntitySmallColourConverter extends TileEntityLaserDevice implem
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		if(this.getOutputLaser(side) == null) {
 			this.setLaser(laserInGame);
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketSmallColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.smallColourConverter, 4);
 		}
 	}
@@ -125,7 +125,7 @@ public class TileEntitySmallColourConverter extends TileEntityLaserDevice implem
 			boolean change = this.laser != null;
 			this.setLaser(null);
 			if(change) {
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketSmallColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 				world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.smallColourConverter, 4);
 			}
 		}

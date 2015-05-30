@@ -9,8 +9,8 @@ import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.client.gui.GuiAdvancedLaser;
-import lasermod.network.packet.PacketAdvancedLaser;
-import lasermod.network.packet.PacketColourConverter;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.util.BlockActionPos;
@@ -190,7 +190,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				if(!world.isRemote)
-					LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketAdvancedLaser(advancedLaser), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+					PacketDispatcher.sendToAllAround(new AdvancedLaserMessage(advancedLaser), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 				
 				return true;
 			}

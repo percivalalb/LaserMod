@@ -8,7 +8,8 @@ import lasermod.ModItems;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.network.packet.PacketReflector;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.ReflectorMessage;
 import lasermod.proxy.CommonProxy;
 import lasermod.tileentity.TileEntityReflector;
 import lasermod.util.BlockActionPos;
@@ -67,9 +68,7 @@ public class BlockReflector extends BlockContainer {
 			if(reflector.closedSides[side])
 				reflector.removeAllLasersFromSide(side);
 			
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
-			
-			
+			PacketDispatcher.sendToAllAround(new ReflectorMessage(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 			return true;
 		}
         return false;

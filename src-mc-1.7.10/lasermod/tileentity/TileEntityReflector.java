@@ -10,7 +10,8 @@ import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.network.packet.PacketReflector;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.ReflectorMessage;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +47,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 					}
 			}
 			if(change)
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 			
 			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
 		}
@@ -90,7 +91,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 
 	@Override
 	public Packet getDescriptionPacket() {
-	    return new PacketReflector(this).getPacket();
+	    return PacketDispatcher.getPacket(new ReflectorMessage(this));
 	}
 	
 	public boolean addLaser(LaserInGame laserInGame, int side) {
@@ -215,7 +216,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	@Override
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		this.addLaser(laserInGame, side);
-		LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+		PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
 	}
 
@@ -225,7 +226,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		boolean flag = this.removeAllLasersFromSide(side);
 		
 		if(flag) {
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketReflector(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 4);
 		}
 	}

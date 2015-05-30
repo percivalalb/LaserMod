@@ -11,7 +11,6 @@ import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.client.render.block.TileEntitySmallColourConverterRenderer;
-import lasermod.network.packet.PacketSmallColourConverter;
 import lasermod.tileentity.TileEntitySmallColourConverter;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;

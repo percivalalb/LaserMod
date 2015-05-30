@@ -13,8 +13,8 @@ import lasermod.LaserMod;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.network.packet.PacketColourConverter;
-import lasermod.network.packet.PacketSmallColourConverter;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.SmallColourConverterMessage;
 import lasermod.tileentity.TileEntitySmallColourConverter;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
@@ -242,7 +242,7 @@ public class BlockSmallColourConverter extends BlockContainer {
 				if(item.stackSize <= 0)
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketSmallColourConverter(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 				
 				return true;
 			}

@@ -6,7 +6,8 @@ import lasermod.LaserMod;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.network.packet.PacketColourConverter;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.ColourConverterMessage;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
@@ -165,7 +166,7 @@ public class BlockColourConverter extends BlockContainer {
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				FMLLog.info("interact");
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new ColourConverterMessage(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
 				
 				return true;
 			}

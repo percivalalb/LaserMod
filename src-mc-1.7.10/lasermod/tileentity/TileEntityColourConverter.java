@@ -8,7 +8,8 @@ import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.network.packet.PacketColourConverter;
+import lasermod.network.PacketDispatcher;
+import lasermod.network.packet.client.ColourConverterMessage;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
@@ -33,7 +34,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		
 			if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
 				this.setLaser(null);
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 			}
 			
 			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
@@ -71,7 +72,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	
 	@Override
 	public Packet getDescriptionPacket() {
-	    return new PacketColourConverter(this).getPacket();
+	    return PacketDispatcher.getPacket(new ColourConverterMessage(this));
 	}
 	
 	@Override
@@ -107,7 +108,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		if(this.getOutputLaser(side) == null) {
 			this.setLaser(laserInGame);
-			LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 		}
 	}
@@ -118,7 +119,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 			boolean change = this.laser != null;
 			this.setLaser(null);
 			if(change) {
-				LaserMod.NETWORK_MANAGER.sendPacketToAllAround(new PacketColourConverter(this), world.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
 				world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 			}
 		}

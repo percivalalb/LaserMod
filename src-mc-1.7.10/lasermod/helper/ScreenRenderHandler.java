@@ -53,37 +53,23 @@ public class ScreenRenderHandler {
 		EntityPlayer player = ClientHelper.getPlayer();
 		World world = player.worldObj;
 		ItemStack stack = ClientHelper.mc.thePlayer.getHeldItem();
+		
 		if(event.type == RenderGameOverlayEvent.ElementType.HELMET && stack != null && stack.getItem() == ModItems.handheldSensor) {
-			double lookDistance = ClientHelper.mc.playerController.getBlockReachDistance();
 			
-	        MovingObjectPosition mop = ClientHelper.mc.renderViewEntity.rayTrace(lookDistance, event.partialTicks);
-		   
+			double reach = ClientHelper.mc.playerController.getBlockReachDistance();
 			
-	        double d1 = lookDistance;
+	        MovingObjectPosition mop = ClientHelper.mc.renderViewEntity.rayTrace(reach, event.partialTicks);
+
 	        Vec3 posVec = ClientHelper.mc.renderViewEntity.getPosition(event.partialTicks);
 
-            if (ClientHelper.mc.playerController.extendedReach()) {
-            	lookDistance = 6.0D;
-                d1 = 6.0D;
-            }
-            else {
-                if (lookDistance > 3.0D) {
-                    d1 = 3.0D;
-                }
-
-                lookDistance = d1;
-            }
-
 			if(mop != null)
-				d1 = mop.hitVec.distanceTo(posVec);
+				reach = mop.hitVec.distanceTo(posVec);
 			
 	        Vec3 lookVec = ClientHelper.mc.renderViewEntity.getLook(event.partialTicks);
-	        Vec3 combinedVec = posVec.addVector(lookVec.xCoord * lookDistance, lookVec.yCoord * lookDistance, lookVec.zCoord * lookDistance);
+	        Vec3 combinedVec = posVec.addVector(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
 			
 	        Vec3 finalVec = null;
-            float f1 = 1.0F;
-           
-            double d2 = d1;
+
 
             int lookingAtIndex = -1;
             for (int i = 0; i < LaserCollisionBoxes.lasers2.size(); ++i) {
@@ -92,20 +78,19 @@ public class ScreenRenderHandler {
             	
                 MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(posVec, combinedVec);
                 if (axisalignedbb.isVecInside(posVec)) {
-                    if (0.0D < d2 || d2 == 0.0D) {
-                    	
+                    if (0.0D < reach || reach == 0.0D) {
                     	lookingAtIndex = i;
                         finalVec = movingobjectposition == null ? posVec : movingobjectposition.hitVec;
-                        d2 = 0.0D;
+                        reach = 0.0D;
                     }
                 }
                 else if (movingobjectposition != null) {
                     double d3 = posVec.distanceTo(movingobjectposition.hitVec);
 
-                    if (d3 < d2 || d2 == 0.0D) {
+                    if (d3 < reach || reach == 0.0D) {
                     	lookingAtIndex = i;
                         finalVec = movingobjectposition.hitVec;
-                        d2 = d3;
+                        reach = d3;
                     }
                 }
            
@@ -137,6 +122,7 @@ public class ScreenRenderHandler {
              		
             		ILaserReceiver reciver = action.getLaserReceiver(-1);
             		for(LaserInGame laser : reciver.getInputLasers()) {
+            			if(laser == null) continue;
             			Color colour = new Color(laser.red, laser.green, laser.blue);
             			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB(), 400.0D);
             			list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
