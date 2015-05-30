@@ -159,7 +159,15 @@ public class LaserInGame {
 	public boolean equals(Object obj) {
 		if(obj instanceof LaserInGame) {
 			LaserInGame laser = (LaserInGame)obj;
-			return this.red == laser.red && this.green == laser.green && this.blue == laser.blue; //TODO && this.laserType.equals(laser.laserType);
+			boolean laserTypeEqual = true;
+			if(laser.laserCount() != this.laserCount())
+				laserTypeEqual = false;
+			else
+				for(int i = 0; i < this.laserCount(); i++)
+					if(!laser.laserType.contains(this.laserType.get(i)))
+						laserTypeEqual = false;
+					
+			return this.red == laser.red && this.green == laser.green && this.blue == laser.blue && laserTypeEqual;
 		}
 		return false;
 		
