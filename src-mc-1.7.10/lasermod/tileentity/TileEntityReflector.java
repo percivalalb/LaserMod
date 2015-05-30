@@ -9,6 +9,7 @@ import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
+import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ReflectorMessage;
 import lasermod.util.BlockActionPos;
@@ -30,31 +31,27 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	
 	@Override
-	public void updateEntity() {
-		
-		if(!this.worldObj.isRemote && this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0) {
+	public void updateLasers(boolean client) {
+
+		boolean change = false;
 			
-			boolean change = false;
-			
-			if(this.lasers != null && this.lasers.size() > 0) {
-				for(int i = 0; i < this.closedSides.length; ++i)
-					if(!this.closedSides[i] && this.containsInputSide(i) && !LaserUtil.isValidSourceOfPowerOnSide(this, i)) {
-						if(this.removeAllLasersFromSide(i))
-							change = true;
-					}
-			}
-			if(change)
-				PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
-			
-			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
+		if(this.lasers != null && this.lasers.size() > 0) {
+			for(int i = 0; i < this.closedSides.length; ++i)
+				if(!this.closedSides[i] && this.containsInputSide(i) && !LaserUtil.isValidSourceOfPowerOnSide(this, i)) {
+					if(this.removeAllLasersFromSide(i))
+						change = true;
+				}
 		}
-		
-		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0) {
-			for(int i = 0; i < this.closedSides.length; ++i) {
-				if(this.closedSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
-					continue;
-				LaserUtil.performLaserAction(this, i, this.xCoord, this.yCoord, this.zCoord);
-			}
+			
+		if(change)
+			PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
+			
+		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
+
+		for(int i = 0; i < this.closedSides.length; ++i) {
+			if(this.closedSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
+				continue;
+			LaserUtil.performLaserAction(this, i, this.xCoord, this.yCoord, this.zCoord);
 		}
 	}
 	
@@ -213,7 +210,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	@Override
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		this.addLaser(laserInGame, side);
-		PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+		PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
 		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
 	}
 
@@ -223,7 +220,7 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		boolean flag = this.removeAllLasersFromSide(side);
 		
 		if(flag) {
-			PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
 			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 4);
 		}
 	}

@@ -4,12 +4,15 @@ import java.util.Random;
 
 import lasermod.LaserMod;
 import lasermod.tileentity.TileEntityLaserDetector;
+import lasermod.tileentity.TileEntitySmallColourConverter;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,11 +41,10 @@ public class BlockLaserDetector extends BlockContainer {
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-		if(meta == 0)
-			return this.stateOff;
-        return this.blockIcon;
+	@SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+		TileEntityLaserDetector detector = (TileEntityLaserDetector)world.getTileEntity(x, y, z);
+		return detector.noLaserInputs() ? this.stateOff : this.blockIcon;
     }
 	
 	@Override
@@ -111,6 +113,7 @@ public class BlockLaserDetector extends BlockContainer {
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-	    return world.getBlockMetadata(x, y, z) != 0 ? 15 : 0;
+		TileEntityLaserDetector detector = (TileEntityLaserDetector)world.getTileEntity(x, y, z);
+	    return detector.noLaserInputs() ? 0 : 15;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import lasermod.api.LaserInGame;
 import lasermod.network.AbstractClientMessageHandler;
+import lasermod.tileentity.TileEntityLaserDetector;
 import lasermod.tileentity.TileEntityLuminousLamp;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -18,17 +19,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-public class LuminousLampMessage implements IMessage {
+public class LaserDetectorMessage implements IMessage {
 	
 	public int x, y, z;
 	public ArrayList<LaserInGame> lasers;
 	
-	public LuminousLampMessage() {}
-	public LuminousLampMessage(TileEntityLuminousLamp luminousPanel) {
-	    this.x = luminousPanel.xCoord;
-	    this.y = luminousPanel.yCoord;
-	    this.z = luminousPanel.zCoord;
-	    this.lasers = luminousPanel.lasers;
+	public LaserDetectorMessage() {}
+	public LaserDetectorMessage(TileEntityLaserDetector detector) {
+	    this.x = detector.xCoord;
+	    this.y = detector.yCoord;
+	    this.z = detector.zCoord;
+	    this.lasers = detector.lasers;
 	}
 	
 	@Override
@@ -55,17 +56,18 @@ public class LuminousLampMessage implements IMessage {
 			this.lasers.get(i).writeToPacket(buffer);
 	}
 	
-	public static class Handler extends AbstractClientMessageHandler<LuminousLampMessage> {
+	public static class Handler extends AbstractClientMessageHandler<LaserDetectorMessage> {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage handleClientMessage(EntityPlayer player, LuminousLampMessage message, MessageContext ctx) {
+		public IMessage handleClientMessage(EntityPlayer player, LaserDetectorMessage message, MessageContext ctx) {
 			World world = player.worldObj;
 			TileEntity tileEntity = world.getTileEntity(message.x, message.y, message.z);
 			
-			if(!(tileEntity instanceof TileEntityLuminousLamp)) 
+			if(!(tileEntity instanceof TileEntityLaserDetector)) 
 				return null;
-			TileEntityLuminousLamp colourConverter = (TileEntityLuminousLamp)tileEntity;
+			
+			TileEntityLaserDetector colourConverter = (TileEntityLaserDetector)tileEntity;
 			colourConverter.lasers = message.lasers;
 			colourConverter.setUpdateRequired();
 			world.markBlockForUpdate(message.x, message.y, message.z);

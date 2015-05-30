@@ -3,6 +3,7 @@ package lasermod.block;
 import java.util.Random;
 
 import lasermod.LaserMod;
+import lasermod.tileentity.TileEntityLaserDetector;
 import lasermod.tileentity.TileEntityLuminousLamp;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -37,11 +38,16 @@ public class BlockLuminousLamp extends BlockContainer {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+		TileEntityLuminousLamp luminousLamp = (TileEntityLuminousLamp)world.getTileEntity(x, y, z);
+		return luminousLamp.noLaserInputs() ? this.stateOff : this.blockIcon;
+    }
+	
+	@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-		if(meta == 0)
-			return this.stateOff;
-        return this.blockIcon;
+		return this.stateOff;
     }
 	
 	@Override
@@ -68,7 +74,7 @@ public class BlockLuminousLamp extends BlockContainer {
 	public int getLightValue(IBlockAccess world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
 		TileEntityLuminousLamp panel = (TileEntityLuminousLamp)world.getTileEntity(x, y, z);
-		if(meta == 1) {
+		if(!panel.noLaserInputs()) {
 			return 15;
 		}
 		return 0;

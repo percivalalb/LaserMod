@@ -165,7 +165,7 @@ public class BlockColourConverter extends BlockContainer {
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				FMLLog.info("interact");
-				PacketDispatcher.sendToAllAround(new ColourConverterMessage(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new ColourConverterMessage(colourConverter), colourConverter, 512);
 				
 				return true;
 			}

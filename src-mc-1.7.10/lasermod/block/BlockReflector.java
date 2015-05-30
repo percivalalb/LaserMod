@@ -63,7 +63,7 @@ public class BlockReflector extends BlockContainer {
 			if(reflector.closedSides[side])
 				reflector.removeAllLasersFromSide(side);
 			
-			PacketDispatcher.sendToAllAround(new ReflectorMessage(reflector), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+			PacketDispatcher.sendToAllAround(new ReflectorMessage(reflector), reflector, 512);
 			return true;
 		}
         return false;

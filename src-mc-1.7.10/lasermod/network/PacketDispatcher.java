@@ -3,17 +3,23 @@ package lasermod.network;
 import lasermod.lib.Reference;
 import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.network.packet.client.ColourConverterMessage;
+import lasermod.network.packet.client.LaserDetectorMessage;
 import lasermod.network.packet.client.LuminousLampMessage;
 import lasermod.network.packet.client.ReflectorMessage;
 import lasermod.network.packet.client.SmallColourConverterMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.chunk.Chunk;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.server.FMLServerHandler;
 
 /**
  * @author ProPercivalalb
@@ -23,13 +29,14 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class PacketDispatcher {
 	
-	private static byte packetId = 0;
+	private static int packetId = 0;
 
 	private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
 
 	public static final void registerPackets() {
 		registerMessage(AdvancedLaserMessage.Handler.class, AdvancedLaserMessage.class);
 		registerMessage(ColourConverterMessage.Handler.class, ColourConverterMessage.class);
+		registerMessage(LaserDetectorMessage.Handler.class, LaserDetectorMessage.class);
 		registerMessage(LuminousLampMessage.Handler.class, LuminousLampMessage.class);
 		registerMessage(ReflectorMessage.Handler.class, ReflectorMessage.class);
 		registerMessage(SmallColourConverterMessage.Handler.class, SmallColourConverterMessage.class);
@@ -69,6 +76,10 @@ public class PacketDispatcher {
 
 	public static final void sendToAllAround(IMessage message, EntityPlayer player, double range) {
 		PacketDispatcher.sendToAllAround(message, player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, range);
+	}
+	
+	public static final void sendToAllAround(IMessage message, TileEntity tileEntity, double range) {
+		PacketDispatcher.sendToAllAround(message, tileEntity.getWorldObj().provider.dimensionId, tileEntity.xCoord + 0.5D, tileEntity.yCoord + 0.5D, tileEntity.zCoord + 0.5D, range);
 	}
 
 	public static final void sendToDimension(IMessage message, int dimensionId) {

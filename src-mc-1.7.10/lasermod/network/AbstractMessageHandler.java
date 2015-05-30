@@ -24,8 +24,8 @@ public abstract class AbstractMessageHandler<T extends IMessage> implements IMes
 	@Override
 	public IMessage onMessage(T message, MessageContext ctx) {
 		if(ctx.side.isClient())
-			return handleClientMessage(LaserMod.proxy.getPlayerEntity(ctx), message, ctx);
+			return this.handleClientMessage(LaserMod.proxy.getPlayerEntity(ctx), message, ctx);
 		else
-			return handleServerMessage(LaserMod.proxy.getPlayerEntity(ctx), message, ctx);
+			return this.handleServerMessage(LaserMod.proxy.getPlayerEntity(ctx), message, ctx);
 	}
 }

@@ -7,6 +7,7 @@ import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
+import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ColourConverterMessage;
 import lasermod.util.LaserUtil;
@@ -27,27 +28,21 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	public int colour = 14;
 	
 	@Override
-	public void updateEntity() {
+	public void updateLasers(boolean client) {
 
-		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0)  {
-		
-			if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
-				this.setLaser(null);
-				PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
-			}
+		if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
+			this.setLaser(null);
+			PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
+		}
 			
-			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
-		}
+		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 		
-		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0) {
-			if(this.laser != null)
-				LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
-		}
+		if(this.laser != null)
+			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public void setLaser(LaserInGame laser) {
 		this.laser = laser;
-		this.setNeedsUpdate();
 	}
 	
 	@Override
@@ -107,7 +102,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
 		if(this.getOutputLaser(side) == null) {
 			this.setLaser(laserInGame);
-			PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+			PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
 			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 		}
 	}
@@ -118,7 +113,7 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 			boolean change = this.laser != null;
 			this.setLaser(null);
 			if(change) {
-				PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this.worldObj.provider.dimensionId, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
 				world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
 			}
 		}

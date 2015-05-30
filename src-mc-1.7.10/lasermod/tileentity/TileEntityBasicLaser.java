@@ -3,6 +3,7 @@ package lasermod.tileentity;
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
+import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.util.LaserUtil;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
@@ -16,9 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILaserProvider {
 
 	@Override
-	public void updateEntity() {
-		
-		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE != 0) return;
+	public void updateLasers(boolean client) {
 		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.basicLaser, 0);
 	}
 	

@@ -238,7 +238,7 @@ public class BlockSmallColourConverter extends BlockContainer {
 				if(item.stackSize <= 0)
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
-				PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(colourConverter), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+				PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(colourConverter), colourConverter, 512);
 				
 				return true;
 			}

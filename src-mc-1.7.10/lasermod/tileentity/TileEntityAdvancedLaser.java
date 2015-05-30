@@ -7,6 +7,7 @@ import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
+import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.util.LaserUtil;
@@ -28,18 +29,13 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	public ArrayList<ItemStack> upgrades = new ArrayList<ItemStack>();
 	
 	@Override
-	public void updateEntity() {
+	public void updateLasers(boolean client) {
+		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.advancedLaser, 0);
 
-		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0) {
-			this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.advancedLaser, 0);
-		}
-		if(this.getWorldObj().getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0) {
-	
-			boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
+		boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
 		
-			if(hasSignal)
-				LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
-		}
+		if(hasSignal)
+			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	@Override

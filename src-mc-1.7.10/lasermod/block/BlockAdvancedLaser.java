@@ -185,7 +185,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 					player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				if(!world.isRemote)
-					PacketDispatcher.sendToAllAround(new AdvancedLaserMessage(advancedLaser), world.provider.dimensionId, x + 0.5D, y + 0.5D, z + 0.5D, 512);
+					PacketDispatcher.sendToAllAround(new AdvancedLaserMessage(advancedLaser), advancedLaser, 512);
 				
 				return true;
 			}
