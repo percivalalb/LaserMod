@@ -1,8 +1,9 @@
 package lasermod.network.packet.client;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 
-import io.netty.buffer.ByteBuf;
 import lasermod.network.AbstractClientMessageHandler;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import net.minecraft.entity.player.EntityPlayer;

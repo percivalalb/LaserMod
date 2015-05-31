@@ -8,7 +8,6 @@ import lasermod.tileentity.TileEntityLuminousLamp;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author ProPercivalalb

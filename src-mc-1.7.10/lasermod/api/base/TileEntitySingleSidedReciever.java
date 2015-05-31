@@ -1,19 +1,14 @@
 package lasermod.api.base;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import net.minecraft.util.Facing;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import lasermod.ModBlocks;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.network.PacketDispatcher;
-import lasermod.network.packet.client.SmallColourConverterMessage;
 import lasermod.util.LaserUtil;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevice implements ILaserReceiver {
 

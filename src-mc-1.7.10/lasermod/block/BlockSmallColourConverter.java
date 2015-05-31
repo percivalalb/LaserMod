@@ -6,18 +6,11 @@ import static net.minecraftforge.common.util.ForgeDirection.NORTH;
 import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
-
-import java.util.Random;
-
 import lasermod.LaserMod;
-import lasermod.api.ILaser;
-import lasermod.api.LaserInGame;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.SmallColourConverterMessage;
 import lasermod.tileentity.TileEntitySmallColourConverter;
-import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;

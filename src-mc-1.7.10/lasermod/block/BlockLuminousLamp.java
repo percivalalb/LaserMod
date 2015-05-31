@@ -1,11 +1,7 @@
 package lasermod.block;
 
-import java.util.Random;
-
 import lasermod.LaserMod;
-import lasermod.tileentity.TileEntityLaserDetector;
 import lasermod.tileentity.TileEntityLuminousLamp;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;

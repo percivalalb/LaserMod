@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import lasermod.api.LaserInGame;
 import lasermod.network.AbstractClientMessageHandler;
 import lasermod.tileentity.TileEntityLaserDetector;
-import lasermod.tileentity.TileEntityLuminousLamp;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

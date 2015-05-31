@@ -7,12 +7,8 @@ import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
 import lasermod.api.base.TileEntityLaserDevice;
-import lasermod.util.LaserUtil;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
