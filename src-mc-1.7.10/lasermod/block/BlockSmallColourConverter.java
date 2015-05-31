@@ -127,23 +127,6 @@ public class BlockSmallColourConverter extends BlockContainer {
 	}
 	
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-        if (!world.isRemote) {
-        	TileEntitySmallColourConverter colourconverter = (TileEntitySmallColourConverter)world.getTileEntity(x, y, z);
-    		BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
-    		if(reciver != null && reciver.isLaserReceiver(colourconverter.getBlockMetadata())) {
-    			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
-            	if(colourconverter.laser == null) {
-            		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
-            	}
-            	else if(reciver.getLaserReceiver(colourconverter.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-            		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
-    			}
-    		}
-        }
-    }
-	
-	@Override
 	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
         ForgeDirection dir = ForgeDirection.getOrientation(side);
         return (dir == NORTH && world.isSideSolid(x, y, z + 1, NORTH)) ||
@@ -168,52 +151,6 @@ public class BlockSmallColourConverter extends BlockContainer {
 	public boolean canBlockStay(World world, int x, int y, int z) {
         return this.canPlaceBlockOnSide(world, x, y, z, world.getBlockMetadata(x, y, z));
     }
-
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
-		if (!world.isRemote) {
-			TileEntitySmallColourConverter colourconverter = (TileEntitySmallColourConverter)world.getTileEntity(x, y, z);
-			BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
-			if(reciver != null && reciver.isLaserReceiver(colourconverter.getBlockMetadata())) {
-				LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
-	        	if(colourconverter.laser == null) {
-	        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
-	        	}
-	        	else if(reciver.getLaserReceiver(colourconverter.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-	        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
-				}
-			}
-        }
-		
-		if(!this.canBlockStay(world, x, y, z)) {
-			this.dropBlockAsItem(world, x, y, z, 0, 0);
-			world.setBlockToAir(x, y, z);
-        }
-    }
-
-	@Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-		TileEntitySmallColourConverter colourconverter = (TileEntitySmallColourConverter)world.getTileEntity(x, y, z);
-		BlockActionPos reciver = LaserUtil.getFirstBlock(colourconverter, colourconverter.getBlockMetadata());
-		if(reciver != null && reciver.isLaserReceiver(colourconverter.getBlockMetadata())) {
-			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
-        	if(laserInGame == null) {
-        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()]);
-        	}
-        	else if(reciver.getLaserReceiver(colourconverter.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame)) {
-        		reciver.getLaserReceiver(colourconverter.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[colourconverter.getBlockMetadata()], laserInGame);
-			}
-		}
-		else if(reciver != null) {
-			LaserInGame laserInGame = colourconverter.getOutputLaser(colourconverter.getBlockMetadata());
-			
-			if(laserInGame != null) {
-				for(ILaser laser : laserInGame.getLaserType()) {
-					laser.actionOnBlock(reciver);
-				}
-			}
-		}
-	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {

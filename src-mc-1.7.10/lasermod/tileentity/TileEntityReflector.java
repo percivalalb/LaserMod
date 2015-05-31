@@ -23,6 +23,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -37,25 +38,28 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	public void updateLasers(boolean client) {
 		super.updateLasers(client);
 		
-		for(int i = 0; i < this.closedSides.length; ++i) {
-			if(this.closedSides[i] || this.containsInputSide(i) || this.noLaserInputs())
-				continue;
-			
-			BlockActionPos action = LaserUtil.getFirstBlock(this, i);
-			if(action != null && action.isLaserReceiver(i)) {
-				LaserInGame laserInGame = this.getOutputLaser(i);
-				ILaserReceiver receiver = action.getLaserReceiver(i);
-			  	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i], laserInGame))
-			  		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i], laserInGame);
+		if(!client) {
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+				
+				
+				if(this.closedSides[dir.ordinal()] && this.containsInputSide(dir.ordinal()) && this.noLaserInputs())
+					continue;
+				BlockActionPos action = LaserUtil.getFirstBlock(this, dir.ordinal());
+				if(action != null && action.isLaserReceiver(dir.ordinal())) {
+					LaserInGame laserInGame = this.getOutputLaser(dir.ordinal());
+					ILaserReceiver receiver = action.getLaserReceiver(dir.ordinal());
+				  	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir.getOpposite().ordinal(), laserInGame))
+				  		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir.getOpposite().ordinal(), laserInGame);
+				}
+				else if(action != null) {
+	    			LaserInGame laserInGame = this.getOutputLaser(dir.ordinal());
+	    			
+	    			if(laserInGame != null)
+		    			for(ILaser laser : laserInGame.getLaserType())
+		    				laser.actionOnBlock(action);
+	    		}
 			}
-			else if(action != null) {
-    			LaserInGame laserInGame = this.getOutputLaser(i);
-    			
-    			for(ILaser laser : laserInGame.getLaserType())
-    				laser.actionOnBlock(action);
-    		}
 		}
-		
 	}
 	
 	@Override

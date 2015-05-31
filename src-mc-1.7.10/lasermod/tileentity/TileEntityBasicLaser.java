@@ -60,8 +60,9 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	public boolean isForgeMultipart() {
 		return false;
 	}
+	
 	@Override
 	public List<LaserInGame> getOutputLasers() {
-		return Arrays.asList();
+		return Arrays.asList(this.getOutputLaser(this.getBlockMetadata()));
 	}
 }

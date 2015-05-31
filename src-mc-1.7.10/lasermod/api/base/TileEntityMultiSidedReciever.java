@@ -133,17 +133,17 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 	public boolean addLaser(LaserInGame laserInGame, int side) {
 		int i = this.getIndexOfLaserSide(side);
 		if(i == -1)
-			lasers.add(laserInGame);
+			this.lasers.add(laserInGame);
 		else
-			lasers.set(i, laserInGame);
+			this.lasers.set(i, laserInGame);
 		return true;
 	}
 	
 	public boolean removeAllLasersFromSide(int side) {
 		boolean change = false;
 		for(int i = 0; i < lasers.size(); ++i) {
-			if(lasers.get(i).getSide() == side) {
-				lasers.remove(i);
+			if(this.lasers.get(i).getSide() == side) {
+				this.lasers.remove(i);
 				change = true;
 			}
 		}

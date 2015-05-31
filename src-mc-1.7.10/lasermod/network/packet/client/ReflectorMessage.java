@@ -59,7 +59,6 @@ public class ReflectorMessage implements IMessage {
 		for(int i = 0; i < 6; ++i)
 			buffer.writeBoolean(this.closedSides[i]);
 		
-		
 		buffer.writeInt(this.lasers.size());
 		
 		for(int i = 0; i < this.lasers.size(); ++i) 

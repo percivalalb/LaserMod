@@ -4,38 +4,54 @@ import java.util.Arrays;
 import java.util.List;
 
 import lasermod.ModBlocks;
+import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.base.TileEntityLaserDevice;
+import lasermod.api.base.TileEntitySingleSidedReciever;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ColourConverterMessage;
+import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
-public class TileEntityColourConverter extends TileEntityLaserDevice implements ILaserProvider, ILaserReceiver {
-	
-	public LaserInGame laser;
+public class TileEntityColourConverter extends TileEntitySingleSidedReciever implements ILaserProvider {
+
+	public boolean multipart = false;
 	public int colour = 14;
 	
 	@Override
 	public void updateLasers(boolean client) {
-
-		if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[this.getBlockMetadata()])) {
-			this.setLaser(null);
-			PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
-		}
+		super.updateLasers(client);
 			
-		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
+		BlockActionPos action = LaserUtil.getFirstBlock(this, this.getInputSide().getOpposite().ordinal());
+		if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite().ordinal())) {
+			LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite().ordinal());
+			ILaserReceiver receiver = action.getLaserReceiver(this.getInputSide().getOpposite().ordinal());
+        	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getInputSide().ordinal(), laserInGame)) {
+        		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getInputSide().ordinal(), laserInGame);
+			}
+		}
+		else if(action != null) {
+			LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite().ordinal());
+			
+			if(laserInGame != null) {
+				for(ILaser laser : laserInGame.getLaserType()) {
+					laser.actionOnBlock(action);
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -43,9 +59,10 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		if(this.laser != null)
 			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
 	}
-	
-	public void setLaser(LaserInGame laser) {
-		this.laser = laser;
+
+	public TileEntityColourConverter setColour(int colour) {
+		this.colour = colour;
+		return this;
 	}
 	
 	@Override
@@ -75,76 +92,56 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	@Override
 	public LaserInGame getOutputLaser(int side) {
 		if(this.laser != null) {
-			this.laser.setSide(Facing.oppositeSide[side]);
-			this.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
-			this.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
-			this.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
-			return this.laser.copy();
+			LaserInGame outputLaser = this.laser.copy();
+			outputLaser.setSide(Facing.oppositeSide[side]);
+			outputLaser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
+			outputLaser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
+			outputLaser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
+			return outputLaser;
 		}
 		return null;
 	}
-	
-	@Override
-	public int getX() { return this.xCoord; }
-	@Override
-	public int getY() { return this.yCoord; }
-	@Override
-	public int getZ() { return this.zCoord; }
 
-	@Override
-	public World getWorld() {
-		return this.worldObj;
-	}
-
-	@Override
-	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return side == Facing.oppositeSide[this.getBlockMetadata()];
-	}
-	
-	@Override
-	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		if(this.getOutputLaser(side) == null) {
-			this.setLaser(laserInGame);
-			PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
-			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
-		}
-	}
-
-	@Override
-	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		if(side == Facing.oppositeSide[this.getBlockMetadata()]) {
-			boolean change = this.laser != null;
-			this.setLaser(null);
-			if(change) {
-				PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
-				world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
-			}
-		}
-	}
-	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return this.getOutputLaser(side) != null && side == this.getBlockMetadata();
+		return this.getOutputLaser(side) != null && side == this.getInputSide().ordinal();
 	}
 	
 	@Override
 	public int getDistance(int side) {
 		return 64;
 	}
-	
 
 	@Override
 	public boolean isForgeMultipart() {
-		return false;
-	}
-
-	@Override
-	public List<LaserInGame> getInputLasers() {
-		return Arrays.asList(this.laser);
+		return this.multipart;
 	}
 	
 	@Override
 	public List<LaserInGame> getOutputLasers() {
-		return Arrays.asList();
+		return Arrays.asList(this.getOutputLaser(this.getBlockMetadata()));
+	}
+
+	@Override
+	public void sendUpdateDescription() {
+		PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
+		
+	}
+
+	@Override
+	public void onLaserPass(World world) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLaserRemoved(World world) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ForgeDirection getInputSide() {
+		return ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite();
 	}
 }

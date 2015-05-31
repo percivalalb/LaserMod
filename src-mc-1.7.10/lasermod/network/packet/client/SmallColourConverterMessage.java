@@ -26,7 +26,7 @@ public class SmallColourConverterMessage implements IMessage {
         this.x = colourConverter.xCoord;
         this.y = colourConverter.yCoord;
         this.z = colourConverter.zCoord;
-        this.laser = colourConverter.getOutputLaser(colourConverter.getBlockMetadata());
+        this.laser = colourConverter.laser;
         this.colour = colourConverter.colour;
     }
     
@@ -63,7 +63,7 @@ public class SmallColourConverterMessage implements IMessage {
 			if(!(tileEntity instanceof TileEntitySmallColourConverter)) 
 				return null;
 			TileEntitySmallColourConverter colourConverter = (TileEntitySmallColourConverter)tileEntity;
-			colourConverter.setLaser(message.laser);
+			colourConverter.laser = message.laser;
 			colourConverter.colour = message.colour;
 			world.markBlockForUpdate(message.x, message.y, message.z);
 			return null;
