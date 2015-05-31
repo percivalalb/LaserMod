@@ -25,7 +25,7 @@ public class TileEntityColourConverterRenderer extends TileEntitySpecialRenderer
     		return;
 
 		AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(colourConverter, colourConverter.getBlockMetadata(), x, y, z);
-		LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, colourConverter.xCoord, colourConverter.yCoord, colourConverter.zCoord, colourConverter.getBlockMetadata(), alpha));
+		LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, colourConverter.xCoord, colourConverter.yCoord, colourConverter.zCoord, colourConverter.getBlockMetadata(), alpha, true));
 
     }
     @Override

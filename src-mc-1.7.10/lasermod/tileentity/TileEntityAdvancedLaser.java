@@ -1,6 +1,8 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import lasermod.ModBlocks;
 import lasermod.api.ILaser;
@@ -31,7 +33,10 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	@Override
 	public void updateLasers(boolean client) {
 		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.advancedLaser, 0);
-
+	}
+	
+	@Override
+	public void updateLaserAction(boolean client) {
 		boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
 		
 		if(hasSignal)
@@ -100,19 +105,15 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-    	return INFINITE_EXTENT_AABB;
-    }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public double getMaxRenderDistanceSquared() {
-        return 65536.0D;
-    }
-	
-	@Override
 	public boolean isForgeMultipart() {
 		return false;
+	}
+	
+	@Override
+	public List<LaserInGame> getOutputLasers() {
+		boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
+		if(hasSignal)
+			return Arrays.asList(this.getOutputLaser(this.getBlockMetadata()));
+		return Arrays.asList();
 	}
 }

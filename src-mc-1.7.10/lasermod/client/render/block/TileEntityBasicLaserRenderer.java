@@ -18,7 +18,7 @@ public class TileEntityBasicLaserRenderer extends TileEntitySpecialRenderer {
     		return;
 
         AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(basicLaser, basicLaser.getBlockMetadata(), x, y, z);
-        LaserCollisionBoxes.addLaserCollision(new LaserToRender(basicLaser.getOutputLaser(basicLaser.blockMetadata), laserOutline, x, y, z, basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord, basicLaser.getBlockMetadata(), 0.4F));
+        LaserCollisionBoxes.addLaserCollision(new LaserToRender(basicLaser.getOutputLaser(basicLaser.blockMetadata), laserOutline, x, y, z, basicLaser.xCoord, basicLaser.yCoord, basicLaser.zCoord, basicLaser.getBlockMetadata(), 0.4F, true));
 
     }
 

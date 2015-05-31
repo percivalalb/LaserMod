@@ -40,7 +40,7 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
 	    		continue;
 	    	
 			AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(reflector, i, x, y, z);
-			LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, reflector.xCoord, reflector.yCoord, reflector.zCoord, i, alpha));
+			LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, reflector.xCoord, reflector.yCoord, reflector.zCoord, i, alpha, true));
 		}
         
     }

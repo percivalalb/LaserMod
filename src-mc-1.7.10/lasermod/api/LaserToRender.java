@@ -14,8 +14,9 @@ public class LaserToRender {
 	public int blockZ;
 	public int side;
 	public float alpha;
+	public boolean tooltip;
 	
-	public LaserToRender(LaserInGame laser, AxisAlignedBB collision, double renderX, double renderY, double renderZ, int blockX, int blockY, int blockZ, int side, float alpha) {
+	public LaserToRender(LaserInGame laser, AxisAlignedBB collision, double renderX, double renderY, double renderZ, int blockX, int blockY, int blockZ, int side, float alpha, boolean tooltip) {
 		this.laser = laser;
 		this.collision = collision;
 		this.renderX = renderX;
@@ -26,6 +27,7 @@ public class LaserToRender {
 		this.blockZ = blockZ;
 		this.side = side;
 		this.alpha = alpha;
+		this.tooltip = tooltip;
 	}
 	
 	@Override

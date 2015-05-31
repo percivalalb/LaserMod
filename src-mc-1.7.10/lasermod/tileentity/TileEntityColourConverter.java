@@ -36,7 +36,10 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		}
 			
 		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.colourConverter, 4);
-		
+	}
+	
+	@Override
+	public void updateLaserAction(boolean client) {
 		if(this.laser != null)
 			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
 	}
@@ -129,17 +132,6 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 		return 64;
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-    	return INFINITE_EXTENT_AABB;
-    }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public double getMaxRenderDistanceSquared() {
-        return 65536.0D;
-    }
 
 	@Override
 	public boolean isForgeMultipart() {
@@ -149,5 +141,10 @@ public class TileEntityColourConverter extends TileEntityLaserDevice implements 
 	@Override
 	public List<LaserInGame> getInputLasers() {
 		return Arrays.asList(this.laser);
+	}
+	
+	@Override
+	public List<LaserInGame> getOutputLasers() {
+		return Arrays.asList();
 	}
 }

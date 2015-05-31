@@ -49,14 +49,9 @@ public class BlockReflector extends BlockContainer {
 	    this.blockIcon = iconRegister.registerIcon("lasermod:reflector_particles");
 	}
 	
-
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
-		if(world != null 
-				&& !world.isRemote 
-				&& player != null 
-				&& player.getHeldItem() != null 
-				&& player.getHeldItem().getItem() == ModItems.screwdriver) {
+		if(!world.isRemote && player.getHeldItem() != null && player.getHeldItem().getItem() == ModItems.screwdriver) {
 			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
 			reflector.closedSides[side] = !reflector.closedSides[side];
 			
@@ -68,87 +63,6 @@ public class BlockReflector extends BlockContainer {
 		}
         return false;
     }
-	
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-        if (!world.isRemote) {
-        	TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
-        	for(int i = 0; i < reflector.closedSides.length; ++i) {
-    			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-    				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-    				if(reciver != null && reciver.isLaserReceiver(i))
-    					reciver.getLaserReceiver(i).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
-    				continue;
-    			}
-    			if(reflector.containsInputSide(i)) 
-    				continue;
-    			
-    			BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-    			if(reciver != null && reciver.isLaserReceiver(i)) {
-    				LaserInGame laserInGame = reflector.getOutputLaser(i);
-    			  	if(reciver.getLaserReceiver(i).canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
-    			  		reciver.getLaserReceiver(i).passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
-    				}
-    			}
-    		}
-        }
-    }
-	
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
-		if (!world.isRemote) {
-			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
-	    	for(int i = 0; i < reflector.closedSides.length; ++i) {
-				if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-					BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-					if(reciver != null && reciver.isLaserReceiver(i))
-						reciver.getLaserReceiver(i).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
-
-					continue;
-				}
-				if(reflector.containsInputSide(i)) 
-					continue;
-				
-				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-				if(reciver != null && reciver.isLaserReceiver(i)) {
-					LaserInGame laserInGame = reflector.getOutputLaser(i);
-				  	if(reciver.getLaserReceiver(i).canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
-				  		reciver.getLaserReceiver(i).passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
-					}
-				}
-			}
-        }
-    }
-
-	@Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-		TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(x, y, z);
-    	for(int i = 0; i < reflector.closedSides.length; ++i) {
-			if(reflector.closedSides[i] || reflector.lasers.size() == 0) {
-				BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-				if(reciver != null && reciver.isLaserReceiver(i))
-					reciver.getLaserReceiver(i).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[i]);
-				continue;
-			}
-			if(reflector.containsInputSide(i)) 
-				continue;
-			
-			BlockActionPos reciver = LaserUtil.getFirstBlock(reflector, i);
-			if(reciver != null && reciver.isLaserReceiver(i)) {
-				LaserInGame laserInGame = reflector.getOutputLaser(i);
-			  	if(reciver.getLaserReceiver(i).canPassOnSide(world, x, y, z, Facing.oppositeSide[i], laserInGame)) {
-			  		reciver.getLaserReceiver(i).passLaser(world, x, y, z, Facing.oppositeSide[i], laserInGame);
-				}
-			}
-			else if(reciver != null) {
-				LaserInGame laserInGame = reflector.getOutputLaser(i);
-				
-				for(ILaser laser : laserInGame.getLaserType()) {
-					laser.actionOnBlock(reciver);
-				}
-			}
-		}
-	}
 	
 	@Override
 	public boolean isOpaqueCube() {

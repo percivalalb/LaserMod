@@ -51,21 +51,6 @@ public class BlockLuminousLamp extends BlockContainer {
     }
 	
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-		//TODO
-    }
-	
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
-		//TODO
-    }
-
-	@Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-		//TODO
-	}
-	
-	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityLuminousLamp();
 	}

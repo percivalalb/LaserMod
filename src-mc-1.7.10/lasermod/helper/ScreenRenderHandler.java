@@ -68,6 +68,7 @@ public class ScreenRenderHandler {
             int lookingAtIndex = -1;
             for (int i = 0; i < LaserCollisionBoxes.lasers2.size(); ++i) {
             	LaserToRender ltr = LaserCollisionBoxes.lasers2.get(i);
+            	if(!ltr.tooltip) continue;
             	AxisAlignedBB axisalignedbb = ltr.collision.getOffsetBoundingBox(ltr.blockX, ltr.blockY, ltr.blockZ).getOffsetBoundingBox(-ltr.renderX, -ltr.renderY, -ltr.renderZ);
             	
                 MovingObjectPosition movingobjectposition = axisalignedbb.calculateIntercept(posVec, combinedVec);
@@ -100,9 +101,7 @@ public class ScreenRenderHandler {
             	list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
             	list.add("Orgin: " + ltr.blockX + ", " + ltr.blockY + ", " + ltr.blockZ);
             	list.add("Direction traveling: " + ForgeDirection.getOrientation(laser.getSide()).getOpposite().name());
-            	for(ILaser laserType : laser.getLaserType()) {
-            		list.add(LaserRegistry.getIdFromLaser(laserType));
-            	}
+    
             	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
                 this.drawRect(12, 24, 12 + 9, 24 + 9, colour.getRGB(), 400.0D);
             	
@@ -115,23 +114,69 @@ public class ScreenRenderHandler {
             		list.add("Receiving");
              		
             		ILaserReceiver reciver = action.getLaserReceiver(-1);
-            		for(LaserInGame laser : reciver.getInputLasers()) {
+            		List<LaserInGame> output = reciver.getInputLasers();
+            		for(LaserInGame laser : output) {
             			if(laser == null) continue;
             			Color colour = new Color(laser.red, laser.green, laser.blue);
             			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB(), 400.0D);
-            			list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
-                    	list.add("Direction traveling: " + ForgeDirection.getOrientation(laser.getSide()).getOpposite().name());
-                    	for(ILaser laserType : laser.getLaserType()) {
-                    		list.add(LaserRegistry.getIdFromLaser(laserType));
+            			String types = " (";
+            			for(ILaser laserType : laser.getLaserType()) {
+            				types += LaserRegistry.getIdFromLaser(laserType) + " ";
                     	}
+            			
+            			list.add("   " + ForgeDirection.getOrientation(laser.getSide()).name() + ", Power: " + laser.getStrength());
             		}
+            		
+            		if(output.size() == 0)
+            			list.add("   Nothing");
             	}
             	if(action.isLaserProvider(-1)) {
             		ILaserProvider provider = action.getLaserProvider(-1);
-            		list.add("PROVIDER");
+            		list.add("Emitting");
+            		List<LaserInGame> input = provider.getOutputLasers();
+            		for(LaserInGame laser : provider.getOutputLasers()) {
+            			if(laser == null) continue;
+            			Color colour = new Color(laser.red, laser.green, laser.blue);
+            			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB(), 400.0D);
+            			String types = " (";
+            			for(ILaser laserType : laser.getLaserType()) {
+            				types += LaserRegistry.getIdFromLaser(laserType) + " ";
+                    	}
+            			
+            			list.add("   " + ForgeDirection.getOrientation(laser.getSide()).getOpposite().name() + ", Power: " + laser.getStrength() + ", Range: " + provider.getDistance(laser.getSide()));
+            		}
+            		
+            		if(input.size() == 0)
+            			list.add("   Nothing");
             	}
   
             	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
+            	
+        		int i = 0;
+            	if(action.isLaserReceiver(-1)) {
+            		i += 24;
+            		ILaserReceiver reciver = action.getLaserReceiver(-1);
+            		for(LaserInGame laser : reciver.getInputLasers()) {
+            			if(laser == null) continue;
+            			Color colour = new Color(laser.red, laser.green, laser.blue);
+            			this.drawRect(12, i, 12 + 9, i + 9, colour.getRGB(), 400.0D);
+            			i += 10;
+            		}
+            	}
+            	else {
+            		i += 14;
+            	}
+            	
+            	if(action.isLaserProvider(-1)) {
+            		i += 10;
+            		ILaserProvider provider = action.getLaserProvider(-1);
+            		for(LaserInGame laser : provider.getOutputLasers()) {
+            			if(laser == null) continue;
+            			Color colour = new Color(laser.red, laser.green, laser.blue);
+            			this.drawRect(12, i, 12 + 9, i + 9, colour.getRGB(), 400.0D);
+            			i += 10;
+            		}
+            	}
             }
 		}
 	}

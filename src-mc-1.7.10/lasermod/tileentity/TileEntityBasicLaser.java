@@ -1,5 +1,8 @@
 package lasermod.tileentity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
@@ -19,6 +22,11 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	@Override
 	public void updateLasers(boolean client) {
 		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.basicLaser, 0);
+	}
+	
+	@Override
+	public void updateLaserAction(boolean client) {
+		
 	}
 	
 	@Override
@@ -47,21 +55,13 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	public int getDistance(int side) {
 		return 64;
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-    	return INFINITE_EXTENT_AABB;
-    }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public double getMaxRenderDistanceSquared() {
-        return 65536.0D;
-    }
 
 	@Override
 	public boolean isForgeMultipart() {
 		return false;
+	}
+	@Override
+	public List<LaserInGame> getOutputLasers() {
+		return Arrays.asList();
 	}
 }

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import cpw.mods.fml.common.FMLLog;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.network.PacketDispatcher;
 import lasermod.util.LaserUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -30,6 +32,10 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 	
 	public abstract void onLaserRemoved(World world);
 	
+	public boolean checkPowerOnSide(ForgeDirection dir) {
+		return true;
+	}
+	
 	@Override
 	public void updateLasers(boolean client) {
 		
@@ -38,18 +44,25 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 				boolean change = false;
 				
 				for(ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-					if(!LaserUtil.isValidSourceOfPowerOnSide(this, direction.ordinal())) {
+					if(this.checkPowerOnSide(direction) && !LaserUtil.isValidSourceOfPowerOnSide(this, direction.ordinal())) {
 						if(this.removeAllLasersFromSide(direction.ordinal())) {
 							change = true;
 						}
 					}
 				}
 
-				if(change)
+				if(change) {
 					this.sendUpdateDescription();
 					this.onLaserRemoved(this.worldObj);
+				}
+					
 			}
 		}
+	}
+	
+	@Override
+	public void updateLaserAction(boolean client) {
+		
 	}
 	
 	@Override
@@ -137,50 +150,52 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		return change;
 	}
 	
+	public boolean containsInputSide(int side) {
+		for(int i = 0; i < this.lasers.size(); ++i)
+			if(this.lasers.get(i).getSide() == side)
+				return true;
+		return false;
+	}
+	
 	public boolean noLaserInputs() {
 		return this.lasers.size() == 0;
 	}
 	
-	public LaserInGame getCombinedOutputLaser() {
-		if(this.requiresUpdate()) {
-			
-			if(this.lasers.size() == 0)
-				return null;
-			
-			ArrayList<ILaser> laserList = new ArrayList<ILaser>();
-			for(LaserInGame lig : this.lasers) {
-				for(ILaser laser : lig.getLaserType()) {
-					if(!laserList.contains(laser))
-						laserList.add(laser);
-				}
-			}
-			
-			LaserInGame laserInGame = new LaserInGame(laserList);
-			int red = lasers.get(0).red;
-			int green = lasers.get(0).green;
-			int blue = lasers.get(0).blue;
-			
-			for(int i = 1; i < lasers.size(); ++i) {
-				red = (int)(red * 0.5D + lasers.get(i).red * 0.5D);
-				green = (int)(green * 0.5D + lasers.get(i).green * 0.5D);
-				blue = (int)(blue * 0.5D + lasers.get(i).blue * 0.5D);
-			}
+	public LaserInGame getCombinedOutputLaser(int side) {
+		if(this.lasers.size() == 0)
+			return null;
 		
-			laserInGame.red = red;
-			laserInGame.green = green;
-			laserInGame.blue = blue;
-			
-			double totalPower = 0.0D;
-			
-			for(LaserInGame laser : lasers)
-				totalPower += laser.getStrength();
-			
-			laserInGame.setStrength(totalPower);
-			
-			this.lastCombinedLaser = laserInGame;
+		int facing = Facing.oppositeSide[side];
+		ArrayList<ILaser> laserList = new ArrayList<ILaser>();
+		for(LaserInGame lig : this.lasers) {
+			for(ILaser laser : lig.getLaserType()) {
+				if(!laserList.contains(laser))
+					laserList.add(laser);
+			}
 		}
 		
-		this.setUpdateComplete();
-		return this.lastCombinedLaser;
+		LaserInGame laserInGame = new LaserInGame(laserList);
+		int red = lasers.get(0).red;
+		int green = lasers.get(0).green;
+		int blue = lasers.get(0).blue;
+		
+		for(int i = 1; i < lasers.size(); ++i) {
+			red = (int)((red * 0.5D) + (lasers.get(i).red * 0.5D));
+			green = (int)((green * 0.5D) + (lasers.get(i).green * 0.5D));
+			blue = (int)((blue * 0.5D) + (lasers.get(i).blue * 0.5D));
+		}
+	
+		laserInGame.red = red;
+		laserInGame.green = green;
+		laserInGame.blue = blue;
+				
+		double totalPower = 0.0D;
+		for(LaserInGame laser : lasers)
+			totalPower += laser.getStrength();
+		
+		laserInGame.setSide(facing);
+		laserInGame.setStrength(totalPower / lasers.size());
+		
+		return laserInGame;
 	}
 }

@@ -9,6 +9,7 @@ import lasermod.network.AbstractClientMessageHandler;
 import lasermod.tileentity.TileEntityLuminousLamp;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -69,6 +70,7 @@ public class LuminousLampMessage implements IMessage {
 			colourConverter.lasers = message.lasers;
 			colourConverter.setUpdateRequired();
 			world.markBlockForUpdate(message.x, message.y, message.z);
+			world.updateLightByType(EnumSkyBlock.Block, message.x, message.y, message.z);
 			return null;
 		}
 	}

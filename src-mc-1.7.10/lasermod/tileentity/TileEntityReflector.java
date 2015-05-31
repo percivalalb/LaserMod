@@ -1,15 +1,18 @@
 package lasermod.tileentity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import codechicken.lib.math.MathHelper;
 import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.base.TileEntityLaserDevice;
+import lasermod.api.base.TileEntityMultiSidedReciever;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ReflectorMessage;
 import lasermod.util.BlockActionPos;
@@ -19,37 +22,51 @@ import net.minecraft.network.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
-public class TileEntityReflector extends TileEntityLaserDevice implements ILaserProvider, ILaserReceiver {
+public class TileEntityReflector extends TileEntityMultiSidedReciever implements ILaserProvider {
 
 	public boolean[] closedSides = new boolean[] {true, true, true, true, true, true};
-	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
 	
 	@Override
 	public void updateLasers(boolean client) {
-
-		boolean change = false;
-			
-		if(this.lasers != null && this.lasers.size() > 0) {
-			for(int i = 0; i < this.closedSides.length; ++i)
-				if(!this.closedSides[i] && this.containsInputSide(i) && !LaserUtil.isValidSourceOfPowerOnSide(this, i)) {
-					if(this.removeAllLasersFromSide(i))
-						change = true;
-				}
-		}
-			
-		if(change)
-			PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
-			
-		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
-
+		super.updateLasers(client);
+		
 		for(int i = 0; i < this.closedSides.length; ++i) {
-			if(this.closedSides[i] || this.containsInputSide(i) || this.lasers.size() == 0)
+			if(this.closedSides[i] || this.containsInputSide(i) || this.noLaserInputs())
+				continue;
+			
+			BlockActionPos action = LaserUtil.getFirstBlock(this, i);
+			if(action != null && action.isLaserReceiver(i)) {
+				LaserInGame laserInGame = this.getOutputLaser(i);
+				ILaserReceiver receiver = action.getLaserReceiver(i);
+			  	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i], laserInGame))
+			  		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i], laserInGame);
+			}
+			else if(action != null) {
+    			LaserInGame laserInGame = this.getOutputLaser(i);
+    			
+    			for(ILaser laser : laserInGame.getLaserType())
+    				laser.actionOnBlock(action);
+    		}
+		}
+		
+	}
+	
+	@Override
+	public boolean checkPowerOnSide(ForgeDirection dir) {
+		return !this.closedSides[dir.ordinal()] && this.containsInputSide(dir.ordinal());
+	}
+	
+	@Override
+	public void updateLaserAction(boolean client) {
+		for(int i = 0; i < this.closedSides.length; ++i) {
+			if(this.closedSides[i] || this.containsInputSide(i) || this.noLaserInputs())
 				continue;
 			LaserUtil.performLaserAction(this, i, this.xCoord, this.yCoord, this.zCoord);
 		}
@@ -88,16 +105,6 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	    return PacketDispatcher.getPacket(new ReflectorMessage(this));
 	}
 	
-	public boolean addLaser(LaserInGame laserInGame, int side) {
-		int i = getIndexOfLaserSide(side);
-		if(i == -1)
-			lasers.add(laserInGame);
-		else
-			lasers.set(i, laserInGame);
-		return true;
-		
-	}
-	
 	public int openSides() {
 		int count = 0;
 		for(boolean bool : this.closedSides)
@@ -106,124 +113,16 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 		return count;
 	}
 	
-	public boolean containsInputSide(int side) {
-		for(int i = 0; i < this.lasers.size(); ++i)
-			if(lasers.get(i).getSide() == side)
-				return true;
-		return false;
-	}
-	
-	public int getIndexOfLaserSide(int side) {
-		for(int i = 0; i < this.lasers.size(); ++i)
-			if(lasers.get(i).getSide() == side)
-				return i;
-		return -1;
-	}
-	
-	public LaserInGame getLaserFromSide(int side) {
-		for(int i = 0; i < this.lasers.size(); ++i)
-			if(lasers.get(i).getSide() == side)
-				return lasers.get(i);
-		return null;
-	}
-	
-	public boolean removeAllLasersFromSide(int side) {
-		
-		boolean flag = false;
-		for(int i = 0; i < lasers.size(); ++i) {
-			LaserInGame old = lasers.get(i);
-			if(old.getSide() == side) {
-				lasers.remove(i);
-				flag = true;
-			}
-		}
-		
-		return flag;
-	}
-	
-	public void checkAllRecivers() {
-		for(int i = 0; i < this.closedSides.length; ++i) {
-			if((!this.closedSides[i] && !(this.lasers.size() == 0)) || this.containsInputSide(i))
-				continue;
-			BlockActionPos reciver = LaserUtil.getFirstBlock(this, i);
-			
-			if(reciver != null && reciver.isLaserReceiver(this.getBlockMetadata())) {
-			  	reciver.getLaserReceiver(this.getBlockMetadata()).removeLasersFromSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Facing.oppositeSide[i]);
-			}
-		}
-	}
-	
 	@Override
 	public LaserInGame getOutputLaser(int side) {
-		int facing = Facing.oppositeSide[side];
-		ArrayList<ILaser> laserList = new ArrayList<ILaser>();
-		for(LaserInGame lig : this.lasers) {
-			for(ILaser laser : lig.getLaserType()) {
-				if(!laserList.contains(laser))
-					laserList.add(laser);
-			}
-		}
-		
-		LaserInGame laserInGame = new LaserInGame(laserList);
-		double totalPower = 0.0D;
-		int red = lasers.get(0).red;
-		int green = lasers.get(0).green;
-		int blue = lasers.get(0).blue;
-		double ratio = 0.5D;
-		
-		for(int i = 1; i < lasers.size(); ++i) {
-			red = (int)((red * ratio) + (lasers.get(i).red * 0.5D));
-			green = (int)((green * ratio) + (lasers.get(i).green * 0.5D));
-			blue = (int)((blue * ratio) + (lasers.get(i).blue * 0.5D));
-		}
-	
-		laserInGame.red = red;
-		laserInGame.green = green;
-		laserInGame.blue = blue;
-				
-		for(LaserInGame laser : lasers)
-			totalPower += laser.getStrength();
-		
-		laserInGame.setSide(facing);
-		laserInGame.setStrength(totalPower);
-		
-		return laserInGame;
-	}
-
-	@Override
-	public int getX() { return this.xCoord; }
-	@Override
-	public int getY() { return this.yCoord; }
-	@Override
-	public int getZ() { return this.zCoord; }
-
-	@Override
-	public World getWorld() {
-		return this.worldObj;
+		return this.getCombinedOutputLaser(side);
 	}
 	
 	@Override
 	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return !this.closedSides[side] && (!this.containsInputSide(side) || !Objects.equals(laserInGame, this.getLaserFromSide(side)));
-	}
-	
-	@Override
-	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		this.addLaser(laserInGame, side);
-		PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
-		world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 0);
+		return !this.closedSides[side] && (!this.containsInputSide(side) || super.canPassOnSide(world, orginX, orginY, orginZ, side, laserInGame));
 	}
 
-	@Override
-	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		
-		boolean flag = this.removeAllLasersFromSide(side);
-		
-		if(flag) {
-			PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
-			world.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.reflector, 4);
-		}
-	}
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
@@ -238,22 +137,9 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 			if(!this.closedSides[i] && !this.containsInputSide(i)) 
 				total += 1;
 		if(total == 0)
-			return 0;
-		
-		return 64 / total;
+			total = 1;
+		return MathHelper.floor_double(64 / total);
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-    	return INFINITE_EXTENT_AABB;
-    }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public double getMaxRenderDistanceSquared() {
-        return 65536.0D;
-    }
 
 	@Override
 	public boolean isForgeMultipart() {
@@ -261,7 +147,30 @@ public class TileEntityReflector extends TileEntityLaserDevice implements ILaser
 	}
 
 	@Override
-	public List<LaserInGame> getInputLasers() {
-		return this.lasers;
+	public void sendUpdateDescription() {
+		PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
+		
+	}
+
+	@Override
+	public void onLaserPass(World world) {
+		
+	}
+
+	@Override
+	public void onLaserRemoved(World world) {
+		
+	}
+	
+	@Override
+	public List<LaserInGame> getOutputLasers() {
+		List<LaserInGame> list = new ArrayList<LaserInGame>();
+		for(int i = 0; i < this.closedSides.length; ++i) {
+			if(this.closedSides[i] || this.containsInputSide(i) || this.noLaserInputs())
+				continue;
+			list.add(this.getOutputLaser(i));
+		}
+		
+		return list;
 	}
 }

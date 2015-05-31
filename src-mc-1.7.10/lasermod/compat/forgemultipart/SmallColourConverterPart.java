@@ -315,4 +315,9 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	public List<LaserInGame> getInputLasers() {
 		return Arrays.asList(this.laser);
 	}
+
+	@Override
+	public List<LaserInGame> getOutputLasers() {
+		return Arrays.asList();
+	}
 }

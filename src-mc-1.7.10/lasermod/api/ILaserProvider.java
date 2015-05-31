@@ -1,5 +1,7 @@
 package lasermod.api;
 
+import java.util.List;
+
 import net.minecraft.world.World;
 
 /**
@@ -16,4 +18,5 @@ public interface ILaserProvider {
 	public boolean isForgeMultipart();
 	
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side);
+	public List<LaserInGame> getOutputLasers();
 }

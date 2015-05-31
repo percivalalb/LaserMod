@@ -27,7 +27,7 @@ public class TileEntityLuminousLamp extends TileEntityMultiSidedReciever {
 
 	@Override
 	public void onLaserPass(World world) {
-		
+
 	}
 
 	@Override
