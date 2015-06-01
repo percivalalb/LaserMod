@@ -10,7 +10,6 @@ import lasermod.LaserMod;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.SmallColourConverterMessage;
 import lasermod.tileentity.TileEntitySmallColourConverter;
-import lasermod.util.LaserUtil;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -97,7 +96,7 @@ public class BlockSmallColourConverter extends BlockContainer {
 	@SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		TileEntitySmallColourConverter colourConverter = (TileEntitySmallColourConverter)world.getTileEntity(x, y, z);
-		int meta = LaserUtil.getOrientation(world.getBlockMetadata(x, y, z));
+		int meta = world.getBlockMetadata(x, y, z);
 
 		if (meta > 5)
 		    return this.front[colourConverter.colour];

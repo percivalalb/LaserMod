@@ -14,7 +14,6 @@ import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
-import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -30,20 +29,22 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 	public void updateLasers(boolean client) {
 		super.updateLasers(client);
 			
-		BlockActionPos action = LaserUtil.getFirstBlock(this, this.getInputSide().getOpposite().ordinal());
-		if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite().ordinal())) {
-			LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite().ordinal());
-			ILaserReceiver receiver = action.getLaserReceiver(this.getInputSide().getOpposite().ordinal());
-        	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getInputSide().ordinal(), laserInGame)) {
-        		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getInputSide().ordinal(), laserInGame);
+		if(!client) {
+			BlockActionPos action = LaserUtil.getFirstBlock(this, this.getInputSide().getOpposite());
+			if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite())) {
+				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
+				ILaserReceiver receiver = action.getLaserReceiver(this.getInputSide().getOpposite());
+	        	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getInputSide(), laserInGame)) {
+	        		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getInputSide(), laserInGame);
+				}
 			}
-		}
-		else if(action != null) {
-			LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite().ordinal());
-			
-			if(laserInGame != null) {
-				for(ILaser laser : laserInGame.getLaserType()) {
-					laser.actionOnBlock(action);
+			else if(action != null) {
+				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
+				
+				if(laserInGame != null) {
+					for(ILaser laser : laserInGame.getLaserType()) {
+						laser.actionOnBlock(action);
+					}
 				}
 			}
 		}
@@ -52,7 +53,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 	@Override
 	public void updateLaserAction(boolean client) {
 		if(this.laser != null)
-			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
+			LaserUtil.performLaserAction(this, ForgeDirection.getOrientation(this.getBlockMetadata()), this.xCoord, this.yCoord, this.zCoord);
 	}
 
 	public TileEntitySmallColourConverter setColour(int colour) {
@@ -85,10 +86,10 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 	}
 	
 	@Override
-	public LaserInGame getOutputLaser(int side) {
+	public LaserInGame getOutputLaser(ForgeDirection dir) {
 		if(this.laser != null) {
 			LaserInGame outputLaser = this.laser.copy();
-			outputLaser.setSide(Facing.oppositeSide[side]);
+			outputLaser.setDirection(dir.getOpposite());
 			outputLaser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
 			outputLaser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
 			outputLaser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
@@ -98,12 +99,12 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 	}
 
 	@Override
-	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return this.getOutputLaser(side) != null && side == this.getInputSide().ordinal();
+	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, ForgeDirection dir) {
+		return this.getOutputLaser(dir) != null && dir == this.getInputSide();
 	}
 	
 	@Override
-	public int getDistance(int side) {
+	public int getDistance(ForgeDirection dir) {
 		return 64;
 	}
 
@@ -114,7 +115,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 	
 	@Override
 	public List<LaserInGame> getOutputLasers() {
-		return Arrays.asList(this.getOutputLaser(this.getInputSide().getOpposite().ordinal()));
+		return Arrays.asList(this.getOutputLaser(this.getInputSide().getOpposite()));
 	}
 
 	@Override

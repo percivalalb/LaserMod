@@ -29,6 +29,7 @@ import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -68,7 +69,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-		int meta = LaserUtil.getOrientation(world.getBlockMetadata(x, y, z));
+		int meta = world.getBlockMetadata(x, y, z);
 
 		if (meta > 5)
 	        return this.frontIcon;
@@ -92,47 +93,6 @@ public class BlockAdvancedLaser extends BlockContainer {
 	}
 	
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-		//world.markBlockForUpdate(x, y, z);
-    }
-	
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
-		//world.markBlockForUpdate(x, y, z);
-    }
-
-	@Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-		TileEntityAdvancedLaser basiclaser = (TileEntityAdvancedLaser)world.getTileEntity(x, y, z);
-    	
-        if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
-        	
-        	BlockActionPos reciver = LaserUtil.getFirstBlock(basiclaser, basiclaser.getBlockMetadata());
-    		if(reciver != null && reciver.isLaserReceiver(basiclaser.getBlockMetadata())) {
-    			reciver.getLaserReceiver(basiclaser.getBlockMetadata()).removeLasersFromSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()]);
-    		}
-        }
-        else if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
-    		BlockActionPos reciver = LaserUtil.getFirstBlock(basiclaser, basiclaser.getBlockMetadata());
-    		if(reciver != null && reciver.isLaserReceiver(basiclaser.getBlockMetadata())) {
-    		  	
-    		  	LaserInGame laserInGame = basiclaser.getOutputLaser(basiclaser.getBlockMetadata());
-
-    		  	if(reciver.getLaserReceiver(basiclaser.getBlockMetadata()).canPassOnSide(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame)) {
-    		  		reciver.getLaserReceiver(basiclaser.getBlockMetadata()).passLaser(world, x, y, z, Facing.oppositeSide[basiclaser.getBlockMetadata()], laserInGame);
-    			}
-    		}
-    		else if(reciver != null) {
-    			LaserInGame laserInGame = basiclaser.getOutputLaser(basiclaser.getBlockMetadata());
-    			
-    			for(ILaser laser : laserInGame.getLaserType()) {
-    				laser.actionOnBlock(reciver);
-    			}
-    		}
-        }
-	}
-	
-	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack heldStack) {
 		 int rotation = BlockPistonBase.determineOrientation(world, x, y, z, entityLiving);
 		 world.setBlockMetadataWithNotify(x, y, z, rotation, 2);
@@ -147,13 +107,13 @@ public class BlockAdvancedLaser extends BlockContainer {
 				
 				if(!world.isRemote) {
 					player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + String.format("Advanced Laser (%d, %d, %d)", x, y, z)));
-					if(advancedLaser.getOutputLaser(advancedLaser.getBlockMetadata()).getLaserType().size() <= 1) {
+					if(advancedLaser.getOutputLaser(ForgeDirection.getOrientation(advancedLaser.getBlockMetadata())).getLaserType().size() <= 1) {
 						player.addChatMessage(new ChatComponentText(" Currently no upgrades attached to this laser."));
 					}
 					else {
 						//player.openGui(LaserMod.instance, GuiAdvancedLaser.GUI_ID, world, x, y, z);
 						//player.addChatMessage(" Upgrades attached to this laser...");
-						for(ILaser laser : advancedLaser.getOutputLaser(advancedLaser.getBlockMetadata()).getLaserType()) {
+						for(ILaser laser : advancedLaser.getOutputLaser(ForgeDirection.getOrientation(advancedLaser.getBlockMetadata())).getLaserType()) {
 							String name = LaserRegistry.getIdFromLaser(laser);
 							name = name.replaceFirst(String.valueOf(name.charAt(0)), String.valueOf(name.charAt(0)).toUpperCase());
 							player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "  " + name));

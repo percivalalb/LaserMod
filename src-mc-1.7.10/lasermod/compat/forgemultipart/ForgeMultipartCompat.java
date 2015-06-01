@@ -4,6 +4,7 @@ import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -21,13 +22,13 @@ public class ForgeMultipartCompat {
 		codechicken.multipart.MultiPartRegistry.registerParts(part, new String[] {"lasermod:smallcolorconverter"});
 	}
 
-	public static boolean isTileMultipart(TileEntity tileEntity, int side) {
+	public static boolean isTileMultipart(TileEntity tileEntity, ForgeDirection dir) {
 		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
 			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
 
             for(codechicken.multipart.TMultiPart t : tem.jPartList()) {
                 if(t instanceof SmallColourConverterPart) {
-                	if(((SmallColourConverterPart) t).meta == side) {
+                	if(((SmallColourConverterPart)t).meta == dir.ordinal()) {
                 		return true;
                 	}
                 }
@@ -36,13 +37,13 @@ public class ForgeMultipartCompat {
         return false;
 	}
 	
-	public static ILaserReceiver getLaserReceiverFromPart(TileEntity tileEntity, int side) {
+	public static ILaserReceiver getLaserReceiverFromPart(TileEntity tileEntity, ForgeDirection dir) {
 		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
 			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
 
             for(codechicken.multipart.TMultiPart t : tem.jPartList()) {
                 if(t instanceof SmallColourConverterPart) {
-                	if(((SmallColourConverterPart) t).meta == side)
+                	if(((SmallColourConverterPart)t).meta == dir.ordinal())
                 		return (SmallColourConverterPart)t;
                 }
             }
@@ -50,13 +51,13 @@ public class ForgeMultipartCompat {
         return null;
 	}
 	
-	public static ILaserProvider getLaserProviderFromPart(TileEntity tileEntity, int side) {
+	public static ILaserProvider getLaserProviderFromPart(TileEntity tileEntity, ForgeDirection dir) {
 		if(tileEntity instanceof codechicken.multipart.TileMultipart) {
 			codechicken.multipart.TileMultipart tem = (codechicken.multipart.TileMultipart)tileEntity;
 
             for(codechicken.multipart.TMultiPart t : tem.jPartList()) {
                 if(t instanceof SmallColourConverterPart) {
-                	if(((SmallColourConverterPart) t).meta == side)
+                	if(((SmallColourConverterPart)t).meta == dir.ordinal())
                 		return (SmallColourConverterPart)t;
                 }
             }

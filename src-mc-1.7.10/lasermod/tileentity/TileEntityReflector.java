@@ -17,6 +17,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import codechicken.lib.math.MathHelper;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb
@@ -31,19 +32,18 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 		
 		if(!client) {
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				
-				
-				if(this.closedSides[dir.ordinal()] && this.containsInputSide(dir.ordinal()) && this.noLaserInputs())
+				if(this.closedSides[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
 					continue;
-				BlockActionPos action = LaserUtil.getFirstBlock(this, dir.ordinal());
-				if(action != null && action.isLaserReceiver(dir.ordinal())) {
-					LaserInGame laserInGame = this.getOutputLaser(dir.ordinal());
-					ILaserReceiver receiver = action.getLaserReceiver(dir.ordinal());
-				  	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir.getOpposite().ordinal(), laserInGame))
-				  		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir.getOpposite().ordinal(), laserInGame);
+				
+				BlockActionPos action = LaserUtil.getFirstBlock(this, dir);
+				if(action != null && action.isLaserReceiver(dir)) {
+					LaserInGame laserInGame = this.getOutputLaser(dir);
+					ILaserReceiver receiver = action.getLaserReceiver(dir);
+				  	if(receiver.canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir.getOpposite(), laserInGame))
+				  		receiver.passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir.getOpposite(), laserInGame);
 				}
 				else if(action != null) {
-	    			LaserInGame laserInGame = this.getOutputLaser(dir.ordinal());
+	    			LaserInGame laserInGame = this.getOutputLaser(dir);
 	    			
 	    			if(laserInGame != null)
 		    			for(ILaser laser : laserInGame.getLaserType())
@@ -55,15 +55,15 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	
 	@Override
 	public boolean checkPowerOnSide(ForgeDirection dir) {
-		return !this.closedSides[dir.ordinal()] && this.containsInputSide(dir.ordinal());
+		return !this.closedSides[dir.ordinal()] && this.containsInputSide(dir);
 	}
 	
 	@Override
 	public void updateLaserAction(boolean client) {
-		for(int i = 0; i < this.closedSides.length; ++i) {
-			if(this.closedSides[i] || this.containsInputSide(i) || this.noLaserInputs())
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			if(this.closedSides[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
 				continue;
-			LaserUtil.performLaserAction(this, i, this.xCoord, this.yCoord, this.zCoord);
+			LaserUtil.performLaserAction(this, dir, this.xCoord, this.yCoord, this.zCoord);
 		}
 	}
 	
@@ -109,27 +109,28 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	}
 	
 	@Override
-	public LaserInGame getOutputLaser(int side) {
-		return this.getCombinedOutputLaser(side);
+	public LaserInGame getOutputLaser(ForgeDirection dir) {
+		return this.getCombinedOutputLaser(dir);
 	}
 	
 	@Override
-	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return !this.closedSides[side] && (!this.containsInputSide(side) || super.canPassOnSide(world, orginX, orginY, orginZ, side, laserInGame));
+	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
+		return !this.closedSides[dir.ordinal()] && (!this.containsInputSide(dir) || super.canPassOnSide(world, orginX, orginY, orginZ, dir, laserInGame));
 	}
 
 	
 	@Override
-	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return !this.closedSides[side] && this.lasers.size() > 0;
+	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, ForgeDirection dir) {
+		FMLLog.info("" + (!this.closedSides[dir.ordinal()] && !this.noLaserInputs()));
+		return !this.closedSides[dir.ordinal()] && !this.noLaserInputs();
 	}
 	
 	@Override
-	public int getDistance(int side) {
+	public int getDistance(ForgeDirection dir) {
 		int total = 0;
 		
-		for(int i = 0; i < 6; i++)
-			if(!this.closedSides[i] && !this.containsInputSide(i)) 
+		for(ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS)
+			if(!this.closedSides[dir2.ordinal()] && !this.containsInputSide(dir2)) 
 				total += 1;
 		if(total == 0)
 			total = 1;
@@ -160,10 +161,10 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	@Override
 	public List<LaserInGame> getOutputLasers() {
 		List<LaserInGame> list = new ArrayList<LaserInGame>();
-		for(int i = 0; i < this.closedSides.length; ++i) {
-			if(this.closedSides[i] || this.containsInputSide(i) || this.noLaserInputs())
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			if(this.closedSides[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
 				continue;
-			list.add(this.getOutputLaser(i));
+			list.add(this.getOutputLaser(dir));
 		}
 		
 		return list;

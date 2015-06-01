@@ -8,7 +8,6 @@ import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.util.LaserUtil;
-import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -40,9 +39,9 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 			if(!this.noLaserInputs()) {
 				boolean change = false;
 				
-				for(ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-					if(this.checkPowerOnSide(direction) && !LaserUtil.isValidSourceOfPowerOnSide(this, direction.ordinal())) {
-						if(this.removeAllLasersFromSide(direction.ordinal())) {
+				for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+					if(this.checkPowerOnSide(dir) && !LaserUtil.isValidSourceOfPowerOnSide(this, dir)) {
+						if(this.removeAllLasersFromSide(dir)) {
 							change = true;
 						}
 					}
@@ -83,21 +82,21 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 	}
 
 	@Override
-	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return !Objects.equals(laserInGame, this.getLaserFromSide(side));
+	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
+		return !Objects.equals(laserInGame, this.getLaserFromSide(dir));
 	}
 
 	@Override
-	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		this.addLaser(laserInGame, side);
+	public void passLaser(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
+		this.addLaser(laserInGame, dir);
 		this.onLaserPass(world);
 		this.sendUpdateDescription();
 		this.setUpdateRequired();
 	}
 
 	@Override
-	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		boolean flag = this.removeAllLasersFromSide(side);
+	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir) {
+		boolean flag = this.removeAllLasersFromSide(dir);
 		
 		if(flag) {
 			this.onLaserRemoved(world);
@@ -113,22 +112,25 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 
 	//** TileEntityMultiSidedReciever helper methods **//
 	
-	public LaserInGame getLaserFromSide(int side) {
+	public LaserInGame getLaserFromSide(ForgeDirection dir) {
 		for(int i = 0; i < this.lasers.size(); ++i)
-			if(this.lasers.get(i).getSide() == side)
+			if(this.lasers.get(i).getDirection() == dir)
 				return this.lasers.get(i);
 		return null;
 	}
 	
-	public int getIndexOfLaserSide(int side) {
+	public int getIndexOfLaserSide(ForgeDirection dir) {
 		for(int i = 0; i < this.lasers.size(); ++i)
-			if(this.lasers.get(i).getSide() == side)
+			if(this.lasers.get(i).getDirection() == dir)
 				return i;
 		return -1;
 	}
 	
-	public boolean addLaser(LaserInGame laserInGame, int side) {
-		int i = this.getIndexOfLaserSide(side);
+	public boolean addLaser(LaserInGame laserInGame, ForgeDirection dir) {
+		if(laserInGame == null)
+			return false;
+		
+		int i = this.getIndexOfLaserSide(dir);
 		if(i == -1)
 			this.lasers.add(laserInGame);
 		else
@@ -136,10 +138,10 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		return true;
 	}
 	
-	public boolean removeAllLasersFromSide(int side) {
+	public boolean removeAllLasersFromSide(ForgeDirection dir) {
 		boolean change = false;
 		for(int i = 0; i < lasers.size(); ++i) {
-			if(this.lasers.get(i).getSide() == side) {
+			if(this.lasers.get(i).getDirection() == dir) {
 				this.lasers.remove(i);
 				change = true;
 			}
@@ -147,9 +149,9 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		return change;
 	}
 	
-	public boolean containsInputSide(int side) {
+	public boolean containsInputSide(ForgeDirection dir) {
 		for(int i = 0; i < this.lasers.size(); ++i)
-			if(this.lasers.get(i).getSide() == side)
+			if(this.lasers.get(i).getDirection() == dir)
 				return true;
 		return false;
 	}
@@ -158,18 +160,15 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		return this.lasers.size() == 0;
 	}
 	
-	public LaserInGame getCombinedOutputLaser(int side) {
-		if(this.lasers.size() == 0)
+	public LaserInGame getCombinedOutputLaser(ForgeDirection dir) {
+		if(this.noLaserInputs())
 			return null;
 		
-		int facing = Facing.oppositeSide[side];
 		ArrayList<ILaser> laserList = new ArrayList<ILaser>();
-		for(LaserInGame lig : this.lasers) {
-			for(ILaser laser : lig.getLaserType()) {
+		for(LaserInGame lig : this.lasers)
+			for(ILaser laser : lig.getLaserType()) 
 				if(!laserList.contains(laser))
 					laserList.add(laser);
-			}
-		}
 		
 		LaserInGame laserInGame = new LaserInGame(laserList);
 		int red = lasers.get(0).red;
@@ -190,7 +189,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		for(LaserInGame laser : lasers)
 			totalPower += laser.getStrength();
 		
-		laserInGame.setSide(facing);
+		laserInGame.setDirection(dir.getOpposite());
 		laserInGame.setStrength(totalPower / lasers.size());
 		
 		return laserInGame;

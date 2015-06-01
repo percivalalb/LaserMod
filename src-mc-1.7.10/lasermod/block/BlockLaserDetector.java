@@ -46,7 +46,6 @@ public class BlockLaserDetector extends BlockContainer {
 		return this.stateOff;
     }
 	
-	
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityLaserDetector();

@@ -1,6 +1,7 @@
 package lasermod.api;
 
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class LaserToRender {
 
@@ -12,11 +13,11 @@ public class LaserToRender {
 	public int blockX;
 	public int blockY;
 	public int blockZ;
-	public int side;
+	public ForgeDirection dir;
 	public float alpha;
 	public boolean tooltip;
 	
-	public LaserToRender(LaserInGame laser, AxisAlignedBB collision, double renderX, double renderY, double renderZ, int blockX, int blockY, int blockZ, int side, float alpha, boolean tooltip) {
+	public LaserToRender(LaserInGame laser, AxisAlignedBB collision, double renderX, double renderY, double renderZ, int blockX, int blockY, int blockZ, ForgeDirection dir, float alpha, boolean tooltip) {
 		this.laser = laser;
 		this.collision = collision;
 		this.renderX = renderX;
@@ -25,7 +26,7 @@ public class LaserToRender {
 		this.blockX = blockX;
 		this.blockY = blockY;
 		this.blockZ = blockZ;
-		this.side = side;
+		this.dir = dir;
 		this.alpha = alpha;
 		this.tooltip = tooltip;
 	}
@@ -34,7 +35,7 @@ public class LaserToRender {
 	public boolean equals(Object obj) {
 		if(obj instanceof LaserToRender) {
 			LaserToRender other = (LaserToRender)obj;
-			return this.blockX == other.blockX && this.blockY == other.blockY && this.blockZ == other.blockZ && this.side == other.side;
+			return this.blockX == other.blockX && this.blockY == other.blockY && this.blockZ == other.blockZ && this.dir == other.dir;
 		}
 		return false;
 	}

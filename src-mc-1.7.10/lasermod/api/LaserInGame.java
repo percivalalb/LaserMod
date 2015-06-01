@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +21,7 @@ public class LaserInGame {
 
 	private double strength = 100D;
 	private ArrayList<ILaser> laserType = new ArrayList<ILaser>();
-	private int side = -1;
+	private ForgeDirection dir = ForgeDirection.UNKNOWN;
 	public int red = 255;
 	public int green = 0;
 	public int blue = 0;
@@ -37,8 +38,8 @@ public class LaserInGame {
 		return this;
 	}
 	
-	public LaserInGame setSide(int side) {
-		this.side = side;
+	public LaserInGame setDirection(ForgeDirection dir) {
+		this.dir = dir;
 		return this;
 	}
 	
@@ -72,14 +73,14 @@ public class LaserInGame {
 	@SideOnly(Side.CLIENT)
 	public float shouldRenderLaser(EntityPlayer player) {
 		for(ILaser laser : this.laserType)
-			if(!laser.shouldRenderLaser(player, this.side))
+			if(!laser.shouldRenderLaser(player, this.dir))
 				return player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].getItem() == ModItems.laserSeekingGoogles ? 0.1F : 0.0F;
 		return 0.4F;
 	}
 	
 	public LaserInGame readFromNBT(NBTTagCompound tag) {
 		this.strength = tag.getDouble("strength");
-		this.side = tag.getInteger("side");
+		this.dir = ForgeDirection.getOrientation(tag.getInteger("side"));
 		this.red = tag.getInteger("red");
 		this.green = tag.getInteger("green");
 		this.blue = tag.getInteger("blue");
@@ -93,7 +94,7 @@ public class LaserInGame {
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setDouble("strength", this.strength);
-		tag.setInteger("side", this.side);
+		tag.setInteger("side", this.dir.ordinal());
 		tag.setInteger("red", this.red);
 		tag.setInteger("green", this.green);
 		tag.setInteger("blue", this.blue);
@@ -110,7 +111,7 @@ public class LaserInGame {
 	
 	public void writeToPacket(ByteBuf buffer) {
 		buffer.writeDouble(this.strength);
-		buffer.writeInt(this.side);
+		buffer.writeInt(this.dir.ordinal());
 		buffer.writeInt(this.red);
 		buffer.writeInt(this.green);
 		buffer.writeInt(this.blue);
@@ -122,7 +123,7 @@ public class LaserInGame {
 	
 	public LaserInGame readFromPacket(ByteBuf buffer) {
 		this.strength = buffer.readDouble();
-		this.side = buffer.readInt();
+		this.dir = ForgeDirection.getOrientation(buffer.readInt());
 		this.red = buffer.readInt();
 		this.green = buffer.readInt();
 		this.blue = buffer.readInt();
@@ -137,7 +138,7 @@ public class LaserInGame {
 	@SuppressWarnings("unchecked")
 	public LaserInGame copy() {
 		LaserInGame laser = new LaserInGame((ArrayList<ILaser>)this.laserType.clone());
-		laser.setSide(this.side);
+		laser.setDirection(this.dir);
 		laser.setStrength(this.getStrength());
 		laser.red = this.red;
 		laser.green = this.green;
@@ -145,8 +146,8 @@ public class LaserInGame {
 		return laser;
 	}
 	
-	public int getSide() {
-		return this.side;
+	public ForgeDirection getDirection() {
+		return this.dir;
 	}
 
 	public int laserCount() {

@@ -12,13 +12,14 @@ import lasermod.api.LaserRegistry;
 import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.AdvancedLaserMessage;
+import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
-import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author ProPercivalalb
@@ -29,7 +30,26 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public void updateLasers(boolean client) {
-		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, ModBlocks.advancedLaser, 0);
+		if(!client) {
+			if(this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
+				BlockActionPos reciver = LaserUtil.getFirstBlock(this, ForgeDirection.getOrientation(this.getBlockMetadata()));
+		    	if(reciver != null && reciver.isLaserReceiver(ForgeDirection.getOrientation(this.getBlockMetadata()))) {
+		    		  	
+		    		LaserInGame laserInGame = this.getOutputLaser(ForgeDirection.getOrientation(this.getBlockMetadata()));
+		
+		    		if(reciver.getLaserReceiver(ForgeDirection.getOrientation(this.getBlockMetadata())).canPassOnSide(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite(), laserInGame))
+		    			reciver.getLaserReceiver(ForgeDirection.getOrientation(this.getBlockMetadata())).passLaser(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite(), laserInGame);
+		    	}
+		    	else if(reciver != null) {
+		    		LaserInGame laserInGame = this.getOutputLaser(ForgeDirection.getOrientation(this.getBlockMetadata()));
+		    		
+		    		if(laserInGame != null)
+			    		for(ILaser laser : laserInGame.getLaserType())
+			    			laser.actionOnBlock(reciver);
+		
+		    	}
+			}
+		}
 	}
 	
 	@Override
@@ -37,7 +57,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
 		
 		if(hasSignal)
-			LaserUtil.performLaserAction(this, this.getBlockMetadata(), this.xCoord, this.yCoord, this.zCoord);
+			LaserUtil.performLaserAction(this, ForgeDirection.getOrientation(this.getBlockMetadata()), this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	@Override
@@ -68,8 +88,8 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	public LaserInGame getOutputLaser(int side) {
-		LaserInGame laser = new LaserInGame().setSide(Facing.oppositeSide[side]);
+	public LaserInGame getOutputLaser(ForgeDirection dir) {
+		LaserInGame laser = new LaserInGame().setDirection(dir.getOpposite());
 
 		for(ItemStack stack : this.upgrades) {
 			ILaser ilaser = LaserRegistry.getLaserFromItem(stack);
@@ -92,12 +112,12 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) && this.getBlockMetadata() == side;
+	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, ForgeDirection dir) {
+		return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) && this.getBlockMetadata() == dir.ordinal();
 	}
 	
 	@Override
-	public int getDistance(int side) {
+	public int getDistance(ForgeDirection dir) {
 		return 64;
 	}
 	
@@ -110,7 +130,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	public List<LaserInGame> getOutputLasers() {
 		boolean hasSignal = (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
 		if(hasSignal)
-			return Arrays.asList(this.getOutputLaser(this.getBlockMetadata()));
+			return Arrays.asList(this.getOutputLaser(ForgeDirection.getOrientation(this.getBlockMetadata())));
 		return Arrays.asList();
 	}
 }

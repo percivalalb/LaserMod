@@ -100,7 +100,7 @@ public class ScreenRenderHandler {
             	
             	list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
             	list.add("Orgin: " + ltr.blockX + ", " + ltr.blockY + ", " + ltr.blockZ);
-            	list.add("Direction traveling: " + ForgeDirection.getOrientation(laser.getSide()).getOpposite().name());
+            	list.add("Direction traveling: " + laser.getDirection().getOpposite().name());
     
             	list.add("Types:");
             	if(laser.getLaserType().size() > 0) {
@@ -120,24 +120,24 @@ public class ScreenRenderHandler {
             	List<String> list = new ArrayList<String>();
             	
             	BlockActionPos action = new BlockActionPos(world, mop.blockX, mop.blockY, mop.blockZ);
-             	if(action.isLaserReceiver(-1)) {
+             	if(action.isLaserReceiver(ForgeDirection.UNKNOWN)) {
             		list.add("Receiving");
              		
-            		ILaserReceiver reciver = action.getLaserReceiver(-1);
+            		ILaserReceiver reciver = action.getLaserReceiver(ForgeDirection.UNKNOWN);
             		List<LaserInGame> output = reciver.getInputLasers();
             		for(LaserInGame laser : output) {
             			if(laser == null) continue;
             			Color colour = new Color(laser.red, laser.green, laser.blue);
             			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB());
             			
-            			list.add("   " + ForgeDirection.getOrientation(laser.getSide()).name() + ", Power: " + laser.getStrength());
+            			list.add("   " + laser.getDirection().name() + ", Power: " + laser.getStrength());
             		}
             		
             		if(output.size() == 0)
             			list.add("   Nothing");
             	}
-            	if(action.isLaserProvider(-1)) {
-            		ILaserProvider provider = action.getLaserProvider(-1);
+            	if(action.isLaserProvider(ForgeDirection.UNKNOWN)) {
+            		ILaserProvider provider = action.getLaserProvider(ForgeDirection.UNKNOWN);
             		list.add("Emitting");
             		List<LaserInGame> input = provider.getOutputLasers();
             		for(LaserInGame laser : provider.getOutputLasers()) {
@@ -145,7 +145,7 @@ public class ScreenRenderHandler {
             			Color colour = new Color(laser.red, laser.green, laser.blue);
             			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB());
             			
-            			list.add("   " + ForgeDirection.getOrientation(laser.getSide()).getOpposite().name() + ", Power: " + laser.getStrength() + ", Range: " + provider.getDistance(laser.getSide()));
+            			list.add("   " + laser.getDirection().getOpposite().name() + ", Power: " + laser.getStrength() + ", Range: " + provider.getDistance(laser.getDirection()));
             		}
             		
             		if(input.size() == 0)
@@ -155,9 +155,9 @@ public class ScreenRenderHandler {
             	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
             	
         		int i = 0;
-            	if(action.isLaserReceiver(-1)) {
+            	if(action.isLaserReceiver(ForgeDirection.UNKNOWN)) {
             		i += 24;
-            		ILaserReceiver reciver = action.getLaserReceiver(-1);
+            		ILaserReceiver reciver = action.getLaserReceiver(ForgeDirection.UNKNOWN);
             		for(LaserInGame laser : reciver.getInputLasers()) {
             			if(laser == null) continue;
             			Color colour = new Color(laser.red, laser.green, laser.blue);
@@ -169,9 +169,9 @@ public class ScreenRenderHandler {
             		i += 14;
             	}
             	
-            	if(action.isLaserProvider(-1)) {
+            	if(action.isLaserProvider(ForgeDirection.UNKNOWN)) {
             		i += 10;
-            		ILaserProvider provider = action.getLaserProvider(-1);
+            		ILaserProvider provider = action.getLaserProvider(ForgeDirection.UNKNOWN);
             		for(LaserInGame laser : provider.getOutputLasers()) {
             			if(laser == null) continue;
             			Color colour = new Color(laser.red, laser.green, laser.blue);

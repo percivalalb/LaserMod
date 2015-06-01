@@ -11,6 +11,7 @@ import lasermod.util.LaserUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -30,17 +31,17 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer {
         this.modelReflector.renderModel(reflector);
         GL11.glPopMatrix();
         
-		for(int i = 0; i < reflector.closedSides.length; ++i) {
-			if(reflector.closedSides[i] || reflector.containsInputSide(i) || reflector.lasers.size() == 0)
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			if(reflector.closedSides[dir.ordinal()] || reflector.containsInputSide(dir) || reflector.noLaserInputs())
 				continue;
-		  	LaserInGame laserInGame = reflector.getOutputLaser(i);
+		  	LaserInGame laserInGame = reflector.getOutputLaser(dir);
 	    	float alpha = laserInGame.shouldRenderLaser(ClientHelper.getPlayer());
 
 	    	if(alpha == 0.0F)
 	    		continue;
 	    	
-			AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(reflector, i, x, y, z);
-			LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, reflector.xCoord, reflector.yCoord, reflector.zCoord, i, alpha, true));
+			AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(reflector, dir, x, y, z);
+			LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, boundingBox, x, y, z, reflector.xCoord, reflector.yCoord, reflector.zCoord, dir, alpha, true));
 		}
         
     }

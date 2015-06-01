@@ -30,7 +30,6 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.minecraft.McSidedMetaPart;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -164,23 +163,23 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
     @Override
     public void update() {
     	if(!this.world().isRemote && this.world().getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0) {
-	    	if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, Facing.oppositeSide[meta])) {
+	    	if(this.laser != null && !LaserUtil.isValidSourceOfPowerOnSide(this, ForgeDirection.getOrientation(this.meta).getOpposite())) {
 				this.setLaser(null);
 				this.sendDescUpdate();
 			}
 	    	
-	    	BlockActionPos reciver = LaserUtil.getFirstBlock(this, this.meta);
-			if(reciver != null && reciver.isLaserReceiver(this.meta)) {
-				LaserInGame laserInGame = this.getOutputLaser(this.meta);
+	    	BlockActionPos reciver = LaserUtil.getFirstBlock(this, ForgeDirection.getOrientation(this.meta));
+			if(reciver != null && reciver.isLaserReceiver(ForgeDirection.getOrientation(this.meta))) {
+				LaserInGame laserInGame = this.getOutputLaser(ForgeDirection.getOrientation(this.meta));
 	        	if(laserInGame == null) {
-	        		reciver.getLaserReceiver(this.meta).removeLasersFromSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta]);
+	        		reciver.getLaserReceiver(ForgeDirection.getOrientation(this.meta)).removeLasersFromSide(this.world(), this.x(), this.y(), this.z(), ForgeDirection.getOrientation(this.meta).getOpposite());
 	        	}
-	        	else if(reciver.getLaserReceiver(this.meta).canPassOnSide(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame)) {
-	        		reciver.getLaserReceiver(this.meta).passLaser(this.world(), this.x(), this.y(), this.z(), Facing.oppositeSide[this.meta], laserInGame);
+	        	else if(reciver.getLaserReceiver(ForgeDirection.getOrientation(this.meta)).canPassOnSide(this.world(), this.x(), this.y(), this.z(), ForgeDirection.getOrientation(this.meta).getOpposite(), laserInGame)) {
+	        		reciver.getLaserReceiver(ForgeDirection.getOrientation(this.meta)).passLaser(this.world(), this.x(), this.y(), this.z(), ForgeDirection.getOrientation(this.meta).getOpposite(), laserInGame);
 				}
 			}
 			else if(reciver != null) {
-				LaserInGame laserInGame = this.getOutputLaser(this.meta);
+				LaserInGame laserInGame = this.getOutputLaser(ForgeDirection.getOrientation(this.meta));
 				
 				if(laserInGame != null) {
 					for(ILaser laser : laserInGame.getLaserType()) {
@@ -256,21 +255,21 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	}
 
 	@Override
-	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return side == Facing.oppositeSide[meta];
+	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
+		return dir.getOpposite().ordinal() == meta;
 	}
 
 	@Override
-	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		if(this.getOutputLaser(side) == null) {
+	public void passLaser(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
+		if(this.getOutputLaser(dir) == null) {
 			this.setLaser(laserInGame);
 			this.sendDescUpdate();
 		}
 	}
 
 	@Override
-	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		if(side == Facing.oppositeSide[this.meta]) {
+	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir) {
+		if(dir.getOpposite().ordinal() == this.meta) {
 			boolean change = this.laser != null;
 			this.setLaser(null);
 			if(change) {
@@ -280,9 +279,9 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	}
 
 	@Override
-	public LaserInGame getOutputLaser(int side) {
+	public LaserInGame getOutputLaser(ForgeDirection dir) {
 		if(this.laser != null) {
-			this.laser.setSide(Facing.oppositeSide[side]);
+			this.laser.setDirection(dir.getOpposite());
 			this.laser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
 			this.laser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
 			this.laser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
@@ -292,14 +291,13 @@ public class SmallColourConverterPart extends McSidedMetaPart implements ILaserP
 	}
 
 	@Override
-	public int getDistance(int side) {
+	public int getDistance(ForgeDirection dir) {
 		return 64;
 	}
 
 	@Override
-	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, int side) {
-		FMLLog.info("colour");
-		return this.getOutputLaser(side) != null && side == Facing.oppositeSide[this.meta];
+	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, ForgeDirection dir) {
+		return this.getOutputLaser(dir) != null && dir.getOpposite().ordinal() == this.meta;
 	}
 	
 	public void setLaser(LaserInGame laser) {

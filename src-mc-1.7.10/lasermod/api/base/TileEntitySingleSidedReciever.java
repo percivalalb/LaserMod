@@ -31,7 +31,7 @@ public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevic
 		if(!client) {
 			if(!this.noLaserInput()) {
 
-				if(!LaserUtil.isValidSourceOfPowerOnSide(this, this.getInputSide().ordinal())) {
+				if(!LaserUtil.isValidSourceOfPowerOnSide(this, this.getInputSide())) {
 					this.laser = null;
 					this.sendUpdateDescription();
 					this.onLaserRemoved(this.worldObj);
@@ -66,13 +66,13 @@ public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevic
 	}
 	
 	@Override
-	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
-		return side == this.getInputSide().ordinal() && !Objects.equals(laserInGame, this.laser);
+	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
+		return dir == this.getInputSide() && !Objects.equals(laserInGame, this.laser);
 	}
 	
 
 	@Override
-	public void passLaser(World world, int orginX, int orginY, int orginZ, int side, LaserInGame laserInGame) {
+	public void passLaser(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
 		this.laser = laserInGame;
 		this.onLaserPass(world);
 		this.sendUpdateDescription();
@@ -80,8 +80,8 @@ public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevic
 	}
 
 	@Override
-	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, int side) {
-		if(side == this.getInputSide().ordinal()) {
+	public void removeLasersFromSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir) {
+		if(dir == this.getInputSide()) {
 			boolean flag = this.laser != null;
 			this.laser = null;
 			if(flag) {

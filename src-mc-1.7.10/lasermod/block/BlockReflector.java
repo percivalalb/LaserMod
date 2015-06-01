@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -48,7 +49,7 @@ public class BlockReflector extends BlockContainer {
 			reflector.closedSides[side] = !reflector.closedSides[side];
 			
 			if(reflector.closedSides[side])
-				reflector.removeAllLasersFromSide(side);
+				reflector.removeAllLasersFromSide(ForgeDirection.getOrientation(side));
 			
 			PacketDispatcher.sendToAllAround(new ReflectorMessage(reflector), reflector, 512);
 			return true;

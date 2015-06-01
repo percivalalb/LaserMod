@@ -1,13 +1,9 @@
 package lasermod.block;
 
-import java.util.Random;
-
 import lasermod.LaserMod;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ColourConverterMessage;
 import lasermod.tileentity.TileEntityColourConverter;
-import lasermod.util.LaserUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
@@ -58,7 +54,7 @@ public class BlockColourConverter extends BlockContainer {
 	@SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getTileEntity(x, y, z);
-		int meta = LaserUtil.getOrientation(world.getBlockMetadata(x, y, z));
+		int meta = world.getBlockMetadata(x, y, z);
 
 		if (meta > 5)
 		    return this.front[colourConverter.colour];
@@ -78,21 +74,6 @@ public class BlockColourConverter extends BlockContainer {
 	        return this.front[14];
 	    else
 	    	return par1 == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.getIcon(0, 1);
-	}
-	
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-    
-    }
-	
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
-	
-    }
-
-	@Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-	
 	}
 	
 	@Override

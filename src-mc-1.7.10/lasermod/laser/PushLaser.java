@@ -9,6 +9,7 @@ import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author ProPercivalalb
@@ -18,21 +19,21 @@ public class PushLaser implements ILaser {
 	public static final float SPEED_MULTIPLYER = 1.0F;
 	
 	@Override
-	public void performActionOnEntitiesServer(List<Entity> entities, int direction) {
+	public void performActionOnEntitiesServer(List<Entity> entities, ForgeDirection dir) {
 		for(Entity entity : entities) {
 			
 		}
 	}
 	
 	@Override
-	public void performActionOnEntitiesClient(List<Entity> entities, int direction) {
+	public void performActionOnEntitiesClient(List<Entity> entities, ForgeDirection dir) {
 		for(Entity entity : entities) {
 			
 		}
 	}
 	
 	@Override
-	public void performActionOnEntitiesBoth(List<Entity> entities, int direction) {
+	public void performActionOnEntitiesBoth(List<Entity> entities, ForgeDirection dir) {
 		for(Entity entity : entities) {
 			double verticalSpeed = 0.180000000000000003D;
             double maxSpeed = 0.29999999999999999D;
@@ -44,31 +45,31 @@ public class PushLaser implements ILaser {
             if (entity instanceof EntityMinecart)
                 verticalSpeed *= 0.5D;
 
-            if ((entity instanceof EntityFallingBlock) && direction == 1)
+            if ((entity instanceof EntityFallingBlock) && dir == ForgeDirection.UP)
                 verticalSpeed = 0.0D;
 
-            if (direction == 0 && entity.motionY > -maxSpeed)
+            if (dir == ForgeDirection.DOWN && entity.motionY > -maxSpeed)
                 entity.motionY += -verticalSpeed;
 
-            if (direction == 1 && entity.motionY < maxSpeed * 0.5D)
+            if (dir == ForgeDirection.UP && entity.motionY < maxSpeed * 0.5D)
                 entity.motionY += verticalSpeed;
 
-            if (direction == 2 && entity.motionZ > -maxSpeed)
+            if (dir == ForgeDirection.NORTH && entity.motionZ > -maxSpeed)
                 entity.motionZ += -verticalSpeed;
 
-            if (direction == 3 && entity.motionZ < maxSpeed)
+            if (dir == ForgeDirection.SOUTH && entity.motionZ < maxSpeed)
                 entity.motionZ += verticalSpeed;
 
-            if (direction == 4 && entity.motionX > -maxSpeed)
+            if (dir == ForgeDirection.WEST && entity.motionX > -maxSpeed)
                 entity.motionX += -verticalSpeed;
 
-            if (direction == 5 && entity.motionX < maxSpeed)
+            if (dir == ForgeDirection.EAST && entity.motionX < maxSpeed)
                 entity.motionX += verticalSpeed;
 		}
 	}
 	
 	@Override
-	public boolean shouldRenderLaser(EntityPlayer player, int direction) {
+	public boolean shouldRenderLaser(EntityPlayer player, ForgeDirection dir) {
 		return true;
 	}
 	
