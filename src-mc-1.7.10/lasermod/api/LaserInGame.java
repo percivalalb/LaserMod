@@ -32,8 +32,7 @@ public class LaserInGame {
 	public LaserInGame(ArrayList<ILaser> lasers) { this.laserType.addAll(lasers); }
 	
 	public LaserInGame setStrength(double strength) {
-		if(strength < 0.0D)
-			strength = 0.0D;
+		if(strength < 0.0D) strength = 0.0D;
 		this.strength = strength; 
 		return this;
 	}
@@ -72,9 +71,10 @@ public class LaserInGame {
 	
 	@SideOnly(Side.CLIENT)
 	public float shouldRenderLaser(EntityPlayer player) {
-		for(ILaser laser : this.laserType)
+		for(ILaser laser : this.laserType) {
 			if(!laser.shouldRenderLaser(player, this.dir))
 				return player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].getItem() == ModItems.laserSeekingGoogles ? 0.1F : 0.0F;
+		}
 		return 0.4F;
 	}
 	
@@ -100,12 +100,10 @@ public class LaserInGame {
 		tag.setInteger("blue", this.blue);
 		
 		NBTTagList list = new NBTTagList();
-	
 		for(ILaser laser : this.laserType)
 			list.appendTag(new NBTTagString(LaserRegistry.getIdFromLaser(laser)));
 		
 		tag.setTag("laserTypes", list);
-
 		return tag;
 	}
 	
@@ -159,13 +157,11 @@ public class LaserInGame {
 		if(obj instanceof LaserInGame) {
 			LaserInGame laser = (LaserInGame)obj;
 			boolean laserTypeEqual = true;
-			if(laser.laserCount() != this.laserCount())
-				laserTypeEqual = false;
+			if(laser.laserCount() != this.laserCount()) laserTypeEqual = false;
 			else
-				for(int i = 0; i < this.laserCount(); i++)
-					if(!laser.laserType.contains(this.laserType.get(i)))
-						laserTypeEqual = false;
-					
+				for(int i = 0; i < this.laserCount(); i++) {
+					if(!laser.laserType.contains(this.laserType.get(i))) laserTypeEqual = false;
+				}
 			return this.red == laser.red && this.green == laser.green && this.blue == laser.blue && laserTypeEqual;
 		}
 		return false;

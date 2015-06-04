@@ -23,14 +23,11 @@ public class BlockListBase {
 	public void addToList(String blockName)  { addToList(blockName, ALL_METADATA); }
 	
 	public void addToList(String blockName, int blockMeta) {
-		if(blockMeta == ALL_METADATA)
-			for(int i = 0; i < 16; ++i)
-				this.list.add(Arrays.asList(blockName, i));
-		else
-			this.list.add(Arrays.asList(blockName, blockMeta));
+		if(blockMeta == ALL_METADATA) {
+			for(int i = 0; i < 16; ++i) this.list.add(Arrays.asList(blockName, i));
+		}
+		else this.list.add(Arrays.asList(blockName, blockMeta));
 	}
 	
-	public boolean contains(Block block, int meta) {
-		return this.list.contains(Arrays.asList(Block.blockRegistry.getNameForObject(block), meta));
-	}
+	public boolean contains(Block block, int meta) { return this.list.contains(Arrays.asList(Block.blockRegistry.getNameForObject(block), meta)); }
 }

@@ -51,16 +51,13 @@ public class ModBlocks {
 		GameRegistry.registerBlock(colourConverter, "colorconverter");
 		
 		if(Loader.isModLoaded("ForgeMultipart")) {
-			try {
-				ForgeMultipartCompat.registerBlock();
-			}
+			try { ForgeMultipartCompat.registerBlock(); }
 			catch(Throwable e) {
 				GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
 				e.printStackTrace();
 			}
 		}
-		else
-			GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter");
+		else { GameRegistry.registerBlock(smallColourConverter, "smallcolorconverter"); }
 		
 		GameRegistry.registerBlock(luminousLamp, "luminouslamp");
 		//GameRegistry.registerBlock(lensWorkbench, "lensWorkbench");

@@ -5,7 +5,5 @@ package lasermod;
  */
 public class ModEntities {
 	
-	public static void init() {
-		
-	}
+	public static void init() { }
 }
