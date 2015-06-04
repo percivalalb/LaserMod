@@ -7,6 +7,9 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.2.0a - 04th June 2015
++ Lots of changes, forgot to document 
+
 v1.1.0a - 14th September 2014
 + Updated to 1.7.2 & 1.7.10
 
