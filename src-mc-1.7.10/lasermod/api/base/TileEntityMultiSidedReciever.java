@@ -1,6 +1,7 @@
 package lasermod.api.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ import lasermod.api.ILaser;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.util.LaserUtil;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,6 +34,29 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		return true;
 	}
 	
+	public List<ForgeDirection> getInputDirections() {
+		return Arrays.asList(ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST);
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		
+		int amount = tag.getInteger("laserCount");
+		 for(int i = 0; i < amount; ++i)
+			 this.lasers.add(new LaserInGame(tag.getCompoundTag("laser" + i)));
+	}
+	
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+
+		tag.setInteger("laserCount", this.lasers.size());
+		
+		 for(int i = 0; i < lasers.size(); ++i)
+			 tag.setTag("laser" + i, this.lasers.get(i).writeToNBT(new NBTTagCompound()));
+	}
+	
 	@Override
 	public void updateLasers(boolean client) {
 		
@@ -39,13 +64,10 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 			if(!this.noLaserInputs()) {
 				boolean change = false;
 				
-				for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-					if(this.checkPowerOnSide(dir) && !LaserUtil.isValidSourceOfPowerOnSide(this, dir)) {
-						if(this.removeAllLasersFromSide(dir)) {
+				for(ForgeDirection dir : this.getInputDirections())
+					if(this.checkPowerOnSide(dir) && !LaserUtil.isValidSourceOfPowerOnSide(this, dir))
+						if(this.removeAllLasersFromSide(dir))
 							change = true;
-						}
-					}
-				}
 
 				if(change) {
 					this.sendUpdateDescription();
@@ -83,7 +105,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 
 	@Override
 	public boolean canPassOnSide(World world, int orginX, int orginY, int orginZ, ForgeDirection dir, LaserInGame laserInGame) {
-		return !Objects.equals(laserInGame, this.getLaserFromSide(dir));
+		return this.getInputDirections().contains(dir) && !Objects.equals(laserInGame, this.getLaserFromSide(dir));
 	}
 
 	@Override

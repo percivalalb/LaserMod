@@ -14,9 +14,9 @@ import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import codechicken.lib.math.MathHelper;
 import cpw.mods.fml.common.FMLLog;
 
 /**
@@ -74,10 +74,6 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 		int[] close = tag.getIntArray("closeSides");
 		for(int i = 0; i < close.length; ++i)
 			this.closedSides[i] = close[i] == 1;
-		
-		int amount = tag.getInteger("laserCount");
-		 for(int i = 0; i < amount; ++i)
-			 this.lasers.add(new LaserInGame(tag.getCompoundTag("laser" + i)));
 	}
 	
 	@Override
@@ -88,11 +84,6 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 		for(int i = 0; i < this.closedSides.length; ++i)
 			close[i] = this.closedSides[i] ? 1 : 0;
 		tag.setIntArray("closeSides", close);
-		
-		tag.setInteger("laserCount", this.lasers.size());
-		
-		 for(int i = 0; i < lasers.size(); ++i)
-			 tag.setTag("laser" + i, this.lasers.get(i).writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
@@ -121,7 +112,6 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, int askerX, int askerY, int askerZ, ForgeDirection dir) {
-		FMLLog.info("" + (!this.closedSides[dir.ordinal()] && !this.noLaserInputs()));
 		return !this.closedSides[dir.ordinal()] && !this.noLaserInputs();
 	}
 	
@@ -145,7 +135,6 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	@Override
 	public void sendUpdateDescription() {
 		PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
-		
 	}
 
 	@Override

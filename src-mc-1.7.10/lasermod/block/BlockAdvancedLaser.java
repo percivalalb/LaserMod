@@ -150,7 +150,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 				return true;
 			}
 			else if(laser != null && power && !world.isRemote) {
-				//player.addChatMessage("Please disable redstone signal to input an upgrade.");
+				player.addChatMessage(new ChatComponentText("Please disable redstone signal to input an upgrade."));
 				return true;
 			}
 		}
