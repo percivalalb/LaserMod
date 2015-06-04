@@ -42,19 +42,13 @@ public class BlockLaserDetector extends BlockContainer {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-		return this.stateOff;
-    }
+    public IIcon getIcon(int side, int meta) { return this.stateOff; }
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityLaserDetector();
-	}
+	public TileEntity createNewTileEntity(World world, int meta) { return new TileEntityLaserDetector(); }
 
 	@Override
-	public boolean canProvidePower() {
-		return true;
-	}
+	public boolean canProvidePower() { return true;	}
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {

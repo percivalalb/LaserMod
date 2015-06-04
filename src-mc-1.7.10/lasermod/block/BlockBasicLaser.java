@@ -42,9 +42,7 @@ public class BlockBasicLaser extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityBasicLaser();
-	}
+	public TileEntity createNewTileEntity(World world, int meta) { return new TileEntityBasicLaser(); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -59,12 +57,9 @@ public class BlockBasicLaser extends BlockContainer {
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		int meta = world.getBlockMetadata(x, y, z);
 
-		if (meta > 5)
-	        return this.frontIcon;
-	    if (side == meta)
-	        return this.frontIcon; 
-	    else
-	    	return side == Facing.oppositeSide[meta] ? this.backIcon : this.sideIcon;
+		if (meta > 5) return this.frontIcon;
+	    if (side == meta) return this.frontIcon; 
+	    else return side == Facing.oppositeSide[meta] ? this.backIcon : this.sideIcon;
     }
 	    
 	@Override
@@ -72,12 +67,9 @@ public class BlockBasicLaser extends BlockContainer {
 	public IIcon getIcon(int side, int meta) {
 	    int rotation = 3;
 
-	    if (rotation > 5)
-	        return this.frontIcon;
-	    if (side == rotation)
-	        return this.frontIcon;
-	    else
-	    	return side == Facing.oppositeSide[rotation] ? this.backIcon : this.sideIcon;
+	    if (rotation > 5) return this.frontIcon;
+	    if (side == rotation) return this.frontIcon;
+	    else return side == Facing.oppositeSide[rotation] ? this.backIcon : this.sideIcon;
 	}
 	
 	@Override
@@ -94,16 +86,15 @@ public class BlockBasicLaser extends BlockContainer {
     		BlockActionPos reciver = LaserUtil.getFirstBlock(basiclaser, ForgeDirection.getOrientation(basiclaser.getBlockMetadata()));
     		if(reciver != null && reciver.isLaserReceiver(ForgeDirection.getOrientation(basiclaser.getBlockMetadata()))) {
     		  	
-    		  	LaserInGame laserInGame = basiclaser.getOutputLaser(ForgeDirection.getOrientation(basiclaser.getBlockMetadata()));
-
+    			LaserInGame laserInGame = basiclaser.getOutputLaser(ForgeDirection.getOrientation(basiclaser.getBlockMetadata()));
+    		  	
     		  	if(reciver.getLaserReceiver(ForgeDirection.getOrientation(basiclaser.getBlockMetadata())).canPassOnSide(world, x, y, z, ForgeDirection.getOrientation(basiclaser.getBlockMetadata()).getOpposite(), laserInGame))
     		  		reciver.getLaserReceiver(ForgeDirection.getOrientation(basiclaser.getBlockMetadata())).passLaser(world, x, y, z, ForgeDirection.getOrientation(basiclaser.getBlockMetadata()).getOpposite(), laserInGame);
     		}
     		else if(reciver != null) {
     			LaserInGame laserInGame = basiclaser.getOutputLaser(ForgeDirection.getOrientation(basiclaser.getBlockMetadata()));
     			
-    			for(ILaser laser : laserInGame.getLaserType())
-    				laser.actionOnBlock(reciver);
+    			for(ILaser laser : laserInGame.getLaserType()) laser.actionOnBlock(reciver);
     		}
         }
 	}

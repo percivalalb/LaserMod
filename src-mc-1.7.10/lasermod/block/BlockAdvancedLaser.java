@@ -54,9 +54,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityAdvancedLaser();
-	}
+	public TileEntity createNewTileEntity(World world, int meta) { return new TileEntityAdvancedLaser(); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -71,12 +69,9 @@ public class BlockAdvancedLaser extends BlockContainer {
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		int meta = world.getBlockMetadata(x, y, z);
 
-		if (meta > 5)
-	        return this.frontIcon;
-	    if (side == meta)
-	        return this.frontIcon; 
-	    else
-	    	return side == Facing.oppositeSide[meta] ? this.backIcon : this.sideIcon;
+		if (meta > 5) return this.frontIcon;
+	    if (side == meta) return this.frontIcon; 
+	    else return side == Facing.oppositeSide[meta] ? this.backIcon : this.sideIcon;
     }
 	    
 	@Override
@@ -84,12 +79,9 @@ public class BlockAdvancedLaser extends BlockContainer {
 	public IIcon getIcon(int side, int meta) {
 	    int rotation = 3;
 
-	    if (rotation > 5)
-	        return this.frontIcon;
-	    if (side == rotation)
-	        return this.frontIcon;
-	    else
-	    	return side == Facing.oppositeSide[rotation] ? this.backIcon : this.sideIcon;
+	    if (rotation > 5) return this.frontIcon;
+	    if (side == rotation) return this.frontIcon;
+	    else return side == Facing.oppositeSide[rotation] ? this.backIcon : this.sideIcon;
 	}
 	
 	@Override
@@ -119,9 +111,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 							player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "  " + name));
 						}
 					}
-				
 				}
-				
 				return true;
 			}
 			
@@ -131,21 +121,17 @@ public class BlockAdvancedLaser extends BlockContainer {
 				for(ItemStack stack : advancedLaser.upgrades) {
 					ILaser laser2 = LaserRegistry.getLaserFromItem(stack);
 					if(laser == laser2){
-						if(!world.isRemote)
-							player.addChatMessage(new ChatComponentText("This Laser already has this upgrade."));
+						if(!world.isRemote) player.addChatMessage(new ChatComponentText("This Laser already has this upgrade."));
 						return true;
 					}
 				}
 				
 				advancedLaser.upgrades.add(item);
 				
-				if(!player.capabilities.isCreativeMode)
-					item.stackSize--;
-				if(item.stackSize <= 0)
-					player.setCurrentItemOrArmor(0, (ItemStack)null);
+				if(!player.capabilities.isCreativeMode) item.stackSize--;
+				if(item.stackSize <= 0) player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
-				if(!world.isRemote)
-					PacketDispatcher.sendToAllAround(new AdvancedLaserMessage(advancedLaser), advancedLaser, 512);
+				if(!world.isRemote) PacketDispatcher.sendToAllAround(new AdvancedLaserMessage(advancedLaser), advancedLaser, 512);
 				
 				return true;
 			}
@@ -161,11 +147,9 @@ public class BlockAdvancedLaser extends BlockContainer {
 	public void breakBlock(World world, int x, int y, int z, Block oldBlock, int oldBlockMeta) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-        if (!(tileEntity instanceof TileEntityAdvancedLaser))
-            return;
+        if (!(tileEntity instanceof TileEntityAdvancedLaser)) return;
 
         TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)tileEntity;
-
         for (int i = 0; i < advancedLaser.upgrades.size(); i++) {
 
             ItemStack itemStack = advancedLaser.upgrades.get(i);
@@ -177,8 +161,7 @@ public class BlockAdvancedLaser extends BlockContainer {
 
                 EntityItem entityItem = new EntityItem(world, x + dX, y + dY, z + dZ, new ItemStack(itemStack.getItem(), itemStack.stackSize, itemStack.getItemDamage()));
 
-                if (itemStack.hasTagCompound())
-                    entityItem.getEntityItem().setTagCompound((NBTTagCompound)itemStack.getTagCompound().copy());
+                if (itemStack.hasTagCompound()) entityItem.getEntityItem().setTagCompound((NBTTagCompound)itemStack.getTagCompound().copy());
 
                 float factor = 0.05F;
                 entityItem.motionX = rand.nextGaussian() * factor;
@@ -188,7 +171,6 @@ public class BlockAdvancedLaser extends BlockContainer {
                 itemStack.stackSize = 0;
             }
         }
-
         super.breakBlock(world, x, y, z, oldBlock, oldBlockMeta);
     }
 }

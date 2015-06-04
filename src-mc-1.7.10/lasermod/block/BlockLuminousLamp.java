@@ -42,32 +42,23 @@ public class BlockLuminousLamp extends BlockContainer {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-		return this.stateOff;
-    }
+    public IIcon getIcon(int side, int meta) { return this.stateOff; }
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityLuminousLamp();
-	}
+	public TileEntity createNewTileEntity(World world, int meta) { return new TileEntityLuminousLamp(); }
 	
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
 		TileEntityLuminousLamp panel = (TileEntityLuminousLamp)world.getTileEntity(x, y, z);
-		if(!panel.noLaserInputs()) {
-			return 15;
-		}
+		
+		if(!panel.noLaserInputs()) return 15;
 		return 0;
 	}
 	
 	@Override
-	public boolean isOpaqueCube() {
-	    return false;
-	}
+	public boolean isOpaqueCube() { return false; }
 	
 	@Override
-	public boolean renderAsNormalBlock() {
-	    return false;
-	}
+	public boolean renderAsNormalBlock() { return false; }
 }

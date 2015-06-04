@@ -42,42 +42,29 @@ public class BlockSmallColourConverter extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySmallColourConverter();
-	}
+	public TileEntity createNewTileEntity(World world, int meta) { return new TileEntitySmallColourConverter();	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 	    this.inputIcon = iconRegister.registerIcon("lasermod:colorConverterInput");
-	    for(int i = 0; i < 16; ++i) {
-	    	front[i] = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
-	    }
+	    for(int i = 0; i < 16; ++i) front[i] = iconRegister.registerIcon("lasermod:ColorConverter_" + i);
 	}
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        if(meta == ForgeDirection.DOWN.ordinal())
-        	 this.setBlockBounds(0.2F, 0.8F, 0.2F, 0.8F, 1.0F, 0.8F);
-        else if(meta == ForgeDirection.UP.ordinal())
-       	 	this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.2F, 0.8F);
-    	else if(meta == ForgeDirection.SOUTH.ordinal())
-    		this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.2F);
-       	else if(meta == ForgeDirection.NORTH.ordinal())
-    		this.setBlockBounds(0.2F, 0.2F, 0.8F, 0.8F, 0.8F, 1.0F);
-    	else if(meta == ForgeDirection.EAST.ordinal())
-    		this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.2F, 0.8F, 0.8F);
-       	else if(meta == ForgeDirection.WEST.ordinal())
-    		this.setBlockBounds(0.8F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-       	else
-       		this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
+        if(meta == ForgeDirection.DOWN.ordinal()) this.setBlockBounds(0.2F, 0.8F, 0.2F, 0.8F, 1.0F, 0.8F);
+        else if(meta == ForgeDirection.UP.ordinal()) this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.2F, 0.8F);
+    	else if(meta == ForgeDirection.SOUTH.ordinal()) this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.2F);
+       	else if(meta == ForgeDirection.NORTH.ordinal())this.setBlockBounds(0.2F, 0.2F, 0.8F, 0.8F, 0.8F, 1.0F);
+    	else if(meta == ForgeDirection.EAST.ordinal()) this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.2F, 0.8F, 0.8F);
+       	else if(meta == ForgeDirection.WEST.ordinal()) this.setBlockBounds(0.8F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+       	else this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
     }
 
 	@Override
-    public void setBlockBoundsForItemRender() {
-		this.setBlockBounds(0.2F, 0.2F, 0.3F, 0.8F, 0.8F, 0.5F);
-    }
+    public void setBlockBoundsForItemRender() { this.setBlockBounds(0.2F, 0.2F, 0.3F, 0.8F, 0.8F, 0.5F); }
 
 	@Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
@@ -98,24 +85,18 @@ public class BlockSmallColourConverter extends BlockContainer {
 		TileEntitySmallColourConverter colourConverter = (TileEntitySmallColourConverter)world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 
-		if (meta > 5)
-		    return this.front[colourConverter.colour];
-		if (side == meta)
-		    return this.front[colourConverter.colour];
-		else
-		 	return side == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.getIcon(0, 1);
+		if (meta > 5) return this.front[colourConverter.colour];
+		if (side == meta) return this.front[colourConverter.colour];
+		else return side == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.getIcon(0, 1);
     }
 	
 	@Override
 	public IIcon getIcon(int side, int meta) {
 	    meta = 3;
 
-	    if (meta > 5)
-	        return this.front[14];
-	    if (side == meta)
-	        return this.front[14];
-	    else
-	    	return side == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.getIcon(0, 1);
+	    if (meta > 5) return this.front[14];
+	    if (side == meta) return this.front[14];
+	    else return side == Facing.oppositeSide[meta] ? inputIcon : Blocks.piston.getIcon(0, 1);
 	}
 	
 	@Override
@@ -152,23 +133,16 @@ public class BlockSmallColourConverter extends BlockContainer {
 				TileEntitySmallColourConverter colourConverter = (TileEntitySmallColourConverter)world.getTileEntity(x, y, z);
 				
 				int colour = 15 - item.getItemDamage();
-				if(colour > 15)
-					colour = 15;
-				else if(colour < 0)
-					colour = 0;
+				if(colour > 15) colour = 15;
+				else if(colour < 0) colour = 0;
 				
-				if(colour == colourConverter.colour)
-					return true;
+				if(colour == colourConverter.colour) return true;
 				
 				colourConverter.colour = colour;
-				
-				if(!player.capabilities.isCreativeMode)
-					item.stackSize--;
-				if(item.stackSize <= 0)
-					player.setCurrentItemOrArmor(0, (ItemStack)null);
+				if(!player.capabilities.isCreativeMode) item.stackSize--;
+				if(item.stackSize <= 0) player.setCurrentItemOrArmor(0, (ItemStack)null);
 				
 				PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(colourConverter), colourConverter, 512);
-				
 				return true;
 			}
 		}
@@ -176,17 +150,11 @@ public class BlockSmallColourConverter extends BlockContainer {
 	}
 	
 	@Override
-	public boolean isOpaqueCube() {
-	    return false;
-	}
+	public boolean isOpaqueCube() { return false; }
 	
 	@Override
-	public boolean renderAsNormalBlock() {
-	    return false;
-	}
+	public boolean renderAsNormalBlock() { return false; }
 
 	@Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int meta) {
-    	return side;
-    }
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int meta) { return side; }
 }

@@ -27,20 +27,14 @@ public class BlockReflector extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityReflector();
-	}
+	public TileEntity createNewTileEntity(World world, int meta) { return new TileEntityReflector(); }
 
 	@Override
-	public int getRenderType() {
-        return -1;
-    }
+	public int getRenderType() { return -1; }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-	    this.blockIcon = iconRegister.registerIcon("lasermod:reflector_particles");
-	}
+	public void registerBlockIcons(IIconRegister iconRegister) { this.blockIcon = iconRegister.registerIcon("lasermod:reflector_particles"); }
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
@@ -58,7 +52,5 @@ public class BlockReflector extends BlockContainer {
     }
 	
 	@Override
-	public boolean isOpaqueCube() {
-	    return false;
-	}
+	public boolean isOpaqueCube() { return false; }
 }
