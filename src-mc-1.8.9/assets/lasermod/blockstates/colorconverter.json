@@ -1,0 +1,11 @@
+{
+    "variants": {
+	"inventory": { "model": "lasermod:colorconverter" }, 
+        "facing=down":  { "model": "lasermod:colorconverter_vertical", "x": 180 },
+        "facing=up":    { "model": "lasermod:colorconverter_vertical" },
+        "facing=north": { "model": "lasermod:colorconverter" },
+        "facing=south": { "model": "lasermod:colorconverter", "y": 180 },
+        "facing=west":  { "model": "lasermod:colorconverter", "y": 270 },
+        "facing=east":  { "model": "lasermod:colorconverter", "y": 90 }
+    }
+}
