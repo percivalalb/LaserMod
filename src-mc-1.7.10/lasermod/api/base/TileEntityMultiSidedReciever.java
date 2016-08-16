@@ -193,14 +193,16 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 					laserList.add(laser);
 		
 		LaserInGame laserInGame = new LaserInGame(laserList);
-		int red = lasers.get(0).red;
-		int green = lasers.get(0).green;
-		int blue = lasers.get(0).blue;
+		int red = 0;
+		int green = 0;
+		int blue = 0;
 		
-		for(int i = 1; i < lasers.size(); ++i) {
-			red = (int)((red * 0.5D) + (lasers.get(i).red * 0.5D));
-			green = (int)((green * 0.5D) + (lasers.get(i).green * 0.5D));
-			blue = (int)((blue * 0.5D) + (lasers.get(i).blue * 0.5D));
+		double blendFactor = 1.0D / lasers.size();
+		
+		for(int i = 0; i < lasers.size(); ++i) {
+			red += (int)(lasers.get(i).red * blendFactor);
+			green += (int)(lasers.get(i).green * blendFactor);
+			blue += (int)(lasers.get(i).blue * blendFactor);
 		}
 	
 		laserInGame.red = red;
