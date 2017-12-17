@@ -1,0 +1,11 @@
+{
+    "variants": {
+	"inventory": { "model": "lasermod:advanced_laser" }, 
+        "facing=down":  { "model": "lasermod:advanced_laser_vertical", "x": 180 },
+        "facing=up":    { "model": "lasermod:advanced_laser_vertical" },
+        "facing=north": { "model": "lasermod:advanced_laser" },
+        "facing=south": { "model": "lasermod:advanced_laser", "y": 180 },
+        "facing=west":  { "model": "lasermod:advanced_laser", "y": 270 },
+        "facing=east":  { "model": "lasermod:advanced_laser", "y": 90 }
+    }
+}

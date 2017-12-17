@@ -29,7 +29,7 @@ public class CommonProxy implements IGuiHandler {
 
 
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {
-		return ctx.getServerHandler().playerEntity;
+		return ctx.getServerHandler().player;
 	}
 	
 	public EntityPlayer getPlayerEntity() {
@@ -37,6 +37,6 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public IThreadListener getThreadFromContext(MessageContext ctx) {
-		return ctx.getServerHandler().playerEntity.getServerForPlayer();
+		return ctx.getServerHandler().player.getServerForPlayer();
 	}
 }

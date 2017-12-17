@@ -39,8 +39,8 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 				if(action != null && action.isLaserReceiver(dir)) {
 					LaserInGame laserInGame = this.getOutputLaser(dir);
 					ILaserReceiver receiver = action.getLaserReceiver(dir);
-				  	if(receiver.canPassOnSide(this.worldObj, this.pos, dir.getOpposite(), laserInGame))
-				  		receiver.passLaser(this.worldObj, this.pos, dir.getOpposite(), laserInGame);
+				  	if(receiver.canPassOnSide(this.world, this.pos, dir.getOpposite(), laserInGame))
+				  		receiver.passLaser(this.world, this.pos, dir.getOpposite(), laserInGame);
 				}
 				else if(action != null) {
 	    			LaserInGame laserInGame = this.getOutputLaser(dir);

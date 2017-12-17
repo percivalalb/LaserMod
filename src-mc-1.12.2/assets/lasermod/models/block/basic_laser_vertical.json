@@ -1,0 +1,7 @@
+{
+    "parent": "block/orientable_vertical",
+    "textures": {
+        "front": "lasermod:blocks/basicLaserFront",
+        "side": "lasermod:blocks/basicLaserSide"
+    }
+}

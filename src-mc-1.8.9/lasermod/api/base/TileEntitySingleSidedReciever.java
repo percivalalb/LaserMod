@@ -35,7 +35,7 @@ public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevic
 				if(!LaserUtil.isValidSourceOfPowerOnSide(this, this.getInputSide())) {
 					this.laser = null;
 					this.sendUpdateDescription();
-					this.onLaserRemoved(this.worldObj);
+					this.onLaserRemoved(this.world);
 				}	
 			}
 		}
@@ -48,7 +48,7 @@ public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevic
 
 	@Override
 	public World getWorld() {
-		return this.worldObj;
+		return this.world;
 	}
 	
 	@Override

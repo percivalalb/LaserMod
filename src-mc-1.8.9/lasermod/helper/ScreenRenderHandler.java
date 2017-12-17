@@ -46,8 +46,8 @@ public class ScreenRenderHandler {
 		
 		ElementType type = event.type;
 		EntityPlayer player = ClientHelper.getPlayer();
-		World world = player.worldObj;
-		ItemStack stack = ClientHelper.mc.thePlayer.getHeldItem();
+		World world = player.world;
+		ItemStack stack = ClientHelper.mc.player.getHeldItem();
 		
 		if(event.type == RenderGameOverlayEvent.ElementType.HELMET && stack != null && stack.getItem() == ModItems.handheldSensor) {
 			
@@ -113,7 +113,7 @@ public class ScreenRenderHandler {
             	else
             		list.add(" None");
             	
-            	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRendererObj);
+            	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
                 this.drawRect(12, 24, 12 + 9, 24 + 9, colour.getRGB());
             	
             }
@@ -153,7 +153,7 @@ public class ScreenRenderHandler {
             			list.add("   Nothing");
             	}
   
-            	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRendererObj);
+            	drawHoveringText(list, 0, 25, 1000, 200, ClientHelper.mc.fontRenderer);
             	
         		int i = 0;
             	if(action.isLaserReceiver(null)) {

@@ -43,6 +43,7 @@ public class ReflectorMessage extends AbstractClientMessage {
 	    	this.lasers.add(new LaserInGame().readFromPacket(buffer));
 		
 	}
+	
 	@Override
 	protected void write(PacketBuffer buffer) throws IOException {
 		buffer.writeBlockPos(this.pos);
@@ -53,12 +54,12 @@ public class ReflectorMessage extends AbstractClientMessage {
 		buffer.writeInt(this.lasers.size());
 		
 		for(int i = 0; i < this.lasers.size(); ++i) 
-			this.lasers.get(i).writeToPacket(buffer);
-		
+			this.lasers.get(i).writeToPacket(buffer);	
 	}
+	
 	@Override
 	public void process(EntityPlayer player, Side side) {
-		World world = player.worldObj;
+		World world = player.world;
 		TileEntity tileEntity = world.getTileEntity(this.pos);
 		
 		if(!(tileEntity instanceof TileEntityReflector)) 

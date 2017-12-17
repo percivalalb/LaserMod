@@ -34,16 +34,16 @@ public class RegistryHandling {
 		registerLaser("damage", new DamageLaser(), 7);
 		registerLaser("healing", new HealingLaser(), 8);
 				
-		GameRegistry.addRecipe(new ItemStack(ModItems.laserCrystal), " r ", "rgr", " r ", 'g', Blocks.glass, 'r', Items.redstone);
-		GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"  I", "YB ", "BY ", 'B', new ItemStack(Items.dye, 1, 0), 'Y', new ItemStack(Items.dye, 1, 11), 'I', Items.iron_ingot});
-		GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"  I", "BY ", "YB ", 'B', new ItemStack(Items.dye, 1, 0), 'Y', new ItemStack(Items.dye, 1, 11), 'I', Items.iron_ingot});
-		GameRegistry.addRecipe(new ItemStack(ModItems.laserSeekingGoogles, 1), new Object[] {"I I", "I I", "GLG", 'G', Blocks.glass, 'L', ModItems.laserCrystal, 'I', Items.iron_ingot});
-		GameRegistry.addRecipe(new ItemStack(ModBlocks.advancedLaser, 1), new Object[] {"OGO", "SLS", "OGO", 'G', Blocks.glass, 'L', ModItems.laserCrystal, 'S', Items.iron_ingot, 'O', Blocks.obsidian});
+		GameRegistry.addRecipe(new ItemStack(ModItems.laserCrystal), " r ", "rgr", " r ", 'g', Blocks.glass, 'r', Items.REDSTONE);
+		GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"  I", "YB ", "BY ", 'B', new ItemStack(Items.DYE, 1, 0), 'Y', new ItemStack(Items.DYE, 1, 11), 'I', Items.IRON_INGOT});
+		GameRegistry.addRecipe(new ItemStack(ModItems.screwdriver, 1), new Object[] {"  I", "BY ", "YB ", 'B', new ItemStack(Items.DYE, 1, 0), 'Y', new ItemStack(Items.DYE, 1, 11), 'I', Items.IRON_INGOT});
+		GameRegistry.addRecipe(new ItemStack(ModItems.laserSeekingGoogles, 1), new Object[] {"I I", "I I", "GLG", 'G', Blocks.glass, 'L', ModItems.laserCrystal, 'I', Items.IRON_INGOT});
+		GameRegistry.addRecipe(new ItemStack(ModBlocks.advancedLaser, 1), new Object[] {"OGO", "SLS", "OGO", 'G', Blocks.glass, 'L', ModItems.laserCrystal, 'S', Items.IRON_INGOT, 'O', Blocks.obsidian});
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.basicLaser, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Blocks.glass, 'L', ModItems.laserCrystal, 'C', Blocks.cobblestone});
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.reflector, 1), new Object[] {"CGC", "GSG", "CGC", 'G', Blocks.glass, 'C', Blocks.cobblestone, 'S', Items.glowstone_dust});
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.colourConverter, 1), new Object[] {"CGC", "GLG", "CGC", 'G', Items.glowstone_dust, 'L', ModItems.laserCrystal, 'C', Blocks.cobblestone});
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.laserDetector, 1), new Object[] {"SSS", "SBS", "SSS", 'B', Blocks.redstone_block, 'S', Blocks.stone});
-		GameRegistry.addRecipe(new ItemStack(ModItems.handheldSensor, 1), new Object[] {" T ", "ICI", " I ", 'T', Blocks.redstone_torch, 'I', Items.iron_ingot, 'C', ModItems.laserCrystal});
+		GameRegistry.addRecipe(new ItemStack(ModItems.handheldSensor, 1), new Object[] {" T ", "ICI", " I ", 'T', Blocks.redstone_torch, 'I', Items.IRON_INGOT, 'C', ModItems.laserCrystal});
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.luminousLamp, 1), new Object[] {" G ", "GDG", " I ", 'G', Blocks.glass, 'D', Items.glowstone_dust});
 				
 		//GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.colourConverter, 1, 0), new Object[] {ModBlocks.smallColourConverter});    
@@ -53,12 +53,12 @@ public class RegistryHandling {
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 3), new Object[] {Blocks.obsidian, Items.golden_carrot, Items.fermented_spider_eye, Items.glowstone_dust});
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 5), new Object[] {Blocks.obsidian, Blocks.piston, Items.feather, Items.glowstone_dust});
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 6), new Object[] {Blocks.obsidian, Blocks.sticky_piston, Items.feather, Items.glowstone_dust});
-		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 7), new Object[] {Blocks.obsidian, Items.golden_sword, Items.spider_eye, Items.glowstone_dust});
+		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.upgrades, 1, 7), new Object[] {Blocks.obsidian, Items.golden_sword, Items.SPIDER_EYE, Items.glowstone_dust});
 		
 		// List of blocks lasers can go through.
 		Block[] blocksWhitelistPassThrough = new Block[] { Blocks.air, Blocks.ice, Blocks.tallgrass, Blocks.double_plant, Blocks.leaves, 
 				Blocks.leaves2, Blocks.lever, Blocks.torch, Blocks.ladder, Blocks.redstone_torch, Blocks.unlit_redstone_torch, 
-				Blocks.redstone_wire, Blocks.glass, Blocks.glass_pane, Blocks.stained_glass, Blocks.stained_glass_pane };
+				Blocks.redstone_wire, Blocks.glass, Blocks.GLASS_PANE, Blocks.stained_glass, Blocks.stained_glass_pane };
 		
 		whitelistLaserPassThrough(blocksWhitelistPassThrough);
 		whitelistLaserPassThrough(new ResourceLocation("TConstruct:decoration.stonetorch"));

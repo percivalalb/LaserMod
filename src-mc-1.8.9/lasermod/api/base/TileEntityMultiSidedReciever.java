@@ -72,7 +72,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 
 				if(change) {
 					this.sendUpdateDescription();
-					this.onLaserRemoved(this.worldObj);
+					this.onLaserRemoved(this.world);
 				}
 					
 			}
@@ -86,7 +86,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 
 	@Override
 	public World getWorld() {
-		return this.worldObj;
+		return this.world;
 	}
 
 	@Override

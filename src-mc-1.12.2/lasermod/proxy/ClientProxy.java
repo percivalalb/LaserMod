@@ -1,0 +1,75 @@
+package lasermod.proxy;
+
+import lasermod.ModBlocks;
+import lasermod.ModItems;
+import lasermod.client.model.block.ModelHelper;
+import lasermod.client.render.block.TileEntityAdvancedLaserRenderer;
+import lasermod.client.render.block.TileEntityBasicLaserRenderer;
+import lasermod.client.render.block.TileEntityColourConverterRenderer;
+import lasermod.client.render.block.TileEntityLuminousLampRenderer;
+import lasermod.client.render.block.TileEntityReflectorRenderer;
+import lasermod.client.render.block.TileEntitySmallColourConverterRenderer;
+import lasermod.helper.ScreenRenderHandler;
+import lasermod.helper.WorldOverlayHandler;
+import lasermod.tileentity.TileEntityAdvancedLaser;
+import lasermod.tileentity.TileEntityBasicLaser;
+import lasermod.tileentity.TileEntityColourConverter;
+import lasermod.tileentity.TileEntityLuminousLamp;
+import lasermod.tileentity.TileEntityReflector;
+import lasermod.tileentity.TileEntitySmallColourConverter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.util.IThreadListener;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+/**
+ * @author ProPercivalalb
+ */
+public class ClientProxy extends CommonProxy {
+	
+	@Override
+	public void onPreLoad() {
+		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicLaser.class, new TileEntityBasicLaserRenderer());
+		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedLaser.class, new TileEntityAdvancedLaserRenderer());
+		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityColourConverter.class, new TileEntityColourConverterRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReflector.class, new TileEntityReflectorRenderer());
+		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLuminousLamp.class, new TileEntityLuminousLampRenderer());
+		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallColourConverter.class, new TileEntitySmallColourConverterRenderer());
+	}
+	
+
+	@Override
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return (ctx.side.isClient() ? Minecraft.getMinecraft().player : super.getPlayerEntity(ctx));
+	}
+	
+	@Override
+	public EntityPlayer getPlayerEntity() {
+		return Minecraft.getMinecraft().player;
+	}
+	
+	@Override
+	public IThreadListener getThreadFromContext(MessageContext ctx) {
+		return (ctx.side.isClient() ? Minecraft.getMinecraft() : super.getThreadFromContext(ctx));
+	}
+	@Override
+	public void registerHandlers() {
+		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
+		MinecraftForge.EVENT_BUS.register(new WorldOverlayHandler());
+		ModelHelper.setDefaultModel(ModBlocks.LASER_BASIC);
+		ModelHelper.setDefaultModel(ModBlocks.LASER_ADVANCED);
+		ModelHelper.setDefaultModel(ModBlocks.REFLECTOR);
+		ModelHelper.setModel(ModBlocks.COLOUR_CONVERTER, 0, "lasermod:colorconverter");
+		ModelHelper.setModel(ModBlocks.COLOUR_CONVERTER_SMALL, 0, "lasermod:smallcolorconverter");
+		ModelHelper.setModel(ModBlocks.LUMINOUS_LAMP, 0, "lasermod:luminouslamp");
+		
+		ModelHelper.setDefaultModel(ModItems.SCREWDRIVER);
+		ModelHelper.setDefaultModel(ModItems.HANDHELD_SENSOR);
+		ModelHelper.setDefaultModel(ModItems.LASER_CRYSTAL);
+		ModelHelper.setDefaultModel(ModItems.LASER_SEEKING_GOOGLES);
+	}
+}

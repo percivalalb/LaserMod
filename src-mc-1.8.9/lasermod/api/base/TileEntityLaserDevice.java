@@ -20,13 +20,13 @@ public abstract class TileEntityLaserDevice extends TileEntity implements ITicka
 	
 	@Override
 	public void update() {
-		if(this.worldObj.getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0)
-			this.updateLasers(this.worldObj.isRemote);
+		if(this.world.getWorldInfo().getWorldTotalTime() % LaserUtil.TICK_RATE == 0)
+			this.updateLasers(this.world.isRemote);
 		
-		if(this.worldObj.getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0)
-			this.updateLaserAction(this.worldObj.isRemote);
+		if(this.world.getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0)
+			this.updateLaserAction(this.world.isRemote);
 		
-		if(this.worldObj.isRemote)
+		if(this.world.isRemote)
 			this.applyLaserRender();
 	}
 	

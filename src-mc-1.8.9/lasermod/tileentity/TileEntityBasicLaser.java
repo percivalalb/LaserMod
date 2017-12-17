@@ -21,14 +21,14 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	@Override
 	public void updateLasers(boolean client) {
 		if(!client) {
-			if(this.worldObj.isBlockIndirectlyGettingPowered(this.pos) > 0) {
+			if(this.world.isBlockIndirectlyGettingPowered(this.pos) > 0) {
 				BlockActionPos reciver = LaserUtil.getFirstBlock(this, EnumFacing.getFront(this.getBlockMetadata()));
 		    	if(reciver != null && reciver.isLaserReceiver(EnumFacing.getFront(this.getBlockMetadata()))) {
 		    		  	
 		    		LaserInGame laserInGame = this.getOutputLaser(EnumFacing.getFront(this.getBlockMetadata()));
 		
-		    		if(reciver.getLaserReceiver(EnumFacing.getFront(this.getBlockMetadata())).canPassOnSide(this.worldObj, this.pos, EnumFacing.getFront(this.getBlockMetadata()).getOpposite(), laserInGame))
-		    			reciver.getLaserReceiver(EnumFacing.getFront(this.getBlockMetadata())).passLaser(this.worldObj, this.pos, EnumFacing.getFront(this.getBlockMetadata()).getOpposite(), laserInGame);
+		    		if(reciver.getLaserReceiver(EnumFacing.getFront(this.getBlockMetadata())).canPassOnSide(this.world, this.pos, EnumFacing.getFront(this.getBlockMetadata()).getOpposite(), laserInGame))
+		    			reciver.getLaserReceiver(EnumFacing.getFront(this.getBlockMetadata())).passLaser(this.world, this.pos, EnumFacing.getFront(this.getBlockMetadata()).getOpposite(), laserInGame);
 		    	}
 		    	else if(reciver != null) {
 		    		LaserInGame laserInGame = this.getOutputLaser(EnumFacing.getFront(this.getBlockMetadata()));
@@ -54,12 +54,12 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 
 	@Override
 	public World getWorld() {
-		return this.worldObj;
+		return this.world;
 	}
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing dir) {
-		return this.worldObj.isBlockIndirectlyGettingPowered(this.pos) > 0 && this.getBlockMetadata() == dir.ordinal();
+		return this.world.isBlockIndirectlyGettingPowered(this.pos) > 0 && this.getBlockMetadata() == dir.ordinal();
 	}
 	
 	@Override

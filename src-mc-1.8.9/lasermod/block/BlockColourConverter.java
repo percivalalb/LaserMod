@@ -53,7 +53,7 @@ public class BlockColourConverter extends BlockContainer {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack item = player.getCurrentEquippedItem();
 		if(!world.isRemote && item != null) {
-			if(item.getItem() == Items.dye) {
+			if(item.getItem() == Items.DYE) {
 				TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getTileEntity(pos);
 				
 				int colour = 15 - item.getItemDamage();

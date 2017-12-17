@@ -120,7 +120,7 @@ public class BlockSmallColourConverter extends BlockContainer {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getCurrentEquippedItem();
 		if(!world.isRemote && stack != null) {
-			if(stack.getItem() == Items.dye) {
+			if(stack.getItem() == Items.DYE) {
 				TileEntitySmallColourConverter colourConverter = (TileEntitySmallColourConverter)world.getTileEntity(pos);
 				
 				int colour = MathHelper.clamp_int(15 - stack.getItemDamage(), 0, 15);

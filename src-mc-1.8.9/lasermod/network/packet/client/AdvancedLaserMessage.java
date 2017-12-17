@@ -45,7 +45,7 @@ public class AdvancedLaserMessage extends AbstractClientMessage {
 	}
 	@Override
 	public void process(EntityPlayer player, Side side) {
-		World world = player.worldObj;
+		World world = player.world;
 		TileEntity tileEntity = world.getTileEntity(this.pos);
 		
 		if(!(tileEntity instanceof TileEntityAdvancedLaser)) 
