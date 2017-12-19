@@ -58,7 +58,7 @@ public class RegistryHandling {
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.UPGRADES, 1, 7), new Object[] {Blocks.obsidian, Items.golden_sword, Items.SPIDER_EYE, Items.glowstone_dust});
 		**/
 		// List of blocks lasers can go through.
-		Block[] blocksWhitelistPassThrough = new Block[] { Blocks.AIR, Blocks.ICE, Blocks.TALL_GRASS, Blocks.DOUBLE_PLANT, Blocks.LEAVES, 
+		Block[] blocksWhitelistPassThrough = new Block[] { Blocks.AIR, Blocks.ICE, Blocks.TALLGRASS, Blocks.DOUBLE_PLANT, Blocks.LEAVES, 
 				Blocks.LEAVES2, Blocks.LEVER, Blocks.TORCH, Blocks.LADDER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, 
 				Blocks.REDSTONE_WIRE, Blocks.GLASS, Blocks.GLASS_PANE, Blocks.STAINED_GLASS, Blocks.STAINED_GLASS_PANE };
 		
@@ -67,7 +67,7 @@ public class RegistryHandling {
 		
 		// List of blocks that cannot be mined with the mining laser.
 		Block[] blocksBlacklistMiningLaser = new Block[] { ModBlocks.LASER_BASIC, ModBlocks.LASER_ADVANCED, ModBlocks.COLOUR_CONVERTER, 
-				ModBlocks.LASER_DETECTOR, ModBlocks.LUMINOUS_LAMP, ModBlocks.REFLECTOR, Blocks.bedrock, ModBlocks.LASER_BASIC, 
+				ModBlocks.LASER_DETECTOR, ModBlocks.LUMINOUS_LAMP, ModBlocks.REFLECTOR, Blocks.BEDROCK, ModBlocks.LASER_BASIC, 
 				ModBlocks.LASER_ADVANCED, ModBlocks.COLOUR_CONVERTER, ModBlocks.LASER_DETECTOR, ModBlocks.LUMINOUS_LAMP, ModBlocks.REFLECTOR,
 				ModBlocks.COLOUR_CONVERTER_SMALL };
 		

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemUpgrades extends Item {
 
 	public ItemUpgrades() {
-		this.setCreativeTab(LaserMod.tabLaser);
+		this.setCreativeTab(LaserMod.TAB_LASER);
 		this.setHasSubtypes(true);
 	}
 

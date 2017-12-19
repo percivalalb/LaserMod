@@ -1,11 +1,17 @@
 {
     "variants": {
-	"inventory": { "model": "lasermod:coluor_converter" }, 
-        "facing=down":  { "model": "lasermod:colour_converter_vertical", "x": 180 },
-        "facing=up":    { "model": "lasermod:colour_converter_vertical" },
-        "facing=north": { "model": "lasermod:colour_converter" },
-        "facing=south": { "model": "lasermod:colour_converter", "y": 180 },
-        "facing=west":  { "model": "lasermod:colour_converter", "y": 270 },
-        "facing=east":  { "model": "lasermod:colour_converter", "y": 90 }
+		"inventory": { "model": "lasermod:colour_converter" }, 
+        "facing=down,powered=true":  { "model": "lasermod:colour_converter_vertical", "x": 180 },
+        "facing=up,powered=true":    { "model": "lasermod:colour_converter_vertical" },
+        "facing=north,powered=true": { "model": "lasermod:colour_converter" },
+        "facing=south,powered=true": { "model": "lasermod:colour_converter", "y": 180 },
+        "facing=west,powered=true":  { "model": "lasermod:colour_converter", "y": 270 },
+        "facing=east,powered=true":  { "model": "lasermod:colour_converter", "y": 90 },
+        "facing=down,powered=false":  { "model": "lasermod:colour_converter_vertical", "x": 180 },
+        "facing=up,powered=false":    { "model": "lasermod:colour_converter_vertical" },
+        "facing=north,powered=false": { "model": "lasermod:colour_converter" },
+        "facing=south,powered=false": { "model": "lasermod:colour_converter", "y": 180 },
+        "facing=west,powered=false":  { "model": "lasermod:colour_converter", "y": 270 },
+        "facing=east,powered=false":  { "model": "lasermod:colour_converter", "y": 90 }
     }
 }

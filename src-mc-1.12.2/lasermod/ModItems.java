@@ -34,6 +34,8 @@ public class ModItems {
 	
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
+		init();
+		
 		IForgeRegistry<Item> registry = event.getRegistry();
 		
 		registry.register(LASER_CRYSTAL);

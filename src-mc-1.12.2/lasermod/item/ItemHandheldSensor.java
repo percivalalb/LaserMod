@@ -11,6 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemHandheldSensor extends Item {
 
 	public ItemHandheldSensor() {
-		this.setCreativeTab(LaserMod.tabLaser);
+		this.setCreativeTab(LaserMod.TAB_LASER);
 	}
 }

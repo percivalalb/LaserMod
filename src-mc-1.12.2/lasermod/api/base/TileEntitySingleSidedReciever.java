@@ -10,6 +10,7 @@ import lasermod.util.LaserUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 
 public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevice implements ILaserReceiver {
 

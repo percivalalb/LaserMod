@@ -3,6 +3,7 @@ package lasermod.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
@@ -14,10 +15,13 @@ import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb
@@ -88,10 +92,12 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 		return tag;
 	}
 
+	//TODO
+			/**
 	@Override
 	public Packet getDescriptionPacket() {
 	    return PacketDispatcher.getPacket(new ReflectorMessage(this));
-	}
+	}**/
 	
 	public int openSides() {
 		int count = 0;
@@ -114,7 +120,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	
 	@Override
 	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing dir) {
-		return !this.closedSides[dir.ordinal()] && !this.noLaserInputs();
+		return !this.closedSides[dir.ordinal()] && !this.noLaserInputs() && !this.containsInputSide(dir);
 	}
 	
 	@Override
@@ -126,7 +132,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 				total += 1;
 		if(total == 0)
 			total = 1;
-		return MathHelper.floor_double(64 / total);
+		return MathHelper.floor(64D / total);
 	}
 
 	@Override
@@ -141,12 +147,12 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 
 	@Override
 	public void onLaserPass(World world) {
-		
+		world.scheduleUpdate(this.pos, ModBlocks.REFLECTOR, 4);
 	}
 
 	@Override
 	public void onLaserRemoved(World world) {
-		
+		world.scheduleUpdate(this.pos, ModBlocks.REFLECTOR, 4);
 	}
 	
 	@Override
@@ -160,4 +166,19 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 		
 		return list;
 	}
+	
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, -1, this.getUpdateTag());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+	
+	@Override
+	public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+    }
 }

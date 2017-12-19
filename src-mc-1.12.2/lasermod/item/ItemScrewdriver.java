@@ -11,6 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemScrewdriver extends Item {
 	
 	public ItemScrewdriver() {
-		this.setCreativeTab(LaserMod.tabLaser);
+		this.setCreativeTab(LaserMod.TAB_LASER);
 	}
 }

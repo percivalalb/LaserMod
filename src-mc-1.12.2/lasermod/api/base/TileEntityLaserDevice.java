@@ -16,7 +16,6 @@ public abstract class TileEntityLaserDevice extends TileEntity implements ITicka
 	
 	public abstract void updateLasers(boolean client);
 	public abstract void updateLaserAction(boolean client);
-	public void applyLaserRender() {}
 	
 	@Override
 	public void update() {
@@ -25,9 +24,6 @@ public abstract class TileEntityLaserDevice extends TileEntity implements ITicka
 		
 		if(this.world.getWorldInfo().getWorldTotalTime() % LaserUtil.LASER_RATE == 0)
 			this.updateLaserAction(this.world.isRemote);
-		
-		if(this.world.isRemote)
-			this.applyLaserRender();
 	}
 	
 	public boolean requiresUpdate() {
@@ -42,16 +38,15 @@ public abstract class TileEntityLaserDevice extends TileEntity implements ITicka
 		this.needsUpdate = false;
 	}
 	
-	/**
 	@Override
-	@SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-    	return INFINITE_EXTENT_AABB;
-    }
+    @SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox() {
+		return INFINITE_EXTENT_AABB;
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
     public double getMaxRenderDistanceSquared() {
         return 65536.0D;
-    }**/
+    }
 }

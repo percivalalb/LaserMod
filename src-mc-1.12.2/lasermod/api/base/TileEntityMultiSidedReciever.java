@@ -148,10 +148,10 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		return true;
 	}
 	
-	public boolean removeAllLasersFromSide(EnumFacing dir) {
+	public boolean removeAllLasersFromSide(EnumFacing side) {
 		boolean change = false;
 		for(int i = 0; i < lasers.size(); ++i) {
-			if(this.lasers.get(i).getDirection() == dir) {
+			if(this.lasers.get(i).getDirection() == side) {
 				this.lasers.remove(i);
 				change = true;
 			}
@@ -161,7 +161,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 	
 	public boolean containsInputSide(EnumFacing dir) {
 		for(int i = 0; i < this.lasers.size(); ++i)
-			if(this.lasers.get(i).getDirection() == dir)
+			if(this.lasers.get(i).getDirection() == dir.getOpposite())
 				return true;
 		return false;
 	}

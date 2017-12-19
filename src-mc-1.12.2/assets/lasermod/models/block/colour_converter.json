@@ -1,12 +1,12 @@
 {
     "parent": "block/cube",
     "textures": {
-        "particle": "lasermod:blocks/ColorConverter_0",
-        "down": "lasermod:blocks/colorChangerSide",
-        "up": "lasermod:blocks/colorChangerSide",
-        "north": "lasermod:blocks/colorConverterInput",
-        "east": "lasermod:blocks/colorChangerSide",
-        "south": "lasermod:blocks/ColorConverter_0",
-        "west": "lasermod:blocks/colorChangerSide"
+        "particle": "lasermod:blocks/colour_converter_0",
+        "down": "lasermod:blocks/colour_changer_side",
+        "up": "lasermod:blocks/colour_changer_side",
+        "north": "lasermod:blocks/colour_converter_0",
+        "east": "lasermod:blocks/colour_changer_side",
+        "south": "lasermod:blocks/colour_converter_input",
+        "west": "lasermod:blocks/colour_changer_side"
     }
 }

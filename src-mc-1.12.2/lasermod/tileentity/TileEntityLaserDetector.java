@@ -1,6 +1,8 @@
 package lasermod.tileentity;
 
 import lasermod.api.base.TileEntityMultiSidedReciever;
+import lasermod.block.BlockLaserDetector;
+import lasermod.block.BlockLuminousLamp;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.LaserDetectorMessage;
 import net.minecraft.network.Packet;
@@ -18,16 +20,19 @@ public class TileEntityLaserDetector extends TileEntityMultiSidedReciever {
 
 	@Override
 	public void onLaserPass(World world) {
-		world.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
+		world.setBlockState(this.pos, world.getBlockState(pos).withProperty(BlockLaserDetector.ACTIVE, true));
 	}
 
 	@Override
 	public void onLaserRemoved(World world) {
-		world.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
+		if(this.lasers.isEmpty())
+			world.setBlockState(this.pos, world.getBlockState(pos).withProperty(BlockLaserDetector.ACTIVE, false));
 	}
 	
+	//TODO
+		/**
 	@Override
 	public Packet getDescriptionPacket() {
 	    return PacketDispatcher.getPacket(new LaserDetectorMessage(this));
-	}
+	}**/
 }

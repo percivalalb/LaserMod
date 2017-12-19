@@ -4,7 +4,9 @@ import lasermod.api.base.TileEntityMultiSidedReciever;
 import lasermod.block.BlockLuminousLamp;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.LuminousLampMessage;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.world.World;
 
 /**
@@ -29,7 +31,17 @@ public class TileEntityLuminousLamp extends TileEntityMultiSidedReciever {
 	}
 	
 	@Override
-	public Packet getDescriptionPacket() {
-	    return PacketDispatcher.getPacket(new LuminousLampMessage(this));
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, -1, this.getUpdateTag());
 	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+	
+	@Override
+	public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+    }
 }

@@ -43,6 +43,7 @@ public class AdvancedLaserMessage extends AbstractClientMessage {
 	
 		
 	}
+	
 	@Override
 	public void process(EntityPlayer player, Side side) {
 		World world = player.world;

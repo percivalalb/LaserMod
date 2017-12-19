@@ -11,19 +11,24 @@ import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.api.LaserToRender;
 import lasermod.api.base.TileEntityLaserDevice;
+import lasermod.block.BlockBasicLaser;
 import lasermod.helper.ClientHelper;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
@@ -35,17 +40,21 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	@Override
 	public void updateLasers(boolean client) {
 		if(!client) {
-			if(this.world.isBlockIndirectlyGettingPowered(this.pos) > 0) {
-				BlockActionPos reciver = LaserUtil.getFirstBlock(this, EnumFacing.getFront(this.getBlockMetadata()));
-		    	if(reciver != null && reciver.isLaserReceiver(EnumFacing.getFront(this.getBlockMetadata()))) {
+			IBlockState state = this.getWorld().getBlockState(this.pos);
+			
+			if(state.getValue(BlockBasicLaser.POWERED)) {
+				EnumFacing facing = state.getValue(BlockBasicLaser.FACING);
+				
+				BlockActionPos reciver = LaserUtil.getFirstBlock(this, facing);
+		    	if(reciver != null && reciver.isLaserReceiver(facing)) {
 		    		  	
-		    		LaserInGame laserInGame = this.getOutputLaser(EnumFacing.getFront(this.getBlockMetadata()));
+		    		LaserInGame laserInGame = this.getOutputLaser(facing);
 		
-		    		if(reciver.getLaserReceiver(EnumFacing.getFront(this.getBlockMetadata())).canPassOnSide(this.world, this.pos, EnumFacing.getFront(this.getBlockMetadata()).getOpposite(), laserInGame))
-		    			reciver.getLaserReceiver(EnumFacing.getFront(this.getBlockMetadata())).passLaser(this.world, this.pos, EnumFacing.getFront(this.getBlockMetadata()).getOpposite(), laserInGame);
+		    		if(reciver.getLaserReceiver(facing).canPassOnSide(this.world, this.pos, facing.getOpposite(), laserInGame))
+		    			reciver.getLaserReceiver(facing).passLaser(this.world, this.pos, facing.getOpposite(), laserInGame);
 		    	}
 		    	else if(reciver != null) {
-		    		LaserInGame laserInGame = this.getOutputLaser(EnumFacing.getFront(this.getBlockMetadata()));
+		    		LaserInGame laserInGame = this.getOutputLaser(facing);
 		    		
 		    		if(laserInGame != null)
 			    		for(ILaser laser : laserInGame.getLaserType())
@@ -58,25 +67,10 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public void updateLaserAction(boolean client) {
-		boolean hasSignal = (this.world.isBlockIndirectlyGettingPowered(this.pos) > 0);
+		IBlockState state = this.getWorld().getBlockState(this.pos);
 		
-		if(hasSignal)
-			LaserUtil.performLaserAction(this, EnumFacing.getFront(this.getBlockMetadata()), this.pos);
-	}
-	
-	public void applyLaserRender() {
-		if(this.getWorld().isBlockIndirectlyGettingPowered(this.getPos()) == 0)
-    		return;
-    	
-    	LaserInGame laserInGame = this.getOutputLaser(EnumFacing.getFront(this.getBlockMetadata()));
-    	float alpha = laserInGame.shouldRenderLaser(ClientHelper.getPlayer());
-
-    	if(alpha == 0.0F)
-    		return;
-
-
-        AxisAlignedBB laserOutline = LaserUtil.getLaserOutline(this, EnumFacing.getFront(this.getBlockMetadata()), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-        LaserCollisionBoxes.addLaserCollision(new LaserToRender(laserInGame, laserOutline, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getPos(), EnumFacing.getFront(this.getBlockMetadata()), alpha, true));
+		if(state.getValue(BlockBasicLaser.POWERED))
+			LaserUtil.performLaserAction(this, state.getValue(BlockBasicLaser.FACING), this.pos);
 	}
 	
 	@Override
@@ -103,10 +97,12 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		return tag;
 	}
 	
+	//TODO
+	/**
 	@Override
 	public Packet getDescriptionPacket() {
 	    return PacketDispatcher.getPacket(new AdvancedLaserMessage(this));
-	}
+	}**/
 	
 	@Override
 	public LaserInGame getOutputLaser(EnumFacing dir) {
@@ -126,8 +122,10 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing dir) {
-		return this.world.isBlockIndirectlyGettingPowered(this.pos) > 0 && this.getBlockMetadata() == dir.ordinal();
+	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing side) {
+		IBlockState state = this.getWorld().getBlockState(this.pos);
+		
+		return state.getValue(BlockBasicLaser.POWERED) && state.getValue(BlockBasicLaser.FACING) == side;
 	}
 	
 	@Override
@@ -142,9 +140,25 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public List<LaserInGame> getOutputLasers() {
-		boolean hasSignal = (this.world.isBlockIndirectlyGettingPowered(this.pos) > 0);
-		if(hasSignal)
-			return Arrays.asList(this.getOutputLaser(EnumFacing.getFront(this.getBlockMetadata())));
+		IBlockState state = this.getWorld().getBlockState(this.pos);
+		
+		if(state.getValue(BlockBasicLaser.POWERED))
+			return Arrays.asList(this.getOutputLaser(state.getValue(BlockBasicLaser.FACING)));
 		return Arrays.asList();
 	}
+	
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, -1, this.getUpdateTag());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+	
+	@Override
+	public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+    }
 }

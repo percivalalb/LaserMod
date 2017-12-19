@@ -11,6 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemLaserCrystal extends Item {
 	
 	public ItemLaserCrystal() {
-		this.setCreativeTab(LaserMod.tabLaser);
+		this.setCreativeTab(LaserMod.TAB_LASER);
 	}
 }

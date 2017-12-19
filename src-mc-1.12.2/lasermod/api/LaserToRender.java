@@ -33,7 +33,7 @@ public class LaserToRender {
 	public boolean equals(Object obj) {
 		if(obj instanceof LaserToRender) {
 			LaserToRender other = (LaserToRender)obj;
-			return this.pos.equals(pos) && this.dir == other.dir;
+			return this.pos.equals(other.pos) && this.dir == other.dir;
 		}
 		return false;
 	}

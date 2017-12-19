@@ -1,5 +1,5 @@
 {
     "variants": {
-	"inventory": { "model": "lasermod:reflector" }
+		"inventory": { "model": "lasermod:reflector" }
     }
 }

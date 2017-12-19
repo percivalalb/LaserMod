@@ -3,17 +3,23 @@ package lasermod.tileentity;
 import java.util.Arrays;
 import java.util.List;
 
+import lasermod.ModBlocks;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.base.TileEntitySingleSidedReciever;
+import lasermod.block.BlockPoweredLaser;
+import lasermod.block.BlockPoweredRedstone;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ColourConverterMessage;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -30,16 +36,18 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 	public void updateLasers(boolean client) {
 		super.updateLasers(client);
 		if(!client) {
-			BlockActionPos action = LaserUtil.getFirstBlock(this, this.getInputSide().getOpposite());
-			if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite())) {
-				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
-				ILaserReceiver receiver = action.getLaserReceiver(this.getInputSide().getOpposite());
+			EnumFacing facing = this.getInputSide().getOpposite();
+			
+			BlockActionPos action = LaserUtil.getFirstBlock(this, facing);
+			if(action != null && action.isLaserReceiver(facing)) {
+				LaserInGame laserInGame = this.getOutputLaser(facing);
+				ILaserReceiver receiver = action.getLaserReceiver(facing);
 	        	if(receiver.canPassOnSide(this.world, this.pos, this.getInputSide(), laserInGame)) {
 	        		receiver.passLaser(this.world, this.pos, this.getInputSide(), laserInGame);
 				}
 			}
 			else if(action != null) {
-				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
+				LaserInGame laserInGame = this.getOutputLaser(facing);
 				
 				if(laserInGame != null) {
 					for(ILaser laser : laserInGame.getLaserType()) {
@@ -52,8 +60,11 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 	
 	@Override
 	public void updateLaserAction(boolean client) {
-		if(this.laser != null)
-			LaserUtil.performLaserAction(this, EnumFacing.getFront(this.getBlockMetadata()), this.pos);
+		if(this.laser != null) {
+			IBlockState state = this.getWorld().getBlockState(this.pos);
+			
+			LaserUtil.performLaserAction(this, state.getValue(BlockPoweredLaser.FACING), this.pos);
+		}
 	}
 
 	public TileEntityColourConverter setColour(int colour) {
@@ -81,17 +92,18 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 		
 		return tag;
 	}
-	
+
+	//TODO
+		/**
 	@Override
 	public Packet getDescriptionPacket() {
 	    return PacketDispatcher.getPacket(new ColourConverterMessage(this));
-	}
+	}**/
 	
 	@Override
 	public LaserInGame getOutputLaser(EnumFacing dir) {
 		if(this.laser != null) {
 			LaserInGame outputLaser = this.laser.copy();
-			outputLaser.setDirection(dir.getOpposite());
 			outputLaser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
 			outputLaser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
 			outputLaser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
@@ -102,7 +114,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 
 	@Override
 	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing dir) {
-		return this.getOutputLaser(dir) != null && dir == this.getInputSide();
+		return this.laser != null && dir == this.getInputSide().getOpposite();
 	}
 	
 	@Override
@@ -117,7 +129,9 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 	
 	@Override
 	public List<LaserInGame> getOutputLasers() {
-		return Arrays.asList(this.getOutputLaser(EnumFacing.getFront(this.getBlockMetadata())));
+		IBlockState state = this.getWorld().getBlockState(this.pos);
+		
+		return Arrays.asList(this.getOutputLaser(state.getValue(BlockPoweredRedstone.FACING)));
 	}
 
 	@Override
@@ -128,16 +142,38 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 
 	@Override
 	public void onLaserPass(World world) {
-		
+		world.scheduleUpdate(this.pos, ModBlocks.COLOUR_CONVERTER, 4);
 	}
 
 	@Override
 	public void onLaserRemoved(World world) {
-		
+		world.scheduleUpdate(this.pos, ModBlocks.COLOUR_CONVERTER, 4);
 	}
 
 	@Override
 	public EnumFacing getInputSide() {
-		return EnumFacing.getFront(this.getBlockMetadata()).getOpposite();
+		IBlockState state = this.getWorld().getBlockState(this.pos);
+		
+		return state.getValue(BlockPoweredRedstone.FACING).getOpposite();
 	}
+	
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return INFINITE_EXTENT_AABB;
+	}
+	
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, -1, this.getUpdateTag());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+	
+	@Override
+	public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+    }
 }

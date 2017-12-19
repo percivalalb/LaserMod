@@ -15,11 +15,13 @@ public class ItemLaserSeekingGoogles extends ItemArmor  {
 	
 	public ItemLaserSeekingGoogles() {
 		super(ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.HEAD);
-		this.setCreativeTab(LaserMod.tabLaser);
+		this.setCreativeTab(LaserMod.TAB_LASER);
 	}
 	
+	//TODO
+	/**
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 	    return "lasermod:textures/armor/laserGoogles.png";
-	}
+	}**/
 }

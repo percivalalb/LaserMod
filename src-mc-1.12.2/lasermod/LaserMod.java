@@ -20,36 +20,34 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, dependencies = Reference.MOD_DEPENDENCIES)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION)
 public class LaserMod {
 
 	@Instance(value = Reference.MOD_ID)
-	public static LaserMod instance;
+	public static LaserMod INSTANCE;
 	
 	@SidedProxy(clientSide = Reference.SP_CLIENT, serverSide = Reference.SP_SERVER)
-    public static CommonProxy proxy;
+    public static CommonProxy PROXY;
 	
 	/** Laser Mod Creative tab **/
-	public static CreativeTabs tabLaser = new CreativeTabs("tabLaser") {
+	public static CreativeTabs TAB_LASER = new CreativeTabs("tabLaser") {
 		@Override
 		@SideOnly(Side.CLIENT)
-		public ItemStack getTabIconItem() { return ModItems.SCREWDRIVER; }
+		public ItemStack getTabIconItem() { return new ItemStack(ModItems.SCREWDRIVER); }
 	};
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		ModBlocks.init();
-		ModItems.init();
 		ModEntities.init();
 		
-		proxy.onPreLoad();
+		PROXY.onPreLoad();
 		PacketDispatcher.registerPackets();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-    	NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-		proxy.registerHandlers();
+    	NetworkRegistry.INSTANCE.registerGuiHandler(this, PROXY);
+		PROXY.registerHandlers();
 	}
 	
 	@EventHandler

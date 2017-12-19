@@ -63,6 +63,8 @@ public class ModBlocks {
 	
 	@SubscribeEvent
 	public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
+		init();
+		
 		IForgeRegistry<Block> registry = event.getRegistry();
 		
 		registry.register(LASER_BASIC);

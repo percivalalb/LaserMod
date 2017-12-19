@@ -33,7 +33,7 @@ public class WorldOverlayHandler {
 	        GL11.glColor4f(laserInGame.red / 255F, laserInGame.green / 255F, laserInGame.blue / 255F, ltr.alpha);
 	        
 	    	LaserRenderer.drawBoundingBox(axisalignedbb);
-	    	LaserRenderer.drawBoundingBox(axisalignedbb.contract(0.1D, 0.1D, 0.1D));
+	    	LaserRenderer.drawBoundingBox(axisalignedbb.shrink(0.1D));
 	
 	    	LaserRenderer.postLaserRender();
 	        GL11.glPopMatrix();

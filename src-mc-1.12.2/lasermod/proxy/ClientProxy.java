@@ -33,12 +33,12 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void onPreLoad() {
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicLaser.class, new TileEntityBasicLaserRenderer());
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedLaser.class, new TileEntityAdvancedLaserRenderer());
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityColourConverter.class, new TileEntityColourConverterRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicLaser.class, new TileEntityBasicLaserRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedLaser.class, new TileEntityAdvancedLaserRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityColourConverter.class, new TileEntityColourConverterRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReflector.class, new TileEntityReflectorRenderer());
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLuminousLamp.class, new TileEntityLuminousLampRenderer());
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallColourConverter.class, new TileEntitySmallColourConverterRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLuminousLamp.class, new TileEntityLuminousLampRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallColourConverter.class, new TileEntitySmallColourConverterRenderer());
 	}
 	
 
@@ -60,16 +60,5 @@ public class ClientProxy extends CommonProxy {
 	public void registerHandlers() {
 		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
 		MinecraftForge.EVENT_BUS.register(new WorldOverlayHandler());
-		ModelHelper.setDefaultModel(ModBlocks.LASER_BASIC);
-		ModelHelper.setDefaultModel(ModBlocks.LASER_ADVANCED);
-		ModelHelper.setDefaultModel(ModBlocks.REFLECTOR);
-		ModelHelper.setModel(ModBlocks.COLOUR_CONVERTER, 0, "lasermod:colorconverter");
-		ModelHelper.setModel(ModBlocks.COLOUR_CONVERTER_SMALL, 0, "lasermod:smallcolorconverter");
-		ModelHelper.setModel(ModBlocks.LUMINOUS_LAMP, 0, "lasermod:luminouslamp");
-		
-		ModelHelper.setDefaultModel(ModItems.SCREWDRIVER);
-		ModelHelper.setDefaultModel(ModItems.HANDHELD_SENSOR);
-		ModelHelper.setDefaultModel(ModItems.LASER_CRYSTAL);
-		ModelHelper.setDefaultModel(ModItems.LASER_SEEKING_GOOGLES);
 	}
 }

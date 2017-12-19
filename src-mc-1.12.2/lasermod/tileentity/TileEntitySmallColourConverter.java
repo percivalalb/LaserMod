@@ -14,6 +14,7 @@ import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -83,10 +84,12 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 		return tag;
 	}
 	
+	//TODO
+			/**
 	@Override
 	public Packet getDescriptionPacket() {
 	    return PacketDispatcher.getPacket(new SmallColourConverterMessage(this));
-	}
+	}**/
 	
 	@Override
 	public LaserInGame getOutputLaser(EnumFacing dir) {

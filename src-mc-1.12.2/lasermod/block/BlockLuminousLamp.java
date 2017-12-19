@@ -6,12 +6,13 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,10 +26,10 @@ public class BlockLuminousLamp extends BlockContainer {
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	
 	public BlockLuminousLamp() {
-		super(Material.glass);
+		super(Material.GLASS);
 		this.setHardness(1.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false));
-		this.setCreativeTab(LaserMod.tabLaser);
+		this.setCreativeTab(LaserMod.TAB_LASER);
 	}
 	
 
@@ -38,20 +39,30 @@ public class BlockLuminousLamp extends BlockContainer {
 	}
 	
 	@Override
-	public int getLightValue(IBlockAccess world, BlockPos pos) {
-		return this.getMetaFromState(world.getBlockState(pos)) * 15;
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return this.getMetaFromState(state) * 15;
 	}
 	
 	@Override
-	public boolean isOpaqueCube() { 
+	public boolean isOpaqueCube(IBlockState state) { 
 		return false; 
 	}
 	
-	@SideOnly(Side.CLIENT)
-	public EnumWorldBlockLayer getBlockLayer() {
-		return EnumWorldBlockLayer.CUTOUT;
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 	
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+	    return EnumBlockRenderType.MODEL;
+	}	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 
 	@SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state) {
@@ -69,17 +80,7 @@ public class BlockLuminousLamp extends BlockContainer {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[] {ACTIVE});
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, new IProperty[] {ACTIVE});
     }
-
-	@Override
-	public boolean isFullCube() {
-		return false;
-	}
-	 
-	@Override
-	public int getRenderType() {
-		return 3;
-	}
 }

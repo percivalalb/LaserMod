@@ -14,7 +14,7 @@ public class BlockLensWorkbench extends Block {
 	
     public BlockLensWorkbench() {
         super(Material.WOOD);
-        this.setCreativeTab(LaserMod.tabLaser);
+        this.setCreativeTab(LaserMod.TAB_LASER);
     }
 
 }

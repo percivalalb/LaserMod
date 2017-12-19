@@ -46,13 +46,13 @@ public class LaserUtil {
 			else if(LaserModAPI.LASER_BLACKLIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				return blockActionPos;
 			}	
-			else if(blockActionPos.state.getBlockFaceShape(laserProvider.getWorld(), tempPos, dir.getOpposite()) == BlockFaceShape.UNDEFINED) {
-				return blockActionPos;
+			else if(blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir.getOpposite())) {
+				break;
 			}
-			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), tempPos, dir)) {
-				return blockActionPos;
+			else if(blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir)) {
+				break;
 			}
-			else if(blockActionPos.block.isAir(laserProvider.getWorld(), tempPos) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), tempPos, dir) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), tempPos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(blockActionPos.state, laserProvider.getWorld(), tempPos) || (!blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir) && !blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				
 			}
 			else {
@@ -116,13 +116,13 @@ public class LaserUtil {
 			else if(LaserModAPI.LASER_BLACKLIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				break;
 			}	
-			else if(blockActionPos.block.isSideSolid(laserReciver.getWorld(), tempPos, dir.getOpposite())) {
+			else if(blockActionPos.block.isSideSolid(blockActionPos.state, laserReciver.getWorld(), tempPos, dir.getOpposite())) {
 				break;
 			}
-			else if(blockActionPos.block.isSideSolid(laserReciver.getWorld(), tempPos, dir)) {
+			else if(blockActionPos.block.isSideSolid(blockActionPos.state, laserReciver.getWorld(), tempPos, dir)) {
 				break;
 			}
-			else if(blockActionPos.block.isAir(laserReciver.getWorld(), tempPos) || (!blockActionPos.block.isSideSolid(laserReciver.getWorld(), tempPos, dir) && !blockActionPos.block.isSideSolid(laserReciver.getWorld(), tempPos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(blockActionPos.state, laserReciver.getWorld(), tempPos) || (!blockActionPos.block.isSideSolid(blockActionPos.state, laserReciver.getWorld(), tempPos, dir) && !blockActionPos.block.isSideSolid(blockActionPos.state, laserReciver.getWorld(), tempPos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 			}
 			else {
 				break;
@@ -155,7 +155,7 @@ public class LaserUtil {
 		double[] extra = new double[EnumFacing.VALUES.length];
 		
 		for(int distance = laserProvider.isForgeMultipart() ? 0 : 1; distance < laserProvider.getDistance(dir); distance++) {
-			BlockPos tempPos = laserProvider.getPos().add(dir.getFrontOffsetX() * distance, dir.getFrontOffsetY() * distance, dir.getFrontOffsetZ() * distance);
+			BlockPos tempPos = laserProvider.getPos().offset(dir, distance);
 			
 			
 			//Check whether the coordinates are in range
@@ -176,15 +176,15 @@ public class LaserUtil {
 				extra[dir.ordinal()] += (distance == 0 ? 0 : 1) + offsetMin - 0.01;
 				break;
 			}
-			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), tempPos, dir.getOpposite())) {
+			else if(blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir.getOpposite())) {
 				extra[dir.ordinal()] += offsetMin - 0.01;
 				break;
 			}
-			else if(blockActionPos.block.isSideSolid(laserProvider.getWorld(), tempPos, dir)) {
+			else if(blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir)) {
 				extra[dir.ordinal()] += (distance == 0 ? 0 : 1) + offsetMin - 0.01;
 				break;
 			}
-			else if(blockActionPos.block.isAir(laserProvider.getWorld(), tempPos) || (!blockActionPos.block.isSideSolid(laserProvider.getWorld(), tempPos, dir) && !blockActionPos.block.isSideSolid(laserProvider.getWorld(), tempPos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(blockActionPos.state, laserProvider.getWorld(), tempPos) || (!blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir) && !blockActionPos.block.isSideSolid(blockActionPos.state, laserProvider.getWorld(), tempPos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				extra[dir.ordinal()] += (distance == 0 ? 0 : 1);
 			}
 			else {

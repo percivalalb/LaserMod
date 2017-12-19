@@ -10,6 +10,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
@@ -56,7 +57,7 @@ public class ColourConverterMessage extends AbstractClientMessage {
 		TileEntityColourConverter colourConverter = (TileEntityColourConverter)tileEntity;
 		colourConverter.laser = this.laser;
 		colourConverter.colour = this.colour;
-		world.markBlockForUpdate(this.pos);
+		world.markAndNotifyBlock(this.pos, world.getChunkFromBlockCoords(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 3);
 		
 	}
 }
