@@ -20,7 +20,6 @@ import lasermod.util.BlockActionPos;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -29,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -101,7 +99,7 @@ public class ScreenRenderHandler {
             	
             	list.add("   Colour: " + laser.red + ", " + laser.green + ", " + laser.blue + " - rgb");
             	list.add("Orgin: " + ltr.pos.getX() + ", " + ltr.pos.getY() + ", " + ltr.pos.getZ());
-            	list.add("Direction traveling: " + laser.getDirection().getOpposite().name());
+            	list.add("Direction traveling: " + laser.getDirection().name());
     
             	list.add("Types:");
             	if(laser.getLaserType().size() > 0) {
@@ -131,7 +129,7 @@ public class ScreenRenderHandler {
             			Color colour = new Color(laser.red, laser.green, laser.blue);
             			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB());
             			
-            			list.add("   " + laser.getDirection().name() + ", Power: " + laser.getStrength());
+            			list.add("   " + laser.getDirection().getOpposite().name() + ", Power: " + laser.getStrength());
             		}
             		
             		if(output.size() == 0)
@@ -146,7 +144,7 @@ public class ScreenRenderHandler {
             			Color colour = new Color(laser.red, laser.green, laser.blue);
             			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB());
             			
-            			list.add("   " + laser.getDirection().getOpposite().name() + ", Power: " + laser.getStrength() + ", Range: " + provider.getDistance(laser.getDirection()));
+            			list.add("   " + laser.getDirection().name() + ", Power: " + laser.getStrength() + ", Range: " + provider.getDistance(laser.getDirection()));
             		}
             		
             		if(input.size() == 0)

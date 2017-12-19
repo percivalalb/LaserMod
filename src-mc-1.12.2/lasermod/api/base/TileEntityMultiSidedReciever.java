@@ -10,8 +10,8 @@ import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.util.LaserUtil;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -124,14 +124,14 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 	
 	public LaserInGame getLaserFromSide(EnumFacing dir) {
 		for(int i = 0; i < this.lasers.size(); ++i)
-			if(this.lasers.get(i).getDirection() == dir)
+			if(this.lasers.get(i).getDirection() == dir.getOpposite())
 				return this.lasers.get(i);
 		return null;
 	}
 	
 	public int getIndexOfLaserSide(EnumFacing dir) {
 		for(int i = 0; i < this.lasers.size(); ++i)
-			if(this.lasers.get(i).getDirection() == dir)
+			if(this.lasers.get(i).getDirection() == dir.getOpposite())
 				return i;
 		return -1;
 	}
@@ -151,7 +151,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 	public boolean removeAllLasersFromSide(EnumFacing side) {
 		boolean change = false;
 		for(int i = 0; i < lasers.size(); ++i) {
-			if(this.lasers.get(i).getDirection() == side) {
+			if(this.lasers.get(i).getDirection() == side.getOpposite()) {
 				this.lasers.remove(i);
 				change = true;
 			}
@@ -199,7 +199,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		for(LaserInGame laser : lasers)
 			totalPower += laser.getStrength();
 		
-		laserInGame.setDirection(dir.getOpposite());
+		laserInGame.setDirection(dir);
 		laserInGame.setStrength(totalPower / lasers.size());
 		
 		return laserInGame;

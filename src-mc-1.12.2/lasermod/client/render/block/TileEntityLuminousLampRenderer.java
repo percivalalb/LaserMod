@@ -1,17 +1,13 @@
 package lasermod.client.render.block;
 
-import lasermod.ModBlocks;
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserToRender;
-import lasermod.block.BlockBasicLaser;
 import lasermod.block.BlockLuminousLamp;
-import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.tileentity.TileEntityLuminousLamp;
-import lasermod.util.LaserUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb

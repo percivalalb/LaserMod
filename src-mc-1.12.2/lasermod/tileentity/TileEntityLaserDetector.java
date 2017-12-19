@@ -2,10 +2,8 @@ package lasermod.tileentity;
 
 import lasermod.api.base.TileEntityMultiSidedReciever;
 import lasermod.block.BlockLaserDetector;
-import lasermod.block.BlockLuminousLamp;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.LaserDetectorMessage;
-import net.minecraft.network.Packet;
 import net.minecraft.world.World;
 
 /**

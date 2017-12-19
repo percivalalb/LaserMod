@@ -1,26 +1,21 @@
 package lasermod.tileentity;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
-import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
-import lasermod.api.LaserToRender;
 import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.block.BlockBasicLaser;
-import lasermod.helper.ClientHelper;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
@@ -65,7 +60,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	
 	@Override
 	public LaserInGame getOutputLaser(EnumFacing dir) {
-		return new LaserInGame().setDirection(dir.getOpposite());
+		return new LaserInGame().setDirection(dir);
 	}
 
 	@Override
@@ -94,6 +89,9 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	public List<LaserInGame> getOutputLasers() {
 		IBlockState state = this.getWorld().getBlockState(this.pos);
 		
-		return Arrays.asList(this.getOutputLaser(state.getValue(BlockBasicLaser.FACING)));
+		if(state.getValue(BlockBasicLaser.POWERED))
+			return Arrays.asList(this.getOutputLaser(state.getValue(BlockBasicLaser.FACING)));
+		
+		return Collections.<LaserInGame>emptyList();
 	}
 }

@@ -17,11 +17,10 @@ import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**
@@ -42,9 +41,8 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 			if(action != null && action.isLaserReceiver(facing)) {
 				LaserInGame laserInGame = this.getOutputLaser(facing);
 				ILaserReceiver receiver = action.getLaserReceiver(facing);
-	        	if(receiver.canPassOnSide(this.world, this.pos, this.getInputSide(), laserInGame)) {
+	        	if(receiver.canPassOnSide(this.world, this.pos, this.getInputSide(), laserInGame))
 	        		receiver.passLaser(this.world, this.pos, this.getInputSide(), laserInGame);
-				}
 			}
 			else if(action != null) {
 				LaserInGame laserInGame = this.getOutputLaser(facing);

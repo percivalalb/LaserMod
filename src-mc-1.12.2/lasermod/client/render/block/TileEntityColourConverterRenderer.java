@@ -5,13 +5,11 @@ import lasermod.api.LaserInGame;
 import lasermod.api.LaserToRender;
 import lasermod.block.BlockBasicLaser;
 import lasermod.helper.ClientHelper;
-import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.util.LaserUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb

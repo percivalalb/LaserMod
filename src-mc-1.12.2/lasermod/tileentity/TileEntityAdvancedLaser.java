@@ -2,33 +2,25 @@ package lasermod.tileentity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
-import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
-import lasermod.api.LaserToRender;
 import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.block.BlockBasicLaser;
-import lasermod.helper.ClientHelper;
-import lasermod.network.PacketDispatcher;
-import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
@@ -106,7 +98,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	
 	@Override
 	public LaserInGame getOutputLaser(EnumFacing dir) {
-		LaserInGame laser = new LaserInGame().setDirection(dir.getOpposite());
+		LaserInGame laser = new LaserInGame().setDirection(dir);
 
 		for(ItemStack stack : this.upgrades) {
 			ILaser ilaser = LaserRegistry.getLaserFromItem(stack);
@@ -144,7 +136,8 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		
 		if(state.getValue(BlockBasicLaser.POWERED))
 			return Arrays.asList(this.getOutputLaser(state.getValue(BlockBasicLaser.FACING)));
-		return Arrays.asList();
+		
+		return Collections.<LaserInGame>emptyList();
 	}
 	
 	@Override

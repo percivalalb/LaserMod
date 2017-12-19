@@ -1,8 +1,5 @@
 package lasermod.proxy;
 
-import lasermod.ModBlocks;
-import lasermod.ModItems;
-import lasermod.client.model.block.ModelHelper;
 import lasermod.client.render.block.TileEntityAdvancedLaserRenderer;
 import lasermod.client.render.block.TileEntityBasicLaserRenderer;
 import lasermod.client.render.block.TileEntityColourConverterRenderer;
@@ -19,9 +16,7 @@ import lasermod.tileentity.TileEntityReflector;
 import lasermod.tileentity.TileEntitySmallColourConverter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.util.IThreadListener;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;

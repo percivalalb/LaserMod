@@ -5,7 +5,6 @@ import lasermod.block.BlockLuminousLamp;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.LuminousLampMessage;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.world.World;
 

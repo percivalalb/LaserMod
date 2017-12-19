@@ -4,7 +4,6 @@ import java.util.Random;
 
 import lasermod.LaserMod;
 import lasermod.api.ILaserReceiver;
-import lasermod.tileentity.TileEntityReflector;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -21,8 +20,6 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockPoweredLaser extends BlockContainer {
 

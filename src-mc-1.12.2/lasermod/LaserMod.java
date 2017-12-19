@@ -4,7 +4,6 @@ import lasermod.lib.Reference;
 import lasermod.network.PacketDispatcher;
 import lasermod.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;

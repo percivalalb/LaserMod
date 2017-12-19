@@ -8,9 +8,8 @@ import lasermod.helper.ClientHelper;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.util.LaserUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntityBeacon;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
