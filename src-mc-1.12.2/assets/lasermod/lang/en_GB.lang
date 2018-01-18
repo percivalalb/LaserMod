@@ -1,7 +1,7 @@
 itemGroup.tabLaser=Laser Mod
 
 item.lasermod.laserCrystal.name=Laser Crystal
-item.lasermod.laserSeekingGoogles.name=Laser Seeking Googles
+item.lasermod.laser_seeking_goggles.name=Laser Seeking Goggles
 item.lasermod.screwdriver.name=Screwdriver
 item.lasermod.handheldsensor.name=Handheld Sensor
 tile.lasermod.basicLaser.name=Basic Laser Box

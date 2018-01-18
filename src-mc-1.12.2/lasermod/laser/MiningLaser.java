@@ -37,6 +37,7 @@ public class MiningLaser implements ILaser {
 	
 	@Override
 	public void actionOnBlock(BlockActionPos action) {
+		FMLLog.info("harvest " + 2);
 		if(LaserModAPI.MINING_BLACKLIST.contains(action.block, action.meta)) return;
 		
 		int harvestLevel = action.block.getHarvestLevel(action.state);

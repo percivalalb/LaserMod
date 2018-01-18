@@ -121,7 +121,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	}
 	
 	@Override
-	public int getDistance(EnumFacing dir) {
+	public int getRange(EnumFacing dir) {
 		int total = 0;
 		
 		for(EnumFacing dir2 : EnumFacing.VALUES)

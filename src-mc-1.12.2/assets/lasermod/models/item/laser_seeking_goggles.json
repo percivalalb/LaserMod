@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "lasermod:items/laser_seeking_googles"
+        "layer0": "lasermod:items/laser_seeking_goggles"
     }
 }

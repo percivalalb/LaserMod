@@ -108,7 +108,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 	}
 	
 	@Override
-	public int getDistance(EnumFacing dir) {
+	public int getRange(EnumFacing dir) {
 		return 64;
 	}
 

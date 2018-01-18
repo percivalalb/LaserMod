@@ -27,7 +27,7 @@ public class ModModels {
 		ModelHelper.setDefaultModel(ModItems.SCREWDRIVER);
 		ModelHelper.setDefaultModel(ModItems.HANDHELD_SENSOR);
 		ModelHelper.setDefaultModel(ModItems.LASER_CRYSTAL);
-		ModelHelper.setDefaultModel(ModItems.LASER_SEEKING_GOOGLES);
+		ModelHelper.setDefaultModel(ModItems.LASER_SEEKING_GOGGLES);
 		ModelHelper.setModel(ModItems.UPGRADES, 0, Reference.MOD_ID + ":upgrade_fire");
 		ModelHelper.setModel(ModItems.UPGRADES, 1, Reference.MOD_ID + ":upgrade_water");
 		ModelHelper.setModel(ModItems.UPGRADES, 2, Reference.MOD_ID + ":upgrade_ice");

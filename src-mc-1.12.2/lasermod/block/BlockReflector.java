@@ -111,9 +111,7 @@ public class BlockReflector extends BlockContainer {
     	
     	for(EnumFacing facing : EnumFacing.VALUES) {
     		if(!ter.closedSides[facing.ordinal()]) {
-    			FMLLog.info("Open " + facing);
     			if(LaserUtil.isValidSourceOfPowerOnSide(ter, facing)) {
-    				FMLLog.info("true ");
     				return true;
     			}
     		}

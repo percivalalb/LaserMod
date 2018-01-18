@@ -60,7 +60,6 @@ public class BlockActionPos {
 	}
 	
 	public ILaserProvider getLaserProvider(EnumFacing dir) {
-		
 		return (ILaserProvider)this.tileEntity;
 	}
 	

@@ -2,7 +2,7 @@ package lasermod;
 
 import lasermod.item.ItemHandheldSensor;
 import lasermod.item.ItemLaserCrystal;
-import lasermod.item.ItemLaserSeekingGoogles;
+import lasermod.item.ItemLaserSeekingGoggles;
 import lasermod.item.ItemScrewdriver;
 import lasermod.item.ItemUpgrades;
 import lasermod.lib.Reference;
@@ -19,14 +19,14 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModItems {
 	
 	public static Item LASER_CRYSTAL;
-	public static Item LASER_SEEKING_GOOGLES;
+	public static Item LASER_SEEKING_GOGGLES;
 	public static Item SCREWDRIVER;
 	public static Item UPGRADES;
 	public static Item HANDHELD_SENSOR;
 	
 	public static void init() {
 		LASER_CRYSTAL = new ItemLaserCrystal().setRegistryName(Reference.MOD_ID, "laser_crystal").setUnlocalizedName("lasermod.laserCrystal");
-		LASER_SEEKING_GOOGLES = new ItemLaserSeekingGoogles().setRegistryName(Reference.MOD_ID, "laser_seeking_googles").setUnlocalizedName("lasermod.laserSeekingGoogles");
+		LASER_SEEKING_GOGGLES = new ItemLaserSeekingGoggles().setRegistryName(Reference.MOD_ID, "laser_seeking_goggles").setUnlocalizedName("lasermod.laser_seeking_goggles");
 		SCREWDRIVER = new ItemScrewdriver().setRegistryName(Reference.MOD_ID, "screwdriver").setUnlocalizedName("lasermod.screwdriver");
 		UPGRADES = new ItemUpgrades().setRegistryName(Reference.MOD_ID, "upgrades").setUnlocalizedName("lasermod.upgrade");
 		HANDHELD_SENSOR = new ItemHandheldSensor().setRegistryName(Reference.MOD_ID, "handheld_sensor").setUnlocalizedName("lasermod.handheldsensor");
@@ -39,7 +39,7 @@ public class ModItems {
 		IForgeRegistry<Item> registry = event.getRegistry();
 		
 		registry.register(LASER_CRYSTAL);
-		registry.register(LASER_SEEKING_GOOGLES);
+		registry.register(LASER_SEEKING_GOGGLES);
 		registry.register(SCREWDRIVER);
 		registry.register(UPGRADES);
 		registry.register(HANDHELD_SENSOR);

@@ -21,6 +21,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb
@@ -47,7 +48,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		    	}
 		    	else if(reciver != null) {
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
-		    		
+		    		FMLLog.info("TEST");
 		    		if(laserInGame != null)
 			    		for(ILaser laser : laserInGame.getLaserType())
 			    			laser.actionOnBlock(reciver);
@@ -89,21 +90,14 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		return tag;
 	}
 	
-	//TODO
-	/**
-	@Override
-	public Packet getDescriptionPacket() {
-	    return PacketDispatcher.getPacket(new AdvancedLaserMessage(this));
-	}**/
-	
 	@Override
 	public LaserInGame getOutputLaser(EnumFacing dir) {
 		LaserInGame laser = new LaserInGame().setDirection(dir);
 
 		for(ItemStack stack : this.upgrades) {
-			ILaser ilaser = LaserRegistry.getLaserFromItem(stack);
-			if(laser != null)
-				laser.addLaserType(ilaser);
+			ILaser type = LaserRegistry.getLaserFromItem(stack);
+			if(type != null)
+				laser.addLaserType(type);
 		}
 		return laser;
 	}
@@ -121,7 +115,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	public int getDistance(EnumFacing dir) {
+	public int getRange(EnumFacing dir) {
 		return 64;
 	}
 	

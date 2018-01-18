@@ -90,13 +90,6 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 		
 		return tag;
 	}
-
-	//TODO
-		/**
-	@Override
-	public Packet getDescriptionPacket() {
-	    return PacketDispatcher.getPacket(new ColourConverterMessage(this));
-	}**/
 	
 	@Override
 	public LaserInGame getOutputLaser(EnumFacing dir) {
@@ -116,7 +109,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReciever imp
 	}
 	
 	@Override
-	public int getDistance(EnumFacing dir) {
+	public int getRange(EnumFacing dir) {
 		return 64;
 	}
 

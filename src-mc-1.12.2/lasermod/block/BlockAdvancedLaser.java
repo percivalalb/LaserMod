@@ -55,8 +55,9 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 					else {
 						//player.openGui(LaserMod.instance, GuiAdvancedLaser.GUI_ID, world, x, y, z);
 						//player.addChatMessage(" Upgrades attached to this laser...");
-						for(ILaser laser : advancedLaser.getOutputLaser(state.getValue(FACING)).getLaserType()) {
-							String name = LaserRegistry.getIdFromLaser(laser);
+						for(ItemStack stack : advancedLaser.upgrades) {
+							ILaser type = LaserRegistry.getLaserFromItem(stack);
+							String name = LaserRegistry.getIdFromLaser(type);
 							name = name.replaceFirst(String.valueOf(name.charAt(0)), String.valueOf(name.charAt(0)).toUpperCase());
 							player.sendMessage(new TextComponentString(TextFormatting.GREEN + "  " + name));
 						}

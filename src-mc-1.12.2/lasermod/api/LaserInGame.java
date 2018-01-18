@@ -72,7 +72,7 @@ public class LaserInGame {
 	public float shouldRenderLaser(EntityPlayer player) {
 		for(ILaser laser : this.laserType) {
 			if(!laser.shouldRenderLaser(player, this.dir))
-				return player.inventory.armorItemInSlot(3).getItem() == ModItems.LASER_SEEKING_GOOGLES ? 0.1F : 0.0F;
+				return player.inventory.armorItemInSlot(3).getItem() == ModItems.LASER_SEEKING_GOGGLES ? 0.1F : 0.0F;
 		}
 		return 0.4F;
 	}

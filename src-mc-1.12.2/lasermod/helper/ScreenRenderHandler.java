@@ -144,7 +144,7 @@ public class ScreenRenderHandler {
             			Color colour = new Color(laser.red, laser.green, laser.blue);
             			this.drawRect(22, 24, 22 + 9, 24 + 9, colour.getRGB());
             			
-            			list.add("   " + laser.getDirection().name() + ", Power: " + laser.getStrength() + ", Range: " + provider.getDistance(laser.getDirection()));
+            			list.add("   " + laser.getDirection().name() + ", Power: " + laser.getStrength() + ", Range: " + provider.getRange(laser.getDirection()));
             		}
             		
             		if(input.size() == 0)
