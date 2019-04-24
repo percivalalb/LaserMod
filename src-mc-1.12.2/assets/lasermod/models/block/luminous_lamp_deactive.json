@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "lasermod:blocks/luminous_lamp_off"
+        "all": "lasermod:block/luminous_lamp_off"
     }
 }

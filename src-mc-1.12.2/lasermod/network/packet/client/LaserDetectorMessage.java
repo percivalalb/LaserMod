@@ -58,7 +58,7 @@ public class LaserDetectorMessage extends AbstractClientMessage {
 		TileEntityLaserDetector colourConverter = (TileEntityLaserDetector)tileEntity;
 		colourConverter.lasers = this.lasers;
 		colourConverter.setUpdateRequired();
-		world.markAndNotifyBlock(this.pos, world.getChunkFromBlockCoords(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 2);
+		world.markAndNotifyBlock(this.pos, world.getChunk(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 2);
 		
 	}
 }

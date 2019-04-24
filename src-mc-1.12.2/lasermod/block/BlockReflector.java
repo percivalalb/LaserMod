@@ -50,7 +50,7 @@ public class BlockReflector extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 	
@@ -72,7 +72,7 @@ public class BlockReflector extends BlockContainer {
 			else if(!state.getValue(POWERED) && this.isLaserSource(world, pos)) 
 				cycleState(world, pos, state);
 			else
-			world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 2);
+			world.markAndNotifyBlock(pos, world.getChunk(pos), state, state, 2);
 			//PacketDispatcher.sendToAllAround(new ReflectorMessage(reflector), reflector, 512);
 			return true;
 		}

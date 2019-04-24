@@ -79,7 +79,7 @@ public class LaserInGame {
 	
 	public LaserInGame readFromNBT(NBTTagCompound tag) {
 		this.strength = tag.getDouble("strength");
-		this.dir = EnumFacing.getFront(tag.getInteger("side"));
+		this.dir = EnumFacing.byIndex(tag.getInteger("side"));
 		this.red = tag.getInteger("red");
 		this.green = tag.getInteger("green");
 		this.blue = tag.getInteger("blue");
@@ -120,7 +120,7 @@ public class LaserInGame {
 	
 	public LaserInGame readFromPacket(ByteBuf buffer) {
 		this.strength = buffer.readDouble();
-		this.dir = EnumFacing.getFront(buffer.readInt());
+		this.dir = EnumFacing.byIndex(buffer.readInt());
 		this.red = buffer.readInt();
 		this.green = buffer.readInt();
 		this.blue = buffer.readInt();

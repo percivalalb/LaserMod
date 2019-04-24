@@ -53,7 +53,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 	@Override
 	public void updateLaserAction(boolean client) {
 		if(this.laser != null)
-			LaserUtil.performLaserAction(this, EnumFacing.getFront(this.getBlockMetadata()), this.pos);
+			LaserUtil.performLaserAction(this, EnumFacing.byIndex(this.getBlockMetadata()), this.pos);
 	}
 
 	public TileEntitySmallColourConverter setColour(int colour) {
@@ -142,6 +142,6 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 
 	@Override
 	public EnumFacing getInputSide() {
-		return EnumFacing.getFront(this.getBlockMetadata()).getOpposite();
+		return EnumFacing.byIndex(this.getBlockMetadata()).getOpposite();
 	}
 }

@@ -1,6 +1,6 @@
 itemGroup.tabLaser=Laser Mod
 
-item.lasermod.laserCrystal.name=Laser Crystal
+item.lasermod.laser_crystal.name=Laser Crystal
 item.lasermod.laser_seeking_goggles.name=Laser Seeking Goggles
 item.lasermod.screwdriver.name=Screwdriver
 item.lasermod.handheldsensor.name=Handheld Sensor
@@ -8,8 +8,8 @@ tile.lasermod.basicLaser.name=Basic Laser Box
 tile.lasermod.advancedLaser.name=Advanced Laser Box
 tile.lasermod.reflector.name=Laser Reflector
 tile.lasermod.detector.name=Laser Detector
-tile.lasermod.colorconverter.name=Colour Converter
-tile.lasermod.smallcolorconverter.name=Miniature Colour Converter
+tile.lasermod.colourconverter.name=Colour Converter
+tile.lasermod.smallcolourconverter.name=Miniature Colour Converter
 tile.lasermod.luminouslamp.name=Luminous Lamp
 tile.lasermod.lensworkbench.name=Lens Workbench
 item.lasermod.upgrade.0.name=Fire Upgrade

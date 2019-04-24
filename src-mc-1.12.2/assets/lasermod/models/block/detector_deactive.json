@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "lasermod:blocks/detector_off"
+        "all": "lasermod:block/detector_off"
     }
 }

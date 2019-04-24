@@ -7,5 +7,5 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ResourceReference {
 
-	public static final ResourceLocation REFLECTOR_MODEL = new ResourceLocation("lasermod", "textures/models/reflector.png");
+	public static final ResourceLocation REFLECTOR_MODEL = new ResourceLocation("lasermod", "textures/model/reflector.png");
 }

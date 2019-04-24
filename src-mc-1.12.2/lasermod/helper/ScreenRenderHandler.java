@@ -59,7 +59,7 @@ public class ScreenRenderHandler {
 				reach = mop.hitVec.distanceTo(posVec);
 			
 			Vec3d lookVec = ClientHelper.mc.getRenderViewEntity().getLook(partialTicks);
-	        Vec3d combinedVec = posVec.addVector(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
+	        Vec3d combinedVec = posVec.add(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
 			
 	        Vec3d finalVec = null;
 

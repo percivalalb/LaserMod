@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "lasermod:items/upgrade_push"
+        "layer0": "lasermod:item/upgrade_push"
     }
 }

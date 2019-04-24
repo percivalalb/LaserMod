@@ -55,7 +55,7 @@ public class SmallColourConverterMessage extends AbstractClientMessage {
 		TileEntitySmallColourConverter colourConverter = (TileEntitySmallColourConverter)tileEntity;
 		colourConverter.laser = this.laser;
 		colourConverter.colour = this.colour;
-		world.markAndNotifyBlock(this.pos, world.getChunkFromBlockCoords(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 2);
+		world.markAndNotifyBlock(this.pos, world.getChunk(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 2);
 		
 	}
 }

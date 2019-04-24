@@ -1,7 +1,5 @@
 package lasermod.item;
 
-import javax.annotation.Nullable;
-
 import lasermod.LaserMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
@@ -25,6 +23,6 @@ public class ItemLaserSeekingGoggles extends ItemArmor  {
 
 	@Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return "lasermod:textures/models/armor/laser_goggles.png";
+        return "lasermod:textures/model/armor/laser_goggles.png";
     }
 }
