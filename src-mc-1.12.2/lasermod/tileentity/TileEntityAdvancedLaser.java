@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import lasermod.LaserMod;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
@@ -21,7 +22,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb
@@ -48,7 +48,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		    	}
 		    	else if(reciver != null) {
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
-		    		FMLLog.info("TEST");
+		    		LaserMod.LOGGER.debug("TEST");
 		    		if(laserInGame != null)
 			    		for(ILaser laser : laserInGame.getLaserType())
 			    			laser.actionOnBlock(reciver);

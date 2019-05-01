@@ -1,4 +1,6 @@
 package lasermod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import lasermod.lib.Reference;
 import lasermod.network.PacketDispatcher;
@@ -24,6 +26,8 @@ public class LaserMod {
 
 	@Instance(value = Reference.MOD_ID)
 	public static LaserMod INSTANCE;
+	
+	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 	
 	@SidedProxy(clientSide = Reference.SP_CLIENT, serverSide = Reference.SP_SERVER)
     public static CommonProxy PROXY;

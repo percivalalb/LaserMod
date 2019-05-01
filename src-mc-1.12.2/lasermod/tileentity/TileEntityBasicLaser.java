@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import lasermod.LaserMod;
 import lasermod.api.ILaser;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
@@ -15,7 +16,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb
@@ -34,10 +34,10 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 				
 		    	if(reciver != null && reciver.isLaserReceiver(facing)) {
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
-		    		//FMLLog.info("Passings");
+		    		//LaserMod.LOGGER.debug(("Passings");
 		    		if(reciver.getLaserReceiver(facing).canPassOnSide(this.world, this.pos, facing.getOpposite(), laserInGame)) {
 		    			reciver.getLaserReceiver(facing).passLaser(this.world, this.pos, facing.getOpposite(), laserInGame);
-		    			FMLLog.info("Passing");
+		    			LaserMod.LOGGER.debug("Passing");
 		    		}
 		    			
 		    	}

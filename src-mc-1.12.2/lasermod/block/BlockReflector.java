@@ -22,7 +22,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -67,7 +66,7 @@ public class BlockReflector extends BlockContainer {
 			
 			if(state.getValue(POWERED) && !this.isLaserSource(world, pos)) {
 				world.scheduleUpdate(pos, this, 4);
-				FMLLog.info("off");
+				LaserMod.LOGGER.debug("off");
 			}
 			else if(!state.getValue(POWERED) && this.isLaserSource(world, pos)) 
 				cycleState(world, pos, state);
