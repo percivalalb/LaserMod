@@ -10,6 +10,7 @@ import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
 import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.block.BlockBasicLaser;
+import lasermod.block.BlockPoweredRedstone;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +28,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 		if(!client) {
 			IBlockState state = this.getWorld().getBlockState(this.pos);
 			
-			if(state.getValue(BlockBasicLaser.POWERED)) {
+			if(state.getValue(BlockPoweredRedstone.POWERED)) {
 				EnumFacing facing = state.getValue(BlockBasicLaser.FACING);
 				
 				BlockActionPos reciver = LaserUtil.getFirstBlock(this, facing);

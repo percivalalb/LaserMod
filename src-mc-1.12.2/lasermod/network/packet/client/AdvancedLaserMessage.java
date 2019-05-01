@@ -11,7 +11,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class AdvancedLaserMessage extends AbstractClientMessage {
@@ -31,7 +30,7 @@ public class AdvancedLaserMessage extends AbstractClientMessage {
 		this.upgrades = new ArrayList<ItemStack>();
 	    int upgradeCount = buffer.readInt();
 	    for(int i = 0; i < upgradeCount; ++i)
-	    	upgrades.add(ByteBufUtils.readItemStack(buffer));
+	    	upgrades.add(buffer.readItemStack());
 		
 	}
 	@Override
@@ -39,7 +38,7 @@ public class AdvancedLaserMessage extends AbstractClientMessage {
 		buffer.writeBlockPos(this.pos);
 		buffer.writeInt(this.upgrades.size());
 	    for(int i = 0; i < this.upgrades.size(); ++i)
-	    	ByteBufUtils.writeItemStack(buffer, this.upgrades.get(i));
+	    	buffer.writeItemStack(this.upgrades.get(i));
 	
 		
 	}
