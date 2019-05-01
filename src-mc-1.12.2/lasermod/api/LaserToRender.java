@@ -1,5 +1,7 @@
 package lasermod.api;
 
+import java.util.Objects;
+
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -31,10 +33,16 @@ public class LaserToRender {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof LaserToRender) {
-			LaserToRender other = (LaserToRender)obj;
-			return this.pos.equals(other.pos) && this.dir == other.dir;
-		}
-		return false;
+		if(this == obj) return true;
+        if(obj == null) return false;
+        if(this.getClass() != obj.getClass()) return false;
+        LaserToRender laser = (LaserToRender)obj;
+        return this.pos.equals(laser.pos) 
+        		&& this.dir == laser.dir;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.pos, this.dir);
 	}
 }
