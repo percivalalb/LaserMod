@@ -1,12 +1,9 @@
-package lasermod.helper;
+package lasermod.handler;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import lasermod.ModItems;
 import lasermod.api.ILaser;
@@ -16,6 +13,7 @@ import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
 import lasermod.api.LaserToRender;
+import lasermod.helper.ClientHelper;
 import lasermod.util.BlockActionPos;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -32,10 +30,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  **/
+@SideOnly(value = Side.CLIENT)
 public class ScreenRenderHandler {
 
 	@SubscribeEvent
@@ -184,10 +185,11 @@ public class ScreenRenderHandler {
 	
 	public void drawHoveringText(List par1List, int mouseX, int mouseY, int width, int height, FontRenderer font) {
         if (!par1List.isEmpty()) {
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        	GlStateManager.disableRescaleNormal();
             RenderHelper.disableStandardItemLighting();
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GlStateManager.disableLighting();
+            GlStateManager.disableDepth();
+            
             int k = 0;
             Iterator iterator = par1List.iterator();
 
@@ -245,10 +247,11 @@ public class ScreenRenderHandler {
                 j1 += 10;
             }
             
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.enableLighting();
+            GlStateManager.enableDepth();
+            
             RenderHelper.enableGUIStandardItemLighting();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GlStateManager.enableRescaleNormal();
         }
     }
 	
