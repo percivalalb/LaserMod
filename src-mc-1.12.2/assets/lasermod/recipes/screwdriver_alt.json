@@ -11,8 +11,7 @@
   "key": {
     "B": {
       "item": "minecraft:dye",
-      "data": 0,
-      "_comment": "comment text goes here...",
+      "data": 0
     },
     "Y": {
       "item": "minecraft:dye",
