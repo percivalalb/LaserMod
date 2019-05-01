@@ -3,10 +3,13 @@ package lasermod.client.model.block;
 import lasermod.tileentity.TileEntityReflector;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
+@SideOnly(value = Side.CLIENT)
 public class ModelReflector extends ModelBase {
 	
 	private ModelRenderer columnFR;

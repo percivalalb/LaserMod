@@ -10,11 +10,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(value = Side.CLIENT)
 @EventBusSubscriber(modid = Reference.MOD_ID)
 public class ModModels {
 	
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
 	public static void setItemModels(ModelRegistryEvent event) {
 		ModelHelper.setDefaultModel(ModBlocks.LASER_BASIC);
 		ModelHelper.setDefaultModel(ModBlocks.LASER_ADVANCED);

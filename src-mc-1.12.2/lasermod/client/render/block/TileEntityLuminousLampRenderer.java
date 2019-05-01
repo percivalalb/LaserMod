@@ -8,10 +8,13 @@ import lasermod.tileentity.TileEntityLuminousLamp;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
+@SideOnly(value = Side.CLIENT)
 public class TileEntityLuminousLampRenderer extends TileEntitySpecialRenderer<TileEntityLuminousLamp> {
 
 	@Override
