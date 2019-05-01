@@ -6,6 +6,7 @@ import lasermod.api.LaserInGame;
 import lasermod.network.AbstractMessage.AbstractClientMessage;
 import lasermod.tileentity.TileEntityColourConverter;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +20,7 @@ public class ColourConverterMessage extends AbstractClientMessage {
 	
 	public BlockPos pos;
     public LaserInGame laser;
-    public int colour;
+    public EnumDyeColor colour;
 	
     public ColourConverterMessage() {}
     public ColourConverterMessage(TileEntityColourConverter colourConverter) {
@@ -34,7 +35,7 @@ public class ColourConverterMessage extends AbstractClientMessage {
 	
 		if(buffer.readBoolean())
 			this.laser = new LaserInGame().readFromPacket(buffer);
-		this.colour = buffer.readInt();
+		this.colour = EnumDyeColor.byMetadata(buffer.readInt());
 		
 	}
 	@Override
@@ -43,7 +44,7 @@ public class ColourConverterMessage extends AbstractClientMessage {
 		buffer.writeBoolean(this.laser != null);
 		if(this.laser != null)
 			this.laser.writeToPacket(buffer);
-		buffer.writeInt(this.colour);
+		buffer.writeInt(this.colour.getMetadata());
 		
 	}
 	@Override

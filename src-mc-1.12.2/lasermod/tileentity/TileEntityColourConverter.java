@@ -16,6 +16,7 @@ import lasermod.network.packet.client.ColourConverterMessage;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,7 +30,7 @@ import net.minecraft.world.World;
 public class TileEntityColourConverter extends TileEntitySingleSidedReceiver implements ILaserProvider {
 
 	public boolean multipart = false;
-	public int colour = 14;
+	public EnumDyeColor colour = EnumDyeColor.RED;
 	
 	@Override
 	public void updateLasers(boolean client) {
@@ -65,7 +66,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 		}
 	}
 
-	public TileEntityColourConverter setColour(int colour) {
+	public TileEntityColourConverter setColour(EnumDyeColor colour) {
 		this.colour = colour;
 		return this;
 	}
@@ -74,7 +75,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		if(tag.hasKey("colour"))
-			this.colour = tag.getInteger("colour");
+			this.colour = EnumDyeColor.byMetadata(tag.getInteger("colour"));
 		if(tag.hasKey("laser"))
 			this.laser = new LaserInGame(tag.getCompoundTag("laser"));
 		else 
@@ -84,7 +85,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setInteger("colour", this.colour);
+		tag.setInteger("colour", this.colour.getMetadata());
 		if(this.laser != null)
 			tag.setTag("laser", this.laser.writeToNBT(new NBTTagCompound()));
 		
@@ -95,9 +96,9 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 	public LaserInGame getOutputLaser(EnumFacing dir) {
 		if(this.laser != null) {
 			LaserInGame outputLaser = this.laser.copy();
-			outputLaser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][0] * 255);
-			outputLaser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][1] * 255);
-			outputLaser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour][2] * 255);
+			outputLaser.red = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour.getMetadata()][0] * 255);
+			outputLaser.green = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour.getMetadata()][1] * 255);
+			outputLaser.blue = (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour.getMetadata()][2] * 255);
 			return outputLaser;
 		}
 		return null;

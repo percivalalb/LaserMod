@@ -43,10 +43,7 @@ public class BlockColourConverter extends BlockPoweredLaser {
 		if(stack.getItem() == Items.DYE) {
 			if(!world.isRemote) {
 				TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getTileEntity(pos);
-				
-				int colour = 15 - stack.getItemDamage();
-				if(colour > 15) colour = 15;
-				else if(colour < 0) colour = 0;
+				EnumDyeColor colour = EnumDyeColor.byDyeDamage(stack.getItemDamage());
 				
 				if(colour == colourConverter.colour) return true;
 				
