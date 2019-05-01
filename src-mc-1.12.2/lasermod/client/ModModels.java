@@ -23,6 +23,7 @@ public class ModModels {
 		ModelHelper.setDefaultModel(ModBlocks.COLOUR_CONVERTER);
 		ModelHelper.setDefaultModel(ModBlocks.COLOUR_CONVERTER_SMALL);
 		ModelHelper.setDefaultModel(ModBlocks.LUMINOUS_LAMP);
+		ModelHelper.setDefaultModel(ModBlocks.LENS_WORKBENCH);
 		
 		ModelHelper.setDefaultModel(ModItems.SCREWDRIVER);
 		ModelHelper.setDefaultModel(ModItems.HANDHELD_SENSOR);
