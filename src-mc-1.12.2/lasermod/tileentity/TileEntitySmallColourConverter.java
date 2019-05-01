@@ -7,7 +7,7 @@ import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.api.base.TileEntitySingleSidedReciever;
+import lasermod.api.base.TileEntitySingleSidedReceiver;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.SmallColourConverterMessage;
 import lasermod.util.BlockActionPos;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class TileEntitySmallColourConverter extends TileEntitySingleSidedReciever implements ILaserProvider {
+public class TileEntitySmallColourConverter extends TileEntitySingleSidedReceiver implements ILaserProvider {
 
 	public boolean multipart = false;
 	public int colour = 14;

@@ -11,7 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TileEntitySingleSidedReciever extends TileEntityLaserDevice implements ILaserReceiver {
+public abstract class TileEntitySingleSidedReceiver extends TileEntityLaserDevice implements ILaserReceiver {
 
 	public LaserInGame laser;
 	

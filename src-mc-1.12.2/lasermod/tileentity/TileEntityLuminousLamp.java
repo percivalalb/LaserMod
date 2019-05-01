@@ -1,6 +1,6 @@
 package lasermod.tileentity;
 
-import lasermod.api.base.TileEntityMultiSidedReciever;
+import lasermod.api.base.TileEntityMultiSidedReceiver;
 import lasermod.block.BlockLuminousLamp;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.LuminousLampMessage;
@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityLuminousLamp extends TileEntityMultiSidedReciever {
+public class TileEntityLuminousLamp extends TileEntityMultiSidedReceiver {
 	
 	@Override
 	public void sendUpdateDescription() {

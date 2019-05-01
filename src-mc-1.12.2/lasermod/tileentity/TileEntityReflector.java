@@ -8,7 +8,7 @@ import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.api.base.TileEntityMultiSidedReciever;
+import lasermod.api.base.TileEntityMultiSidedReceiver;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ReflectorMessage;
 import lasermod.util.BlockActionPos;
@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityReflector extends TileEntityMultiSidedReciever implements ILaserProvider {
+public class TileEntityReflector extends TileEntityMultiSidedReceiver implements ILaserProvider {
 
 	public boolean[] closedSides = new boolean[] {true, true, true, true, true, true};
 	

@@ -8,7 +8,7 @@ import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
-import lasermod.api.base.TileEntitySingleSidedReciever;
+import lasermod.api.base.TileEntitySingleSidedReceiver;
 import lasermod.block.BlockPoweredLaser;
 import lasermod.block.BlockPoweredRedstone;
 import lasermod.network.PacketDispatcher;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityColourConverter extends TileEntitySingleSidedReciever implements ILaserProvider {
+public class TileEntityColourConverter extends TileEntitySingleSidedReceiver implements ILaserProvider {
 
 	public boolean multipart = false;
 	public int colour = 14;

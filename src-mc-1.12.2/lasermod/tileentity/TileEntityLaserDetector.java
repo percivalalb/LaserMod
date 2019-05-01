@@ -1,6 +1,6 @@
 package lasermod.tileentity;
 
-import lasermod.api.base.TileEntityMultiSidedReciever;
+import lasermod.api.base.TileEntityMultiSidedReceiver;
 import lasermod.block.BlockLaserDetector;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.LaserDetectorMessage;
@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public class TileEntityLaserDetector extends TileEntityMultiSidedReciever {
+public class TileEntityLaserDetector extends TileEntityMultiSidedReceiver {
 	
 	@Override
 	public void sendUpdateDescription() {

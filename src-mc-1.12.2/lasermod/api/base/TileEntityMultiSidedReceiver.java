@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.util.LaserUtil;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  */
-public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice implements ILaserReceiver {
+public abstract class TileEntityMultiSidedReceiver extends TileEntityLaserDevice implements ILaserReceiver {
 
 	public LaserInGame lastCombinedLaser;
 	public ArrayList<LaserInGame> lasers = new ArrayList<LaserInGame>();
@@ -43,6 +43,7 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		
+		this.lasers.clear();
 		int amount = tag.getInteger("laserCount");
 		 for(int i = 0; i < amount; ++i)
 			 this.lasers.add(new LaserInGame(tag.getCompoundTag("laser" + i)));
@@ -174,9 +175,9 @@ public abstract class TileEntityMultiSidedReciever extends TileEntityLaserDevice
 		if(this.noLaserInputs())
 			return null;
 		
-		ArrayList<ILaser> laserList = new ArrayList<ILaser>();
+		ArrayList<LaserType> laserList = new ArrayList<LaserType>();
 		for(LaserInGame lig : this.lasers)
-			for(ILaser laser : lig.getLaserType()) 
+			for(LaserType laser : lig.getLaserType()) 
 				if(!laserList.contains(laser))
 					laserList.add(laser);
 		
