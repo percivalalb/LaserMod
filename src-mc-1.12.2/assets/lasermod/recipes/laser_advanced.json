@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "lasermod:laser_advanced"
+  },
+  "pattern": [
+    "OGO",
+    "SLS",
+    "OGO"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "L": {
+      "item": "lasermod:laser_crystal"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    }
+  }
+}

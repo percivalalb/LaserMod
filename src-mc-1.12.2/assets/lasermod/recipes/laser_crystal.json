@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "lasermod:laser_crystal"
+  },
+  "pattern": [
+    " r ",
+    "rgr",
+    " r "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    }
+  }
+}

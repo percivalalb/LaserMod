@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "lasermod:laser_seeking_goggles"
+  },
+  "pattern": [
+    "I I",
+    "I I",
+    "GLG"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "L": {
+      "item": "lasermod:laser_crystal"
+    }
+  }
+}

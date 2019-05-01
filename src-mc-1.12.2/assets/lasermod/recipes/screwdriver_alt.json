@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "lasermod:screwdriver"
+  },
+  "pattern": [
+    "  I",
+    "BY ",
+    "YB "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:dye",
+      "data": 0,
+      "_comment": "comment text goes here...",
+    },
+    "Y": {
+      "item": "minecraft:dye",
+      "data": 11
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}

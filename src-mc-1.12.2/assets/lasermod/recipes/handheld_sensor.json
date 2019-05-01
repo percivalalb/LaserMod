@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "lasermod:handheld_sensor"
+  },
+  "pattern": [
+    " T ",
+    "ICI",
+    " I "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "lasermod:laser_crystal"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}

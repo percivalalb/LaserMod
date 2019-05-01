@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "lasermod:detector"
+  },
+  "pattern": [
+    "SSS",
+    "SBS",
+    "SSS"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:redstone_block"
+    },
+    "S": {
+      "item": "minecraft:stone",
+      "data": 0
+    }
+  }
+}
