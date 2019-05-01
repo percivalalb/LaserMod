@@ -32,6 +32,12 @@ laser.lasermod.pull=Pull
 laser.lasermod.damage=Damage
 laser.lasermod.heal=Heal
 
+
+lasermod.screwdriver.advanced_laser=Advanced Laser (%d, %d, %d)
+lasermod.screwdriver.already_has_upgrade=This Laser already has this upgrade.
+lasermod.screwdriver.no_upgrade=Currently no upgrades attached to this laser.
+lasermod.screwdriver.redstone_signal=Please disable redstone signal to input an upgrade.
+
 lasermod.sensor.title=Laser
 lasermod.sensor.colour=Colour: %d, %d, %d
 lasermod.sensor.origin=Origin: %f, %f, %f

@@ -46,7 +46,7 @@ public class LaserMod {
     }
 	
 	/** Laser Mod Creative tab **/
-	public static CreativeTabs TAB_LASER = new CreativeTabs("tabLaser") {
+	public static CreativeTabs TAB_LASER = new CreativeTabs("tab_laser") {
 		@Override
 		@SideOnly(Side.CLIENT)
 		public ItemStack createIcon() { return new ItemStack(ModItems.SCREWDRIVER); }

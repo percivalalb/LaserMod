@@ -19,7 +19,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,9 +50,9 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 			if(item.getItem() == ModItems.SCREWDRIVER) {
 				
 				if(!world.isRemote) {
-					player.sendMessage(new TextComponentString(TextFormatting.RED + String.format("Advanced Laser (%d, %d, %d)", pos.getX(), pos.getY(), pos.getZ())));
+					player.sendMessage(new TextComponentTranslation("lasermod.screwdriver.advanced_laser", pos.getX(), pos.getY(), pos.getZ()).setStyle((new Style()).setColor(TextFormatting.RED)));
 					if(advancedLaser.getOutputLaser(state.getValue(FACING)).getLaserType().size() <= 1) {
-						player.sendMessage(new TextComponentString(" Currently no upgrades attached to this laser."));
+						player.sendMessage(new TextComponentTranslation("lasermod.screwdriver.no_upgrade"));
 					}
 					else {
 						//player.openGui(LaserMod.instance, GuiAdvancedLaser.GUI_ID, world, x, y, z);
@@ -70,7 +72,7 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 				for(ItemStack stack : advancedLaser.upgrades) {
 					LaserType laser2 = LaserRegistry.getLaserFromItem(stack);
 					if(laser == laser2){
-						if(!world.isRemote) player.sendMessage(new TextComponentString("This Laser already has this upgrade."));
+						if(!world.isRemote) player.sendMessage(new TextComponentTranslation("lasermod.screwdriver.already_has_laser"));
 						return true;
 					}
 				}
@@ -84,7 +86,7 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 				return true;
 			}
 			else if(laser != null && power && !world.isRemote) {
-				player.sendMessage(new TextComponentString("Please disable redstone signal to input an upgrade."));
+				player.sendMessage(new TextComponentTranslation("lasermod.screwdriver.redstone_signal"));
 				return true;
 			}
 		}
