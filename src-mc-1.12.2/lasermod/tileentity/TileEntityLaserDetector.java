@@ -13,7 +13,7 @@ public class TileEntityLaserDetector extends TileEntityMultiSidedReceiver {
 	
 	@Override
 	public void sendUpdateDescription() {
-		PacketDispatcher.sendToAllAround(new LaserDetectorMessage(this), this, 512);
+		PacketDispatcher.sendToAllTracking(new LaserDetectorMessage(this), this);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -57,6 +58,18 @@ public class PacketDispatcher {
 		PacketDispatcher.dispatcher.sendToAll(message);
 	}
 
+	public static final void sendToAllTracking(IMessage message, NetworkRegistry.TargetPoint point) {
+		PacketDispatcher.dispatcher.sendToAllTracking(message, point);
+	}
+	
+	public static final void sendToAllTracking(IMessage message, int dimension, BlockPos pos) {
+		PacketDispatcher.sendToAllTracking(message, new NetworkRegistry.TargetPoint(dimension, pos.getX(), pos.getY(), pos.getZ(), 0));
+	}
+	
+	public static final void sendToAllTracking(IMessage message, TileEntity tileEntity) {
+		PacketDispatcher.sendToAllTracking(message, tileEntity.getWorld().provider.getDimension(), tileEntity.getPos());
+	}
+	
 	public static final void sendToAllAround(IMessage message, NetworkRegistry.TargetPoint point) {
 		PacketDispatcher.dispatcher.sendToAllAround(message, point);
 	}

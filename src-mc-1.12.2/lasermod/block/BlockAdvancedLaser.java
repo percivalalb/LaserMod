@@ -81,7 +81,7 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 				
 				if(!player.capabilities.isCreativeMode) item.shrink(1);
 				
-				if(!world.isRemote) PacketDispatcher.sendToAllAround(new AdvancedLaserMessage(advancedLaser), advancedLaser, 512);
+				if(!world.isRemote) PacketDispatcher.sendToAllTracking(new AdvancedLaserMessage(advancedLaser), advancedLaser);
 				
 				return true;
 			}

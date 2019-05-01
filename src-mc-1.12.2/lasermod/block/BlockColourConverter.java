@@ -40,8 +40,8 @@ public class BlockColourConverter extends BlockPoweredLaser {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
-		if(!world.isRemote && stack != null) {
-			if(stack.getItem() == Items.DYE) {
+		if(stack.getItem() == Items.DYE) {
+			if(!world.isRemote) {
 				TileEntityColourConverter colourConverter = (TileEntityColourConverter)world.getTileEntity(pos);
 				
 				int colour = 15 - stack.getItemDamage();
@@ -53,11 +53,9 @@ public class BlockColourConverter extends BlockPoweredLaser {
 				colourConverter.colour = colour;
 				if(!player.capabilities.isCreativeMode) stack.shrink(1);
 				
-				
-				PacketDispatcher.sendToAllAround(new ColourConverterMessage(colourConverter), colourConverter, 512);
-				
-				return true;
+				PacketDispatcher.sendToAllTracking(new ColourConverterMessage(colourConverter), colourConverter);
 			}
+			return true;
 		}
 		return false;
 	}

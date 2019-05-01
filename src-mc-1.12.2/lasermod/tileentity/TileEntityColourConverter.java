@@ -127,7 +127,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 
 	@Override
 	public void sendUpdateDescription() {
-		PacketDispatcher.sendToAllAround(new ColourConverterMessage(this), this, 512);
+		PacketDispatcher.sendToAllTracking(new ColourConverterMessage(this), this);
 		
 	}
 

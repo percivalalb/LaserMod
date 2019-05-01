@@ -15,7 +15,7 @@ public class TileEntityLuminousLamp extends TileEntityMultiSidedReceiver {
 	
 	@Override
 	public void sendUpdateDescription() {
-		PacketDispatcher.sendToAllAround(new LuminousLampMessage(this), this, 512);
+		PacketDispatcher.sendToAllTracking(new LuminousLampMessage(this), this);
 	}
 
 	@Override

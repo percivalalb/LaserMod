@@ -124,7 +124,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedReceive
 
 	@Override
 	public void sendUpdateDescription() {
-		PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(this), this, 512);
+		PacketDispatcher.sendToAllTracking(new SmallColourConverterMessage(this), this);
 		
 	}
 

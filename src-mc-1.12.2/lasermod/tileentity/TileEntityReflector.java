@@ -139,7 +139,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 
 	@Override
 	public void sendUpdateDescription() {
-		PacketDispatcher.sendToAllAround(new ReflectorMessage(this), this, 512);
+		PacketDispatcher.sendToAllTracking(new ReflectorMessage(this), this);
 	}
 
 	@Override

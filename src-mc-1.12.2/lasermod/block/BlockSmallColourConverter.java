@@ -114,7 +114,7 @@ public class BlockSmallColourConverter extends BlockContainer {
 				colourConverter.colour = colour;
 	      		if(!player.capabilities.isCreativeMode) stack.shrink(1);
 				
-				PacketDispatcher.sendToAllAround(new SmallColourConverterMessage(colourConverter), colourConverter, 512);
+				PacketDispatcher.sendToAllTracking(new SmallColourConverterMessage(colourConverter), colourConverter);
 				return true;
 			}
 		}
