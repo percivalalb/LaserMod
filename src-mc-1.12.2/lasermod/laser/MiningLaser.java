@@ -3,7 +3,7 @@ package lasermod.laser;
 import java.util.List;
 
 import lasermod.LaserMod;
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.LaserModAPI;
 import lasermod.util.BlockActionPos;
 import net.minecraft.entity.Entity;
@@ -13,7 +13,7 @@ import net.minecraft.util.EnumFacing;
 /**
  * @author ProPercivalalb
  */
-public class MiningLaser implements ILaser {
+public class MiningLaser extends LaserType {
 
 	@Override
 	public void performActionOnEntitiesServer(List<Entity> entities, EnumFacing dir) {

@@ -3,7 +3,7 @@ package lasermod.tileentity;
 import java.util.Arrays;
 import java.util.List;
 
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
@@ -42,7 +42,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedRecieve
 				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
 				
 				if(laserInGame != null) {
-					for(ILaser laser : laserInGame.getLaserType()) {
+					for(LaserType laser : laserInGame.getLaserType()) {
 						laser.actionOnBlock(action);
 					}
 				}

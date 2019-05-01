@@ -1,6 +1,6 @@
 package lasermod;
 
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.LaserModAPI;
 import lasermod.api.LaserRegistry;
 import lasermod.laser.DamageLaser;
@@ -21,15 +21,15 @@ public class RegistryHandling {
 	
 	public static void init() {
 		//Registers all lasers
-		registerLaser("fire", new FireLaser(), 0);
-		registerLaser("water", new WaterLaser(), 1);
-		registerLaser("ice", new IceLaser(), 2);
-		registerLaser("invisible", new InvisibleLaser(), 3);
-		registerLaser("mining", new MiningLaser(), 4);
-		registerLaser("push", new PushLaser(), 5);
-		registerLaser("pull", new PullLaser(), 6);
-		registerLaser("damage", new DamageLaser(), 7);
-		registerLaser("healing", new HealingLaser(), 8);
+		registerLaser(ModLasers.FIRE, ModItems.UPGRADE_FIRE);
+		registerLaser(ModLasers.WATER, ModItems.UPGRADE_WATER);
+		registerLaser(ModLasers.ICE, ModItems.UPGRADE_ICE);
+		registerLaser(ModLasers.INVISIBLE, ModItems.UPGRADE_INVISIBLE);
+		registerLaser(ModLasers.MINING, ModItems.UPGRADE_MINING);
+		registerLaser(ModLasers.PUSH, ModItems.UPGRADE_PUSH);
+		registerLaser(ModLasers.PULL, ModItems.UPGRADE_PULL);
+		registerLaser(ModLasers.DAMAGE, ModItems.UPGRADE_DAMAGE);
+		registerLaser(ModLasers.HEAL, ModItems.UPGRADE_HEAL);
 		
 		// List of blocks lasers can go through.
 		Block[] blocksWhitelistPassThrough = new Block[] { Blocks.AIR, Blocks.ICE, Blocks.TALLGRASS, Blocks.DOUBLE_PLANT, Blocks.LEAVES, 
@@ -64,22 +64,11 @@ public class RegistryHandling {
 	public static void whitelistLaserPassThrough(ResourceLocation blockName) { LaserModAPI.LASER_WHITELIST.addToList(blockName); }
 	
 	/**
-	 * Registers a laser and it's associated item (always ModItems.upgrade).
-	 * @param name Laser's unique name;
-	 * @param laser The laser itself (must implement ILaser);
-	 * @param meta The meta of the upgrade;
-	 */
-	public static void registerLaser(String name, ILaser laser, int meta) { registerLaser(name, laser, ModItems.UPGRADES, meta); }
-	
-	/**
 	 * Registers a laser and it's associated item.
-	 * @param name Laser's unique name;
 	 * @param laser The laser itself (must implement ILaser);
 	 * @param itemUpgrade The upgrade to use on the emitter;
-	 * @param meta The meta of the upgrade;
 	 */
-	public static void registerLaser(String name, ILaser laser, Item itemUpgrade, int meta) { 
-		LaserRegistry.registerLaser(name, laser);
-		LaserRegistry.registerItemToLaser(itemUpgrade, meta, laser); 
+	public static void registerLaser(LaserType laser, Item itemUpgrade) { 
+		LaserRegistry.registerItemToLaser(itemUpgrade, laser); 
 	}
 }

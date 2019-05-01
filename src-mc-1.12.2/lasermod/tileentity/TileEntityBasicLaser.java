@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import lasermod.LaserMod;
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
 import lasermod.api.base.TileEntityLaserDevice;
@@ -45,7 +45,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
 		    		
 		    		if(laserInGame != null)
-			    		for(ILaser laser : laserInGame.getLaserType())
+			    		for(LaserType laser : laserInGame.getLaserType())
 			    			laser.actionOnBlock(reciver);
 		
 		    	}

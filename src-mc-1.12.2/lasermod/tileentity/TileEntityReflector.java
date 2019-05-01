@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lasermod.ModBlocks;
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
@@ -47,7 +47,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReciever implements
 	    			LaserInGame laserInGame = this.getOutputLaser(dir);
 	    			
 	    			if(laserInGame != null)
-		    			for(ILaser laser : laserInGame.getLaserType())
+		    			for(LaserType laser : laserInGame.getLaserType())
 		    				laser.actionOnBlock(action);
 	    		}
 			}

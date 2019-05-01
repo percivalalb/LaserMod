@@ -1,17 +1,16 @@
 {
   "result": {
-    "item": "lasermod:upgrades",
-    "data": 7
+    "item": "lasermod:upgrade_push"
   },
   "ingredients": [
     {
       "item": "minecraft:obsidian"
     },
     {
-      "item": "minecraft:golden_sword"
+      "item": "minecraft:piston"
     },
     {
-      "item": "minecraft:spider_eye"
+      "item": "minecraft:feather"
     },
     {
       "item": "minecraft:glowstone_dust"

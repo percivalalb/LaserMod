@@ -1,17 +1,16 @@
 {
   "result": {
-    "item": "lasermod:upgrades",
-    "data": 5
+    "item": "lasermod:upgrade_fire"
   },
   "ingredients": [
     {
       "item": "minecraft:obsidian"
     },
     {
-      "item": "minecraft:piston"
+      "item": "minecraft:fire_charge"
     },
     {
-      "item": "minecraft:feather"
+      "item": "minecraft:blaze_powder"
     },
     {
       "item": "minecraft:glowstone_dust"

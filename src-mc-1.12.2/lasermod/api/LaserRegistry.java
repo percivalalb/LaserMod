@@ -1,46 +1,31 @@
 package lasermod.api;
 
-import java.util.Arrays;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.Set;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
  * @author ProPercivalalb
  */
 public class LaserRegistry {
 
-	private static Hashtable<String, ILaser> mappings = new Hashtable<String, ILaser>();
-	private static Hashtable<List<? extends Object>, ILaser> mappingItems = new Hashtable<List<? extends Object>, ILaser>();
+	private static Hashtable<ResourceLocation, LaserType> mappingItems = new Hashtable<ResourceLocation, LaserType>();
 	
-	public static void registerLaser(String id, ILaser laser) {
-		if(!mappings.keySet().contains(id)) mappings.put(id, laser);
+	public static void registerItemToLaser(Item item, LaserType laser) {
+		registerItemToLaser(ForgeRegistries.ITEMS.getKey(item), laser);
 	}
 	
-	public static void registerItemToLaser(Item item, int meta, ILaser laser) {
-		ResourceLocation id = Item.REGISTRY.getNameForObject(item);
-		List<? extends Object> list = Arrays.asList(id, meta);
-		if(!mappingItems.keySet().contains(list)) mappingItems.put(list, laser);
+	public static void registerItemToLaser(ResourceLocation resource, LaserType laser) {
+		if(!mappingItems.containsKey(resource))
+			mappingItems.put(resource, laser);
 	}
 	
-	public static ILaser getLaserFromItem(ItemStack stack) {
-		ResourceLocation id = Item.REGISTRY.getNameForObject(stack.getItem());
-		List<? extends Object> list = Arrays.asList(id, stack.getItemDamage());
-		if(mappingItems.keySet().contains(list)) return mappingItems.get(list);
+	public static LaserType getLaserFromItem(ItemStack stack) {
+		ResourceLocation id = ForgeRegistries.ITEMS.getKey(stack.getItem());
+		if(mappingItems.containsKey(id)) return mappingItems.get(id);
 		return null;
-	}
-	
-	public static ILaser getLaserFromId(String id) { return mappings.get(id); }
-	
-	public static String getIdFromLaser(ILaser laser) {
-		Set<String> keySet = mappings.keySet();
-		for(String id : keySet) {
-			if(mappings.get(id) == laser) return id;
-		}
-		return "unknown";
 	}
 }

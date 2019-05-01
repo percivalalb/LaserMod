@@ -28,15 +28,15 @@ public class ModModels {
 		ModelHelper.setDefaultModel(ModItems.HANDHELD_SENSOR);
 		ModelHelper.setDefaultModel(ModItems.LASER_CRYSTAL);
 		ModelHelper.setDefaultModel(ModItems.LASER_SEEKING_GOGGLES);
-		ModelHelper.setModel(ModItems.UPGRADES, 0, Reference.MOD_ID + ":upgrade_fire");
-		ModelHelper.setModel(ModItems.UPGRADES, 1, Reference.MOD_ID + ":upgrade_water");
-		ModelHelper.setModel(ModItems.UPGRADES, 2, Reference.MOD_ID + ":upgrade_ice");
-		ModelHelper.setModel(ModItems.UPGRADES, 3, Reference.MOD_ID + ":upgrade_invisible");
-		ModelHelper.setModel(ModItems.UPGRADES, 4, Reference.MOD_ID + ":upgrade_mine");
-		ModelHelper.setModel(ModItems.UPGRADES, 5, Reference.MOD_ID + ":upgrade_push");
-		ModelHelper.setModel(ModItems.UPGRADES, 6, Reference.MOD_ID + ":upgrade_pull");
-		ModelHelper.setModel(ModItems.UPGRADES, 7, Reference.MOD_ID + ":upgrade_damage");
-		ModelHelper.setModel(ModItems.UPGRADES, 8, Reference.MOD_ID + ":upgrade_heal");
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_FIRE);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_WATER);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_ICE);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_INVISIBLE);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_MINING);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_PUSH);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_PULL);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_DAMAGE);
+		ModelHelper.setDefaultModel(ModItems.UPGRADE_HEAL);
 	}
 	
 }

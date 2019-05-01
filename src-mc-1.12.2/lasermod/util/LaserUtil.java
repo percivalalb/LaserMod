@@ -3,7 +3,7 @@ package lasermod.util;
 import java.util.List;
 
 import lasermod.ModBlocks;
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
@@ -123,7 +123,7 @@ public class LaserUtil {
 		if(laserInGame != null) {
 			AxisAlignedBB boundingBox = LaserUtil.getLaserOutline(laserProvider, dir, pos.getX(), pos.getY(), pos.getZ());
 			List<Entity> entities = laserProvider.getWorld().getEntitiesWithinAABB(Entity.class, boundingBox);
-			for(ILaser ilaser : laserInGame.getLaserType()) {
+			for(LaserType ilaser : laserInGame.getLaserType()) {
 				ilaser.performActionOnEntitiesBoth(entities, dir);
 				
 				if(laserProvider.getWorld().isRemote) 

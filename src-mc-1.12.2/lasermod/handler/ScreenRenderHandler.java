@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import lasermod.ModItems;
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserCollisionBoxes;
@@ -106,8 +106,8 @@ public class ScreenRenderHandler {
             	list.add(I18n.format("lasermod.sensor.types"));
             	if(laser.getLaserType().size() > 0) {
 	            	String types = " ";
-	    			for(ILaser laserType : laser.getLaserType())
-	    				types += "[" + LaserRegistry.getIdFromLaser(laserType) + "] ";
+	    			for(LaserType laserType : laser.getLaserType())
+	    				types += "[" + I18n.format(laserType.getTranslationKey()) + "] ";
 	    			list.add(types + "");
             	}
             	else

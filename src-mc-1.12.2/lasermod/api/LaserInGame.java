@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LaserInGame {
 
 	private double strength = 100D;
-	private ArrayList<ILaser> laserType = new ArrayList<ILaser>();
+	private ArrayList<LaserType> laserType = new ArrayList<LaserType>();
 	private EnumFacing dir = EnumFacing.DOWN;
 	public int red = 255;
 	public int green = 0;
@@ -27,8 +28,8 @@ public class LaserInGame {
 	
 	public LaserInGame() {}
 	public LaserInGame(NBTTagCompound tag) { this.readFromNBT(tag); }
-	public LaserInGame(ILaser laser) { this.laserType.add(laser);}
-	public LaserInGame(ArrayList<ILaser> lasers) { this.laserType.addAll(lasers); }
+	public LaserInGame(LaserType laser) { this.laserType.add(laser);}
+	public LaserInGame(ArrayList<LaserType> lasers) { this.laserType.addAll(lasers); }
 	
 	public LaserInGame setStrength(double strength) {
 		if(strength < 0.0D) strength = 0.0D;
@@ -41,36 +42,36 @@ public class LaserInGame {
 		return this;
 	}
 	
-	public LaserInGame setLaserType(ILaser laser) {
+	public LaserInGame setLaserType(LaserType laser) {
 		this.laserType.clear();
 		this.laserType.add(laser);
 		return this;
 	}
 	
-	public LaserInGame addLaserType(ILaser laser) {
+	public LaserInGame addLaserType(LaserType laser) {
 		this.laserType.add(laser);
 		return this;
 	}
 	
-	public LaserInGame setLaserType(String laser) {
-		return setLaserType(LaserRegistry.getLaserFromId(laser));
+	public LaserInGame setLaserType(ResourceLocation laser) {
+		return setLaserType(LaserModAPI.LASER_TYPES.getValue(laser));
 	}
 	
-	public LaserInGame addLaserType(String laser) {
-		return addLaserType(LaserRegistry.getLaserFromId(laser));
+	public LaserInGame addLaserType(ResourceLocation laser) {
+		return addLaserType(LaserModAPI.LASER_TYPES.getValue(laser));
 	}
 	
 	public double getStrength() {
 		return this.strength;
 	}
 	
-	public ArrayList<ILaser> getLaserType() {
+	public ArrayList<LaserType> getLaserType() {
 		return this.laserType;
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public float shouldRenderLaser(EntityPlayer player) {
-		for(ILaser laser : this.laserType) {
+		for(LaserType laser : this.laserType) {
 			if(!laser.shouldRenderLaser(player, this.dir))
 				return player.inventory.armorItemInSlot(3).getItem() == ModItems.LASER_SEEKING_GOGGLES ? 0.1F : 0.0F;
 		}
@@ -86,7 +87,7 @@ public class LaserInGame {
 		
 		NBTTagList list = (NBTTagList)tag.getTag("laserTypes");
 		for(int i = 0; i < list.tagCount(); ++i)
-			this.addLaserType(list.getStringTagAt(i));
+			this.addLaserType(new ResourceLocation(list.getStringTagAt(i)));
 		
 		return this;
 	}
@@ -99,8 +100,8 @@ public class LaserInGame {
 		tag.setInteger("blue", this.blue);
 		
 		NBTTagList list = new NBTTagList();
-		for(ILaser laser : this.laserType)
-			list.appendTag(new NBTTagString(LaserRegistry.getIdFromLaser(laser)));
+		for(LaserType laser : this.laserType)
+			list.appendTag(new NBTTagString(LaserModAPI.LASER_TYPES.getKey(laser).toString()));
 		
 		tag.setTag("laserTypes", list);
 		return tag;
@@ -114,8 +115,8 @@ public class LaserInGame {
 		buffer.writeInt(this.blue);
 		
 		buffer.writeInt(this.laserCount());
-		for(ILaser laser : this.laserType)
-			ByteBufUtils.writeUTF8String(buffer, LaserRegistry.getIdFromLaser(laser));
+		for(LaserType laser : this.laserType)
+			ByteBufUtils.writeUTF8String(buffer, LaserModAPI.LASER_TYPES.getKey(laser).toString());
 	}
 	
 	public LaserInGame readFromPacket(ByteBuf buffer) {
@@ -127,14 +128,14 @@ public class LaserInGame {
 		
 		int count = buffer.readInt();
 		for(int i = 0; i < count; ++i)
-			this.addLaserType(ByteBufUtils.readUTF8String(buffer));
+			this.addLaserType(new ResourceLocation(ByteBufUtils.readUTF8String(buffer)));
 		
 		return this;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public LaserInGame copy() {
-		LaserInGame laser = new LaserInGame((ArrayList<ILaser>)this.laserType.clone());
+		LaserInGame laser = new LaserInGame((ArrayList<LaserType>)this.laserType.clone());
 		laser.setDirection(this.dir);
 		laser.setStrength(this.getStrength());
 		laser.red = this.red;

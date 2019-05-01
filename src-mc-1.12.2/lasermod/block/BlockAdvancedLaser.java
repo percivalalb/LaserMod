@@ -4,7 +4,7 @@ import java.util.Random;
 
 import lasermod.LaserMod;
 import lasermod.ModItems;
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.LaserRegistry;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.AdvancedLaserMessage;
@@ -56,21 +56,19 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 						//player.openGui(LaserMod.instance, GuiAdvancedLaser.GUI_ID, world, x, y, z);
 						//player.addChatMessage(" Upgrades attached to this laser...");
 						for(ItemStack stack : advancedLaser.upgrades) {
-							ILaser type = LaserRegistry.getLaserFromItem(stack);
-							String name = LaserRegistry.getIdFromLaser(type);
-							name = name.replaceFirst(String.valueOf(name.charAt(0)), String.valueOf(name.charAt(0)).toUpperCase());
-							player.sendMessage(new TextComponentString(TextFormatting.GREEN + "  " + name));
+							LaserType type = LaserRegistry.getLaserFromItem(stack);
+							player.sendMessage(new TextComponentTranslation(type.getTranslationKey()).setStyle((new Style()).setColor(TextFormatting.GREEN)));
 						}
 					}
 				}
 				return true;
 			}
 			
-			ILaser laser = LaserRegistry.getLaserFromItem(item);
+			LaserType laser = LaserRegistry.getLaserFromItem(item);
 			boolean power = state.getValue(POWERED);
 			if(laser != null && !power) {
 				for(ItemStack stack : advancedLaser.upgrades) {
-					ILaser laser2 = LaserRegistry.getLaserFromItem(stack);
+					LaserType laser2 = LaserRegistry.getLaserFromItem(stack);
 					if(laser == laser2){
 						if(!world.isRemote) player.sendMessage(new TextComponentString("This Laser already has this upgrade."));
 						return true;

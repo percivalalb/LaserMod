@@ -1,17 +1,16 @@
 {
   "result": {
-    "item": "lasermod:upgrades",
-    "data": 6
+    "item": "lasermod:upgrade_invisible"
   },
   "ingredients": [
     {
       "item": "minecraft:obsidian"
     },
     {
-      "item": "minecraft:sticky_piston"
+      "item": "minecraft:golden_carrot"
     },
     {
-      "item": "minecraft:feather"
+      "item": "minecraft:fermented_spider_eye"
     },
     {
       "item": "minecraft:glowstone_dust"

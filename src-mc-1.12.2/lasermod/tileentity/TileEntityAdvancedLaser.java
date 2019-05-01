@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import lasermod.LaserMod;
-import lasermod.api.ILaser;
+import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserRegistry;
@@ -50,7 +50,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
 		    		LaserMod.LOGGER.debug("TEST");
 		    		if(laserInGame != null)
-			    		for(ILaser laser : laserInGame.getLaserType())
+			    		for(LaserType laser : laserInGame.getLaserType())
 			    			laser.actionOnBlock(reciver);
 		
 		    	}
@@ -95,7 +95,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		LaserInGame laser = new LaserInGame().setDirection(dir);
 
 		for(ItemStack stack : this.upgrades) {
-			ILaser type = LaserRegistry.getLaserFromItem(stack);
+			LaserType type = LaserRegistry.getLaserFromItem(stack);
 			if(type != null)
 				laser.addLaserType(type);
 		}
