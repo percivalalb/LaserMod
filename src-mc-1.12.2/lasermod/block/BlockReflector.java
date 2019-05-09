@@ -57,25 +57,27 @@ public class BlockReflector extends BlockContainer {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 		
-		if(!world.isRemote && stack.getItem() == ModItems.SCREWDRIVER) {
-			TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(pos);
-			reflector.closedSides[side.ordinal()] = !reflector.closedSides[side.getIndex()];
-			
-			if(reflector.closedSides[side.ordinal()])
-				reflector.removeAllLasersFromSide(side);
-			
-			if(state.getValue(POWERED) && !this.isLaserSource(world, pos)) {
-				world.scheduleUpdate(pos, this, 4);
-				LaserMod.LOGGER.debug("off");
+		if(stack.getItem() == ModItems.SCREWDRIVER) {
+			if(!world.isRemote) {
+				TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(pos);
+				reflector.closedSides[side.ordinal()] = !reflector.closedSides[side.getIndex()];
+				
+				if(reflector.closedSides[side.ordinal()])
+					reflector.removeAllLasersFromSide(side);
+				
+				if(state.getValue(POWERED) && !this.isLaserSource(world, pos)) {
+					world.scheduleUpdate(pos, this, 4);
+					//LaserMod.LOGGER.debug("off");
+				}
+				else if(!state.getValue(POWERED) && this.isLaserSource(world, pos)) 
+					cycleState(world, pos, state);
+				else
+				world.markAndNotifyBlock(pos, world.getChunk(pos), state, state, 2);
+				//PacketDispatcher.sendToAllTracking(new ReflectorMessage(reflector), reflector);
 			}
-			else if(!state.getValue(POWERED) && this.isLaserSource(world, pos)) 
-				cycleState(world, pos, state);
-			else
-			world.markAndNotifyBlock(pos, world.getChunk(pos), state, state, 2);
-			//PacketDispatcher.sendToAllAround(new ReflectorMessage(reflector), reflector, 512);
 			return true;
 		}
-        return true;
+        return false;
     }
 	
 	@Override

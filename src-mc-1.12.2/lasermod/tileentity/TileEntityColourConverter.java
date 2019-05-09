@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import lasermod.ModBlocks;
-import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserType;
 import lasermod.api.base.TileEntitySingleSidedReceiver;
 import lasermod.block.BlockPoweredLaser;
 import lasermod.block.BlockPoweredRedstone;
@@ -153,6 +153,11 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 	public AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
 	}
+	
+	@Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
 	
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {

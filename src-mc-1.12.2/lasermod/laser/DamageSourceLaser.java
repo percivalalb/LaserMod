@@ -11,8 +11,4 @@ public class DamageSourceLaser extends DamageSource {
 		super("lasermod.damage");
 		this.setDamageBypassesArmor();
 	}
-	
-	public DamageSource setDamageBypassesArmor() {
-        return super.setDamageBypassesArmor();
-    }
 }

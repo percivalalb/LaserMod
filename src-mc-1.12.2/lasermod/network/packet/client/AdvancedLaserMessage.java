@@ -30,7 +30,7 @@ public class AdvancedLaserMessage extends AbstractClientMessage {
 		this.upgrades = new ArrayList<ItemStack>();
 	    int upgradeCount = buffer.readInt();
 	    for(int i = 0; i < upgradeCount; ++i)
-	    	upgrades.add(buffer.readItemStack());
+	    	this.upgrades.add(buffer.readItemStack());
 		
 	}
 	@Override

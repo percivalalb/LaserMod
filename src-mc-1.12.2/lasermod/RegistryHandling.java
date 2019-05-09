@@ -1,17 +1,8 @@
 package lasermod;
 
-import lasermod.api.LaserType;
 import lasermod.api.LaserModAPI;
 import lasermod.api.LaserRegistry;
-import lasermod.laser.DamageLaser;
-import lasermod.laser.FireLaser;
-import lasermod.laser.HealingLaser;
-import lasermod.laser.IceLaser;
-import lasermod.laser.InvisibleLaser;
-import lasermod.laser.MiningLaser;
-import lasermod.laser.PullLaser;
-import lasermod.laser.PushLaser;
-import lasermod.laser.WaterLaser;
+import lasermod.api.LaserType;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;

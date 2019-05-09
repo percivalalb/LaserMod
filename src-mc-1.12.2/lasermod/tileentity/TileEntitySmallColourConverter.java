@@ -3,10 +3,10 @@ package lasermod.tileentity;
 import java.util.Arrays;
 import java.util.List;
 
-import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserType;
 import lasermod.api.base.TileEntitySingleSidedReceiver;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.SmallColourConverterMessage;

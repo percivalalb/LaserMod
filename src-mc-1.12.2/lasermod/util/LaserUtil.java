@@ -3,11 +3,11 @@ package lasermod.util;
 import java.util.List;
 
 import lasermod.ModBlocks;
-import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserModAPI;
+import lasermod.api.LaserType;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;

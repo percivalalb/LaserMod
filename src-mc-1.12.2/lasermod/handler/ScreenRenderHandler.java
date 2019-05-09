@@ -6,13 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import lasermod.ModItems;
-import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserCollisionBoxes;
 import lasermod.api.LaserInGame;
-import lasermod.api.LaserRegistry;
 import lasermod.api.LaserToRender;
+import lasermod.api.LaserType;
 import lasermod.helper.ClientHelper;
 import lasermod.util.BlockActionPos;
 import net.minecraft.client.gui.FontRenderer;

@@ -20,13 +20,13 @@ public class TileEntityLuminousLamp extends TileEntityMultiSidedReceiver {
 
 	@Override
 	public void onLaserPass(World world) {
-		world.setBlockState(this.pos, world.getBlockState(pos).withProperty(BlockLuminousLamp.ACTIVE, true));
+		world.setBlockState(this.pos, world.getBlockState(this.pos).withProperty(BlockLuminousLamp.ACTIVE, true));
 	}
 
 	@Override
 	public void onLaserRemoved(World world) {
 		if(this.lasers.isEmpty())
-			world.setBlockState(this.pos, world.getBlockState(pos).withProperty(BlockLuminousLamp.ACTIVE, false));
+			world.setBlockState(this.pos, world.getBlockState(this.pos).withProperty(BlockLuminousLamp.ACTIVE, false));
 	}
 	
 	@Override

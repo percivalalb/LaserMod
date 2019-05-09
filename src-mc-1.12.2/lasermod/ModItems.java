@@ -1,9 +1,6 @@
 package lasermod;
 
-import lasermod.item.ItemHandheldSensor;
-import lasermod.item.ItemLaserCrystal;
 import lasermod.item.ItemLaserSeekingGoggles;
-import lasermod.item.ItemScrewdriver;
 import lasermod.lib.ItemNames;
 import lasermod.lib.Reference;
 import net.minecraft.item.Item;
@@ -52,10 +49,10 @@ public class ModItems {
 	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
 	    	IForgeRegistry<Item> itemRegistry = event.getRegistry();
 	    	
-	    	itemRegistry.register(new ItemLaserCrystal().setRegistryName(ItemNames.LASER_CRYSTAL).setTranslationKey("lasermod.laser_crystal"));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.LASER_CRYSTAL).setTranslationKey("lasermod.laser_crystal").setCreativeTab(LaserMod.TAB_LASER));
 	    	itemRegistry.register(new ItemLaserSeekingGoggles().setRegistryName(ItemNames.LASER_SEEKING_GOGGLES).setTranslationKey("lasermod.laser_seeking_goggles"));
-	    	itemRegistry.register(new ItemScrewdriver().setRegistryName(ItemNames.SCREWDRIVER).setTranslationKey("lasermod.screwdriver"));
-	    	itemRegistry.register(new ItemHandheldSensor().setRegistryName(ItemNames.HANDHELD_SENSOR).setTranslationKey("lasermod.handheldsensor"));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.SCREWDRIVER).setTranslationKey("lasermod.screwdriver").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.HANDHELD_SENSOR).setTranslationKey("lasermod.handheld_sensor").setCreativeTab(LaserMod.TAB_LASER));
 	    	itemRegistry.register(new Item().setRegistryName(ItemNames.FIRE).setTranslationKey("lasermod.upgrade_fire").setCreativeTab(LaserMod.TAB_LASER));
 	    	itemRegistry.register(new Item().setRegistryName(ItemNames.WATER).setTranslationKey("lasermod.upgrade_water").setCreativeTab(LaserMod.TAB_LASER));
 	    	itemRegistry.register(new Item().setRegistryName(ItemNames.ICE).setTranslationKey("lasermod.upgrade_ice").setCreativeTab(LaserMod.TAB_LASER));

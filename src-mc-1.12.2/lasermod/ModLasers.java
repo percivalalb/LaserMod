@@ -1,11 +1,6 @@
 package lasermod;
 
 import lasermod.api.LaserType;
-import lasermod.item.ItemHandheldSensor;
-import lasermod.item.ItemLaserCrystal;
-import lasermod.item.ItemLaserSeekingGoggles;
-import lasermod.item.ItemScrewdriver;
-import lasermod.item.ItemUpgrades;
 import lasermod.laser.DamageLaser;
 import lasermod.laser.FireLaser;
 import lasermod.laser.HealingLaser;
@@ -17,7 +12,6 @@ import lasermod.laser.PushLaser;
 import lasermod.laser.WaterLaser;
 import lasermod.lib.LaserNames;
 import lasermod.lib.Reference;
-import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

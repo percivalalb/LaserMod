@@ -52,12 +52,9 @@ public abstract class BlockPoweredRedstone extends BlockContainer {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int meta = 0;
-		meta = meta | state.getValue(FACING).getIndex();
-
+		int meta = state.getValue(FACING).getIndex();
 		if(state.getValue(POWERED).booleanValue())
 			meta |= 8;
-
 		return meta;
 	}
 
@@ -68,28 +65,17 @@ public abstract class BlockPoweredRedstone extends BlockContainer {
     
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if(!worldIn.isRemote) {
-			if(state.getValue(POWERED) && !worldIn.isBlockPowered(pos))
-				worldIn.scheduleUpdate(pos, this, 4);
-			else if(!state.getValue(POWERED) && worldIn.isBlockPowered(pos))
-				cycleState(worldIn, pos, state);
-		}
+    	boolean powered = worldIn.isBlockPowered(pos);
+    	if(blockIn != this && powered != state.getValue(POWERED)) {
+    		
+    		this.setPowered(worldIn, pos, state, powered);
+    	}
 	}
 
-    @Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		if(!world.isRemote)
-			if(state.getValue(POWERED) && !world.isBlockPowered(pos))
-				cycleState(world, pos, state);
-			else if(!state.getValue(POWERED) && world.isBlockPowered(pos))
-				cycleState(world, pos, state);
-
-	}
-    
-    public static void cycleState(World worldIn, BlockPos pos, IBlockState state) {
+   public void setPowered(World worldIn, BlockPos pos, IBlockState state, boolean powered) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
         
-        worldIn.setBlockState(pos, state.cycleProperty(POWERED), 3);
+        worldIn.setBlockState(pos, state.withProperty(POWERED, powered), 2);
 
         if(tileentity != null){
             tileentity.validate();

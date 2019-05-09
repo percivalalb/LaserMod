@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lasermod.ModBlocks;
-import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserType;
 import lasermod.api.base.TileEntityMultiSidedReceiver;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ReflectorMessage;

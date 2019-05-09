@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import lasermod.LaserMod;
-import lasermod.api.LaserType;
 import lasermod.api.ILaserProvider;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserType;
 import lasermod.api.base.TileEntityLaserDevice;
 import lasermod.block.BlockBasicLaser;
 import lasermod.block.BlockPoweredRedstone;
@@ -95,4 +95,9 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 		
 		return Collections.<LaserInGame>emptyList();
 	}
+	
+	@Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
 }

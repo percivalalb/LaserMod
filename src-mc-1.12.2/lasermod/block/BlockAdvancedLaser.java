@@ -4,8 +4,8 @@ import java.util.Random;
 
 import lasermod.LaserMod;
 import lasermod.ModItems;
-import lasermod.api.LaserType;
 import lasermod.api.LaserRegistry;
+import lasermod.api.LaserType;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.tileentity.TileEntityAdvancedLaser;
@@ -20,7 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;

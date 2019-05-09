@@ -53,7 +53,7 @@ public class BlockLaserDetector extends BlockContainer {
 
 	@Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ACTIVE, meta % 2 == 1);
+        return this.getDefaultState().withProperty(ACTIVE, (meta & 1) > 0);
     }
 
     @Override
