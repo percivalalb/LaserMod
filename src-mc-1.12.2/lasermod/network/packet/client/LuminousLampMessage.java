@@ -35,7 +35,7 @@ public class LuminousLampMessage extends AbstractClientMessage {
 	    this.lasers = new ArrayList<LaserInGame>();
 	    int count = buffer.readInt();
 	    for(int i = 0; i < count; ++i)
-	    	this.lasers.add(new LaserInGame().readFromPacket(buffer));
+	    	this.lasers.add(LaserInGame.readFromPacket(buffer));
 		
 	}
 	@Override

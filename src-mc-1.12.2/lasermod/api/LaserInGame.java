@@ -78,20 +78,6 @@ public class LaserInGame {
 		return 0.4F;
 	}
 	
-	public LaserInGame readFromNBT(NBTTagCompound tag) {
-		this.strength = tag.getDouble("strength");
-		this.dir = EnumFacing.byIndex(tag.getInteger("side"));
-		this.red = tag.getInteger("red");
-		this.green = tag.getInteger("green");
-		this.blue = tag.getInteger("blue");
-		
-		NBTTagList list = (NBTTagList)tag.getTag("laserTypes");
-		for(int i = 0; i < list.tagCount(); ++i)
-			this.addLaserType(new ResourceLocation(list.getStringTagAt(i)));
-		
-		return this;
-	}
-	
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setDouble("strength", this.strength);
 		tag.setInteger("side", this.dir.ordinal());
@@ -119,18 +105,36 @@ public class LaserInGame {
 			ByteBufUtils.writeUTF8String(buffer, LaserModAPI.LASER_TYPES.getKey(laser).toString());
 	}
 	
-	public LaserInGame readFromPacket(ByteBuf buffer) {
-		this.strength = buffer.readDouble();
-		this.dir = EnumFacing.byIndex(buffer.readInt());
-		this.red = buffer.readInt();
-		this.green = buffer.readInt();
-		this.blue = buffer.readInt();
+	public static LaserInGame readFromNBT(NBTTagCompound tag) {
+		LaserInGame laser = new LaserInGame();
+		
+		laser.strength = tag.getDouble("strength");
+		laser.dir = EnumFacing.byIndex(tag.getInteger("side"));
+		laser.red = tag.getInteger("red");
+		laser.green = tag.getInteger("green");
+		laser.blue = tag.getInteger("blue");
+		
+		NBTTagList list = (NBTTagList)tag.getTag("laserTypes");
+		for(int i = 0; i < list.tagCount(); ++i)
+			laser.addLaserType(new ResourceLocation(list.getStringTagAt(i)));
+		
+		return laser;
+	}
+	
+	public static LaserInGame readFromPacket(ByteBuf buffer) {
+		LaserInGame laser = new LaserInGame();
+		
+		laser.strength = buffer.readDouble();
+		laser.dir = EnumFacing.byIndex(buffer.readInt());
+		laser.red = buffer.readInt();
+		laser.green = buffer.readInt();
+		laser.blue = buffer.readInt();
 		
 		int count = buffer.readInt();
 		for(int i = 0; i < count; ++i)
-			this.addLaserType(new ResourceLocation(ByteBufUtils.readUTF8String(buffer)));
+			laser.addLaserType(new ResourceLocation(ByteBufUtils.readUTF8String(buffer)));
 		
-		return this;
+		return laser;
 	}
 	
 	@SuppressWarnings("unchecked")

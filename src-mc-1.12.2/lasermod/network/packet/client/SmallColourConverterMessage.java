@@ -32,7 +32,7 @@ public class SmallColourConverterMessage extends AbstractClientMessage {
 	protected void read(PacketBuffer buffer) throws IOException {
 		this.pos = buffer.readBlockPos();
 		if(buffer.readBoolean())
-			this.laser = new LaserInGame().readFromPacket(buffer);
+			this.laser = LaserInGame.readFromPacket(buffer);
 		this.colour = buffer.readInt();
 		
 	}

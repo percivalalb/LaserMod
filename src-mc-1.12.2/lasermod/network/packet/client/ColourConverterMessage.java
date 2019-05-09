@@ -34,7 +34,7 @@ public class ColourConverterMessage extends AbstractClientMessage {
 		this.pos = buffer.readBlockPos();
 	
 		if(buffer.readBoolean())
-			this.laser = new LaserInGame().readFromPacket(buffer);
+			this.laser = LaserInGame.readFromPacket(buffer);
 		this.colour = EnumDyeColor.byMetadata(buffer.readInt());
 		
 	}
