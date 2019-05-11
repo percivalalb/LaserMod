@@ -98,7 +98,7 @@ public class LaserUtil {
 			if(blockActionPos.isLaserProvider(dir)) {
 				ILaserProvider lp = blockActionPos.getLaserProvider(dir);
 
-				return d <= lp.getRange(dir) && lp.isSendingSignalFromSide(world, lrPos, dir.getOpposite());
+				return d <= lp.getRange(dir) && lp.isEmittingFromSide(world, lrPos, dir.getOpposite());
 			}
 			else if(blockActionPos.block == ModBlocks.COLOUR_CONVERTER_SMALL && blockActionPos.meta == dir.ordinal())
 				break;

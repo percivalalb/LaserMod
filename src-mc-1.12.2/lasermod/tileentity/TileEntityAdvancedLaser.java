@@ -44,8 +44,8 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		    		  	
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
 		
-		    		if(reciver.getLaserReceiver(facing).canPassOnSide(this.world, this.pos, facing.getOpposite(), laserInGame))
-		    			reciver.getLaserReceiver(facing).passLaser(this.world, this.pos, facing.getOpposite(), laserInGame);
+		    		if(reciver.getLaserReceiver(facing).canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
+		    			reciver.getLaserReceiver(facing).onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
 		    	}
 		    	else if(reciver != null) {
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
@@ -109,7 +109,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	}
 	
 	@Override
-	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing side) {
+	public boolean isEmittingFromSide(World world, BlockPos askerPos, EnumFacing side) {
 		IBlockState state = this.getWorld().getBlockState(this.pos);
 		
 		return state.getValue(BlockBasicLaser.POWERED) && state.getValue(BlockBasicLaser.FACING) == side;

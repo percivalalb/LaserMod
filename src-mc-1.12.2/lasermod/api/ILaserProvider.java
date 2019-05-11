@@ -17,6 +17,6 @@ public interface ILaserProvider {
 	public int getRange(EnumFacing dir);
 	public boolean isForgeMultipart();
 	
-	public boolean isSendingSignalFromSide(World worldIn, BlockPos askerPos, EnumFacing side);
+	public boolean isEmittingFromSide(World worldIn, BlockPos askerPos, EnumFacing side);
 	public List<LaserInGame> getOutputLasers();
 }

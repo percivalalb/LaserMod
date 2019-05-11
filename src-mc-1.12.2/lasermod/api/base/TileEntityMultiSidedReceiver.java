@@ -93,12 +93,12 @@ public abstract class TileEntityMultiSidedReceiver extends TileEntityLaserDevice
 	}
 
 	@Override
-	public boolean canPassOnSide(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
+	public boolean canReceive(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
 		return this.getInputDirections().contains(dir) && !Objects.equals(laserInGame, this.getLaserFromSide(dir));
 	}
 
 	@Override
-	public void passLaser(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
+	public void onLaserIncident(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
 		this.addLaser(laserInGame, dir);
 		this.onLaserPass(world);
 		this.sendUpdateDescription();
@@ -106,7 +106,7 @@ public abstract class TileEntityMultiSidedReceiver extends TileEntityLaserDevice
 	}
 
 	@Override
-	public void removeLasersFromSide(World world, BlockPos orginPos, EnumFacing dir) {
+	public void removeLaser(World world, BlockPos orginPos, EnumFacing dir) {
 		boolean flag = this.removeAllLasersFromSide(dir);
 		
 		if(flag) {

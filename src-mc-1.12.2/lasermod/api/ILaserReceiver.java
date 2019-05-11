@@ -14,10 +14,10 @@ public interface ILaserReceiver {
 	public BlockPos getPos();
 	public World getWorld();
 	
-	public boolean canPassOnSide(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame);
+	public boolean canReceive(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame);
 	
-	public void passLaser(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame);
+	public void onLaserIncident(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame);
 
-	public void removeLasersFromSide(World world, BlockPos orginPos, EnumFacing dir);
+	public void removeLaser(World world, BlockPos orginPos, EnumFacing dir);
 	public List<LaserInGame> getInputLasers();
 }

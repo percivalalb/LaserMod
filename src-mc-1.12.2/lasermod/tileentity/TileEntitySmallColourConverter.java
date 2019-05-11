@@ -34,8 +34,8 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedReceive
 			if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite())) {
 				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
 				ILaserReceiver receiver = action.getLaserReceiver(this.getInputSide().getOpposite());
-	        	if(receiver.canPassOnSide(this.world, this.pos, this.getInputSide(), laserInGame)) {
-	        		receiver.passLaser(this.world, this.pos, this.getInputSide(), laserInGame);
+	        	if(receiver.canReceive(this.world, this.pos, this.getInputSide(), laserInGame)) {
+	        		receiver.onLaserIncident(this.world, this.pos, this.getInputSide(), laserInGame);
 				}
 			}
 			else if(action != null) {
@@ -103,7 +103,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedReceive
 	}
 
 	@Override
-	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing dir) {
+	public boolean isEmittingFromSide(World world, BlockPos askerPos, EnumFacing dir) {
 		return this.getOutputLaser(dir) != null && dir == this.getInputSide();
 	}
 	

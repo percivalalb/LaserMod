@@ -40,8 +40,8 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 				if(action != null && action.isLaserReceiver(dir)) {
 					LaserInGame laserInGame = this.getOutputLaser(dir);
 					ILaserReceiver receiver = action.getLaserReceiver(dir);
-				  	if(receiver.canPassOnSide(this.world, this.pos, dir.getOpposite(), laserInGame))
-				  		receiver.passLaser(this.world, this.pos, dir.getOpposite(), laserInGame);
+				  	if(receiver.canReceive(this.world, this.pos, dir.getOpposite(), laserInGame))
+				  		receiver.onLaserIncident(this.world, this.pos, dir.getOpposite(), laserInGame);
 				}
 				else if(action != null) {
 	    			LaserInGame laserInGame = this.getOutputLaser(dir);
@@ -110,13 +110,13 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 	}
 	
 	@Override
-	public boolean canPassOnSide(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
-		return !this.closedSides[dir.ordinal()] && (!this.containsInputSide(dir) || super.canPassOnSide(world, orginPos, dir, laserInGame));
+	public boolean canReceive(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
+		return !this.closedSides[dir.ordinal()] && (!this.containsInputSide(dir) || super.canReceive(world, orginPos, dir, laserInGame));
 	}
 
 	
 	@Override
-	public boolean isSendingSignalFromSide(World world, BlockPos askerPos, EnumFacing dir) {
+	public boolean isEmittingFromSide(World world, BlockPos askerPos, EnumFacing dir) {
 		return !this.closedSides[dir.ordinal()] && !this.noLaserInputs() && !this.containsInputSide(dir);
 	}
 	

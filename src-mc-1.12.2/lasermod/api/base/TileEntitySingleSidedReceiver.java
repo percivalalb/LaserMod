@@ -52,13 +52,13 @@ public abstract class TileEntitySingleSidedReceiver extends TileEntityLaserDevic
 	}
 	
 	@Override
-	public boolean canPassOnSide(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
+	public boolean canReceive(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
 		return dir == this.getInputSide() && !Objects.equals(laserInGame, this.laser);
 	}
 	
 
 	@Override
-	public void passLaser(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
+	public void onLaserIncident(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
 		this.laser = laserInGame;
 		this.onLaserPass(world);
 		this.sendUpdateDescription();
@@ -66,7 +66,7 @@ public abstract class TileEntitySingleSidedReceiver extends TileEntityLaserDevic
 	}
 
 	@Override
-	public void removeLasersFromSide(World world, BlockPos orginPos, EnumFacing dir) {
+	public void removeLaser(World world, BlockPos orginPos, EnumFacing dir) {
 		if(dir == this.getInputSide()) {
 			boolean flag = this.laser != null;
 			this.laser = null;

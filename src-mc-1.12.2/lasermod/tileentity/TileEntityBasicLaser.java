@@ -36,8 +36,8 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 		    	if(reciver != null && reciver.isLaserReceiver(facing)) {
 		    		LaserInGame laserInGame = this.getOutputLaser(facing);
 		    		//LaserMod.LOGGER.debug(("Passings");
-		    		if(reciver.getLaserReceiver(facing).canPassOnSide(this.world, this.pos, facing.getOpposite(), laserInGame)) {
-		    			reciver.getLaserReceiver(facing).passLaser(this.world, this.pos, facing.getOpposite(), laserInGame);
+		    		if(reciver.getLaserReceiver(facing).canReceive(this.world, this.pos, facing.getOpposite(), laserInGame)) {
+		    			reciver.getLaserReceiver(facing).onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
 		    			LaserMod.LOGGER.debug("Passing");
 		    		}
 		    			
@@ -70,7 +70,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	}
 	
 	@Override
-	public boolean isSendingSignalFromSide(World worldIn, BlockPos askerPos, EnumFacing side) {
+	public boolean isEmittingFromSide(World worldIn, BlockPos askerPos, EnumFacing side) {
 		IBlockState state = this.getWorld().getBlockState(this.pos);
 		
 		return state.getValue(BlockBasicLaser.POWERED) && state.getValue(BlockBasicLaser.FACING) == side;
