@@ -12,6 +12,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  */
 public class CommonProxy implements IGuiHandler {
 	
+	public CommonProxy() {
+		//FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
+        //FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
+        //FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
+	}
+	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return null;
@@ -25,9 +31,10 @@ public class CommonProxy implements IGuiHandler {
 	
 	public void registerHandlers() {}
 
-	public void onPreLoad() {}
-
-
+	public void preInit() {}
+	public void init() {}
+	public void postInit() {}
+	
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {
 		return ctx.getServerHandler().player;
 	}

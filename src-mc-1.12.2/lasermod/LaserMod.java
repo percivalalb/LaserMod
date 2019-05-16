@@ -56,7 +56,7 @@ public class LaserMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		ModEntities.Registration.registerEntities();
 		
-		PROXY.onPreLoad();
+		PROXY.preInit();
 		PacketDispatcher.registerPackets();
 	}
 	

@@ -26,8 +26,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  */
 public class ClientProxy extends CommonProxy {
 	
+	public ClientProxy() {
+		super();
+		//FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+	}
+	
 	@Override
-	public void onPreLoad() {
+	public void preInit() { // clientSetup
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicLaser.class, new TileEntityBasicLaserRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvancedLaser.class, new TileEntityAdvancedLaserRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityColourConverter.class, new TileEntityColourConverterRenderer());
@@ -36,6 +41,11 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmallColourConverter.class, new TileEntitySmallColourConverterRenderer());
 	}
 	
+	@Override
+	public void registerHandlers() {
+		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
+		MinecraftForge.EVENT_BUS.register(new WorldOverlayHandler());
+	}
 
 	@Override
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {
@@ -51,9 +61,5 @@ public class ClientProxy extends CommonProxy {
 	public IThreadListener getThreadFromContext(MessageContext ctx) {
 		return (ctx.side.isClient() ? Minecraft.getMinecraft() : super.getThreadFromContext(ctx));
 	}
-	@Override
-	public void registerHandlers() {
-		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
-		MinecraftForge.EVENT_BUS.register(new WorldOverlayHandler());
-	}
+	
 }

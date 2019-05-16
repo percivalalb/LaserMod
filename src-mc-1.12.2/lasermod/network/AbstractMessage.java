@@ -42,13 +42,14 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	 * Some PacketBuffer methods throw IOException - default handling propagates the exception.
 	 * if an IOException is expected but should not be fatal, handle it within this method.
 	 */
-	protected abstract void read(PacketBuffer buffer) throws IOException;
+	protected abstract T encode(PacketBuffer buffer) throws IOException;
 
 	/**
 	 * Some PacketBuffer methods throw IOException - default handling propagates the exception.
 	 * if an IOException is expected but should not be fatal, handle it within this method.
+	 * @param abstractMessage 
 	 */
-	protected abstract void write(PacketBuffer buffer) throws IOException;
+	protected abstract void decode(T msg, PacketBuffer buffer) throws IOException;
 
 	/**
 	 * Called on whichever side the message is received;
@@ -56,7 +57,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	 * If {@link #requiresMainThread()} returns true, this method is guaranteed
 	 * to be called on the main Minecraft thread for this side.
 	 */
-	public abstract void process(EntityPlayer player, Side side);
+	public abstract void process(T msg, EntityPlayer player, Side side);
 
 	/**
 	 * If message is sent to the wrong side, an exception will be thrown during handling
@@ -69,7 +70,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	@Override
 	public void fromBytes(ByteBuf buffer) {
 		try {
-			read(new PacketBuffer(buffer));
+			encode(new PacketBuffer(buffer));
 		} catch (IOException e) {
 			throw Throwables.propagate(e);
 		}
@@ -78,7 +79,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	@Override
 	public void toBytes(ByteBuf buffer) {
 		try {
-			write(new PacketBuffer(buffer));
+			decode((T)this, new PacketBuffer(buffer));
 		} catch (IOException e) {
 			throw Throwables.propagate(e);
 		}
@@ -93,7 +94,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 		// pretty much copied straight from vanilla code, see {@link PacketThreadUtil#checkThreadAndEnqueue}
 		thread.addScheduledTask(new Runnable() {
 			public void run() {
-				msg.process(LaserMod.PROXY.getPlayerEntity(ctx), ctx.side);
+				msg.process(msg, LaserMod.PROXY.getPlayerEntity(ctx), ctx.side);
 			}
 		});
 		

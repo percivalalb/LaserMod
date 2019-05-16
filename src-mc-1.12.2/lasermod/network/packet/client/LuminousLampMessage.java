@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * @author ProPercivalalb
  */
-public class LuminousLampMessage extends AbstractClientMessage {
+public class LuminousLampMessage extends AbstractClientMessage<LuminousLampMessage> {
 	
 	public BlockPos pos;
 	public ArrayList<LaserInGame> lasers;
@@ -29,37 +29,39 @@ public class LuminousLampMessage extends AbstractClientMessage {
 	}
 
 	@Override
-	protected void read(PacketBuffer buffer) throws IOException {
+	protected LuminousLampMessage encode(PacketBuffer buffer) throws IOException {
 		this.pos = buffer.readBlockPos();
 
 	    this.lasers = new ArrayList<LaserInGame>();
 	    int count = buffer.readInt();
 	    for(int i = 0; i < count; ++i)
 	    	this.lasers.add(LaserInGame.readFromPacket(buffer));
+	    return this;
 		
 	}
 	@Override
-	protected void write(PacketBuffer buffer) throws IOException {
-		buffer.writeBlockPos(this.pos);
+	protected void decode(LuminousLampMessage msg, PacketBuffer buffer) throws IOException {
+		buffer.writeBlockPos(msg.pos);
 		
-		buffer.writeInt(this.lasers.size());
+		buffer.writeInt(msg.lasers.size());
 		
-		for(int i = 0; i < this.lasers.size(); ++i) 
-			this.lasers.get(i).writeToPacket(buffer);
+		for(int i = 0; i < msg.lasers.size(); ++i) 
+			msg.lasers.get(i).writeToPacket(buffer);
 		
 	}
+	
 	@Override
-	public void process(EntityPlayer player, Side side) {
+	public void process(LuminousLampMessage msg, EntityPlayer player, Side side) {
 		World world = player.world;
-		TileEntity tileEntity = world.getTileEntity(this.pos);
+		TileEntity tileEntity = world.getTileEntity(msg.pos);
 		
 		if(!(tileEntity instanceof TileEntityLuminousLamp)) 
 			return;
 		TileEntityLuminousLamp colourConverter = (TileEntityLuminousLamp)tileEntity;
-		colourConverter.lasers = this.lasers;
+		colourConverter.lasers = msg.lasers;
 		colourConverter.setUpdateRequired();
-		world.markAndNotifyBlock(this.pos, world.getChunk(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 2);
-		world.checkLightFor(EnumSkyBlock.BLOCK, this.pos);
+		world.markAndNotifyBlock(this.pos, world.getChunk(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 2);
+		world.checkLightFor(EnumSkyBlock.BLOCK, msg.pos);
 		
 	}
 }

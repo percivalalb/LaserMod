@@ -11,6 +11,6 @@ public class Reference {
 	public static final String		MOD_VERSION		= "v1.2.0a";
 	public static final String		MOD_DEPENDENCIES= "required-after:Forge@[14.23.5.2768,)";
 	public static final String		SP_CLIENT		= "lasermod.proxy.ClientProxy";
-	public static final String		SP_SERVER		= "lasermod.proxy.CommonProxy";
+	public static final String		SP_SERVER		= "lasermod.proxy.ServerProxy";
 	public static final String      CHANNEL_NAME	= "LASER";
 }

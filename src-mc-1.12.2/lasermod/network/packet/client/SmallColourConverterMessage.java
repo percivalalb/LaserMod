@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * @author ProPercivalalb
  */
-public class SmallColourConverterMessage extends AbstractClientMessage {
+public class SmallColourConverterMessage extends AbstractClientMessage<SmallColourConverterMessage> {
 	
 	public BlockPos pos;
     public LaserInGame laser;
@@ -29,33 +29,35 @@ public class SmallColourConverterMessage extends AbstractClientMessage {
     }
 
 	@Override
-	protected void read(PacketBuffer buffer) throws IOException {
+	protected SmallColourConverterMessage encode(PacketBuffer buffer) throws IOException {
 		this.pos = buffer.readBlockPos();
 		if(buffer.readBoolean())
 			this.laser = LaserInGame.readFromPacket(buffer);
 		this.colour = buffer.readInt();
+		return this;
+		
+	}
+	
+	@Override
+	protected void decode(SmallColourConverterMessage msg, PacketBuffer buffer) throws IOException {
+		buffer.writeBlockPos(msg.pos);
+		buffer.writeBoolean(msg.laser != null);
+		if(msg.laser != null)
+			msg.laser.writeToPacket(buffer);
+		buffer.writeInt(msg.colour);
 		
 	}
 	@Override
-	protected void write(PacketBuffer buffer) throws IOException {
-		buffer.writeBlockPos(this.pos);
-		buffer.writeBoolean(this.laser != null);
-		if(this.laser != null)
-			this.laser.writeToPacket(buffer);
-		buffer.writeInt(this.colour);
-		
-	}
-	@Override
-	public void process(EntityPlayer player, Side side) {
+	public void process(SmallColourConverterMessage msg, EntityPlayer player, Side side) {
 		World world = player.world;
-		TileEntity tileEntity = world.getTileEntity(this.pos);
+		TileEntity tileEntity = world.getTileEntity(msg.pos);
 		
 		if(!(tileEntity instanceof TileEntitySmallColourConverter)) 
 			return;
 		TileEntitySmallColourConverter colourConverter = (TileEntitySmallColourConverter)tileEntity;
-		colourConverter.laser = this.laser;
-		colourConverter.colour = this.colour;
-		world.markAndNotifyBlock(this.pos, world.getChunk(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 2);
+		colourConverter.laser = msg.laser;
+		colourConverter.colour = msg.colour;
+		world.markAndNotifyBlock(msg.pos, world.getChunk(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 2);
 		
 	}
 }

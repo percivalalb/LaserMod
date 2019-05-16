@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * @author ProPercivalalb
  */
-public class ReflectorMessage extends AbstractClientMessage {
+public class ReflectorMessage extends AbstractClientMessage<ReflectorMessage> {
 	
 	public BlockPos pos;
 	public boolean[] closedSides;
@@ -25,12 +25,12 @@ public class ReflectorMessage extends AbstractClientMessage {
 	public ReflectorMessage() {}
 	public ReflectorMessage(TileEntityReflector reflector) {
 		this.pos = reflector.getPos();
-	    this.closedSides = reflector.closedSides;
+	    this.closedSides = reflector.sideClosed;
 	    this.lasers = reflector.lasers;
 	}
 	
 	@Override
-	protected void read(PacketBuffer buffer) throws IOException {
+	protected ReflectorMessage encode(PacketBuffer buffer) throws IOException {
 		this.pos = buffer.readBlockPos();
 		this.closedSides = new boolean[6];
 	    for(int i = 0; i < 6; ++i)
@@ -41,33 +41,33 @@ public class ReflectorMessage extends AbstractClientMessage {
 	    int count = buffer.readInt();
 	    for(int i = 0; i < count; ++i)
 	    	this.lasers.add(LaserInGame.readFromPacket(buffer));
-		
+	    return this;
 	}
 	
 	@Override
-	protected void write(PacketBuffer buffer) throws IOException {
-		buffer.writeBlockPos(this.pos);
+	protected void decode(ReflectorMessage msg, PacketBuffer buffer) throws IOException {
+		buffer.writeBlockPos(msg.pos);
 		
 		for(int i = 0; i < 6; ++i)
-			buffer.writeBoolean(this.closedSides[i]);
+			buffer.writeBoolean(msg.closedSides[i]);
 		
-		buffer.writeInt(this.lasers.size());
+		buffer.writeInt(msg.lasers.size());
 		
-		for(int i = 0; i < this.lasers.size(); ++i) 
-			this.lasers.get(i).writeToPacket(buffer);	
+		for(int i = 0; i < msg.lasers.size(); ++i) 
+			msg.lasers.get(i).writeToPacket(buffer);	
 	}
 	
 	@Override
-	public void process(EntityPlayer player, Side side) {
+	public void process(ReflectorMessage msg, EntityPlayer player, Side side) {
 		World world = player.world;
-		TileEntity tileEntity = world.getTileEntity(this.pos);
+		TileEntity tileEntity = world.getTileEntity(msg.pos);
 		
 		if(!(tileEntity instanceof TileEntityReflector)) 
 			return;
 		TileEntityReflector reflector = (TileEntityReflector)tileEntity;
-		reflector.closedSides = this.closedSides;
-		reflector.lasers = this.lasers;
-		world.markAndNotifyBlock(this.pos, world.getChunk(this.pos), world.getBlockState(this.pos), world.getBlockState(this.pos), 3);
+		reflector.sideClosed = msg.closedSides;
+		reflector.lasers = msg.lasers;
+		world.markAndNotifyBlock(msg.pos, world.getChunk(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
 		
 	}
 }
