@@ -34,7 +34,7 @@ laser.lasermod.heal=Heal
 
 
 lasermod.screwdriver.advanced_laser=Advanced Laser (%d, %d, %d)
-lasermod.screwdriver.already_has_upgrade=This Laser already has this upgrade.
+lasermod.screwdriver.already_has_upgrade=This laser device already has this upgrade.
 lasermod.screwdriver.no_upgrade=Currently no upgrades attached to this laser.
 lasermod.screwdriver.redstone_signal=Please disable redstone signal to input an upgrade.
 
