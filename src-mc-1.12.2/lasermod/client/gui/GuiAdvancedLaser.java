@@ -18,13 +18,13 @@ public class GuiAdvancedLaser extends GuiScreen  {
 	
 	@Override
 	public void drawScreen(int x, int y, float ticks) {
+		super.drawScreen(x, y, ticks);
+
 		int guiX = (this.width - guiWidth) / 2;
 		int guiY = (this.height - guiHeight) / 2;
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.drawDefaultBackground();
 		this.mc.renderEngine.bindTexture(new ResourceLocation(Reference.MOD_ID, "textures/gui/testGui.png"));
 		this.drawTexturedModalRect(guiX, guiY, 0, 0, guiWidth, guiHeight);
-		
-		super.drawScreen(x, y, ticks);
 	}
 }

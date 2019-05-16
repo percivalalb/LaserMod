@@ -27,22 +27,19 @@ public abstract class TileEntitySingleSidedReceiver extends TileEntityLaserDevic
 	public abstract EnumFacing getInputSide();
 	
 	@Override
-	public void updateLasers(boolean client) {
-		
-		if(!client) {
-			if(!this.noLaserInput()) {
+	public void tickLaserLogic() {
+		if(!this.noLaserInput()) {
 
-				if(!LaserUtil.isValidSourceOfPowerOnSide(this, this.getInputSide())) {
-					this.laser = null;
-					this.sendUpdateDescription();
-					this.onLaserRemoved(this.world);
-				}	
-			}
+			if(!LaserUtil.isValidSourceOfPowerOnSide(this, this.getInputSide())) {
+				this.laser = null;
+				this.sendUpdateDescription();
+				this.onLaserRemoved(this.world);
+			}	
 		}
 	}
 
 	@Override
-	public void updateLaserAction(boolean client) {
+	public void tickLaserAction(boolean client) {
 		
 	}
 

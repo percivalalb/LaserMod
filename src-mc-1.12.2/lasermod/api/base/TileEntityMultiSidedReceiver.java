@@ -46,7 +46,7 @@ public abstract class TileEntityMultiSidedReceiver extends TileEntityLaserDevice
 		this.lasers.clear();
 		int amount = tag.getInteger("laserCount");
 		 for(int i = 0; i < amount; ++i)
-			 this.lasers.add(new LaserInGame(tag.getCompoundTag("laser" + i)));
+			 this.lasers.add(LaserInGame.readFromNBT(tag.getCompoundTag("laser" + i)));
 	}
 	
 	@Override
@@ -62,28 +62,26 @@ public abstract class TileEntityMultiSidedReceiver extends TileEntityLaserDevice
 	}
 	
 	@Override
-	public void updateLasers(boolean client) {
+	public void tickLaserLogic() {
 		
-		if(!client) {
-			if(!this.noLaserInputs()) {
-				boolean change = false;
+		if(!this.noLaserInputs()) {
+			boolean change = false;
 				
-				for(EnumFacing dir : this.getInputDirections())
-					if(this.checkPowerOnSide(dir) && !LaserUtil.isValidSourceOfPowerOnSide(this, dir))
-						if(this.removeAllLasersFromSide(dir))
-							change = true;
+			for(EnumFacing dir : this.getInputDirections())
+				if(this.checkPowerOnSide(dir) && !LaserUtil.isValidSourceOfPowerOnSide(this, dir))
+					if(this.removeAllLasersFromSide(dir))
+						change = true;
 
-				if(change) {
-					this.sendUpdateDescription();
-					this.onLaserRemoved(this.world);
-				}
-					
+			if(change) {
+				this.sendUpdateDescription();
+				this.onLaserRemoved(this.world);
 			}
+					
 		}
 	}
 	
 	@Override
-	public void updateLaserAction(boolean client) {
+	public void tickLaserAction(boolean client) {
 		
 	}
 
@@ -182,14 +180,16 @@ public abstract class TileEntityMultiSidedReceiver extends TileEntityLaserDevice
 					laserList.add(laser);
 		
 		LaserInGame laserInGame = new LaserInGame(laserList);
-		int red = lasers.get(0).red;
-		int green = lasers.get(0).green;
-		int blue = lasers.get(0).blue;
+		int red = 0;
+		int green = 0;
+		int blue = 0;
 		
-		for(int i = 1; i < lasers.size(); ++i) {
-			red = (int)((red * 0.5D) + (lasers.get(i).red * 0.5D));
-			green = (int)((green * 0.5D) + (lasers.get(i).green * 0.5D));
-			blue = (int)((blue * 0.5D) + (lasers.get(i).blue * 0.5D));
+		double blendFactor = 1.0D / this.lasers.size();
+		
+		for(int i = 0; i < this.lasers.size(); ++i) {
+			red += (int)(this.lasers.get(i).red * blendFactor);
+			green += (int)(this.lasers.get(i).green * blendFactor);
+			blue += (int)(this.lasers.get(i).blue * blendFactor);
 		}
 	
 		laserInGame.red = red;

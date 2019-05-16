@@ -26,32 +26,30 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedReceive
 	public int colour = 14;
 	
 	@Override
-	public void updateLasers(boolean client) {
-		super.updateLasers(client);
+	public void tickLaserLogic() {
+		super.tickLaserLogic();
 			
-		if(!client) {
-			BlockActionPos action = LaserUtil.getFirstBlock(this, this.getInputSide().getOpposite());
-			if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite())) {
-				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
-				ILaserReceiver receiver = action.getLaserReceiver(this.getInputSide().getOpposite());
-	        	if(receiver.canReceive(this.world, this.pos, this.getInputSide(), laserInGame)) {
-	        		receiver.onLaserIncident(this.world, this.pos, this.getInputSide(), laserInGame);
-				}
+		BlockActionPos action = LaserUtil.getFirstBlock(this, this.getInputSide().getOpposite());
+		if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite())) {
+			LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
+			ILaserReceiver receiver = action.getLaserReceiver(this.getInputSide().getOpposite());
+	        if(receiver.canReceive(this.world, this.pos, this.getInputSide(), laserInGame)) {
+	        	receiver.onLaserIncident(this.world, this.pos, this.getInputSide(), laserInGame);
 			}
-			else if(action != null) {
-				LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
+		}
+		else if(action != null) {
+			LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());
 				
-				if(laserInGame != null) {
-					for(LaserType laser : laserInGame.getLaserType()) {
-						laser.actionOnBlock(action);
-					}
+			if(laserInGame != null) {
+				for(LaserType laser : laserInGame.getLaserType()) {
+					laser.actionOnBlock(action);
 				}
 			}
 		}
 	}
 	
 	@Override
-	public void updateLaserAction(boolean client) {
+	public void tickLaserAction(boolean client) {
 		if(this.laser != null)
 			LaserUtil.performLaserAction(this, EnumFacing.byIndex(this.getBlockMetadata()), this.pos);
 	}
@@ -67,7 +65,7 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedReceive
 		if(tag.hasKey("colour"))
 			this.colour = tag.getInteger("colour");
 		if(tag.hasKey("laser"))
-			this.laser = new LaserInGame(tag.getCompoundTag("laser"));
+			this.laser = LaserInGame.readFromNBT(tag.getCompoundTag("laser"));
 		else 
 			this.laser = null;
 	}

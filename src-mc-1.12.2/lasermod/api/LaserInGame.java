@@ -27,7 +27,6 @@ public class LaserInGame {
 	public int blue = 0;
 	
 	public LaserInGame() {}
-	public LaserInGame(NBTTagCompound tag) { this.readFromNBT(tag); }
 	public LaserInGame(LaserType laser) { this.laserType.add(laser);}
 	public LaserInGame(ArrayList<LaserType> lasers) { this.laserType.addAll(lasers); }
 	

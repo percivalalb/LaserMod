@@ -19,7 +19,7 @@ import net.minecraft.world.World;
  */
 public class LaserUtil {
 
-	public static int TICK_RATE = 8;
+	public static int TICK_RATE = 2;
 	public static int LASER_RATE = 2;
 	public static double LASER_SIZE = 0.3D; //The distance across the entire beam
 	public static float[][] LASER_COLOUR_TABLE = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.0F, 1.0F, 0.0F}, {1.0F, 0.0F, 0.0F}, {0.0F, 0.0F, 0.0F}};
@@ -41,11 +41,11 @@ public class LaserUtil {
 				return bap;
 			else if(LaserModAPI.LASER_BLACKLIST.contains(bap.block, bap.meta))
 				return bap;
-			else if(bap.block.isSideSolid(bap.state, world, pos, dir.getOpposite()))
+			else if(bap.state.isSideSolid(world, pos, dir.getOpposite()))
 				return bap;
-			else if(bap.block.isSideSolid(bap.state, world, pos, dir))
+			else if(bap.state.isSideSolid(world, pos, dir))
 				return bap;
-			else if(bap.block.isAir(bap.state, world, pos) || (!bap.block.isSideSolid(bap.state, world, pos, dir) && !bap.block.isSideSolid(bap.state, world, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(bap.block, bap.meta)) {
+			else if(bap.block.isAir(bap.state, world, pos) || (!bap.state.isSideSolid(world, pos, dir) && !bap.state.isSideSolid(world, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(bap.block, bap.meta)) {
 				
 			}
 			else
@@ -104,11 +104,11 @@ public class LaserUtil {
 				break;
 			else if(LaserModAPI.LASER_BLACKLIST.contains(blockActionPos.block, blockActionPos.meta))
 				break;
-			else if(blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir.getOpposite()))
+			else if(blockActionPos.state.isSideSolid(world, pos, dir.getOpposite()))
 				break;
-			else if(blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir))
+			else if(blockActionPos.state.isSideSolid(world, pos, dir))
 				break;
-			else if(blockActionPos.block.isAir(blockActionPos.state, world, pos) || (!blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir) && !blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(blockActionPos.state, world, pos) || (!blockActionPos.state.isSideSolid(world, pos, dir) && !blockActionPos.state.isSideSolid(world, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 			
 			}
 			else
@@ -164,15 +164,15 @@ public class LaserUtil {
 				extra[dir.ordinal()] += (d == 0 ? 0 : 1) + offsetMin - 0.01;
 				break;
 			}
-			else if(blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir.getOpposite())) {
+			else if(blockActionPos.state.isSideSolid(world, pos, dir.getOpposite())) {
 				extra[dir.ordinal()] += offsetMin - 0.01;
 				break;
 			}
-			else if(blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir)) {
+			else if(blockActionPos.state.isSideSolid(world, pos, dir)) {
 				extra[dir.ordinal()] += (d == 0 ? 0 : 1) + offsetMin - 0.01;
 				break;
 			}
-			else if(blockActionPos.block.isAir(blockActionPos.state, world, pos) || (!blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir) && !blockActionPos.block.isSideSolid(blockActionPos.state, world, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
+			else if(blockActionPos.block.isAir(blockActionPos.state, world, pos) || (!blockActionPos.state.isSideSolid(world, pos, dir) && !blockActionPos.state.isSideSolid(world, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(blockActionPos.block, blockActionPos.meta)) {
 				extra[dir.ordinal()] += (d == 0 ? 0 : 1);
 			}
 			else {

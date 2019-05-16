@@ -60,9 +60,9 @@ public class BlockReflector extends BlockContainer {
 		if(stack.getItem() == ModItems.SCREWDRIVER) {
 			if(!world.isRemote) {
 				TileEntityReflector reflector = (TileEntityReflector)world.getTileEntity(pos);
-				reflector.closedSides[side.ordinal()] = !reflector.closedSides[side.getIndex()];
+				reflector.sideClosed[side.ordinal()] = !reflector.sideClosed[side.getIndex()];
 				
-				if(reflector.closedSides[side.ordinal()])
+				if(reflector.sideClosed[side.ordinal()])
 					reflector.removeAllLasersFromSide(side);
 				
 				if(state.getValue(POWERED) && !this.isLaserSource(world, pos)) {
@@ -111,7 +111,7 @@ public class BlockReflector extends BlockContainer {
     	TileEntityReflector ter = (TileEntityReflector)te;
     	
     	for(EnumFacing facing : EnumFacing.VALUES) {
-    		if(!ter.closedSides[facing.ordinal()]) {
+    		if(!ter.sideClosed[facing.ordinal()]) {
     			if(LaserUtil.isValidSourceOfPowerOnSide(ter, facing)) {
     				return true;
     			}

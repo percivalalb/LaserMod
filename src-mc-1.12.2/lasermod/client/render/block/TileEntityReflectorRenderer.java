@@ -38,7 +38,7 @@ public class TileEntityReflectorRenderer extends TileEntitySpecialRenderer<TileE
         //Lasers
         if(te.hasWorld() && te.getWorld().getBlockState(te.getPos()).getValue(BlockReflector.POWERED)) {
 			for(EnumFacing dir : EnumFacing.VALUES) {
-				if(te.closedSides[dir.ordinal()] || te.containsInputSide(dir) || te.noLaserInputs())
+				if(te.sideClosed[dir.ordinal()] || te.containsInputSide(dir) || te.noLaserInputs())
 					continue;
 				
 			  	LaserInGame laserInGame = te.getOutputLaser(dir);

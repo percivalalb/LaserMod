@@ -1,7 +1,5 @@
 package lasermod.block;
 
-import java.util.Random;
-
 import lasermod.LaserMod;
 import lasermod.ModItems;
 import lasermod.api.LaserRegistry;
@@ -13,7 +11,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,8 +26,6 @@ import net.minecraft.world.World;
  * @author ProPercivalalb
  */
 public class BlockAdvancedLaser extends BlockPoweredRedstone {
-	
-	private Random rand = new Random();
 	
 	public BlockAdvancedLaser() {
 		super(Material.ROCK);
@@ -56,8 +51,7 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 					else {
 						//player.openGui(LaserMod.instance, GuiAdvancedLaser.GUI_ID, world, x, y, z);
 						//player.addChatMessage(" Upgrades attached to this laser...");
-						for(ItemStack stack : advancedLaser.upgrades) {
-							LaserType type = LaserRegistry.getLaserFromItem(stack);
+						for(LaserType type : advancedLaser.upgrades) {
 							player.sendMessage(new TextComponentTranslation(type.getTranslationKey()).setStyle((new Style()).setColor(TextFormatting.GREEN)));
 						}
 					}
@@ -65,18 +59,15 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 				return true;
 			}
 			
-			LaserType laser = LaserRegistry.getLaserFromItem(item);
+			LaserType type = LaserRegistry.getLaserFromItem(item);
 			boolean power = state.getValue(POWERED);
-			if(laser != null && !power) {
-				for(ItemStack stack : advancedLaser.upgrades) {
-					LaserType laser2 = LaserRegistry.getLaserFromItem(stack);
-					if(laser == laser2){
-						if(!world.isRemote) player.sendMessage(new TextComponentTranslation("lasermod.screwdriver.already_has_laser"));
-						return true;
-					}
+			if(type != null && !power) {
+				if(advancedLaser.upgrades.contains(type)) {
+					if(!world.isRemote) player.sendMessage(new TextComponentTranslation("lasermod.screwdriver.already_has_upgrade"));
+					return true;
 				}
 				
-				advancedLaser.upgrades.add(item);
+				advancedLaser.upgrades.add(type);
 				
 				if(!player.capabilities.isCreativeMode) item.shrink(1);
 				
@@ -84,7 +75,7 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
 				
 				return true;
 			}
-			else if(laser != null && power && !world.isRemote) {
+			else if(type != null && power && !world.isRemote) {
 				player.sendMessage(new TextComponentTranslation("lasermod.screwdriver.redstone_signal"));
 				return true;
 			}
@@ -101,8 +92,8 @@ public class BlockAdvancedLaser extends BlockPoweredRedstone {
         TileEntityAdvancedLaser advancedLaser = (TileEntityAdvancedLaser)tileEntity;
         for (int i = 0; i < advancedLaser.upgrades.size(); i++) {
 
-            ItemStack stack = advancedLaser.upgrades.get(i);
-            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+            // TODO Spawn upgrades ItemStack stack = advancedLaser.upgrades.get(i);
+            //InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
         }
         
         super.breakBlock(world, pos, state);

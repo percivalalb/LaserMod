@@ -22,7 +22,7 @@ public class WorldOverlayHandler {
 	@SubscribeEvent
 	public void onWorldRenderLast(RenderWorldLastEvent event) {
 		
-	    for (int i = 0; i < LaserCollisionBoxes.RENDER_LASERS.size(); ++i) {
+	    for(int i = 0; i < LaserCollisionBoxes.RENDER_LASERS.size(); ++i) {
         	LaserToRender ltr = LaserCollisionBoxes.RENDER_LASERS.get(i);
         	AxisAlignedBB axisalignedbb = ltr.collision;
         	LaserInGame laserInGame = ltr.laser;

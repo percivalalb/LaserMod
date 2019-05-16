@@ -33,32 +33,27 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 	public EnumDyeColor colour = EnumDyeColor.RED;
 	
 	@Override
-	public void updateLasers(boolean client) {
-		super.updateLasers(client);
-		if(!client) {
-			EnumFacing facing = this.getInputSide().getOpposite();
-			
-			BlockActionPos action = LaserUtil.getFirstBlock(this, facing);
-			if(action != null && action.isLaserReceiver(facing)) {
-				LaserInGame laserInGame = this.getOutputLaser(facing);
-				ILaserReceiver receiver = action.getLaserReceiver(facing);
-	        	if(receiver.canReceive(this.world, this.pos, this.getInputSide(), laserInGame))
-	        		receiver.onLaserIncident(this.world, this.pos, this.getInputSide(), laserInGame);
-			}
-			else if(action != null) {
-				LaserInGame laserInGame = this.getOutputLaser(facing);
-				
-				if(laserInGame != null) {
-					for(LaserType laser : laserInGame.getLaserType()) {
-						laser.actionOnBlock(action);
-					}
-				}
-			}
-		}
+	public void tickLaserLogic() {
+		super.tickLaserLogic();
+		
+		EnumFacing facing = this.world.getBlockState(this.pos).getValue(BlockPoweredRedstone.FACING);
+		
+		BlockActionPos bap = LaserUtil.getFirstBlock(this, facing);
+		if(bap == null) {}
+		else if(bap.isLaserReceiver(facing)) {
+			ILaserReceiver reciver = bap.getLaserReceiver(facing);
+	    	LaserInGame laserInGame = this.getOutputLaser(facing);
+	    	
+	    	if(reciver.canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
+	    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
+	    }
+	    else if(bap != null) {
+	    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+	    }
 	}
 	
 	@Override
-	public void updateLaserAction(boolean client) {
+	public void tickLaserAction(boolean client) {
 		if(this.laser != null) {
 			IBlockState state = this.getWorld().getBlockState(this.pos);
 			
@@ -77,7 +72,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 		if(tag.hasKey("colour"))
 			this.colour = EnumDyeColor.byMetadata(tag.getInteger("colour"));
 		if(tag.hasKey("laser"))
-			this.laser = new LaserInGame(tag.getCompoundTag("laser"));
+			this.laser = LaserInGame.readFromNBT(tag.getCompoundTag("laser"));
 		else 
 			this.laser = null;
 	}

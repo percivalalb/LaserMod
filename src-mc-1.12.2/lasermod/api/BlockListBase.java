@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
  * @author ProPercivalalb
@@ -17,10 +18,8 @@ public class BlockListBase {
 	public List<List> list = new ArrayList<List>();
 	
 	//Convenience method
-	public void addToList(Block block, int blockMeta) { addToList(Block.REGISTRY.getNameForObject(block), blockMeta); }
-	public void addToList(int blockId, int blockMeta) { addToList(Block.REGISTRY.getNameForObject(Block.getBlockById(blockId)), blockMeta); }
-	public void addToList(int blockId) { addToList(Block.REGISTRY.getNameForObject(Block.getBlockById(blockId)), ALL_METADATA); }
-	public void addToList(Block block) { addToList(Block.REGISTRY.getNameForObject(block), ALL_METADATA); }
+	public void addToList(Block block, int blockMeta) { addToList(ForgeRegistries.BLOCKS.getKey(block), blockMeta); }
+	public void addToList(Block block) { addToList(ForgeRegistries.BLOCKS.getKey(block)); }
 	public void addToList(ResourceLocation blockName)  { addToList(blockName, ALL_METADATA); }
 	
 	public void addToList(ResourceLocation blockName, int blockMeta) {
@@ -30,5 +29,5 @@ public class BlockListBase {
 		else this.list.add(Arrays.asList(blockName, blockMeta));
 	}
 	
-	public boolean contains(Block block, int meta) { return this.list.contains(Arrays.asList(Block.REGISTRY.getNameForObject(block), meta)); }
+	public boolean contains(Block block, int meta) { return this.list.contains(Arrays.asList(ForgeRegistries.BLOCKS.getKey(block), meta)); }
 }

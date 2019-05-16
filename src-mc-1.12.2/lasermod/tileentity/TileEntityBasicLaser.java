@@ -6,6 +6,7 @@ import java.util.List;
 
 import lasermod.LaserMod;
 import lasermod.api.ILaserProvider;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserType;
 import lasermod.api.base.TileEntityLaserDevice;
@@ -24,38 +25,29 @@ import net.minecraft.world.World;
 public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILaserProvider {
 
 	@Override
-	public void updateLasers(boolean client) {
-		if(!client) {
-			IBlockState state = this.getWorld().getBlockState(this.pos);
+	public void tickLaserLogic() {
+		IBlockState state = this.getWorld().getBlockState(this.pos);
 			
-			if(state.getValue(BlockPoweredRedstone.POWERED)) {
-				EnumFacing facing = state.getValue(BlockBasicLaser.FACING);
+		if(state.getValue(BlockPoweredRedstone.POWERED)) {
+			EnumFacing facing = state.getValue(BlockBasicLaser.FACING);
 				
-				BlockActionPos reciver = LaserUtil.getFirstBlock(this, facing);
-				
-		    	if(reciver != null && reciver.isLaserReceiver(facing)) {
-		    		LaserInGame laserInGame = this.getOutputLaser(facing);
-		    		//LaserMod.LOGGER.debug(("Passings");
-		    		if(reciver.getLaserReceiver(facing).canReceive(this.world, this.pos, facing.getOpposite(), laserInGame)) {
-		    			reciver.getLaserReceiver(facing).onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
-		    			LaserMod.LOGGER.debug("Passing");
-		    		}
-		    			
-		    	}
-		    	else if(reciver != null) {
-		    		LaserInGame laserInGame = this.getOutputLaser(facing);
-		    		
-		    		if(laserInGame != null)
-			    		for(LaserType laser : laserInGame.getLaserType())
-			    			laser.actionOnBlock(reciver);
-		
-		    	}
-			}
+			BlockActionPos bap = LaserUtil.getFirstBlock(this, facing);
+			if(bap == null) {}
+			else if(bap.isLaserReceiver(facing)) {
+				ILaserReceiver reciver = bap.getLaserReceiver(facing);
+		    	LaserInGame laserInGame = this.getOutputLaser(facing);
+		    	
+		    	if(reciver.canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
+		    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
+		    }
+		    else if(bap != null) {
+		    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+		    }
 		}
 	}
 	
 	@Override
-	public void updateLaserAction(boolean client) {
+	public void tickLaserAction(boolean client) {
 		
 	}
 	
@@ -71,7 +63,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	
 	@Override
 	public boolean isEmittingFromSide(World worldIn, BlockPos askerPos, EnumFacing side) {
-		IBlockState state = this.getWorld().getBlockState(this.pos);
+		IBlockState state = this.world.getBlockState(this.pos);
 		
 		return state.getValue(BlockBasicLaser.POWERED) && state.getValue(BlockBasicLaser.FACING) == side;
 	}
@@ -88,7 +80,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 	
 	@Override
 	public List<LaserInGame> getOutputLasers() {
-		IBlockState state = this.getWorld().getBlockState(this.pos);
+		IBlockState state = this.world.getBlockState(this.pos);
 		
 		if(state.getValue(BlockBasicLaser.POWERED))
 			return Arrays.asList(this.getOutputLaser(state.getValue(BlockBasicLaser.FACING)));

@@ -9,10 +9,12 @@ import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
 import lasermod.api.LaserType;
 import lasermod.api.base.TileEntityMultiSidedReceiver;
+import lasermod.block.BlockPoweredRedstone;
 import lasermod.network.PacketDispatcher;
 import lasermod.network.packet.client.ReflectorMessage;
 import lasermod.util.BlockActionPos;
 import lasermod.util.LaserUtil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
@@ -25,44 +27,40 @@ import net.minecraft.world.World;
  */
 public class TileEntityReflector extends TileEntityMultiSidedReceiver implements ILaserProvider {
 
-	public boolean[] closedSides = new boolean[] {true, true, true, true, true, true};
+	public boolean[] sideClosed = new boolean[] {true, true, true, true, true, true};
 	
 	@Override
-	public void updateLasers(boolean client) {
-		super.updateLasers(client);
-		
-		if(!client) {
-			for(EnumFacing dir : EnumFacing.VALUES) {
-				if(this.closedSides[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
-					continue;
-				
-				BlockActionPos action = LaserUtil.getFirstBlock(this, dir);
-				if(action != null && action.isLaserReceiver(dir)) {
-					LaserInGame laserInGame = this.getOutputLaser(dir);
-					ILaserReceiver receiver = action.getLaserReceiver(dir);
-				  	if(receiver.canReceive(this.world, this.pos, dir.getOpposite(), laserInGame))
-				  		receiver.onLaserIncident(this.world, this.pos, dir.getOpposite(), laserInGame);
-				}
-				else if(action != null) {
-	    			LaserInGame laserInGame = this.getOutputLaser(dir);
-	    			
-	    			if(laserInGame != null)
-		    			for(LaserType laser : laserInGame.getLaserType())
-		    				laser.actionOnBlock(action);
-	    		}
-			}
+	public void tickLaserLogic() {
+		super.tickLaserLogic();
+
+		for(EnumFacing facing : EnumFacing.VALUES) {
+			if(this.sideClosed[facing.ordinal()] || this.containsInputSide(facing) || this.noLaserInputs())
+				continue;
+			
+			BlockActionPos bap = LaserUtil.getFirstBlock(this, facing);
+			if(bap == null) {}
+			else if(bap.isLaserReceiver(facing)) {
+				ILaserReceiver reciver = bap.getLaserReceiver(facing);
+		    	LaserInGame laserInGame = this.getOutputLaser(facing);
+		    	
+		    	if(reciver.canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
+		    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
+		    }
+		    else if(bap != null) {
+		    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+		    }
 		}
 	}
 	
 	@Override
 	public boolean checkPowerOnSide(EnumFacing dir) {
-		return !this.closedSides[dir.ordinal()] && this.containsInputSide(dir);
+		return !this.sideClosed[dir.ordinal()] && this.containsInputSide(dir);
 	}
 	
 	@Override
-	public void updateLaserAction(boolean client) {
+	public void tickLaserAction(boolean client) {
 		for(EnumFacing dir : EnumFacing.VALUES) {
-			if(this.closedSides[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
+			if(this.sideClosed[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
 				continue;
 			LaserUtil.performLaserAction(this, dir, this.pos);
 		}
@@ -74,16 +72,16 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 		
 		int[] close = tag.getIntArray("closeSides");
 		for(int i = 0; i < close.length; ++i)
-			this.closedSides[i] = close[i] == 1;
+			this.sideClosed[i] = close[i] == 1;
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		
-		int[] close = new int[this.closedSides.length];
-		for(int i = 0; i < this.closedSides.length; ++i)
-			close[i] = this.closedSides[i] ? 1 : 0;
+		int[] close = new int[this.sideClosed.length];
+		for(int i = 0; i < this.sideClosed.length; ++i)
+			close[i] = this.sideClosed[i] ? 1 : 0;
 		tag.setIntArray("closeSides", close);
 		
 		return tag;
@@ -98,7 +96,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 	
 	public int openSides() {
 		int count = 0;
-		for(boolean bool : this.closedSides)
+		for(boolean bool : this.sideClosed)
 			if(!bool)
 				count++;
 		return count;
@@ -111,13 +109,13 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 	
 	@Override
 	public boolean canReceive(World world, BlockPos orginPos, EnumFacing dir, LaserInGame laserInGame) {
-		return !this.closedSides[dir.ordinal()] && (!this.containsInputSide(dir) || super.canReceive(world, orginPos, dir, laserInGame));
+		return !this.sideClosed[dir.ordinal()] && (!this.containsInputSide(dir) || super.canReceive(world, orginPos, dir, laserInGame));
 	}
 
 	
 	@Override
 	public boolean isEmittingFromSide(World world, BlockPos askerPos, EnumFacing dir) {
-		return !this.closedSides[dir.ordinal()] && !this.noLaserInputs() && !this.containsInputSide(dir);
+		return !this.sideClosed[dir.ordinal()] && !this.noLaserInputs() && !this.containsInputSide(dir);
 	}
 	
 	@Override
@@ -125,7 +123,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 		int total = 0;
 		
 		for(EnumFacing dir2 : EnumFacing.VALUES)
-			if(!this.closedSides[dir2.ordinal()] && !this.containsInputSide(dir2)) 
+			if(!this.sideClosed[dir2.ordinal()] && !this.containsInputSide(dir2)) 
 				total += 1;
 		if(total == 0)
 			total = 1;
@@ -156,13 +154,18 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 	public List<LaserInGame> getOutputLasers() {
 		List<LaserInGame> list = new ArrayList<LaserInGame>();
 		for(EnumFacing dir : EnumFacing.VALUES) {
-			if(this.closedSides[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
+			if(this.sideClosed[dir.ordinal()] || this.containsInputSide(dir) || this.noLaserInputs())
 				continue;
 			list.add(this.getOutputLaser(dir));
 		}
 		
 		return list;
 	}
+	
+	@Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
 	
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {

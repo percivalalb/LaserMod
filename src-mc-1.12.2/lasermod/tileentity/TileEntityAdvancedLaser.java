@@ -3,11 +3,16 @@ package lasermod.tileentity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import lasermod.LaserMod;
 import lasermod.api.ILaserProvider;
+import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
+import lasermod.api.LaserModAPI;
 import lasermod.api.LaserRegistry;
 import lasermod.api.LaserType;
 import lasermod.api.base.TileEntityLaserDevice;
@@ -19,8 +24,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -29,39 +36,33 @@ import net.minecraft.world.World;
  */
 public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements ILaserProvider {
 
-	public ArrayList<ItemStack> upgrades = new ArrayList<ItemStack>();
+	public Set<LaserType> upgrades = new LinkedHashSet<>();
 	
 	@Override
-	public void updateLasers(boolean client) {
-		if(!client) {
-			IBlockState state = this.getWorld().getBlockState(this.pos);
+	public void tickLaserLogic() {
+		IBlockState state = this.world.getBlockState(this.pos);
 			
-			if(state.getValue(BlockPoweredRedstone.POWERED)) {
-				EnumFacing facing = state.getValue(BlockBasicLaser.FACING);
+		if(state.getValue(BlockPoweredRedstone.POWERED)) {
+			EnumFacing facing = state.getValue(BlockBasicLaser.FACING);
 				
-				BlockActionPos reciver = LaserUtil.getFirstBlock(this, facing);
-		    	if(reciver != null && reciver.isLaserReceiver(facing)) {
-		    		  	
-		    		LaserInGame laserInGame = this.getOutputLaser(facing);
-		
-		    		if(reciver.getLaserReceiver(facing).canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
-		    			reciver.getLaserReceiver(facing).onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
-		    	}
-		    	else if(reciver != null) {
-		    		LaserInGame laserInGame = this.getOutputLaser(facing);
-		    		LaserMod.LOGGER.debug("TEST");
-		    		if(laserInGame != null)
-			    		for(LaserType laser : laserInGame.getLaserType())
-			    			laser.actionOnBlock(reciver);
-		
-		    	}
-			}
+			BlockActionPos bap = LaserUtil.getFirstBlock(this, facing);
+			if(bap == null) {}
+			else if(bap.isLaserReceiver(facing)) {
+				ILaserReceiver reciver = bap.getLaserReceiver(facing);
+		    	LaserInGame laserInGame = this.getOutputLaser(facing);
+		    	
+		    	if(reciver.canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
+		    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
+		    }
+		    else if(bap != null) {
+		    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+		    }
 		}
 	}
 	
 	@Override
-	public void updateLaserAction(boolean client) {
-		IBlockState state = this.getWorld().getBlockState(this.pos);
+	public void tickLaserAction(boolean client) {
+		IBlockState state = this.world.getBlockState(this.pos);
 		
 		if(state.getValue(BlockBasicLaser.POWERED))
 			LaserUtil.performLaserAction(this, state.getValue(BlockBasicLaser.FACING), this.pos);
@@ -71,9 +72,11 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		
-		NBTTagList itemList = tag.getTagList("upgrades", 10);
+		NBTTagList itemList = tag.getTagList("laser_types", 8);
 		for(int i = 0; i < itemList.tagCount(); ++i)
-			this.upgrades.add(new ItemStack(itemList.getCompoundTagAt(i)));
+			this.upgrades.add(LaserModAPI.LASER_TYPES.getValue(new ResourceLocation(itemList.getStringTagAt(i))));
+		
+		
 	}
 	
 	@Override
@@ -81,12 +84,11 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		super.writeToNBT(tag);
 		
 		NBTTagList itemList = new NBTTagList();
-		for(int i = 0; i < this.upgrades.size(); ++i) {
-			NBTTagCompound itemTag = new NBTTagCompound();
-			this.upgrades.get(i).writeToNBT(itemTag);
-			itemList.appendTag(itemTag);
+		Iterator<LaserType> lasers = this.upgrades.iterator();
+		while(lasers.hasNext()) {
+			itemList.appendTag(new NBTTagString(lasers.next().getRegistryName().toString()));
 		}
-		tag.setTag("upgrades", itemList);
+		tag.setTag("laser_types", itemList);
 		
 		return tag;
 	}
@@ -95,10 +97,8 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	public LaserInGame getOutputLaser(EnumFacing dir) {
 		LaserInGame laser = new LaserInGame().setDirection(dir);
 
-		for(ItemStack stack : this.upgrades) {
-			LaserType type = LaserRegistry.getLaserFromItem(stack);
-			if(type != null)
-				laser.addLaserType(type);
+		for(LaserType type : this.upgrades) {
+			laser.addLaserType(type);
 		}
 		return laser;
 	}
@@ -135,10 +135,10 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		return Collections.<LaserInGame>emptyList();
 	}
 	
-	//@Override
-   // public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-   //     return oldState.getBlock() != newState.getBlock();
-    //}
+	@Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
 	
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
