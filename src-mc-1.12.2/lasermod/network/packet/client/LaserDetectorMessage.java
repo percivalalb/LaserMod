@@ -1,22 +1,21 @@
 package lasermod.network.packet.client;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import lasermod.api.LaserInGame;
 import lasermod.network.AbstractMessage.AbstractClientMessage;
+import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityLaserDetector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * @author ProPercivalalb
  */
-public class LaserDetectorMessage extends AbstractClientMessage<LaserDetectorMessage> {
+public class LaserDetectorMessage extends AbstractClientMessage<LaserDetectorMessage> implements IPacket<LaserDetectorMessage> {
 	
 	public BlockPos pos;
 	public ArrayList<LaserInGame> lasers;
@@ -28,7 +27,7 @@ public class LaserDetectorMessage extends AbstractClientMessage<LaserDetectorMes
 	}
 
 	@Override
-	protected LaserDetectorMessage encode(PacketBuffer buffer) throws IOException {
+	public LaserDetectorMessage decode(PacketBuffer buffer) {
 		this.pos = buffer.readBlockPos();
 
 	    this.lasers = new ArrayList<LaserInGame>();
@@ -40,7 +39,7 @@ public class LaserDetectorMessage extends AbstractClientMessage<LaserDetectorMes
 	}
 	
 	@Override
-	protected void decode(LaserDetectorMessage msg, PacketBuffer buffer) throws IOException {
+	public void encode(LaserDetectorMessage msg, PacketBuffer buffer) {
 		buffer.writeBlockPos(msg.pos);
 		
 		buffer.writeInt(msg.lasers.size());
@@ -50,7 +49,7 @@ public class LaserDetectorMessage extends AbstractClientMessage<LaserDetectorMes
 		
 	}
 	@Override
-	public void process(LaserDetectorMessage msg, EntityPlayer player, Side side) {
+	public void handle(LaserDetectorMessage msg, EntityPlayer player) {
 		World world = player.world;
 		TileEntity tileEntity = world.getTileEntity(msg.pos);
 		

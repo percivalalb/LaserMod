@@ -1,6 +1,7 @@
 package lasermod.util;
 
 import java.util.List;
+import java.util.function.Function;
 
 import lasermod.ModBlocks;
 import lasermod.api.ILaserProvider;
@@ -25,27 +26,29 @@ public class LaserUtil {
 	public static float[][] LASER_COLOUR_TABLE = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.0F, 1.0F, 0.0F}, {1.0F, 0.0F, 0.0F}, {0.0F, 0.0F, 0.0F}};
 	
 	public static BlockActionPos getFirstBlock(ILaserProvider lp, EnumFacing dir) {
-		World world = lp.getWorld();
-		BlockPos lpPos = lp.getPos();
+		return getFirstBlock(lp.getWorld(), lp.getPos(), lp.getRange(dir), dir);
+	}
+	
+	public static BlockActionPos getFirstBlock(World worldIn, BlockPos posIn, int range, EnumFacing dir) {
 		
-		for(int d = lp.isForgeMultipart() ? 0 : 1; d < lp.getRange(dir); d++) {
-			BlockPos pos = lpPos.offset(dir, d);
+		for(int d = 1; d < range; d++) {
+			BlockPos pos = posIn.offset(dir, d);
 			
 			//Check whether the coordinates are in range
-			if(!world.isValid(pos)) break;
+			if(!worldIn.isValid(pos)) break;
 			
-			BlockActionPos bap = new BlockActionPos(world, pos);
+			BlockActionPos bap = new BlockActionPos(worldIn, pos);
 			
 			//Can't pass through the next block
-			if(bap.isLaserReceiver(dir) && !pos.equals(lpPos))
+			if(bap.isLaserReceiver(dir))
 				return bap;
 			else if(LaserModAPI.LASER_BLACKLIST.contains(bap.block, bap.meta))
 				return bap;
-			else if(bap.state.isSideSolid(world, pos, dir.getOpposite()))
+			else if(bap.state.isSideSolid(worldIn, pos, dir.getOpposite()))
 				return bap;
-			else if(bap.state.isSideSolid(world, pos, dir))
+			else if(bap.state.isSideSolid(worldIn, pos, dir))
 				return bap;
-			else if(bap.block.isAir(bap.state, world, pos) || (!bap.state.isSideSolid(world, pos, dir) && !bap.state.isSideSolid(world, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(bap.block, bap.meta)) {
+			else if(bap.block.isAir(bap.state, worldIn, pos) || (!bap.state.isSideSolid(worldIn, pos, dir) && !bap.state.isSideSolid(worldIn, pos, dir.getOpposite())) || LaserModAPI.LASER_WHITELIST.contains(bap.block, bap.meta)) {
 				
 			}
 			else

@@ -41,7 +41,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 	@Override
 	public void tickLaserLogic() {
 		IBlockState state = this.world.getBlockState(this.pos);
-			
+		
 		if(state.getValue(BlockPoweredRedstone.POWERED)) {
 			EnumFacing facing = state.getValue(BlockBasicLaser.FACING);
 				
@@ -54,7 +54,7 @@ public class TileEntityAdvancedLaser extends TileEntityLaserDevice implements IL
 		    	if(reciver.canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
 		    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
 		    }
-		    else if(bap != null) {
+		    else {
 		    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
 		    }
 		}

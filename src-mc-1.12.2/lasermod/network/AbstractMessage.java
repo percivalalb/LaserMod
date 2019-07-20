@@ -36,29 +36,8 @@ import net.minecraftforge.fml.relauncher.Side;
  * same class is used for both the IMessage and the IMessageHandler.
  * 
  */
-public abstract class AbstractMessage<T extends AbstractMessage<T>> implements IMessage, IMessageHandler <T, IMessage>
+public abstract class AbstractMessage<T extends AbstractMessage<T> & IPacket<T>> implements IMessage, IMessageHandler <T, IMessage>
 {
-	/**
-	 * Some PacketBuffer methods throw IOException - default handling propagates the exception.
-	 * if an IOException is expected but should not be fatal, handle it within this method.
-	 */
-	protected abstract T encode(PacketBuffer buffer) throws IOException;
-
-	/**
-	 * Some PacketBuffer methods throw IOException - default handling propagates the exception.
-	 * if an IOException is expected but should not be fatal, handle it within this method.
-	 * @param abstractMessage 
-	 */
-	protected abstract void decode(T msg, PacketBuffer buffer) throws IOException;
-
-	/**
-	 * Called on whichever side the message is received;
-	 * for bidirectional packets, be sure to check side
-	 * If {@link #requiresMainThread()} returns true, this method is guaranteed
-	 * to be called on the main Minecraft thread for this side.
-	 */
-	public abstract void process(T msg, EntityPlayer player, Side side);
-
 	/**
 	 * If message is sent to the wrong side, an exception will be thrown during handling
 	 * @return True if the message is allowed to be handled on the given side
@@ -69,20 +48,12 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 
 	@Override
 	public void fromBytes(ByteBuf buffer) {
-		try {
-			encode(new PacketBuffer(buffer));
-		} catch (IOException e) {
-			throw Throwables.propagate(e);
-		}
+		((T)this).decode(new PacketBuffer(buffer));
 	}
 
 	@Override
 	public void toBytes(ByteBuf buffer) {
-		try {
-			decode((T)this, new PacketBuffer(buffer));
-		} catch (IOException e) {
-			throw Throwables.propagate(e);
-		}
+		((T)this).encode(((T)this), new PacketBuffer(buffer));
 	}
 	
 	@Override
@@ -94,7 +65,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 		// pretty much copied straight from vanilla code, see {@link PacketThreadUtil#checkThreadAndEnqueue}
 		thread.addScheduledTask(new Runnable() {
 			public void run() {
-				msg.process(msg, LaserMod.PROXY.getPlayerEntity(ctx), ctx.side);
+				msg.handle(msg, LaserMod.PROXY.getPlayerEntity(ctx));
 			}
 		});
 		
@@ -104,7 +75,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	/**
 	 * Messages that can only be sent from the server to the client should use this class
 	 */
-	public static abstract class AbstractClientMessage<T extends AbstractMessage<T>> extends AbstractMessage<T> {
+	public static abstract class AbstractClientMessage<T extends AbstractMessage<T> & IPacket<T>> extends AbstractMessage<T> {
 		@Override
 		protected final boolean isValidOnSide(Side side) {
 			return side.isClient();
@@ -114,7 +85,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	/**
 	 * Messages that can only be sent from the client to the server should use this class
 	 */
-	public static abstract class AbstractServerMessage<T extends AbstractMessage<T>> extends AbstractMessage<T> {
+	public static abstract class AbstractServerMessage<T extends AbstractMessage<T> & IPacket<T>> extends AbstractMessage<T> {
 		@Override
 		protected final boolean isValidOnSide(Side side) {
 			return side.isServer();

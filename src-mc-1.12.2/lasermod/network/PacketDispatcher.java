@@ -1,6 +1,9 @@
 package lasermod.network;
 
+import java.util.function.Predicate;
+
 import lasermod.lib.Reference;
+import lasermod.network.AbstractMessage.AbstractClientMessage;
 import lasermod.network.packet.client.AdvancedLaserMessage;
 import lasermod.network.packet.client.ColourConverterMessage;
 import lasermod.network.packet.client.LaserDetectorMessage;
@@ -39,7 +42,7 @@ public class PacketDispatcher {
 		registerMessage(SmallColourConverterMessage.class);
 	}
 
-	private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {
+	private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage> & IPacket<T>> void registerMessage(Class<T> clazz) {
 		if (AbstractMessage.AbstractClientMessage.class.isAssignableFrom(clazz)) {
 			PacketDispatcher.dispatcher.registerMessage(clazz, clazz, packetId++, Side.CLIENT);
 		} else if (AbstractMessage.AbstractServerMessage.class.isAssignableFrom(clazz)) {

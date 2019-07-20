@@ -40,7 +40,7 @@ public class TileEntityBasicLaser extends TileEntityLaserDevice implements ILase
 		    	if(reciver.canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
 		    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
 		    }
-		    else if(bap != null) {
+		    else {
 		    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
 		    }
 		}

@@ -38,12 +38,8 @@ public class LaserMod {
     public static CommonProxy PROXY;
 	
 	public LaserMod() {
-		LaserModAPI.LASER_TYPES = makeRegistry(new ResourceLocation(Reference.MOD_ID, "laser_types"), LaserType.class, 64).create();
+		
 	}
-	
-	private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(ResourceLocation name, Class<T> type, int max) {
-        return new RegistryBuilder<T>().setName(name).setType(type).setMaxID(max);
-    }
 	
 	/** Laser Mod Creative tab **/
 	public static CreativeTabs TAB_LASER = new CreativeTabs("tab_laser") {

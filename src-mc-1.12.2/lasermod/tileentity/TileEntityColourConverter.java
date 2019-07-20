@@ -47,7 +47,7 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 	    	if(reciver.canReceive(this.world, this.pos, facing.getOpposite(), laserInGame))
 	    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
 	    }
-	    else if(bap != null) {
+	    else {
 	    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
 	    }
 	}
@@ -142,11 +142,6 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 		IBlockState state = this.getWorld().getBlockState(this.pos);
 		
 		return state.getValue(BlockPoweredRedstone.FACING).getOpposite();
-	}
-	
-	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		return INFINITE_EXTENT_AABB;
 	}
 	
 	@Override

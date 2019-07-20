@@ -1,7 +1,5 @@
 package lasermod.network.packet.client;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -9,18 +7,16 @@ import java.util.Set;
 import lasermod.api.LaserModAPI;
 import lasermod.api.LaserType;
 import lasermod.network.AbstractMessage.AbstractClientMessage;
+import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityAdvancedLaser;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 
-public class AdvancedLaserMessage extends AbstractClientMessage<AdvancedLaserMessage> {
+public class AdvancedLaserMessage extends AbstractClientMessage<AdvancedLaserMessage> implements IPacket<AdvancedLaserMessage> {
 	
 	public BlockPos pos;
 	public Set<LaserType> upgrades;
@@ -32,29 +28,27 @@ public class AdvancedLaserMessage extends AbstractClientMessage<AdvancedLaserMes
     }
 
 	@Override
-	protected AdvancedLaserMessage encode(PacketBuffer buffer) throws IOException {
+	public AdvancedLaserMessage decode(PacketBuffer buffer) {
 		this.pos = buffer.readBlockPos();
 		this.upgrades = new HashSet<>();
 	    int upgradeCount = buffer.readInt();
 	    for(int i = 0; i < upgradeCount; ++i)
 	    	this.upgrades.add(LaserModAPI.LASER_TYPES.getValue(new ResourceLocation(buffer.readString(64))));
 	    return this;
-		
 	}
+	
 	@Override
-	protected void decode(AdvancedLaserMessage msg, PacketBuffer buffer) throws IOException {
+	public void encode(AdvancedLaserMessage msg, PacketBuffer buffer) {
 		buffer.writeBlockPos(msg.pos);
 		buffer.writeInt(msg.upgrades.size());
 		Iterator<LaserType> lasers = msg.upgrades.iterator();
 		while(lasers.hasNext()) {
 			buffer.writeString(lasers.next().getRegistryName().toString());
 		}
-	
-		
 	}
 	
 	@Override
-	public void process(AdvancedLaserMessage msg, EntityPlayer player, Side side) {
+	public void handle(AdvancedLaserMessage msg, EntityPlayer player) {
 		World world = player.world;
 		TileEntity tileEntity = world.getTileEntity(msg.pos);
 		

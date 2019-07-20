@@ -29,6 +29,8 @@ public class TileEntitySmallColourConverter extends TileEntitySingleSidedReceive
 	public void tickLaserLogic() {
 		super.tickLaserLogic();
 			
+		
+		
 		BlockActionPos action = LaserUtil.getFirstBlock(this, this.getInputSide().getOpposite());
 		if(action != null && action.isLaserReceiver(this.getInputSide().getOpposite())) {
 			LaserInGame laserInGame = this.getOutputLaser(this.getInputSide().getOpposite());

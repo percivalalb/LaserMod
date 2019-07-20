@@ -1,9 +1,8 @@
 package lasermod.network.packet.client;
 
-import java.io.IOException;
-
 import lasermod.api.LaserInGame;
 import lasermod.network.AbstractMessage.AbstractClientMessage;
+import lasermod.network.IPacket;
 import lasermod.tileentity.TileEntityColourConverter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
@@ -11,12 +10,11 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * @author ProPercivalalb
  */
-public class ColourConverterMessage extends AbstractClientMessage<ColourConverterMessage> {
+public class ColourConverterMessage extends AbstractClientMessage<ColourConverterMessage> implements IPacket<ColourConverterMessage> {
 	
 	public BlockPos pos;
     public LaserInGame laser;
@@ -30,7 +28,7 @@ public class ColourConverterMessage extends AbstractClientMessage<ColourConverte
     }
 
 	@Override
-	protected ColourConverterMessage encode(PacketBuffer buffer) throws IOException {
+	public ColourConverterMessage decode(PacketBuffer buffer) {
 		this.pos = buffer.readBlockPos();
 	
 		if(buffer.readBoolean())
@@ -41,7 +39,7 @@ public class ColourConverterMessage extends AbstractClientMessage<ColourConverte
 	}
 	
 	@Override
-	protected void decode(ColourConverterMessage msg, PacketBuffer buffer) throws IOException {
+	public void encode(ColourConverterMessage msg, PacketBuffer buffer) {
 		buffer.writeBlockPos(msg.pos);
 		buffer.writeBoolean(msg.laser != null);
 		if(msg.laser != null)
@@ -51,7 +49,7 @@ public class ColourConverterMessage extends AbstractClientMessage<ColourConverte
 	}
 	
 	@Override
-	public void process(ColourConverterMessage msg, EntityPlayer player, Side side) {
+	public void handle(ColourConverterMessage msg, EntityPlayer player) {
 		World world = player.world;
 		TileEntity tileEntity = world.getTileEntity(msg.pos);
 		
