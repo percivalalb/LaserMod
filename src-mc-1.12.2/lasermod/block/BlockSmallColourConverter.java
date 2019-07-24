@@ -142,7 +142,7 @@ public class BlockSmallColourConverter extends BlockContainer {
 
 	@Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
     }
 
     @Override

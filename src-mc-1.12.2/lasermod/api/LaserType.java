@@ -45,6 +45,6 @@ public class LaserType extends IForgeRegistryEntry.Impl<LaserType> {
 	}
 	
 	public static String makeTranslationKey(String type, @Nullable ResourceLocation id) {
-		return id == null ? type + ".unregistered_sadface" : type + '.' + id.getNamespace() + '.' + id.getPath().replace('/', '.');
+		return id == null ? type + ".unregistered_sadface" : type + '.' + id.getResourceDomain() + '.' + id.getResourcePath().replace('/', '.');
 	}
 }

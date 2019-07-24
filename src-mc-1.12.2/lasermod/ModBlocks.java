@@ -4,6 +4,7 @@ import lasermod.block.BlockAdvancedLaser;
 import lasermod.block.BlockBasicLaser;
 import lasermod.block.BlockColourConverter;
 import lasermod.block.BlockLaserDetector;
+import lasermod.block.BlockLaserFilter;
 import lasermod.block.BlockLensWorkbench;
 import lasermod.block.BlockLuminousLamp;
 import lasermod.block.BlockReflector;
@@ -14,6 +15,7 @@ import lasermod.tileentity.TileEntityAdvancedLaser;
 import lasermod.tileentity.TileEntityBasicLaser;
 import lasermod.tileentity.TileEntityColourConverter;
 import lasermod.tileentity.TileEntityLaserDetector;
+import lasermod.tileentity.TileEntityLaserFilter;
 import lasermod.tileentity.TileEntityLuminousLamp;
 import lasermod.tileentity.TileEntityReflector;
 import lasermod.tileentity.TileEntitySmallColourConverter;
@@ -48,7 +50,10 @@ public class ModBlocks {
 	public static Block LUMINOUS_LAMP;
 	@ObjectHolder(BlockNames.LENS_WORKBENCH)
 	public static Block LENS_WORKBENCH;
-	
+	/*
+	@ObjectHolder(BlockNames.LASER_FILTER)
+	public static Block LASER_FILTER;
+	*/
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
     public static class Registration {
 
@@ -56,14 +61,15 @@ public class ModBlocks {
 	    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 	    	IForgeRegistry<Block> blockRegistry = event.getRegistry();
 	    	
-	    	blockRegistry.register(new BlockBasicLaser().setRegistryName(BlockNames.LASER_BASIC).setTranslationKey("lasermod.basic_laser"));
-	    	blockRegistry.register(new BlockAdvancedLaser().setRegistryName(BlockNames.LASER_ADVANCED).setTranslationKey("lasermod.advanced_laser"));
-	    	blockRegistry.register(new BlockLaserDetector().setRegistryName(BlockNames.LASER_DETECTOR).setTranslationKey("lasermod.detector"));
-	    	blockRegistry.register(new BlockReflector().setRegistryName(BlockNames.REFLECTOR).setTranslationKey("lasermod.reflector"));
-	    	blockRegistry.register(new BlockColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER).setTranslationKey("lasermod.colour_converter"));
-	    	blockRegistry.register(new BlockSmallColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER_SMALL).setTranslationKey("lasermod.small_colour_converter"));
-	    	blockRegistry.register(new BlockLuminousLamp().setRegistryName(BlockNames.LUMINOUS_LAMP).setTranslationKey("lasermod.luminous_lamp"));
-	    	blockRegistry.register(new BlockLensWorkbench().setRegistryName(BlockNames.LENS_WORKBENCH).setTranslationKey("lasermod.lenswork_bench"));
+	    	blockRegistry.register(new BlockBasicLaser().setRegistryName(BlockNames.LASER_BASIC).setUnlocalizedName("lasermod.basic_laser"));
+	    	blockRegistry.register(new BlockAdvancedLaser().setRegistryName(BlockNames.LASER_ADVANCED).setUnlocalizedName("lasermod.advanced_laser"));
+	    	blockRegistry.register(new BlockLaserDetector().setRegistryName(BlockNames.LASER_DETECTOR).setUnlocalizedName("lasermod.detector"));
+	    	blockRegistry.register(new BlockReflector().setRegistryName(BlockNames.REFLECTOR).setUnlocalizedName("lasermod.reflector"));
+	    	blockRegistry.register(new BlockColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER).setUnlocalizedName("lasermod.colour_converter"));
+	    	blockRegistry.register(new BlockSmallColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER_SMALL).setUnlocalizedName("lasermod.small_colour_converter"));
+	    	blockRegistry.register(new BlockLuminousLamp().setRegistryName(BlockNames.LUMINOUS_LAMP).setUnlocalizedName("lasermod.luminous_lamp"));
+	    	blockRegistry.register(new BlockLensWorkbench().setRegistryName(BlockNames.LENS_WORKBENCH).setUnlocalizedName("lasermod.lenswork_bench"));
+	    	//blockRegistry.register(new BlockLaserFilter().setRegistryName(BlockNames.LASER_FILTER).setUnlocalizedName("lasermod.laser_filter"));
 	    	
 	    	registerTileEntities();
 	    }
@@ -76,6 +82,7 @@ public class ModBlocks {
 			GameRegistry.registerTileEntity(TileEntityColourConverter.class, BlockNames.COLOUR_CONVERTER);
 			GameRegistry.registerTileEntity(TileEntitySmallColourConverter.class, BlockNames.COLOUR_CONVERTER_SMALL);
 			GameRegistry.registerTileEntity(TileEntityLuminousLamp.class, BlockNames.LUMINOUS_LAMP);
+			//GameRegistry.registerTileEntity(TileEntityLaserFilter.class, BlockNames.LASER_FILTER);
 	    }
 	    
 	    @SubscribeEvent
@@ -90,6 +97,7 @@ public class ModBlocks {
 			itemRegistry.register(makeItemBlock(COLOUR_CONVERTER_SMALL));
 			itemRegistry.register(makeItemBlock(LUMINOUS_LAMP));
 			itemRegistry.register(makeItemBlock(LENS_WORKBENCH));
+			//itemRegistry.register(makeItemBlock(LASER_FILTER));
 	    }
 	    
 	    private static ItemBlock makeItemBlock(Block block) {

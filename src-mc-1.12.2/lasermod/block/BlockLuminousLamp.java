@@ -59,7 +59,7 @@ public class BlockLuminousLamp extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 

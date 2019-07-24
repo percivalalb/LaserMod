@@ -47,7 +47,7 @@ public abstract class BlockPoweredRedstone extends BlockContainer {
 
 	@Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
     }
 
 	@Override

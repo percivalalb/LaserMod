@@ -13,6 +13,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -49,7 +50,7 @@ public class BlockReflector extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 	
@@ -72,7 +73,7 @@ public class BlockReflector extends BlockContainer {
 				else if(!state.getValue(POWERED) && this.isLaserSource(world, pos)) 
 					cycleState(world, pos, state);
 				else
-				world.markAndNotifyBlock(pos, world.getChunk(pos), state, state, 2);
+				world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 2);
 				//PacketDispatcher.sendToAllTracking(new ReflectorMessage(reflector), reflector);
 			}
 			return true;
@@ -151,5 +152,25 @@ public class BlockReflector extends BlockContainer {
             tileentity.validate();
             worldIn.setTileEntity(pos, tileentity);
         }
+    }
+    
+    @Override
+    public void onBlockPlacedBy(World w, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    	if(w.getBlockState(pos).getBlock() instanceof BlockReflector) {
+        	TileEntityReflector newEntity = (TileEntityReflector) w.getTileEntity(pos);
+        	for(int i = 0; i < 6; i++) {
+        		EnumFacing dir = EnumFacing.VALUES[i];
+        		BlockPos oldPos = pos.offset(dir);
+        		if(w.getBlockState(oldPos).getBlock() instanceof BlockReflector) {
+        			TileEntityReflector oldEntity = (TileEntityReflector) w.getTileEntity(oldPos);
+        			if(!oldEntity.sideClosed[dir.getOpposite().getIndex()]) {
+        				newEntity.sideClosed[dir.getIndex()] = false;
+        				w.scheduleUpdate(pos, this, 4);
+        				newEntity.validate();
+        				w.markAndNotifyBlock(pos, w.getChunkFromBlockCoords(pos), w.getBlockState(pos), w.getBlockState(pos), 2);
+        			}
+        		}
+        	}
+    	}
     }
 }
