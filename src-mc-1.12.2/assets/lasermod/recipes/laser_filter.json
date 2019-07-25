@@ -17,9 +17,72 @@
     },
     "L": {
       "item": "lasermod:laser_crystal"
-    }
-    "S": {
-      "item": "minecraft:stained_glass"
-    }
+    },
+    "S": [
+	  {
+        "item": "minecraft:stained_glass",
+        "data": 0
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 1
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 2
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 3
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 4
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 5
+      },
+	  {
+        "item": "minecraft:stained_glass",
+        "data": 6
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 7
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 8
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 9
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 10
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 11
+      },
+	  {
+        "item": "minecraft:stained_glass",
+        "data": 12
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 13
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 14
+      },
+      {
+        "item": "minecraft:stained_glass",
+        "data": 15
+      }
+    ]
   }
 }
