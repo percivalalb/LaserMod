@@ -48,7 +48,10 @@ public class TileEntityColourConverter extends TileEntitySingleSidedReceiver imp
 	    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
 	    }
 	    else {
-	    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+	        LaserInGame lig = this.getOutputLaser(facing);
+            if (lig != null) {
+                lig.getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+            }
 	    }
 	}
 	

@@ -17,7 +17,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockLaserFilter extends BlockContainer {
+public class BlockLaserFilter extends BlockPoweredLaser {
 
 	public BlockLaserFilter() {
 		super(Material.IRON);

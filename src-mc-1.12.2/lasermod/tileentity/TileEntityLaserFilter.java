@@ -3,7 +3,9 @@ package lasermod.tileentity;
 import java.util.Arrays;
 import java.util.List;
 
+import lasermod.LaserMod;
 import lasermod.ModBlocks;
+import lasermod.ModLasers;
 import lasermod.api.ILaserProvider;
 import lasermod.api.ILaserReceiver;
 import lasermod.api.LaserInGame;
@@ -22,9 +24,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityLaserFilter extends TileEntitySingleSidedReceiver implements ILaserProvider{
+public class TileEntityLaserFilter extends TileEntitySingleSidedReceiver implements ILaserProvider {
 
-	public EnumDyeColor colour = EnumDyeColor.BLACK;//TODO makes most sense with current filtering
+	public EnumDyeColor colour = EnumDyeColor.RED;//TODO makes most sense with current filtering
 	
 	@Override
 	public void sendUpdateDescription() {
@@ -33,12 +35,12 @@ public class TileEntityLaserFilter extends TileEntitySingleSidedReceiver impleme
 
 	@Override
 	public void onLaserPass(World world) {
-		//world.scheduleUpdate(this.pos, ModBlocks.LASER_FILTER, 4);
+		world.scheduleUpdate(this.pos, ModBlocks.LASER_FILTER, 4);
 	}
 
 	@Override
 	public void onLaserRemoved(World world) {
-		//world.scheduleUpdate(this.pos, ModBlocks.LASER_FILTER, 4);
+		world.scheduleUpdate(this.pos, ModBlocks.LASER_FILTER, 4);
 	}
 
 	@Override
@@ -53,12 +55,24 @@ public class TileEntityLaserFilter extends TileEntitySingleSidedReceiver impleme
 		if(this.laser != null) {
 			LaserInGame outputLaser = this.laser.copy();
 			//TODO temporary function, get proper filtering
-			if(laser.red >= (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour.getMetadata()][0] * 255)
-					&& laser.green >= (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour.getMetadata()][1] * 255) &&
-					laser.blue >= (int)(LaserUtil.LASER_COLOUR_TABLE[this.colour.getMetadata()][2] * 255))
-			return outputLaser;
+			if (this.passesThroughFilter()) {
+			    return outputLaser;
+			}
 		}
 		return null;
+	}
+	
+	public boolean passesThroughFilter() {
+	    if(this.laser != null) {
+            //TODO temporary function, get proper filtering
+            if(this.laser.getLaserType().contains(ModLasers.FIRE)) {
+                return true;
+            } else {
+                return false;
+            }
+	    }
+        
+        return true;
 	}
 
 	@Override
@@ -75,7 +89,7 @@ public class TileEntityLaserFilter extends TileEntitySingleSidedReceiver impleme
 
 	@Override
 	public boolean isEmittingFromSide(World worldIn, BlockPos askerPos, EnumFacing side) {
-		return this.laser != null && side == this.getInputSide().getOpposite();
+		return this.laser != null && side == this.getInputSide().getOpposite() && this.passesThroughFilter();
 	}
 
 	@Override
@@ -101,7 +115,10 @@ public class TileEntityLaserFilter extends TileEntitySingleSidedReceiver impleme
 	    		reciver.onLaserIncident(this.world, this.pos, facing.getOpposite(), laserInGame);
 	    }
 	    else {
-	    	this.getOutputLaser(facing).getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+	        LaserInGame lig = this.getOutputLaser(facing);
+	        if (lig != null) {
+	            lig.getLaserType().stream().forEach(laser -> laser.actionOnBlock(bap));
+	        }
 	    }
 	}
 	
