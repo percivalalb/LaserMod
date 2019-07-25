@@ -108,7 +108,7 @@ public class LaserInGame {
 		LaserInGame laser = new LaserInGame();
 		
 		laser.strength = tag.getDouble("strength");
-		laser.dir = EnumFacing.getFront(tag.getInteger("side"));
+		laser.dir = EnumFacing.byIndex(tag.getInteger("side"));
 		laser.red = tag.getInteger("red");
 		laser.green = tag.getInteger("green");
 		laser.blue = tag.getInteger("blue");
@@ -124,7 +124,7 @@ public class LaserInGame {
 		LaserInGame laser = new LaserInGame();
 		
 		laser.strength = buffer.readDouble();
-		laser.dir = EnumFacing.getFront(buffer.readInt());
+		laser.dir = EnumFacing.byIndex(buffer.readInt());
 		laser.red = buffer.readInt();
 		laser.green = buffer.readInt();
 		laser.blue = buffer.readInt();

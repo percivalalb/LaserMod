@@ -61,15 +61,15 @@ public class ModBlocks {
 	    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 	    	IForgeRegistry<Block> blockRegistry = event.getRegistry();
 	    	
-	    	blockRegistry.register(new BlockBasicLaser().setRegistryName(BlockNames.LASER_BASIC).setUnlocalizedName("lasermod.basic_laser"));
-	    	blockRegistry.register(new BlockAdvancedLaser().setRegistryName(BlockNames.LASER_ADVANCED).setUnlocalizedName("lasermod.advanced_laser"));
-	    	blockRegistry.register(new BlockLaserDetector().setRegistryName(BlockNames.LASER_DETECTOR).setUnlocalizedName("lasermod.detector"));
-	    	blockRegistry.register(new BlockReflector().setRegistryName(BlockNames.REFLECTOR).setUnlocalizedName("lasermod.reflector"));
-	    	blockRegistry.register(new BlockColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER).setUnlocalizedName("lasermod.colour_converter"));
-	    	blockRegistry.register(new BlockSmallColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER_SMALL).setUnlocalizedName("lasermod.small_colour_converter"));
-	    	blockRegistry.register(new BlockLuminousLamp().setRegistryName(BlockNames.LUMINOUS_LAMP).setUnlocalizedName("lasermod.luminous_lamp"));
-	    	blockRegistry.register(new BlockLensWorkbench().setRegistryName(BlockNames.LENS_WORKBENCH).setUnlocalizedName("lasermod.lenswork_bench"));
-	    	//blockRegistry.register(new BlockLaserFilter().setRegistryName(BlockNames.LASER_FILTER).setUnlocalizedName("lasermod.laser_filter"));
+	    	blockRegistry.register(new BlockBasicLaser().setRegistryName(BlockNames.LASER_BASIC).setTranslationKey("lasermod.basic_laser"));
+	    	blockRegistry.register(new BlockAdvancedLaser().setRegistryName(BlockNames.LASER_ADVANCED).setTranslationKey("lasermod.advanced_laser"));
+	    	blockRegistry.register(new BlockLaserDetector().setRegistryName(BlockNames.LASER_DETECTOR).setTranslationKey("lasermod.detector"));
+	    	blockRegistry.register(new BlockReflector().setRegistryName(BlockNames.REFLECTOR).setTranslationKey("lasermod.reflector"));
+	    	blockRegistry.register(new BlockColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER).setTranslationKey("lasermod.colour_converter"));
+	    	blockRegistry.register(new BlockSmallColourConverter().setRegistryName(BlockNames.COLOUR_CONVERTER_SMALL).setTranslationKey("lasermod.small_colour_converter"));
+	    	blockRegistry.register(new BlockLuminousLamp().setRegistryName(BlockNames.LUMINOUS_LAMP).setTranslationKey("lasermod.luminous_lamp"));
+	    	blockRegistry.register(new BlockLensWorkbench().setRegistryName(BlockNames.LENS_WORKBENCH).setTranslationKey("lasermod.lenswork_bench"));
+	    	//blockRegistry.register(new BlockLaserFilter().setRegistryName(BlockNames.LASER_FILTER).setTranslationKey("lasermod.laser_filter"));
 	    	
 	    	registerTileEntities();
 	    }

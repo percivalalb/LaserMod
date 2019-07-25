@@ -221,7 +221,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 		this.sideClosed[dex] = !flag;
 		world.scheduleUpdate(pos, this.getBlockType(), 4);
 		this.validate();
-		world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos),
+		world.markAndNotifyBlock(pos, world.getChunk(pos), world.getBlockState(pos),
 				world.getBlockState(pos), 2);
 		return new Object[] { flag ^ flag2 };// returns whether or not the side changed
 	}
@@ -235,7 +235,7 @@ public class TileEntityReflector extends TileEntityMultiSidedReceiver implements
 		}
 		world.scheduleUpdate(pos, this.getBlockType(), 4);
 		this.validate();
-		world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos),
+		world.markAndNotifyBlock(pos, world.getChunk(pos), world.getBlockState(pos),
 				world.getBlockState(pos), 2);
 		return new Object[] { temp }; // returns previous state
 	}

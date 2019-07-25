@@ -50,7 +50,7 @@ public class BlockReflector extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 	
@@ -73,7 +73,7 @@ public class BlockReflector extends BlockContainer {
 				else if(!state.getValue(POWERED) && this.isLaserSource(world, pos)) 
 					cycleState(world, pos, state);
 				else
-				world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 2);
+				world.markAndNotifyBlock(pos, world.getChunk(pos), state, state, 2);
 				//PacketDispatcher.sendToAllTracking(new ReflectorMessage(reflector), reflector);
 			}
 			return true;
@@ -167,7 +167,7 @@ public class BlockReflector extends BlockContainer {
         				newEntity.sideClosed[dir.getIndex()] = false;
         				w.scheduleUpdate(pos, this, 4);
         				newEntity.validate();
-        				w.markAndNotifyBlock(pos, w.getChunkFromBlockCoords(pos), w.getBlockState(pos), w.getBlockState(pos), 2);
+        				w.markAndNotifyBlock(pos, w.getChunk(pos), w.getBlockState(pos), w.getBlockState(pos), 2);
         			}
         		}
         	}

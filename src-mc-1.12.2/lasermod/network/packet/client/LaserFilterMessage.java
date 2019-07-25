@@ -54,7 +54,7 @@ public class LaserFilterMessage extends AbstractClientMessage<LaserFilterMessage
 		TileEntityLaserFilter laserFilter = (TileEntityLaserFilter)tileEntity;
 		laserFilter.laser = msg.laser;
 		laserFilter.colour = msg.colour;
-		world.markAndNotifyBlock(msg.pos, world.getChunkFromBlockCoords(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
+		world.markAndNotifyBlock(msg.pos, world.getChunk(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
 	}
 
 }

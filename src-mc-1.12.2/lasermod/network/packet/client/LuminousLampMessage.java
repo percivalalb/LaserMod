@@ -60,7 +60,7 @@ public class LuminousLampMessage extends AbstractClientMessage<LuminousLampMessa
 		TileEntityLuminousLamp colourConverter = (TileEntityLuminousLamp)tileEntity;
 		colourConverter.lasers = msg.lasers;
 		colourConverter.setUpdateRequired();
-		world.markAndNotifyBlock(this.pos, world.getChunkFromBlockCoords(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 2);
+		world.markAndNotifyBlock(this.pos, world.getChunk(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 2);
 		world.checkLightFor(EnumSkyBlock.BLOCK, msg.pos);
 		
 	}

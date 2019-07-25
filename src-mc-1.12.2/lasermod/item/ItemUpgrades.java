@@ -27,8 +27,8 @@ public class ItemUpgrades extends Item {
     }
 	
 	@Override
-	public String getUnlocalizedName(ItemStack stack) {
+	public String getTranslationKey(ItemStack stack) {
 	    int i = stack.getItemDamage();
-	    return super.getUnlocalizedName() + "." + i;
+	    return super.getTranslationKey() + "." + i;
 	}
 }

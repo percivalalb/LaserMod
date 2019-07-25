@@ -58,7 +58,7 @@ public class ColourConverterMessage extends AbstractClientMessage<ColourConverte
 		TileEntityColourConverter colourConverter = (TileEntityColourConverter)tileEntity;
 		colourConverter.laser = msg.laser;
 		colourConverter.colour = msg.colour;
-		world.markAndNotifyBlock(msg.pos, world.getChunkFromBlockCoords(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
+		world.markAndNotifyBlock(msg.pos, world.getChunk(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
 		
 	}
 }

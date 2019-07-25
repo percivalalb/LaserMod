@@ -49,19 +49,19 @@ public class ModItems {
 	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
 	    	IForgeRegistry<Item> itemRegistry = event.getRegistry();
 	    	
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.LASER_CRYSTAL).setUnlocalizedName("lasermod.laser_crystal").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new ItemLaserSeekingGoggles().setRegistryName(ItemNames.LASER_SEEKING_GOGGLES).setUnlocalizedName("lasermod.laser_seeking_goggles"));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.SCREWDRIVER).setUnlocalizedName("lasermod.screwdriver").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.HANDHELD_SENSOR).setUnlocalizedName("lasermod.handheld_sensor").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.FIRE).setUnlocalizedName("lasermod.upgrade_fire").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.WATER).setUnlocalizedName("lasermod.upgrade_water").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.ICE).setUnlocalizedName("lasermod.upgrade_ice").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.INVISIBLE).setUnlocalizedName("lasermod.upgrade_invisible").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.MINING).setUnlocalizedName("lasermod.upgrade_mining").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.PUSH).setUnlocalizedName("lasermod.upgrade_push").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.PULL).setUnlocalizedName("lasermod.upgrade_pull").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.DAMAGE).setUnlocalizedName("lasermod.upgrade_damage").setCreativeTab(LaserMod.TAB_LASER));
-	    	itemRegistry.register(new Item().setRegistryName(ItemNames.HEALING).setUnlocalizedName("lasermod.upgrade_healing").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.LASER_CRYSTAL).setTranslationKey("lasermod.laser_crystal").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new ItemLaserSeekingGoggles().setRegistryName(ItemNames.LASER_SEEKING_GOGGLES).setTranslationKey("lasermod.laser_seeking_goggles"));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.SCREWDRIVER).setTranslationKey("lasermod.screwdriver").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.HANDHELD_SENSOR).setTranslationKey("lasermod.handheld_sensor").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.FIRE).setTranslationKey("lasermod.upgrade_fire").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.WATER).setTranslationKey("lasermod.upgrade_water").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.ICE).setTranslationKey("lasermod.upgrade_ice").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.INVISIBLE).setTranslationKey("lasermod.upgrade_invisible").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.MINING).setTranslationKey("lasermod.upgrade_mining").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.PUSH).setTranslationKey("lasermod.upgrade_push").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.PULL).setTranslationKey("lasermod.upgrade_pull").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.DAMAGE).setTranslationKey("lasermod.upgrade_damage").setCreativeTab(LaserMod.TAB_LASER));
+	    	itemRegistry.register(new Item().setRegistryName(ItemNames.HEALING).setTranslationKey("lasermod.upgrade_healing").setCreativeTab(LaserMod.TAB_LASER));
 	    }
     }
 }

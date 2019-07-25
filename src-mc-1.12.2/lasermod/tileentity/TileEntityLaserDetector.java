@@ -87,7 +87,7 @@ public class TileEntityLaserDetector extends TileEntityMultiSidedReceiver implem
 	
 	/**This was used in multiple classes so I put it in a separate method*/
 	private Object[] getLaserHelper(int dex) {
-		LaserInGame laser = this.getLaserFromSide(EnumFacing.getFront(dex));
+		LaserInGame laser = this.getLaserFromSide(EnumFacing.byIndex(dex));
 		if(laser == null) { //not at given index
 			return new Object[] {null};
 		}

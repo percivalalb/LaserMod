@@ -66,7 +66,7 @@ public class ReflectorMessage extends AbstractClientMessage<ReflectorMessage> im
 		TileEntityReflector reflector = (TileEntityReflector)tileEntity;
 		reflector.sideClosed = msg.closedSides;
 		reflector.lasers = msg.lasers;
-		world.markAndNotifyBlock(msg.pos, world.getChunkFromBlockCoords(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
+		world.markAndNotifyBlock(msg.pos, world.getChunk(msg.pos), world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
 		
 	}
 }
