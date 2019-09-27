@@ -1,7 +1,0 @@
-{
-    "variants": {
-		"inventory": { "model": "lasermod:luminous_lamp_deactive" },
-        "active=false":  { "model": "lasermod:luminous_lamp_deactive" },
-        "active=true":    { "model": "lasermod:luminous_lamp_active" }
-    }
-}

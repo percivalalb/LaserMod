@@ -1,7 +1,0 @@
-{
-    "variants": {
-		"inventory": { "model": "lasermod:detector_deactive" },
-        "active=false":  { "model": "lasermod:detector_deactive" },
-        "active=true":    { "model": "lasermod:detector_active" }
-    }
-}
